@@ -7,5 +7,11 @@ export default defineNuxtConfig({
     'primevue/resources/themes/aura-light-blue/theme.css',
     'primevue/resources/primevue.min.css',
     'primeicons/primeicons.css'
-  ]
+  ],
+  build: {
+    transpile: ['primevue'] // Đảm bảo các thành phần PrimeVue được biên dịch đúng cách
+  },
+  plugins: [
+    '~/plugins/primevue.js'  // Đảm bảo bạn đã thêm plugin này vào
+  ],
 })

@@ -13,28 +13,32 @@
 
 <script setup>
 const menuItems = [
-  { label: "Receive SMS", icon: "pi pi-fw pi-home", to: "/" }, // Trang Home
+  { label: "Receive SMS", icon: "pi pi-fw pi-home", to: "/receive-sms" },
   {
     label: "Mobile proxies",
     icon: "pi pi-fw pi-id-card",
-    to: "/demo/formlayout",
+    to: "/mobile-proxies",
   },
-  { label: "Number rent", icon: "pi pi-fw pi-check-square", to: "/demo/input" },
+  {
+    label: "Number rent",
+    icon: "pi pi-fw pi-check-square",
+    to: "/number-rent",
+  },
   {
     label: "Referral program",
     icon: "pi pi-fw pi-bookmark",
-    to: "/demo/floatlabel",
+    to: "/referral-program",
   },
   {
     label: "Refill balance",
     icon: "pi pi-fw pi-exclamation-circle",
-    to: "/demo/invalidstate",
+    to: "/refill-balance",
   },
-  { label: "SMS history", icon: "pi pi-fw pi-mobile", to: "/demo/button" },
-  { label: "Checkout", icon: "pi pi-fw pi-table", to: "/demo/table" },
-  { label: "List", icon: "pi pi-fw pi-list", to: "/demo/list" },
-  { label: "Tickets", icon: "pi pi-fw pi-share-alt", to: "/demo/tree" },
-  { label: "Notifications", icon: "pi pi-fw pi-tablet", to: "/demo/panel" },
+  { label: "SMS history", icon: "pi pi-fw pi-mobile", to: "/sms-history" },
+  { label: "Checkout", icon: "pi pi-fw pi-table", to: "/checkout" },
+  { label: "List", icon: "pi pi-fw pi-list", to: "/list" },
+  { label: "Tickets", icon: "pi pi-fw pi-share-alt", to: "/tickets" },
+  { label: "Notifications", icon: "pi pi-fw pi-tablet", to: "/notifications" },
 ];
 </script>
 
