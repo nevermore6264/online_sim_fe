@@ -48,6 +48,10 @@ const menuItems = [
   background-color: #f8f9fa;
   border-right: 1px solid #ddd;
   height: calc(100vh - 100px);
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 1rem;
 }
 
 .sidebar ul {

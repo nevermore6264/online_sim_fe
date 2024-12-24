@@ -1,55 +1,54 @@
 <template>
-  <div class="layout">
-    <Header />
-    <div class="content-container">
-      <aside class="sidebar">
-        <Sidebar />
-      </aside>
-      <main class="main-content">
+  <div>
+    <!-- Hiển thị layout dựa vào trạng thái đăng nhập -->
+    <div v-if="!isAuthenticated">
+      <!-- Landing Page Layout -->
+      <Header />
+      <main>
         <slot />
+        <!-- Nội dung chính của landing page -->
       </main>
+      <Footer />
     </div>
-    <Footer />
+
+    <div v-else>
+      <!-- App Layout sau khi login -->
+      <Sidebar />
+      <main class="app-content">
+        <slot />
+        <!-- Nội dung chính sau khi đăng nhập -->
+      </main>
+      <Footer />
+    </div>
   </div>
 </template>
 
 <script setup>
-import Footer from "~/components/Footer.vue";
+import { ref } from "vue";
+
+// Trạng thái đăng nhập
+const isAuthenticated = ref(false); // Cập nhật dựa trên trạng thái user (có thể từ Vuex hoặc Pinia)
+const route = useRoute();
+
+// Theo dõi thay đổi đường dẫn để xác định trạng thái auth
+watch(
+  () => route.path,
+  (newPath) => {
+    // Nếu đường dẫn chứa `/receive-sms` bất kỳ, đặt isAuthenticated thành true
+    isAuthenticated.value = newPath.startsWith("/receive-sms");
+  },
+  { immediate: true } // Gọi ngay khi khởi tạo
+);
+// Import các thành phần layout
 import Header from "~/components/Header.vue";
+import Footer from "~/components/Footer.vue";
+import Sidebar from "~/components/Sidebar.vue";
 </script>
 
 <style scoped>
-.layout {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-/* Phần chứa sidebar và main content */
-.content-container {
-  display: flex;
-  flex: 1; /* Đẩy Footer xuống đáy */
-  overflow: hidden; /* Đảm bảo layout không bị tràn */
-}
-
-.header {
-  padding: 1rem;
-  text-align: center;
-}
-
-/* Sidebar */
-.sidebar {
-  overflow-y: auto; /* Nếu nội dung dài, sẽ cuộn */
-}
-
-/* Main content */
-.main-content {
-  flex: 1; /* Lấy hết không gian còn lại */
-  padding: 1rem;
-  overflow-y: auto; /* Cuộn nếu nội dung quá dài */
-}
-
-footer {
-  margin-top: auto;
+/* Layout sau khi đăng nhập */
+.app-content {
+  margin-left: 250px; /* Khoảng cách bên trái cho sidebar */
+  padding: 1rem; /* Khoảng cách padding cho nội dung chính */
 }
 </style>

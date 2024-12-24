@@ -22,7 +22,7 @@
   padding: 20px 0;
   text-align: center;
   width: 100%;
-  position: relative;
+  position: fixed;
   bottom: 0;
 }
 
