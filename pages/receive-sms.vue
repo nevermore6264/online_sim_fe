@@ -2,6 +2,7 @@
   <div>
     <h1>Numbers Rental</h1>
 
+    <h4>Buy a number</h4>
     <!-- DataTable Component -->
     <DataTable
       v-model:filters="filters"
@@ -15,15 +16,7 @@
     >
       <template #header>
         <div class="flex justify-content-end">
-          <IconField iconPosition="left">
-            <InputIcon>
-              <i class="pi pi-search" />
-            </InputIcon>
-            <InputText
-              v-model="filters['global'].value"
-              placeholder="Keyword Search"
-            />
-          </IconField>
+          <!-- Removed Keyword Search Input -->
         </div>
       </template>
       <template #empty> No customers found. </template>
@@ -35,15 +28,15 @@
         style="min-width: 12rem"
       >
         <template #body="{ data }">
-          <div class="flex align-items-center gap-2">
+          <div class="flex align-items-center gap-2 row-content">
             <img
               alt="flag"
-              :src="`https://primefaces.org/cdn/primevue/images/flag/flag_${data.country.code}.png`"
+              :src="`https://flagsapi.com/${data.country.code}/flat/64.png`"
               :class="`flag flag-${data.country.code}`"
               style="width: 24px"
             />
-            <span>{{ data.country.name }}</span>
-            <span v-if="data.country.dialCode">
+            <span class="country">{{ data.country.name }}</span>
+            <span class="dialCode" v-if="data.country.dialCode">
               (+{{ data.country.dialCode }})
             </span>
           </div>
@@ -94,3 +87,20 @@ const filters = ref({
 
 const loading = ref(false);
 </script>
+
+<style>
+.row-content {
+  display: flex;
+  align-items: center;
+  margin: auto 0;
+}
+
+.row-content .country {
+  margin-left: 15px;
+}
+
+.row-content .dialCode {
+  margin-left: 15px;
+  color: #859398;
+}
+</style>
