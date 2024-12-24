@@ -42,7 +42,6 @@ const menuItems = [
 .sidebar {
   width: 250px;
   background-color: #f8f9fa;
-  padding: 15px;
   border-right: 1px solid #ddd;
   height: calc(100vh - 100px);
 }
@@ -54,7 +53,10 @@ const menuItems = [
 }
 
 .sidebar li {
-  margin: 10px 0;
+  padding: 10px 20px;
+  font-size: 16px;
+  display: block;
+  width: 100%;
 }
 
 .sidebar li a {
@@ -65,8 +67,23 @@ const menuItems = [
   gap: 10px;
 }
 
+.sidebar li:hover {
+  width: 100%;
+  background: #00d2ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #3a7bd5,
+    #00d2ff
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #3a7bd5,
+    #00d2ff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 .sidebar li a:hover {
-  color: #007bff;
+  color: #ffffff;
 }
 
 .menu-icon {

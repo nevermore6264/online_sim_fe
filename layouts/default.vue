@@ -2,7 +2,9 @@
   <div class="layout">
     <Header />
     <div class="content-container">
-      <Sidebar />
+      <aside class="sidebar">
+        <Sidebar />
+      </aside>
       <main class="main-content">
         <slot />
       </main>
@@ -18,10 +20,16 @@ import Header from "~/components/Header.vue";
 
 <style scoped>
 .layout {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
 }
+
+/* Phần chứa sidebar và main content */
 .content-container {
-  min-height: 100vh;
+  display: flex;
+  flex: 1; /* Đẩy Footer xuống đáy */
+  overflow: hidden; /* Đảm bảo layout không bị tràn */
 }
 
 .header {
@@ -29,9 +37,16 @@ import Header from "~/components/Header.vue";
   text-align: center;
 }
 
+/* Sidebar */
+.sidebar {
+  overflow-y: auto; /* Nếu nội dung dài, sẽ cuộn */
+}
+
+/* Main content */
 .main-content {
+  flex: 1; /* Lấy hết không gian còn lại */
   padding: 1rem;
-  overflow-y: auto;
+  overflow-y: auto; /* Cuộn nếu nội dung quá dài */
 }
 
 footer {
