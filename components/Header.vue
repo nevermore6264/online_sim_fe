@@ -179,10 +179,6 @@ const handleSignup = () => {
   padding: 0 15px;
 }
 
-.p-button {
-  margin-left: 10px;
-}
-
 .p-menubar {
   border: 0 !important;
   border-bottom: 1px solid #e2e8f0 !important;
