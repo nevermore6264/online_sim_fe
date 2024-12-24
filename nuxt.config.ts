@@ -14,4 +14,17 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/primevue.js'  // Đảm bảo bạn đã thêm plugin này vào
   ],
+  app: {
+    head: {
+      title: 'OnlineSim - service for private registration at online resources',
+      htmlAttrs: {
+        lang: 'en'
+      },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'format-detection', content: 'telephone=no' },
+      ]
+    }
+  }
 })
