@@ -10,8 +10,8 @@
       <div class="table-container">
         <DataTable
           :value="customers"
-          paginator
-          :rows="10"
+          scrollable
+          scrollHeight="400px"
           dataKey="id"
           :loading="loading"
           :globalFilter="globalFilter"
@@ -32,7 +32,7 @@
             style="min-width: 12rem"
           >
             <template #body="{ data }">
-              <div class="flex align-items-center gap-2 row-content">
+              <div class="flex align-items-center row-content">
                 <img
                   alt="flag"
                   :src="`https://flagsapi.com/${data.country.code}/flat/64.png`"
@@ -50,22 +50,24 @@
       </div>
 
       <!-- Sub DataTable for services -->
-      <div class="table-container" v-if="selectedCustomer">
+      <div class="table-container">
         <DataTable
-          :value="selectedCustomer.services"
-          paginator
-          :rows="5"
+          :value="selectedCustomer?.services"
+          scrollable
+          scrollHeight="200px"
           dataKey="id"
           :loading="loading"
         >
           <template #header>
-            <h5>Services for {{ selectedCustomer.country.name }}</h5>
+            <h5>Services for {{ selectedCustomer?.country?.name }}</h5>
           </template>
           <template #empty> No services found. </template>
           <template #loading> Loading services data. Please wait. </template>
 
           <Column header="Service" field="name" style="min-width: 12rem" />
-          <Column header="Price" field="price" style="min-width: 12rem" />
+          <Column header="Quanlity" field="quantity" style="min-width: 12rem" />
+          <Column field="price" header="Price" style="min-width: 12rem">
+          </Column>
         </DataTable>
       </div>
     </div>
@@ -82,128 +84,92 @@ const customers = ref([
     id: 1,
     country: { name: "USA", code: "US", dialCode: "1" },
     services: [
-      { id: 1, name: "Service A", price: "$10" },
-      { id: 2, name: "Service B", price: "$15" },
+      { id: 1, name: "Uber", price: "$0.09", quantity: 9999 },
+      { id: 2, name: "Microsoft", price: "$0.12", quantity: 4960 },
+      { id: 3, name: "Netflix", price: "$0.16", quantity: 9999 },
     ],
   },
   {
     id: 2,
     country: { name: "Canada", code: "CA", dialCode: "1" },
     services: [
-      { id: 3, name: "Service C", price: "$20" },
-      { id: 4, name: "Service D", price: "$25" },
+      { id: 4, name: "eBay", price: "$0.15", quantity: 2071 },
+      { id: 5, name: "Amazon", price: "$0.16", quantity: 9056 },
     ],
   },
   {
     id: 3,
     country: { name: "Mexico", code: "MX", dialCode: "52" },
     services: [
-      { id: 5, name: "Service E", price: "$30" },
-      { id: 6, name: "Service F", price: "$35" },
+      { id: 6, name: "OLX", price: "$0.19", quantity: 2687 },
+      { id: 7, name: "LiveScore", price: "$0.35", quantity: 2292 },
     ],
   },
   {
     id: 4,
     country: { name: "Spain", code: "ES", dialCode: "34" },
     services: [
-      { id: 7, name: "Service G", price: "$40" },
-      { id: 8, name: "Service H", price: "$45" },
+      { id: 8, name: "BlaBlaCar", price: "$0.35", quantity: 1190 },
+      { id: 9, name: "Glovo", price: "$0.35", quantity: 2440 },
+      { id: 10, name: "LINE", price: "$0.14", quantity: 1757 },
     ],
   },
   {
     id: 5,
     country: { name: "Germany", code: "DE", dialCode: "49" },
     services: [
-      { id: 9, name: "Service I", price: "$50" },
-      { id: 10, name: "Service J", price: "$55" },
+      { id: 11, name: "ProtonMail", price: "$0.35", quantity: 9999 },
+      { id: 12, name: "Nike", price: "$0.20", quantity: 9999 },
     ],
   },
   {
     id: 6,
     country: { name: "France", code: "FR", dialCode: "33" },
     services: [
-      { id: 11, name: "Service K", price: "$60" },
-      { id: 12, name: "Service L", price: "$65" },
+      { id: 13, name: "AOL", price: "$0.09", quantity: 9999 },
+      { id: 14, name: "AppBonus", price: "$0.35", quantity: 2080 },
     ],
   },
   {
     id: 7,
     country: { name: "Italy", code: "IT", dialCode: "39" },
     services: [
-      { id: 13, name: "Service M", price: "$70" },
-      { id: 14, name: "Service N", price: "$75" },
+      { id: 15, name: "Hinge", price: "$0.30", quantity: 1140 },
+      { id: 16, name: "Tinder", price: "$0.16", quantity: 9999 },
     ],
   },
   {
     id: 8,
     country: { name: "Brazil", code: "BR", dialCode: "55" },
     services: [
-      { id: 15, name: "Service O", price: "$80" },
-      { id: 16, name: "Service P", price: "$85" },
+      { id: 17, name: "WhatsAround", price: "$0.35", quantity: 1956 },
+      { id: 18, name: "Badoo", price: "$0.30", quantity: 2538 },
     ],
   },
   {
     id: 9,
     country: { name: "Australia", code: "AU", dialCode: "61" },
     services: [
-      { id: 17, name: "Service Q", price: "$90" },
-      { id: 18, name: "Service R", price: "$95" },
+      { id: 19, name: "Battle.net Blizzard", price: "$0.01", quantity: 50 },
+      { id: 20, name: "Kucoin", price: "$0.14", quantity: 1650 },
+      { id: 21, name: "Coinbase", price: "$0.12", quantity: 1708 },
     ],
   },
   {
     id: 10,
-    country: { name: "United Kingdom", code: "GB", dialCode: "44" },
+    country: { name: "Japan", code: "JP", dialCode: "81" },
     services: [
-      { id: 19, name: "Service S", price: "$100" },
-      { id: 20, name: "Service T", price: "$105" },
+      { id: 22, name: "LINE", price: "$0.14", quantity: 1757 },
+      { id: 23, name: "Rakuten", price: "$0.19", quantity: 1900 },
     ],
   },
   {
     id: 11,
-    country: { name: "Japan", code: "JP", dialCode: "81" },
-    services: [
-      { id: 21, name: "Service U", price: "$110" },
-      { id: 22, name: "Service V", price: "$115" },
-    ],
-  },
-  {
-    id: 12,
-    country: { name: "South Korea", code: "KR", dialCode: "82" },
-    services: [
-      { id: 23, name: "Service W", price: "$120" },
-      { id: 24, name: "Service X", price: "$125" },
-    ],
-  },
-  {
-    id: 13,
     country: { name: "India", code: "IN", dialCode: "91" },
     services: [
-      { id: 25, name: "Service Y", price: "$130" },
-      { id: 26, name: "Service Z", price: "$135" },
-    ],
-  },
-  {
-    id: 14,
-    country: { name: "Russia", code: "RU", dialCode: "7" },
-    services: [
-      { id: 27, name: "Service AA", price: "$140" },
-      { id: 28, name: "Service AB", price: "$145" },
-    ],
-  },
-  {
-    id: 15,
-    country: { name: "China", code: "CN", dialCode: "86" },
-    services: [
-      { id: 29, name: "Service AC", price: "$150" },
-      { id: 30, name: "Service AD", price: "$155" },
-    ],
-  },
-  {
-    id: 16,
-    country: { name: "Argentina", code: "AR", dialCode: "54" },
-    services: [
-      { id: 31, name: "Service AE", price: "$160" },
-      { id: 32, name: "Service AF", price: "$165" },
+      { id: 24, name: "Flipkart", price: "$0.15", quantity: 1080 },
+      { id: 25, name: "Paytm", price: "$0.12", quantity: 1900 },
+      { id: 26, name: "Snapchat", price: "$0.31", quantity: 1636 },
     ],
   },
 ]);
@@ -254,5 +220,17 @@ const onRowClick = (event) => {
 .row-content .dialCode {
   margin-left: 15px;
   color: #859398;
+}
+
+.quantity {
+  color: red !important;
+}
+
+.p-datatable-scrollable-wrapper {
+  overflow-y: auto; /* Tùy chỉnh cuộn */
+}
+
+.p-datatable-scrollable-view {
+  max-height: 400px; /* Đảm bảo đúng chiều cao */
 }
 </style>

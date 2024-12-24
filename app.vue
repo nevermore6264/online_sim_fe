@@ -27,7 +27,7 @@ body {
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
   -webkit-box-shadow: inset 0 0 6px #929292;
-  background-color: #555;
+  background-color: rgba(172, 164, 164, 0.65);
 }
 
 h1 {
@@ -54,7 +54,6 @@ button:hover {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
 }
 
 table th,
@@ -74,5 +73,9 @@ table tr:nth-child(even) {
 
 table tr:hover {
   background-color: #f1f1f1;
+}
+
+.p-datatable .p-datatable-header {
+  border: 0px !important;
 }
 </style>
