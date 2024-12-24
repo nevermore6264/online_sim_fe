@@ -1,5 +1,4 @@
 <template>
-  <!-- Navbar Section -->
   <div
     class="p-menubar p-component p-menubar-mobile-active layout-topbar"
     data-pc-name="menubar"
@@ -15,10 +14,11 @@
     <!-- End Section -->
     <div class="p-menubar-end" data-pc-section="end">
       <div class="d-flex align-items-center">
+        <!-- Login Button -->
         <Button
           aria-label="Login"
           class="p-button p-component p-button-text"
-          @click="openPopup('login')"
+          @click="visible = true"
         >
           <span
             class="p-button-icon p-c p-button-icon-left pi pi-sign-in"
@@ -28,10 +28,44 @@
             Login
           </span>
         </Button>
+
+        <!-- Login Dialog -->
+        <Dialog
+          v-model:visible="visible"
+          modal
+          header="Login"
+          :style="{ width: '30rem', padding: '20px' }"
+          class="auth-dialog"
+        >
+          <form @submit.prevent="handleLogin">
+            <div class="field">
+              <label for="email">Email</label>
+              <InputText
+                id="email"
+                v-model="email"
+                required
+                class="input-field"
+              />
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <InputText
+                id="password"
+                type="password"
+                v-model="password"
+                required
+                class="input-field"
+              />
+            </div>
+            <Button label="Login" type="submit" class="p-button-rounded" />
+          </form>
+        </Dialog>
+
+        <!-- Sign Up Button -->
         <Button
           aria-label="Sign Up"
           class="p-button p-component p-button-text"
-          @click="openPopup('signup')"
+          @click="visibleSignUp = true"
         >
           <span
             class="p-button-icon p-c p-button-icon-left pi pi-user-plus"
@@ -41,101 +75,84 @@
             Sign Up
           </span>
         </Button>
+
+        <!-- Sign Up Dialog -->
+        <Dialog
+          v-model:visible="visibleSignUp"
+          modal
+          header="Sign Up"
+          :style="{ width: '30rem', padding: '20px' }"
+          class="auth-dialog"
+        >
+          <form @submit.prevent="handleSignup">
+            <div class="field">
+              <label for="email">Email</label>
+              <InputText
+                id="email"
+                v-model="email"
+                required
+                class="input-field"
+              />
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <InputText
+                id="password"
+                type="password"
+                v-model="password"
+                required
+                class="input-field"
+              />
+            </div>
+            <div class="field">
+              <label for="confirmPassword">Confirm Password</label>
+              <InputText
+                id="confirmPassword"
+                type="password"
+                v-model="confirmPassword"
+                required
+                class="input-field"
+              />
+            </div>
+            <Button label="Sign Up" type="submit" class="p-button-rounded" />
+          </form>
+        </Dialog>
       </div>
     </div>
   </div>
-
-  <!-- Auth Popup Dialog -->
-  <Dialog
-    v-model:visible="isVisible"
-    modal
-    :header="headerText"
-    :style="{ width: '30rem' }"
-  >
-    <template v-if="mode === 'login'">
-      <h3>Login</h3>
-      <form @submit.prevent="handleLogin">
-        <div class="field">
-          <label for="email">Email</label>
-          <InputText id="email" v-model="email" required />
-        </div>
-        <div class="field">
-          <label for="password">Password</label>
-          <InputText
-            id="password"
-            type="password"
-            v-model="password"
-            required
-          />
-        </div>
-        <Button label="Login" type="submit" />
-      </form>
-    </template>
-    <template v-else-if="mode === 'signup'">
-      <h3>Sign Up</h3>
-      <form @submit.prevent="handleSignup">
-        <div class="field">
-          <label for="email">Email</label>
-          <InputText id="email" v-model="email" required />
-        </div>
-        <div class="field">
-          <label for="password">Password</label>
-          <InputText
-            id="password"
-            type="password"
-            v-model="password"
-            required
-          />
-        </div>
-        <div class="field">
-          <label for="confirmPassword">Confirm Password</label>
-          <InputText
-            id="confirmPassword"
-            type="password"
-            v-model="confirmPassword"
-            required
-          />
-        </div>
-        <Button label="Sign Up" type="submit" />
-      </form>
-    </template>
-  </Dialog>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import { Dialog, InputText, Button } from "primevue";
+import { ref } from "vue";
 
-const isVisible = ref(false);
-const mode = ref("login"); // Default to login
+const visible = ref(false);
+const visibleSignUp = ref(false);
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
 
-const headerText = computed(() =>
-  mode.value === "login" ? "Login" : "Sign Up"
-);
-
-// Open the popup and set the mode (login/signup)
-const openPopup = (type) => {
-  mode.value = type;
-  isVisible.value = true;
-};
-
-// Handle Login action
 const handleLogin = () => {
-  alert(`Logged in with email: ${email.value}`);
-  isVisible.value = false;
-};
-
-// Handle Sign Up action
-const handleSignup = () => {
-  if (password.value !== confirmPassword.value) {
-    alert("Passwords do not match!");
+  if (!email.value || !password.value) {
+    alert("Please fill in both fields.");
     return;
   }
+  alert(`Logged in with email: ${email.value}`);
+  visible.value = false; // Close the login dialog
+};
+
+const handleSignup = () => {
+  if (!email.value || !password.value || !confirmPassword.value) {
+    alert("Please fill in all fields.");
+    return;
+  }
+
+  if (password.value !== confirmPassword.value) {
+    alert("Passwords do not match.");
+    return;
+  }
+
   alert(`Signed up with email: ${email.value}`);
-  isVisible.value = false;
+  visibleSignUp.value = false; // Close the sign-up dialog
 };
 </script>
 
@@ -174,7 +191,26 @@ const handleSignup = () => {
     0px 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-.field {
-  margin-bottom: 1rem;
+.auth-dialog .p-dialog-header {
+  background-color: #4caf50;
+  color: white;
+}
+
+.auth-dialog .p-dialog-content {
+  padding: 20px;
+}
+
+.input-field {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.p-button-rounded {
+  width: 100%;
+}
+
+.p-button-icon {
+  margin-right: 8px;
 }
 </style>
