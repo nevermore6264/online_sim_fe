@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h1>Numbers Rental</h1>
-
-    <h4>Buy a number</h4>
+    <h1>Buy OTP Service</h1>
 
     <!-- Flex container to hold two tables on the same row -->
     <div class="flex-container">
@@ -70,6 +68,52 @@
           </Column>
         </DataTable>
       </div>
+    </div>
+
+    <!-- Table for purchased SIMs -->
+    <div class="purchased-sim-container">
+      <h2>Purchased SIMs</h2>
+      <DataTable
+        :value="purchasedSims"
+        scrollable
+        scrollHeight="300px"
+        dataKey="id"
+        :loading="loading"
+      >
+        <template #empty> No SIMs purchased yet. </template>
+        <template #loading> Loading SIM data. Please wait. </template>
+
+        <Column header="Country" field="country" style="min-width: 12rem" />
+        <Column
+          header="Phone Number"
+          field="phoneNumber"
+          style="min-width: 12rem"
+        />
+        <Column header="Service" field="service" style="min-width: 12rem" />
+        <Column header="Price" field="price" style="min-width: 12rem" />
+        <Column
+          header="SMS Status"
+          field="status"
+          style="min-width: 12rem"
+          :class="{
+            success: status === 'Received',
+            pending: status === 'Pending',
+            failed: status === 'Failed',
+          }"
+        >
+          <template #body="{ data }">
+            <span
+              :class="{
+                'text-success': data.status === 'Received',
+                'text-warning': data.status === 'Pending',
+                'text-danger': data.status === 'Failed',
+              }"
+            >
+              {{ data.status }}
+            </span>
+          </template>
+        </Column>
+      </DataTable>
     </div>
   </div>
 </template>
@@ -179,6 +223,34 @@ const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   "country.name": { value: null, matchMode: FilterMatchMode.STARTS_WITH },
 });
+
+// Danh sách SIM đã mua
+const purchasedSims = ref([
+  {
+    id: 1,
+    country: "USA",
+    phoneNumber: "+1 123-456-7890",
+    service: "Uber",
+    price: "$0.09",
+    status: "Received",
+  },
+  {
+    id: 2,
+    country: "Canada",
+    phoneNumber: "+1 987-654-3210",
+    service: "Amazon",
+    price: "$0.16",
+    status: "Pending",
+  },
+  {
+    id: 3,
+    country: "India",
+    phoneNumber: "+91 9988-776655",
+    service: "Snapchat",
+    price: "$0.31",
+    status: "Failed",
+  },
+]);
 
 const loading = ref(false);
 

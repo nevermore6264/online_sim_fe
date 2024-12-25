@@ -24,21 +24,7 @@ const menuItems = [
     icon: "pi pi-fw pi-check-square",
     to: "/number-rent",
   },
-  {
-    label: "Referral program",
-    icon: "pi pi-fw pi-bookmark",
-    to: "/referral-program",
-  },
-  {
-    label: "Refill balance",
-    icon: "pi pi-fw pi-exclamation-circle",
-    to: "/refill-balance",
-  },
   { label: "SMS history", icon: "pi pi-fw pi-mobile", to: "/sms-history" },
-  { label: "Checkout", icon: "pi pi-fw pi-table", to: "/checkout" },
-  { label: "List", icon: "pi pi-fw pi-list", to: "/list" },
-  { label: "Tickets", icon: "pi pi-fw pi-share-alt", to: "/tickets" },
-  { label: "Notifications", icon: "pi pi-fw pi-tablet", to: "/notifications" },
 ];
 </script>
 
@@ -47,7 +33,7 @@ const menuItems = [
   width: 250px;
   background-color: #f8f9fa;
   border-right: 1px solid #ddd;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 60px);
   position: fixed;
   left: 0;
   top: 0;
