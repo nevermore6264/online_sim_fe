@@ -147,37 +147,79 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import axios from "axios"; // Dùng thư viện axios để gọi API
 
 const visible = ref(false);
 const visibleSignUp = ref(false);
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+const userInfo = reactive({}); // Lưu trữ thông tin người dùng
+const router = useRouter();
 
-const handleLogin = () => {
+const handleLogin = async () => {
   if (!email.value || !password.value) {
     alert("Please fill in both fields.");
     return;
   }
-  alert(`Logged in with email: ${email.value}`);
-  visible.value = false; // Close the login dialog
-};
 
-const handleSignup = () => {
-  if (!email.value || !password.value || !confirmPassword.value) {
-    alert("Please fill in all fields.");
+  //   try {
+  // Gọi API đăng nhập
+  // const response = await axios.post(
+  //   "https://japansim.net/api/account/login",
+  //   {
+  //     email: email.value,
+  //     password: password.value,
+  //   }
+  // );
+
+  // const { api_key } = response.data; // Lấy api_key từ response
+  const api_key = "bb642c5a-c7dd-4afc-86ea-6221de6c33af";
+  if (!api_key) {
+    alert("Login failed! Please try again.");
     return;
   }
 
-  if (password.value !== confirmPassword.value) {
-    alert("Passwords do not match.");
-    return;
-  }
+  // Lưu api_key vào localStorage
+  localStorage.setItem("api_key", api_key);
 
-  alert(`Signed up with email: ${email.value}`);
-  visibleSignUp.value = false; // Close the sign-up dialog
+  // Lấy thông tin người dùng
+  await fetchUserInfo(api_key);
+
+  // Đóng dialog đăng nhập
+  visible.value = false;
+  alert("Login successful!");
+  router.push("/receive-sms");
+  rout;
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+  //     alert("Login failed! Please check your credentials.");
+  //   }
 };
+
+const fetchUserInfo = async (api_key) => {
+  try {
+    // Gọi API lấy thông tin người dùng
+    const response = await axios.get(
+      `https://japansim.net/api/account/get-info?api_key=${api_key}`
+    );
+    Object.assign(userInfo, response.data?.data); // Lưu thông tin vào userInfo
+    // Lưu userInfo vào localStorage
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    alert("Failed to fetch user information.");
+  }
+};
+
+// Lấy thông tin khi component được mount (nếu đã có api_key trong localStorage)
+onMounted(async () => {
+  const api_key = localStorage.getItem("api_key");
+  if (api_key) {
+    await fetchUserInfo(api_key);
+  }
+});
 </script>
 
 <style scoped>

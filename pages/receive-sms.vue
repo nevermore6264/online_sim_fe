@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Buy OTP Service</h1>
+    <h2>Buy OTP Service</h2>
 
     <!-- Flex container to hold two tables on the same row -->
     <div class="flex-container">
@@ -12,8 +12,6 @@
           scrollHeight="400px"
           dataKey="id"
           :loading="loading"
-          :globalFilter="globalFilter"
-          :globalFilterFields="['country.name']"
           @row-click="onRowClick"
         >
           <template #header>
@@ -91,29 +89,27 @@
         />
         <Column header="Service" field="service" style="min-width: 12rem" />
         <Column header="Price" field="price" style="min-width: 12rem" />
-        <Column
-          header="SMS Status"
-          field="status"
-          style="min-width: 12rem"
-          :class="{
-            success: status === 'Received',
-            pending: status === 'Pending',
-            failed: status === 'Failed',
-          }"
-        >
+        <Column header="SMS Status" field="status" style="min-width: 12rem">
           <template #body="{ data }">
-            <span
-              :class="{
-                'text-success': data.status === 'Received',
-                'text-warning': data.status === 'Pending',
-                'text-danger': data.status === 'Failed',
-              }"
-            >
+            <span>
               {{ data.status }}
             </span>
           </template>
         </Column>
       </DataTable>
+      <div class="pagination">
+        <button @click="currentPage > 1 && fetchPurchasedSims(currentPage - 1)">
+          Previous
+        </button>
+        <span>Page {{ currentPage }} of {{ totalPages }}</span>
+        <button
+          @click="
+            currentPage < totalPages && fetchPurchasedSims(currentPage + 1)
+          "
+        >
+          Next
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -121,8 +117,9 @@
 <script setup>
 import { ref } from "vue";
 import { FilterMatchMode } from "primevue/api";
-
-// Dữ liệu khách hàng với thông tin quốc gia, mã vùng và lá cờ
+const currentPage = ref(1);
+const totalPages = ref(0);
+const limit = ref(10); //
 const customers = ref([
   {
     id: 1,
@@ -225,46 +222,59 @@ const filters = ref({
 });
 
 // Danh sách SIM đã mua
-const purchasedSims = ref([
-  {
-    id: 1,
-    country: "USA",
-    phoneNumber: "+1 123-456-7890",
-    service: "Uber",
-    price: "$0.09",
-    status: "Received",
-  },
-  {
-    id: 2,
-    country: "Canada",
-    phoneNumber: "+1 987-654-3210",
-    service: "Amazon",
-    price: "$0.16",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    country: "India",
-    phoneNumber: "+91 9988-776655",
-    service: "Snapchat",
-    price: "$0.31",
-    status: "Failed",
-  },
-]);
+const purchasedSims = ref([]);
 
 const loading = ref(false);
-
-// Biến cho tìm kiếm toàn cục
-const globalFilter = ref(null);
 
 // Biến lưu trữ khách hàng được chọn để hiển thị dịch vụ
 const selectedCustomer = ref(null);
 
 // Hàm xử lý khi click vào row
 const onRowClick = (event) => {
-  // Lưu trữ thông tin dịch vụ của khách hàng được chọn
   selectedCustomer.value = event.data;
 };
+
+const fetchPurchasedSims = async (page = 1) => {
+  const apiKey = localStorage.getItem("api_key");
+  if (!apiKey) {
+    console.error("API key is not found in localStorage");
+    loading.value = false;
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://japansim.net/api/account/order-list?api_key=${apiKey}&page=${page}&limit=${limit.value}`
+    );
+    const result = await response.json();
+
+    if (result.success) {
+      purchasedSims.value = result.data.docs.map((doc) => ({
+        id: doc.id,
+        country: doc.countryCode,
+        phoneNumber: doc.stock.phone,
+        service: doc.stock.serviceCode,
+        price: doc.cost,
+        status: doc.isActive ? "Active" : "Inactive",
+      }));
+      totalPages.value = result.data.totalPages; // Cập nhật tổng số trang
+    } else {
+      console.error("Failed to fetch data from API");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchPurchasedSims(currentPage.value);
+});
+
+watch(currentPage, (newPage) => {
+  fetchPurchasedSims(newPage);
+});
 </script>
 
 <style scoped>

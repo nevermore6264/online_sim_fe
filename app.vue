@@ -77,5 +77,6 @@ table tr:hover {
 
 .p-datatable .p-datatable-header {
   border: 0px !important;
+  padding: 0px !important;
 }
 </style>

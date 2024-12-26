@@ -88,7 +88,19 @@ const goToPayment = () => {
 const logout = () => {
   console.log("Logged out");
   router.push("/");
+  localStorage.clear();
 };
+
+onMounted(() => {
+  const userInfo = localStorage.getItem("userInfo");
+  if (userInfo) {
+    const parsedUserInfo = JSON.parse(userInfo);
+    firstName.value = parsedUserInfo.firstName || firstName.value;
+    lastName.value = parsedUserInfo.lastName || lastName.value;
+    balanceAmount.value =
+      parsedUserInfo.balanceAmount || lastName.balanceAmount;
+  }
+});
 </script>
 
 <style scoped>

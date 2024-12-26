@@ -34,11 +34,17 @@ const route = useRoute();
 watch(
   () => route.path,
   (newPath) => {
-    // Nếu đường dẫn chứa `/receive-sms` bất kỳ, đặt isAuthenticated thành true
-    isAuthenticated.value = newPath.startsWith("/receive-sms");
+    if (typeof window !== "undefined") {
+      // Thực hiện thao tác với localStorage
+      const apiKey = localStorage.getItem("api_key");
+
+      isAuthenticated.value =
+        newPath.startsWith("/receive-sms") && apiKey !== null;
+    }
   },
   { immediate: true } // Gọi ngay khi khởi tạo
 );
+
 // Import các thành phần layout
 import Header from "~/components/Header.vue";
 import Footer from "~/components/Footer.vue";
