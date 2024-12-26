@@ -1,42 +1,53 @@
 <template>
-  <aside class="sidebar">
-    <!-- Logo -->
-    <div class="logo">
-      <img src="/layout/images/logo.svg" alt="Logo" class="logo-image" />
-    </div>
-
-    <!-- Balance and Recharge -->
-    <div class="balance-container">
-      <p>Balance: {{ balanceAmount }} USD</p>
-      <button @click="goToPayment" class="recharge-button">Recharge</button>
-    </div>
-
-    <!-- Menu Items -->
-    <ul>
-      <li v-for="(item, index) in menuItems" :key="index">
-        <NuxtLink :to="item.to">
-          <i :class="item.icon" class="menu-icon"></i>
-          {{ item.label }}
-        </NuxtLink>
-      </li>
-    </ul>
-
-    <!-- User Info -->
-    <div class="user-info">
-      <div class="user-details">
-        <i class="pi pi-user user-icon"></i>
-        <span>{{ firstName }} {{ lastName }}</span>
+  <div>
+    <!-- Button to toggle the sidebar -->
+    <button @click="toggleSidebar" class="toggle-sidebar-btn">
+      <i
+        :class="isSidebarVisible ? 'pi pi-angle-left' : 'pi pi-angle-right'"
+      ></i>
+    </button>
+    <!-- Sidebar -->
+    <aside :class="['sidebar', { 'sidebar-hidden': !isSidebarVisible }]">
+      <!-- Logo -->
+      <div class="logo">
+        <img src="/layout/images/logo.svg" alt="Logo" class="logo-image" />
       </div>
-      <button @click="logout" class="logout-button">
-        <i class="pi pi-sign-out"></i> Logout
-      </button>
-    </div>
-  </aside>
+      <!-- Balance and Recharge -->
+      <div class="balance-container">
+        <p>Balance: {{ balanceAmount }} USD</p>
+        <button @click="goToPayment" class="recharge-button">Recharge</button>
+      </div>
+
+      <!-- Menu Items -->
+      <ul>
+        <li v-for="(item, index) in menuItems" :key="index">
+          <NuxtLink :to="item.to">
+            <i :class="item.icon" class="menu-icon"></i>
+            {{ item.label }}
+          </NuxtLink>
+        </li>
+      </ul>
+
+      <!-- User Info -->
+      <div class="user-info">
+        <div class="user-details">
+          <i class="pi pi-user user-icon"></i>
+          <span>{{ firstName }} {{ lastName }}</span>
+        </div>
+        <button @click="logout" class="logout-button">
+          <i class="pi pi-sign-out"></i> Logout
+        </button>
+      </div>
+    </aside>
+  </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+
+// State for sidebar visibility
+const isSidebarVisible = ref(true);
 
 const balanceAmount = ref(100.0); // Số dư hiện tại
 const firstName = ref("John"); // Tên người dùng
@@ -59,6 +70,11 @@ const menuItems = [
   { label: "SMS history", icon: "pi pi-fw pi-mobile", to: "/sms-history" },
 ];
 
+// Toggle sidebar visibility
+const toggleSidebar = () => {
+  isSidebarVisible.value = !isSidebarVisible.value;
+};
+
 // Điều hướng đến trang nạp tiền
 const goToPayment = () => {
   router.push("/payment");
@@ -66,13 +82,13 @@ const goToPayment = () => {
 
 // Đăng xuất
 const logout = () => {
-  // Thêm logic đăng xuất tại đây, ví dụ: xóa token, chuyển hướng về trang login
   console.log("Logged out");
-  router.push("/");
+  router.push("/login");
 };
 </script>
 
 <style scoped>
+/* Sidebar styles */
 .sidebar {
   width: 250px;
   background-color: #f8f9fa;
@@ -85,6 +101,11 @@ const logout = () => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar-hidden {
+  transform: translateX(-100%);
 }
 
 .logo {
@@ -127,7 +148,7 @@ ul {
 }
 
 li {
-  padding: 20px 20px;
+  padding: 15px 20px;
   font-size: 16px;
   display: block;
   width: 100%;
@@ -184,5 +205,23 @@ li a:hover {
 
 .logout-button:hover {
   background-color: #a71d2a;
+}
+
+/* Toggle button styles */
+.toggle-sidebar-btn {
+  position: fixed;
+  top: 15px;
+  left: 10px;
+  z-index: 1000;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.toggle-sidebar-btn:hover {
+  background-color: #0056b3;
 }
 </style>
