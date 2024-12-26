@@ -25,7 +25,7 @@
           :key="index"
           :class="{ active: $route.path === item.to }"
         >
-          <NuxtLink :to="item.to">
+          <NuxtLink :to="item.to" exact-active-class="active">
             <i :class="item.icon" class="menu-icon"></i>
             {{ item.label }}
           </NuxtLink>
