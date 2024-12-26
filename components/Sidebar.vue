@@ -20,7 +20,11 @@
 
       <!-- Menu Items -->
       <ul>
-        <li v-for="(item, index) in menuItems" :key="index">
+        <li
+          v-for="(item, index) in menuItems"
+          :key="index"
+          :class="{ active: $route.path === item.to }"
+        >
           <NuxtLink :to="item.to">
             <i :class="item.icon" class="menu-icon"></i>
             {{ item.label }}
@@ -83,7 +87,7 @@ const goToPayment = () => {
 // Đăng xuất
 const logout = () => {
   console.log("Logged out");
-  router.push("/login");
+  router.push("/");
 };
 </script>
 
@@ -223,5 +227,15 @@ li a:hover {
 
 .toggle-sidebar-btn:hover {
   background-color: #0056b3;
+}
+
+li.active {
+  background: #00d2ff;
+  background: -webkit-linear-gradient(to right, #3a7bd5, #00d2ff);
+  background: linear-gradient(to right, #3a7bd5, #00d2ff);
+}
+
+li.active a {
+  color: #ffffff;
 }
 </style>
