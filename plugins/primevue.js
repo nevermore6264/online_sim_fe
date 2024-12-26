@@ -8,6 +8,7 @@ import Dialog from "primevue/dialog";
 import Dropdown from "primevue/dropdown";
 import Checkbox from "primevue/checkbox";
 import Toast from "primevue/toast";
+import Breadcrumb from "primevue/breadcrumb";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -20,4 +21,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("Dropdown", Dropdown);
   nuxtApp.vueApp.component("Checkbox", Checkbox);
   nuxtApp.vueApp.component("Toast", Toast);
+  nuxtApp.vueApp.component("Breadcrumb", Breadcrumb);
 });

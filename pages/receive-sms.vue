@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Breadcrumb :home="home" :model="items" />
+
     <h2>Buy OTP Service</h2>
 
     <!-- Flex container to hold two tables on the same row -->
@@ -97,29 +99,16 @@
           </template>
         </Column>
       </DataTable>
-      <div class="pagination">
-        <button @click="currentPage > 1 && fetchPurchasedSims(currentPage - 1)">
-          Previous
-        </button>
-        <span>Page {{ currentPage }} of {{ totalPages }}</span>
-        <button
-          @click="
-            currentPage < totalPages && fetchPurchasedSims(currentPage + 1)
-          "
-        >
-          Next
-        </button>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { FilterMatchMode } from "primevue/api";
-const currentPage = ref(1);
-const totalPages = ref(0);
-const limit = ref(10); //
+const home = ref({
+  icon: "pi pi-home",
+});
+const items = ref([{ label: " Receive SMS" }]);
 const customers = ref([
   {
     id: 1,
@@ -215,12 +204,6 @@ const customers = ref([
   },
 ]);
 
-// Khởi tạo bộ lọc cho cột quốc gia
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  "country.name": { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-});
-
 // Danh sách SIM đã mua
 const purchasedSims = ref([]);
 
@@ -244,7 +227,7 @@ const fetchPurchasedSims = async (page = 1) => {
 
   try {
     const response = await fetch(
-      `https://japansim.net/api/account/order-list?api_key=${apiKey}&page=${page}&limit=${limit.value}`
+      `https://japansim.net/api/account/order-list?api_key=${apiKey}`
     );
     const result = await response.json();
 
@@ -257,7 +240,6 @@ const fetchPurchasedSims = async (page = 1) => {
         price: doc.cost,
         status: doc.isActive ? "Active" : "Inactive",
       }));
-      totalPages.value = result.data.totalPages; // Cập nhật tổng số trang
     } else {
       console.error("Failed to fetch data from API");
     }
@@ -269,11 +251,7 @@ const fetchPurchasedSims = async (page = 1) => {
 };
 
 onMounted(() => {
-  fetchPurchasedSims(currentPage.value);
-});
-
-watch(currentPage, (newPage) => {
-  fetchPurchasedSims(newPage);
+  fetchPurchasedSims();
 });
 </script>
 
