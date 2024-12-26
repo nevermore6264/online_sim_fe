@@ -38,8 +38,7 @@ watch(
       // Thực hiện thao tác với localStorage
       const apiKey = localStorage.getItem("api_key");
 
-      isAuthenticated.value =
-        newPath.startsWith("/receive-sms") && apiKey !== null;
+      isAuthenticated.value = apiKey !== null;
     }
   },
   { immediate: true } // Gọi ngay khi khởi tạo
