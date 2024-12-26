@@ -72,7 +72,7 @@
                 />
               </div>
               <Button label="Sign in" type="submit" class="auth-submit" />
-              <a href="#" class="forgot-password">Forgot password ?</a>
+              <a href="#" class="forgot-password">Forgot password?</a>
             </form>
           </div>
           <div class="auth-right">
@@ -105,41 +105,64 @@
           v-model:visible="visibleSignUp"
           modal
           header="Sign Up"
-          :style="{ width: '50%', padding: '20px' }"
+          :style="{ width: '50%' }"
           class="auth-dialog"
         >
-          <form @submit.prevent="handleSignup">
-            <div class="field">
-              <label for="email">Email</label>
-              <InputText
-                id="email"
-                v-model="email"
-                required
-                class="input-field"
+          <div class="auth-left">
+            <div class="auth-logo">
+              <img
+                src="/layout/images/logo.svg"
+                alt="Logo"
+                class="logo-image"
               />
             </div>
-            <div class="field">
-              <label for="password">Password</label>
-              <InputText
-                id="password"
-                type="password"
-                v-model="password"
-                required
-                class="input-field"
-              />
-            </div>
-            <div class="field">
-              <label for="confirmPassword">Confirm Password</label>
-              <InputText
-                id="confirmPassword"
-                type="password"
-                v-model="confirmPassword"
-                required
-                class="input-field"
-              />
-            </div>
-            <Button label="Sign Up" type="submit" class="p-button-rounded" />
-          </form>
+            <form @submit.prevent="handleSignup" class="auth-form">
+              <div class="auth-field">
+                <label for="email" class="auth-label">
+                  <i class="pi pi-envelope"></i>
+                </label>
+                <InputText
+                  id="email"
+                  v-model="email"
+                  placeholder="Enter your email"
+                  required
+                  class="auth-input"
+                />
+              </div>
+              <div class="auth-field">
+                <label for="password" class="auth-label">
+                  <i class="pi pi-lock"></i>
+                </label>
+                <InputText
+                  id="password"
+                  type="password"
+                  v-model="password"
+                  placeholder="Enter password"
+                  required
+                  class="auth-input"
+                />
+              </div>
+              <div class="auth-field">
+                <label for="confirmPassword" class="auth-label">
+                  <i class="pi pi-lock"></i>
+                </label>
+                <InputText
+                  id="confirmPassword"
+                  type="password"
+                  v-model="confirmPassword"
+                  placeholder="Confirm password"
+                  required
+                  class="auth-input"
+                />
+              </div>
+              <Button label="Sign Up" type="submit" class="auth-submit" />
+            </form>
+          </div>
+          <div class="auth-right">
+            <h2>Login</h2>
+            <p>If you already have an account, please log in to the system.</p>
+            <Button label="Sign in!" class="auth-signup" />
+          </div>
         </Dialog>
       </div>
     </div>
