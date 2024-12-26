@@ -256,6 +256,7 @@ const handleSignup = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  float: left;
 }
 
 .auth-logo {
@@ -350,11 +351,6 @@ const handleSignup = () => {
 .auth-signup:hover {
   background-color: #e8e8e8;
   color: #0056b3;
-}
-
-.p-dialog-content {
-  padding: 20px;
-  display: flex !important;
 }
 
 .input-field {
