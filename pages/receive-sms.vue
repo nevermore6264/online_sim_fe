@@ -62,9 +62,10 @@
           <template #empty> No services found. </template>
           <template #loading> Loading services data. Please wait. </template>
 
-          <Column header="Service" field="name" style="min-width: 12rem" />
-          <Column header="Quanlity" field="quantity" style="min-width: 12rem" />
-          <Column field="price" header="Price" style="min-width: 12rem">
+          <Column header="Service" field="text" style="min-width: 12rem" />
+          <Column header="Code" field="code" style="min-width: 12rem" />
+          <Column header="Price" style="min-width: 12rem">
+            <template #body="{ data }"> {{ data?.price }} USD </template>
           </Column>
         </DataTable>
       </div>
@@ -126,6 +127,7 @@ const fetchCountries = async () => {
       country: {
         name: country.name.common,
         code: country.cca2,
+        cca3: country.cca3,
         dialCode:
           country.idd && country.idd.root
             ? country.idd.root +
@@ -188,8 +190,27 @@ const initializeData = async () => {
 };
 
 // Hàm xử lý khi click vào row
-const onRowClick = (event) => {
+const onRowClick = async (event) => {
   selectedCustomer.value = event.data;
+
+  // Gọi API lấy dịch vụ khi click vào row
+  if (selectedCustomer.value?.country?.cca3) {
+    try {
+      const countryCode = selectedCustomer.value.country.cca3; // Lấy mã quốc gia
+      const response = await axios.get(
+        `https://japansim.net/api/services?platform=web&countryCode=${countryCode}`
+      );
+
+      if (response?.data?.success) {
+        // Cập nhật dịch vụ cho khách hàng đã chọn
+        selectedCustomer.value.services = response.data.data;
+      } else {
+        console.error("Failed to fetch services");
+      }
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  }
 };
 
 onMounted(() => {
