@@ -25,22 +25,25 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
-// Trạng thái đăng nhập
 const isAuthenticated = ref(false);
 const isLoading = ref(true);
 const route = useRoute();
 
+onMounted(() => {
+  // Chỉ kiểm tra khi component đã mount
+  const token = localStorage.getItem("token");
+  isAuthenticated.value = token !== null;
+  isLoading.value = false;
+});
+
+// Theo dõi thay đổi đường dẫn
 watch(
   () => route.path,
   () => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
-      isAuthenticated.value = token !== null;
-      isLoading.value = false;
-    }
+    // Không cần kiểm tra khi chuyển đổi đường dẫn nếu đã xác định trạng thái
   },
   { immediate: true }
 );
@@ -54,23 +57,23 @@ import Sidebar from "~/components/Sidebar.vue";
 <style scoped>
 .loading-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
 }
 
-.spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left-color: #007bff;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.loading-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 1rem;
 }
 </style>
