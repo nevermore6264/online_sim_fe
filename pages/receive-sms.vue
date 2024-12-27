@@ -105,6 +105,8 @@
 
 <script setup>
 import { ref } from "vue";
+import axios from "axios";
+
 const home = ref({
   icon: "pi pi-home",
 });
@@ -218,21 +220,25 @@ const onRowClick = (event) => {
 };
 
 const fetchPurchasedSims = async (page = 1) => {
-  const apiKey = localStorage.getItem("token");
-  if (!apiKey) {
+  const token = localStorage.getItem("token");
+  if (!token) {
     console.error("Token is not found in localStorage");
     loading.value = false;
     return;
   }
 
   try {
-    const response = await fetch(
-      `https://japansim.net/api/account/order-list?api_key=${apiKey}`
+    const response = await axios.get(
+      `https://japansim.net/api/account/order-list`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-    const result = await response.json();
 
-    if (result.success) {
-      purchasedSims.value = result.data.docs.map((doc) => ({
+    if (response?.data?.success) {
+      purchasedSims.value = response?.data?.data?.docs.map((doc) => ({
         id: doc.id,
         country: doc.countryCode,
         phoneNumber: doc.stock.phone,
