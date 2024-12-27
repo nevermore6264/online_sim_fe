@@ -1,84 +1,69 @@
 <template>
-  <div
-    class="p-menubar p-component p-menubar-mobile-active layout-topbar"
-    data-pc-name="menubar"
-    data-pc-section="root"
-  >
+  <div class="layout-topbar">
     <!-- Logo Section -->
-    <div class="p-menubar-start" data-pc-section="start">
+    <div class="p-menubar-start">
       <a class="layout-topbar-logo" href="/">
         <img src="/layout/images/logo.svg" alt="logo" />
       </a>
     </div>
 
-    <!-- End Section -->
-    <div class="p-menubar-end" data-pc-section="end">
+    <!-- Menu Section -->
+    <div class="p-menubar-end">
       <div class="d-flex align-items-center">
         <!-- Login Button -->
         <Button
           aria-label="Login"
           class="p-button p-component p-button-text"
-          @click="visible = true"
+          @click="openLoginDialog"
         >
-          <span
-            class="p-button-icon p-c p-button-icon-left pi pi-sign-in"
-            data-pc-section="icon"
-          ></span>
-          <span class="p-button-label p-c" data-pc-section="label">
-            Login
-          </span>
+          <span class="p-button-icon pi pi-sign-in"></span>
+          <span>Login</span>
         </Button>
 
         <!-- Login Dialog -->
         <Dialog
-          v-model:visible="visible"
+          v-model:visible="visibleLogin"
           modal
           header="Login"
           :style="{ width: '50%' }"
           class="auth-dialog"
         >
-          <div class="auth-left">
-            <div class="auth-logo">
+          <form @submit.prevent="handleLogin">
+            <div class="auth-left">
               <img
                 src="/layout/images/logo.svg"
                 alt="Logo"
                 class="logo-image"
               />
-            </div>
-            <form @submit.prevent="handleLogin" class="auth-form">
-              <div class="auth-field">
-                <InputText
-                  id="username"
-                  v-model="username"
-                  placeholder="Enter username"
-                  required
-                  class="auth-input"
-                />
-              </div>
-              <div class="auth-field">
-                <InputText
-                  id="password"
-                  type="password"
-                  v-model="password"
-                  placeholder="Enter password"
-                  required
-                  class="auth-input"
-                />
-              </div>
-              <Button label="Sign in" type="submit" class="auth-submit" />
+              <InputText
+                v-model="loginData.username"
+                placeholder="Username"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="loginData.password"
+                type="password"
+                placeholder="Password"
+                required
+                class="auth-input"
+              />
+              <Button
+                label="Login"
+                type="submit"
+                class="auth-submit"
+                :disabled="loading"
+              />
               <a href="#" class="forgot-password">Forgot password?</a>
-            </form>
-          </div>
+            </div>
+          </form>
           <div class="auth-right">
             <h2>Register</h2>
-            <p>
-              If you do not have an account, please register for one now to
-              experience our services.
-            </p>
+            <p>Don't have an account? Sign up now!</p>
             <Button
-              label="Sign up!"
+              label="Sign Up!"
               class="auth-signup"
-              @click="visibleSignUp = true"
+              @click="switchToSignUp"
             />
           </div>
         </Dialog>
@@ -87,15 +72,10 @@
         <Button
           aria-label="Sign Up"
           class="p-button p-component p-button-text"
-          @click="visibleSignUp = true"
+          @click="openSignUpDialog"
         >
-          <span
-            class="p-button-icon p-c p-button-icon-left pi pi-user-plus"
-            data-pc-section="icon"
-          ></span>
-          <span class="p-button-label p-c" data-pc-section="label">
-            Sign Up
-          </span>
+          <span class="p-button-icon pi pi-user-plus"></span>
+          <span>Sign Up</span>
         </Button>
 
         <!-- Sign Up Dialog -->
@@ -106,72 +86,60 @@
           :style="{ width: '50%' }"
           class="auth-dialog"
         >
-          <div class="auth-left">
-            <div class="auth-logo">
+          <form @submit.prevent="handleSignUp">
+            <div class="auth-left">
               <img
                 src="/layout/images/logo.svg"
                 alt="Logo"
                 class="logo-image"
               />
+              <InputText
+                v-model="signUpData.firstName"
+                placeholder="First Name"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="signUpData.lastName"
+                placeholder="Last Name"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="signUpData.username"
+                placeholder="Username"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="signUpData.password"
+                type="password"
+                placeholder="Password"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="signUpData.confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                required
+                class="auth-input"
+              />
+              <Button
+                label="Sign Up"
+                type="submit"
+                class="auth-submit"
+                :disabled="loading"
+              />
             </div>
-            <form @submit.prevent="handleSignup" class="auth-form">
-              <div class="auth-field">
-                <InputText
-                  id="firstName"
-                  v-model="firstName"
-                  placeholder="Enter your first name"
-                  required
-                  class="auth-input"
-                />
-              </div>
-              <div class="auth-field">
-                <InputText
-                  id="lastName"
-                  v-model="lastName"
-                  placeholder="Enter your last name"
-                  required
-                  class="auth-input"
-                />
-              </div>
-              <div class="auth-field">
-                <InputText
-                  id="username"
-                  v-model="username"
-                  placeholder="Enter your username"
-                  required
-                  class="auth-input"
-                />
-              </div>
-              <div class="auth-field">
-                <InputText
-                  id="password"
-                  type="password"
-                  v-model="password"
-                  placeholder="Enter password"
-                  required
-                  class="auth-input"
-                />
-              </div>
-              <div class="auth-field">
-                <InputText
-                  id="confirmPassword"
-                  type="password"
-                  v-model="confirmPassword"
-                  placeholder="Confirm password"
-                  required
-                  class="auth-input"
-                />
-              </div>
-              <Button label="Sign Up" type="submit" class="auth-submit" />
-            </form>
-          </div>
+          </form>
           <div class="auth-right">
             <h2>Login</h2>
-            <p>If you already have an account, please log in to the system.</p>
+            <p>Already have an account? Log in here.</p>
             <Button
-              label="Sign in!"
+              label="Sign In!"
               class="auth-signup"
-              @click="visible = true"
+              @click="switchToLogin"
             />
           </div>
         </Dialog>
@@ -181,120 +149,104 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import axios from "axios"; // Dùng thư viện axios để gọi API
+import { ref } from "vue";
+import axios from "axios";
 
-const visible = ref(false);
+const visibleLogin = ref(false);
 const visibleSignUp = ref(false);
-const username = ref("");
-const password = ref("");
-const confirmPassword = ref("");
-const firstName = ref("");
-const lastName = ref("");
-const userInfo = reactive({}); // Lưu trữ thông tin người dùng
-const router = useRouter();
+const loading = ref(false);
+
+const loginData = ref({ username: "", password: "" });
+const signUpData = ref({
+  firstName: "",
+  lastName: "",
+  username: "",
+  password: "",
+  confirmPassword: "",
+});
+
+const openLoginDialog = () => {
+  visibleLogin.value = true;
+  visibleSignUp.value = false;
+};
+
+const openSignUpDialog = () => {
+  visibleSignUp.value = true;
+  visibleLogin.value = false;
+};
+
+const switchToLogin = () => {
+  visibleSignUp.value = false;
+  visibleLogin.value = true;
+};
+
+const switchToSignUp = () => {
+  visibleLogin.value = false;
+  visibleSignUp.value = true;
+};
 
 const handleLogin = async () => {
-  if (!username.value || !password.value) {
+  if (!loginData.value.username || !loginData.value.password) {
     alert("Please fill in both fields.");
     return;
   }
 
+  loading.value = true;
   try {
-    // Gọi API đăng nhập
-    const response = await axios.post("https://japansim.net/api/web/login", {
-      username: username.value,
-      password: password.value,
-    });
-
+    const response = await axios.post(
+      "https://japansim.net/api/web/login",
+      loginData.value
+    );
     const { token } = response.data?.data;
-    if (!token) {
-      alert("Login failed! Please try again.");
-      return;
+
+    if (token) {
+      localStorage.setItem("token", token);
+      alert("Login successful!");
+      visibleLogin.value = false;
+    } else {
+      alert("Invalid login credentials.");
     }
-
-    // Lưu api_key vào localStorage
-    localStorage.setItem("token", token);
-
-    // Lấy thông tin người dùng
-    await fetchUserInfo(token);
-
-    // Đóng dialog đăng nhập
-    visible.value = false;
-    alert("Login successful!");
-    router.push("/receive-sms");
   } catch (error) {
-    console.error("Login error:", error);
-    alert("Login failed! Please check your credentials.");
+    console.error(error);
+    alert("An error occurred during login.");
+  } finally {
+    loading.value = false;
   }
 };
 
-const handleSignup = async () => {
-  if (
-    !firstName.value ||
-    !lastName.value ||
-    !username.value ||
-    !password.value ||
-    !confirmPassword.value
-  ) {
+const handleSignUp = async () => {
+  const { firstName, lastName, username, password, confirmPassword } =
+    signUpData.value;
+  if (!firstName || !lastName || !username || !password || !confirmPassword) {
     alert("Please fill in all fields.");
     return;
   }
 
-  if (password.value !== confirmPassword.value) {
+  if (password !== confirmPassword) {
     alert("Passwords do not match.");
     return;
   }
 
+  loading.value = true;
   try {
-    // Gọi API đăng ký
     const response = await axios.post(
       "https://japansim.net/api/account/register",
-      {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        username: username.value,
-        password: password.value,
-      }
+      signUpData.value
     );
 
     if (response.data.success) {
       alert("Registration successful! Please log in.");
-      visibleSignUp.value = false; // Đóng dialog đăng ký
+      visibleSignUp.value = false;
     } else {
-      alert("Registration failed! Please try again.");
+      alert("Registration failed.");
     }
   } catch (error) {
-    console.error("Signup error:", error);
-    alert("Registration failed! Please check your information.");
+    console.error(error);
+    alert("An error occurred during registration.");
+  } finally {
+    loading.value = false;
   }
 };
-
-const fetchUserInfo = async (token) => {
-  try {
-    // Gọi API lấy thông tin người dùng
-    const response = await axios.get(
-      `https://japansim.net/api/account/get-info`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    Object.assign(userInfo, response.data?.data); // Lưu thông tin vào userInfo
-    localStorage.setItem("userInfo", JSON.stringify(userInfo));
-  } catch (error) {
-    console.error("Error fetching user info:", error);
-  }
-};
-
-// Lấy thông tin khi component được mount (nếu đã có api_key trong localStorage)
-onMounted(async () => {
-  const api_key = localStorage.getItem("api_key");
-  if (api_key) {
-    await fetchUserInfo(api_key);
-  }
-});
 </script>
 
 <style scoped>
