@@ -33,12 +33,12 @@ const route = useRoute();
 // Theo dõi thay đổi đường dẫn để xác định trạng thái auth
 watch(
   () => route.path,
-  (newPath) => {
+  () => {
     if (typeof window !== "undefined") {
       // Thực hiện thao tác với localStorage
-      const apiKey = localStorage.getItem("api_key");
+      const token = localStorage.getItem("token");
 
-      isAuthenticated.value = apiKey !== null;
+      isAuthenticated.value = token !== null;
     }
   },
   { immediate: true } // Gọi ngay khi khởi tạo

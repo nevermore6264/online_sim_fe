@@ -97,8 +97,7 @@ onMounted(() => {
     const parsedUserInfo = JSON.parse(userInfo);
     firstName.value = parsedUserInfo.firstName || firstName.value;
     lastName.value = parsedUserInfo.lastName || lastName.value;
-    balanceAmount.value =
-      parsedUserInfo.balanceAmount || lastName.balanceAmount;
+    balanceAmount.value = parsedUserInfo.balanceAmount ?? 0;
   }
 });
 </script>

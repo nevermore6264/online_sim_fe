@@ -202,15 +202,12 @@ const handleLogin = async () => {
 
   try {
     // Gọi API đăng nhập
-    const response = await axios.post(
-      "https://japansim.net/api/account/login",
-      {
-        username: username.value, // Sử dụng username thay vì email
-        password: password.value,
-      }
-    );
+    const response = await axios.post("https://japansim.net/api/web/login", {
+      username: username.value,
+      password: password.value,
+    });
 
-    const { token } = response.data; // Lấy api_key từ response
+    const { token } = response.data?.data;
     if (!token) {
       alert("Login failed! Please try again.");
       return;
@@ -273,18 +270,21 @@ const handleSignup = async () => {
   }
 };
 
-const fetchUserInfo = async (api_key) => {
+const fetchUserInfo = async (token) => {
   try {
     // Gọi API lấy thông tin người dùng
     const response = await axios.get(
-      `https://japansim.net/api/account/get-info?api_key=${api_key}`
+      `https://japansim.net/api/account/get-info`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     Object.assign(userInfo, response.data?.data); // Lưu thông tin vào userInfo
-    // Lưu userInfo vào localStorage
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
   } catch (error) {
     console.error("Error fetching user info:", error);
-    alert("Failed to fetch user information.");
   }
 };
 
