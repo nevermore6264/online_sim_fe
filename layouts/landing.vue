@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Sidebar />
-    <main class="app-content">
+    <Header />
+    <main>
       <NuxtPage />
     </main>
     <Footer />

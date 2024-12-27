@@ -67,6 +67,13 @@
           <Column header="Price" style="min-width: 12rem">
             <template #body="{ data }"> {{ data?.price }} USD </template>
           </Column>
+          <Column header="Action" style="min-width: 12rem">
+            <template #body="{ data }">
+              <button class="recharge-button" @click="buyService(data)">
+                Buy
+              </button>
+            </template>
+          </Column>
         </DataTable>
       </div>
     </div>
@@ -107,7 +114,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router"; // Import useRouter
 
+const router = useRouter(); // Initialize router
 const home = ref({
   icon: "pi pi-home",
 });
@@ -123,7 +132,7 @@ const fetchCountries = async () => {
     const response = await fetch("https://restcountries.com/v3.1/all");
     const data = await response.json();
     return data?.map((country) => ({
-      id: country.cca2, // Sử dụng mã quốc gia làm ID
+      id: country.cca2,
       country: {
         name: country.name.common,
         code: country.cca2,
@@ -134,7 +143,7 @@ const fetchCountries = async () => {
               (country.idd?.suffixes?.length ? country.idd?.suffixes[0] : "")
             : "N/A",
       },
-      services: [], // Dữ liệu dịch vụ có thể được thêm vào sau
+      services: [],
     }));
   } catch (error) {
     console.error("Error fetching countries:", error);
@@ -196,13 +205,12 @@ const onRowClick = async (event) => {
   // Gọi API lấy dịch vụ khi click vào row
   if (selectedCustomer.value?.country?.cca3) {
     try {
-      const countryCode = selectedCustomer.value.country.cca3; // Lấy mã quốc gia
+      const countryCode = selectedCustomer.value.country.cca3;
       const response = await axios.get(
         `https://japansim.net/api/services?platform=web&countryCode=${countryCode}`
       );
 
       if (response?.data?.success) {
-        // Cập nhật dịch vụ cho khách hàng đã chọn
         selectedCustomer.value.services = response.data.data;
       } else {
         console.error("Failed to fetch services");
@@ -211,6 +219,15 @@ const onRowClick = async (event) => {
       console.error("Error fetching services:", error);
     }
   }
+};
+
+// Hàm xử lý khi click vào nút Buy
+const buyService = (service) => {
+  // Lưu thông tin dịch vụ vào localStorage hoặc state để sử dụng trong trang thanh toán
+  localStorage.setItem("selectedService", JSON.stringify(service));
+
+  // Chuyển hướng đến trang thanh toán
+  router.push("/payment"); // Đường dẫn đến trang thanh toán
 };
 
 onMounted(() => {
@@ -256,5 +273,18 @@ onMounted(() => {
 
 .p-datatable-scrollable-view {
   max-height: 400px; /* Đảm bảo đúng chiều cao */
+}
+
+.recharge-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.recharge-button:hover {
+  background-color: #0056b3;
 }
 </style>

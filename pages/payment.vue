@@ -1,6 +1,6 @@
 <template>
   <div class="under-construction">
-    <h1>Landing Page</h1>
+    <h1>Payment</h1>
     <h2>This page is currently under construction.</h2>
     <p>We're working hard to bring you new content. Please check back soon!</p>
     <img src="/layout/images/construction-image.png" alt="Under Construction" />
@@ -8,9 +8,7 @@
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "landing",
-});
+// You can add any script logic here if needed
 </script>
 
 <style scoped>
@@ -20,7 +18,8 @@ definePageMeta({
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 95%; /* Full viewport height */
+  height: 100vh; /* Full viewport height */
+  background-color: #f9f9f9;
   color: #333;
 }
 
