@@ -47,21 +47,15 @@
             </div>
             <form @submit.prevent="handleLogin" class="auth-form">
               <div class="auth-field">
-                <label for="username" class="auth-label">
-                  <i class="pi pi-user"></i>
-                </label>
                 <InputText
                   id="username"
-                  v-model="email"
-                  placeholder="Enter name"
+                  v-model="username"
+                  placeholder="Enter username"
                   required
                   class="auth-input"
                 />
               </div>
               <div class="auth-field">
-                <label for="password" class="auth-label">
-                  <i class="pi pi-lock"></i>
-                </label>
                 <InputText
                   id="password"
                   type="password"
@@ -81,7 +75,11 @@
               If you do not have an account, please register for one now to
               experience our services.
             </p>
-            <Button label="Sign up!" class="auth-signup" />
+            <Button
+              label="Sign up!"
+              class="auth-signup"
+              @click="visibleSignUp = true"
+            />
           </div>
         </Dialog>
 
@@ -118,21 +116,33 @@
             </div>
             <form @submit.prevent="handleSignup" class="auth-form">
               <div class="auth-field">
-                <label for="email" class="auth-label">
-                  <i class="pi pi-envelope"></i>
-                </label>
                 <InputText
-                  id="email"
-                  v-model="email"
-                  placeholder="Enter your email"
+                  id="firstName"
+                  v-model="firstName"
+                  placeholder="Enter your first name"
                   required
                   class="auth-input"
                 />
               </div>
               <div class="auth-field">
-                <label for="password" class="auth-label">
-                  <i class="pi pi-lock"></i>
-                </label>
+                <InputText
+                  id="lastName"
+                  v-model="lastName"
+                  placeholder="Enter your last name"
+                  required
+                  class="auth-input"
+                />
+              </div>
+              <div class="auth-field">
+                <InputText
+                  id="username"
+                  v-model="username"
+                  placeholder="Enter your username"
+                  required
+                  class="auth-input"
+                />
+              </div>
+              <div class="auth-field">
                 <InputText
                   id="password"
                   type="password"
@@ -143,9 +153,6 @@
                 />
               </div>
               <div class="auth-field">
-                <label for="confirmPassword" class="auth-label">
-                  <i class="pi pi-lock"></i>
-                </label>
                 <InputText
                   id="confirmPassword"
                   type="password"
@@ -161,7 +168,11 @@
           <div class="auth-right">
             <h2>Login</h2>
             <p>If you already have an account, please log in to the system.</p>
-            <Button label="Sign in!" class="auth-signup" />
+            <Button
+              label="Sign in!"
+              class="auth-signup"
+              @click="visible = true"
+            />
           </div>
         </Dialog>
       </div>
@@ -175,50 +186,91 @@ import axios from "axios"; // Dùng thư viện axios để gọi API
 
 const visible = ref(false);
 const visibleSignUp = ref(false);
-const email = ref("");
+const username = ref("");
 const password = ref("");
 const confirmPassword = ref("");
+const firstName = ref("");
+const lastName = ref("");
 const userInfo = reactive({}); // Lưu trữ thông tin người dùng
 const router = useRouter();
 
 const handleLogin = async () => {
-  if (!email.value || !password.value) {
+  if (!username.value || !password.value) {
     alert("Please fill in both fields.");
     return;
   }
 
-  //   try {
-  // Gọi API đăng nhập
-  // const response = await axios.post(
-  //   "https://japansim.net/api/account/login",
-  //   {
-  //     email: email.value,
-  //     password: password.value,
-  //   }
-  // );
+  try {
+    // Gọi API đăng nhập
+    const response = await axios.post(
+      "https://japansim.net/api/account/login",
+      {
+        username: username.value, // Sử dụng username thay vì email
+        password: password.value,
+      }
+    );
 
-  // const { api_key } = response.data; // Lấy api_key từ response
-  const api_key = "bb642c5a-c7dd-4afc-86ea-6221de6c33af";
-  if (!api_key) {
-    alert("Login failed! Please try again.");
+    const { token } = response.data; // Lấy api_key từ response
+    if (!token) {
+      alert("Login failed! Please try again.");
+      return;
+    }
+
+    // Lưu api_key vào localStorage
+    localStorage.setItem("token", token);
+
+    // Lấy thông tin người dùng
+    await fetchUserInfo(token);
+
+    // Đóng dialog đăng nhập
+    visible.value = false;
+    alert("Login successful!");
+    router.push("/receive-sms");
+  } catch (error) {
+    console.error("Login error:", error);
+    alert("Login failed! Please check your credentials.");
+  }
+};
+
+const handleSignup = async () => {
+  if (
+    !firstName.value ||
+    !lastName.value ||
+    !username.value ||
+    !password.value ||
+    !confirmPassword.value
+  ) {
+    alert("Please fill in all fields.");
     return;
   }
 
-  // Lưu api_key vào localStorage
-  localStorage.setItem("api_key", api_key);
+  if (password.value !== confirmPassword.value) {
+    alert("Passwords do not match.");
+    return;
+  }
 
-  // Lấy thông tin người dùng
-  await fetchUserInfo(api_key);
+  try {
+    // Gọi API đăng ký
+    const response = await axios.post(
+      "https://japansim.net/api/account/register",
+      {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        username: username.value,
+        password: password.value,
+      }
+    );
 
-  // Đóng dialog đăng nhập
-  visible.value = false;
-  alert("Login successful!");
-  router.push("/receive-sms");
-  rout;
-  //   } catch (error) {
-  //     console.error("Login error:", error);
-  //     alert("Login failed! Please check your credentials.");
-  //   }
+    if (response.data.success) {
+      alert("Registration successful! Please log in.");
+      visibleSignUp.value = false; // Đóng dialog đăng ký
+    } else {
+      alert("Registration failed! Please try again.");
+    }
+  } catch (error) {
+    console.error("Signup error:", error);
+    alert("Registration failed! Please check your information.");
+  }
 };
 
 const fetchUserInfo = async (api_key) => {
@@ -336,20 +388,20 @@ onMounted(async () => {
 .auth-field {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
   border-radius: 4px;
 }
 
 .auth-label {
-  font-size: 1.5rem;
+  font-size: 1rem;
   margin-right: 0.5rem;
   color: #888;
 }
 
 .auth-input {
   width: 100%;
-  border: none;
-  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5rem;
 }
 
 .auth-submit {
@@ -385,6 +437,7 @@ onMounted(async () => {
 
 .auth-right {
   width: 50%;
+  height: 425px;
   padding: 2rem;
   background-color: #007bff;
   color: white;
