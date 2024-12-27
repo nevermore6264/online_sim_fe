@@ -12,7 +12,9 @@ export default defineNuxtConfig({
     transpile: ['primevue'] // Đảm bảo các thành phần PrimeVue được biên dịch đúng cách
   },
   plugins: [
-    '~/plugins/primevue.js'  // Đảm bảo bạn đã thêm plugin này vào
+    '~/plugins/primevue.js',
+    '~/plugins/vue3-toastify.ts',
+
   ],
   app: {
     head: {
