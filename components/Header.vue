@@ -25,7 +25,6 @@
           v-model:visible="visibleLogin"
           modal
           header="Login"
-          :style="{ width: '50%' }"
           class="auth-dialog"
         >
           <form @submit.prevent="handleLogin">
@@ -83,7 +82,6 @@
           v-model:visible="visibleSignUp"
           modal
           header="Sign Up"
-          :style="{ width: '50%' }"
           class="auth-dialog"
         >
           <form @submit.prevent="handleSignUp">
@@ -396,6 +394,7 @@ onMounted(async () => {
   padding: 0.75rem;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 0.75rem;
 }
 
 .auth-submit:hover {
@@ -471,11 +470,6 @@ onMounted(async () => {
 
 /* Responsive Layout for Mobile and Tablet */
 @media (max-width: 768px) {
-  .p-dialog {
-    width: 95% !important;
-    margin: 0 auto !important;
-  }
-
   .layout-topbar {
     flex-direction: column;
     align-items: flex-start;
@@ -540,11 +534,6 @@ onMounted(async () => {
 }
 
 @media (max-width: 480px) {
-  .p-dialog {
-    width: 95% !important;
-    margin: 0 auto !important;
-  }
-
   .layout-topbar {
     padding: 5px;
   }

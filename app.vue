@@ -83,4 +83,22 @@ table tr:hover {
 .p-breadcrumb {
   padding: 0 !important;
 }
+
+.auth-dialog {
+  width: 50% !important;
+}
+
+@media (max-width: 1366px) {
+  .auth-dialog {
+    width: 75% !important;
+    margin: 0 auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-dialog {
+    width: 90% !important;
+    margin: 0 auto !important;
+  }
+}
 </style>
