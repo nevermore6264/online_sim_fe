@@ -98,12 +98,20 @@ table tr:hover {
     width: 75% !important;
     margin: 0 auto !important;
   }
+
+  .flex-container {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 768px) {
   .auth-dialog {
     width: 90% !important;
     margin: 0 auto !important;
+  }
+
+  .flex-container {
+    flex-direction: column;
   }
 }
 </style>
