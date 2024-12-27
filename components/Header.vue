@@ -200,9 +200,12 @@ const handleLogin = async () => {
     const { token } = response.data?.data;
 
     if (token) {
+      await fetchUserInfo(token);
+
       localStorage.setItem("token", token);
       alert("Login successful!");
       visibleLogin.value = false;
+      router.push("/receive-sms");
     } else {
       alert("Invalid login credentials.");
     }
@@ -230,7 +233,7 @@ const handleSignUp = async () => {
   loading.value = true;
   try {
     const response = await axios.post(
-      "https://japansim.net/api/account/register",
+      "https://japansim.net/api/web/register",
       signUpData.value
     );
 
@@ -247,6 +250,32 @@ const handleSignUp = async () => {
     loading.value = false;
   }
 };
+
+const fetchUserInfo = async (token) => {
+  try {
+    // Gọi API lấy thông tin người dùng
+    const response = await axios.get(
+      `https://japansim.net/api/account/get-info`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    Object.assign(userInfo, response.data?.data); // Lưu thông tin vào userInfo
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+  }
+};
+
+// Lấy thông tin khi component được mount (nếu đã có api_key trong localStorage)
+onMounted(async () => {
+  const api_key = localStorage.getItem("api_key");
+  if (api_key) {
+    await fetchUserInfo(api_key);
+  }
+});
 </script>
 
 <style scoped>
