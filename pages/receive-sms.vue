@@ -218,9 +218,9 @@ const onRowClick = (event) => {
 };
 
 const fetchPurchasedSims = async (page = 1) => {
-  const apiKey = localStorage.getItem("api_key");
+  const apiKey = localStorage.getItem("token");
   if (!apiKey) {
-    console.error("API key is not found in localStorage");
+    console.error("Token is not found in localStorage");
     loading.value = false;
     return;
   }

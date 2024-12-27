@@ -151,10 +151,13 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 const visibleLogin = ref(false);
 const visibleSignUp = ref(false);
 const loading = ref(false);
+const router = useRouter();
+const userInfo = reactive({}); // Lưu trữ thông tin người dùng
 
 const loginData = ref({ username: "", password: "" });
 const signUpData = ref({
@@ -464,5 +467,123 @@ onMounted(async () => {
 
 .p-button-icon {
   margin-right: 8px;
+}
+
+/* Responsive Layout for Mobile and Tablet */
+@media (max-width: 768px) {
+  .p-dialog {
+    width: 95% !important;
+    margin: 0 auto !important;
+  }
+
+  .layout-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .p-menubar-start,
+  .p-menubar-end {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .p-menubar-end {
+    margin-top: 10px;
+    justify-content: flex-end;
+  }
+
+  .auth-dialog {
+    width: 90% !important;
+  }
+
+  .auth-left,
+  .auth-right {
+    width: 100%;
+    float: none;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .auth-right {
+    margin-top: 20px;
+    display: none;
+  }
+
+  .auth-input {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .auth-submit,
+  .auth-signup {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .forgot-password {
+    text-align: center;
+  }
+
+  .p-button-icon {
+    margin-right: 4px;
+  }
+
+  .auth-right h2 {
+    font-size: 1.5rem;
+  }
+
+  .auth-right p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .p-dialog {
+    width: 95% !important;
+    margin: 0 auto !important;
+  }
+
+  .layout-topbar {
+    padding: 5px;
+  }
+
+  .p-menubar-end {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .auth-dialog {
+    width: 95% !important;
+  }
+
+  .auth-left,
+  .auth-right {
+    padding: 0.5rem;
+  }
+
+  .auth-right h2 {
+    font-size: 1.2rem;
+  }
+
+  .auth-right p {
+    font-size: 0.9rem;
+  }
+
+  .auth-input {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .auth-submit,
+  .auth-signup {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .forgot-password {
+    font-size: 0.9rem;
+  }
 }
 </style>
