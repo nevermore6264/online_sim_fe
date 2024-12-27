@@ -39,7 +39,7 @@
                 />
                 <span class="country">{{ data.country.name }}</span>
                 <span class="dialCode" v-if="data.country.dialCode">
-                  (+{{ data.country.dialCode }})
+                  ({{ data.country.dialCode }})
                 </span>
               </div>
             </template>
@@ -104,122 +104,45 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 
 const home = ref({
   icon: "pi pi-home",
 });
-const items = ref([{ label: " Receive SMS" }]);
-const customers = ref([
-  {
-    id: 1,
-    country: { name: "USA", code: "US", dialCode: "1" },
-    services: [
-      { id: 1, name: "Uber", price: "$0.09", quantity: 9999 },
-      { id: 2, name: "Microsoft", price: "$0.12", quantity: 4960 },
-      { id: 3, name: "Netflix", price: "$0.16", quantity: 9999 },
-    ],
-  },
-  {
-    id: 2,
-    country: { name: "Canada", code: "CA", dialCode: "1" },
-    services: [
-      { id: 4, name: "eBay", price: "$0.15", quantity: 2071 },
-      { id: 5, name: "Amazon", price: "$0.16", quantity: 9056 },
-    ],
-  },
-  {
-    id: 3,
-    country: { name: "Mexico", code: "MX", dialCode: "52" },
-    services: [
-      { id: 6, name: "OLX", price: "$0.19", quantity: 2687 },
-      { id: 7, name: "LiveScore", price: "$0.35", quantity: 2292 },
-    ],
-  },
-  {
-    id: 4,
-    country: { name: "Spain", code: "ES", dialCode: "34" },
-    services: [
-      { id: 8, name: "BlaBlaCar", price: "$0.35", quantity: 1190 },
-      { id: 9, name: "Glovo", price: "$0.35", quantity: 2440 },
-      { id: 10, name: "LINE", price: "$0.14", quantity: 1757 },
-    ],
-  },
-  {
-    id: 5,
-    country: { name: "Germany", code: "DE", dialCode: "49" },
-    services: [
-      { id: 11, name: "ProtonMail", price: "$0.35", quantity: 9999 },
-      { id: 12, name: "Nike", price: "$0.20", quantity: 9999 },
-    ],
-  },
-  {
-    id: 6,
-    country: { name: "France", code: "FR", dialCode: "33" },
-    services: [
-      { id: 13, name: "AOL", price: "$0.09", quantity: 9999 },
-      { id: 14, name: "AppBonus", price: "$0.35", quantity: 2080 },
-    ],
-  },
-  {
-    id: 7,
-    country: { name: "Italy", code: "IT", dialCode: "39" },
-    services: [
-      { id: 15, name: "Hinge", price: "$0.30", quantity: 1140 },
-      { id: 16, name: "Tinder", price: "$0.16", quantity: 9999 },
-    ],
-  },
-  {
-    id: 8,
-    country: { name: "Brazil", code: "BR", dialCode: "55" },
-    services: [
-      { id: 17, name: "WhatsAround", price: "$0.35", quantity: 1956 },
-      { id: 18, name: "Badoo", price: "$0.30", quantity: 2538 },
-    ],
-  },
-  {
-    id: 9,
-    country: { name: "Australia", code: "AU", dialCode: "61" },
-    services: [
-      { id: 19, name: "Battle.net Blizzard", price: "$0.01", quantity: 50 },
-      { id: 20, name: "Kucoin", price: "$0.14", quantity: 1650 },
-      { id: 21, name: "Coinbase", price: "$0.12", quantity: 1708 },
-    ],
-  },
-  {
-    id: 10,
-    country: { name: "Japan", code: "JP", dialCode: "81" },
-    services: [
-      { id: 22, name: "LINE", price: "$0.14", quantity: 1757 },
-      { id: 23, name: "Rakuten", price: "$0.19", quantity: 1900 },
-    ],
-  },
-  {
-    id: 11,
-    country: { name: "India", code: "IN", dialCode: "91" },
-    services: [
-      { id: 24, name: "Flipkart", price: "$0.15", quantity: 1080 },
-      { id: 25, name: "Paytm", price: "$0.12", quantity: 1900 },
-      { id: 26, name: "Snapchat", price: "$0.31", quantity: 1636 },
-    ],
-  },
-]);
-
-// Danh sách SIM đã mua
+const items = ref([{ label: "Receive SMS" }]);
+const customers = ref([]);
 const purchasedSims = ref([]);
-
 const loading = ref(false);
-
-// Biến lưu trữ khách hàng được chọn để hiển thị dịch vụ
 const selectedCustomer = ref(null);
 
-// Hàm xử lý khi click vào row
-const onRowClick = (event) => {
-  selectedCustomer.value = event.data;
+// Hàm lấy thông tin quốc gia
+const fetchCountries = async () => {
+  try {
+    const response = await fetch("https://restcountries.com/v3.1/all");
+    const data = await response.json();
+    return data?.map((country) => ({
+      id: country.cca2, // Sử dụng mã quốc gia làm ID
+      country: {
+        name: country.name.common,
+        code: country.cca2,
+        dialCode:
+          country.idd && country.idd.root
+            ? country.idd.root +
+              (country.idd?.suffixes?.length ? country.idd?.suffixes[0] : "")
+            : "N/A",
+      },
+      services: [], // Dữ liệu dịch vụ có thể được thêm vào sau
+    }));
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+    return [];
+  }
 };
 
-const fetchPurchasedSims = async (page = 1) => {
+// Hàm lấy danh sách SIM đã mua
+const fetchPurchasedSims = async () => {
+  loading.value = true;
   const token = localStorage.getItem("token");
   if (!token) {
     console.error("Token is not found in localStorage");
@@ -256,7 +179,21 @@ const fetchPurchasedSims = async (page = 1) => {
   }
 };
 
+// Hàm khởi tạo dữ liệu
+const initializeData = async () => {
+  loading.value = true;
+  const countries = await fetchCountries();
+  customers.value = countries;
+  loading.value = false;
+};
+
+// Hàm xử lý khi click vào row
+const onRowClick = (event) => {
+  selectedCustomer.value = event.data;
+};
+
 onMounted(() => {
+  initializeData();
   fetchPurchasedSims();
 });
 </script>
