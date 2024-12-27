@@ -88,6 +88,11 @@ table tr:hover {
   width: 50% !important;
 }
 
+.app-content {
+  margin-left: 250px;
+  padding: 1rem;
+}
+
 @media (max-width: 1366px) {
   .auth-dialog {
     width: 75% !important;

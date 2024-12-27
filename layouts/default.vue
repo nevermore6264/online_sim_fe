@@ -1,22 +1,23 @@
 <template>
   <div>
+    <!-- Hiển thị loading khi đang kiểm tra trạng thái đăng nhập -->
+    <div v-if="isLoading" class="loading-container">
+      <p class="loading-text">Loading...</p>
+    </div>
+
     <!-- Hiển thị layout dựa vào trạng thái đăng nhập -->
-    <div v-if="!isAuthenticated">
-      <!-- Landing Page Layout -->
+    <div v-else-if="!isAuthenticated">
       <Header />
       <main>
         <slot />
-        <!-- Nội dung chính của landing page -->
       </main>
       <Footer />
     </div>
 
     <div v-else>
-      <!-- App Layout sau khi login -->
       <Sidebar />
       <main class="app-content">
         <slot />
-        <!-- Nội dung chính sau khi đăng nhập -->
       </main>
       <Footer />
     </div>
@@ -24,24 +25,24 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
 
 // Trạng thái đăng nhập
-const isAuthenticated = ref(false); // Cập nhật dựa trên trạng thái user (có thể từ Vuex hoặc Pinia)
+const isAuthenticated = ref(false);
+const isLoading = ref(true);
 const route = useRoute();
 
-// Theo dõi thay đổi đường dẫn để xác định trạng thái auth
 watch(
   () => route.path,
   () => {
     if (typeof window !== "undefined") {
-      // Thực hiện thao tác với localStorage
       const token = localStorage.getItem("token");
-
       isAuthenticated.value = token !== null;
+      isLoading.value = false;
     }
   },
-  { immediate: true } // Gọi ngay khi khởi tạo
+  { immediate: true }
 );
 
 // Import các thành phần layout
@@ -51,9 +52,25 @@ import Sidebar from "~/components/Sidebar.vue";
 </script>
 
 <style scoped>
-/* Layout sau khi đăng nhập */
-.app-content {
-  margin-left: 250px; /* Khoảng cách bên trái cho sidebar */
-  padding: 1rem; /* Khoảng cách padding cho nội dung chính */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
