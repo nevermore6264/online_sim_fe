@@ -4,12 +4,22 @@
 
     <h2>Buy OTP Service</h2>
 
+    <!-- Search Input for countries -->
+    <div class="search-container">
+      <input
+        type="text"
+        v-model="searchQuery"
+        placeholder="Search for a country..."
+        class="search-input"
+      />
+    </div>
+
     <!-- Flex container to hold two tables on the same row -->
     <div class="flex-container">
       <!-- Main DataTable -->
       <div class="table-container">
         <DataTable
-          :value="customers"
+          :value="filteredCustomers"
           scrollable
           scrollHeight="400px"
           dataKey="id"
@@ -112,11 +122,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router"; // Import useRouter
+import { useRouter } from "vue-router";
 
-const router = useRouter(); // Initialize router
+const router = useRouter();
 const home = ref({
   icon: "pi pi-home",
 });
@@ -125,8 +135,19 @@ const customers = ref([]);
 const purchasedSims = ref([]);
 const loading = ref(false);
 const selectedCustomer = ref(null);
+const searchQuery = ref("");
 
-// Hàm lấy thông tin quốc gia
+// Function to filter customers by search query
+const filteredCustomers = computed(() => {
+  if (!searchQuery.value) return customers.value;
+  return customers.value.filter((customer) =>
+    customer.country.name
+      .toLowerCase()
+      .includes(searchQuery.value.toLowerCase())
+  );
+});
+
+// Fetch countries function
 const fetchCountries = async () => {
   try {
     const response = await fetch("https://restcountries.com/v3.1/all");
@@ -151,7 +172,7 @@ const fetchCountries = async () => {
   }
 };
 
-// Hàm lấy danh sách SIM đã mua
+// Fetch purchased SIMs function
 const fetchPurchasedSims = async () => {
   loading.value = true;
   const token = localStorage.getItem("token");
@@ -190,7 +211,7 @@ const fetchPurchasedSims = async () => {
   }
 };
 
-// Hàm khởi tạo dữ liệu
+// Initialize data function
 const initializeData = async () => {
   loading.value = true;
   const countries = await fetchCountries();
@@ -198,11 +219,10 @@ const initializeData = async () => {
   loading.value = false;
 };
 
-// Hàm xử lý khi click vào row
+// Row click handler
 const onRowClick = async (event) => {
   selectedCustomer.value = event.data;
 
-  // Gọi API lấy dịch vụ khi click vào row
   if (selectedCustomer.value?.country?.cca3) {
     try {
       const countryCode = selectedCustomer.value.country.cca3;
@@ -221,13 +241,10 @@ const onRowClick = async (event) => {
   }
 };
 
-// Hàm xử lý khi click vào nút Buy
+// Buy service handler
 const buyService = (service) => {
-  // Lưu thông tin dịch vụ vào localStorage hoặc state để sử dụng trong trang thanh toán
   localStorage.setItem("selectedService", JSON.stringify(service));
-
-  // Chuyển hướng đến trang thanh toán
-  router.push("/payment"); // Đường dẫn đến trang thanh toán
+  router.push("/payment");
 };
 
 onMounted(() => {
@@ -286,5 +303,18 @@ onMounted(() => {
 
 .recharge-button:hover {
   background-color: #0056b3;
+}
+
+/* Style for search input */
+.search-container {
+  margin-bottom: 1rem; /* Space below the search input */
+  margin-right: 40px;
+}
+
+.search-input {
+  width: 50%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 </style>

@@ -102,6 +102,14 @@ table tr:hover {
   .flex-container {
     flex-direction: column;
   }
+
+  .search-input {
+    width: 100% !important;
+  }
+
+  .search-container {
+    margin-right: 0 !important;
+  }
 }
 
 @media (max-width: 768px) {
