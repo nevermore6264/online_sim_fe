@@ -25,6 +25,7 @@
   position: fixed;
   bottom: 0;
   height: 60px;
+  z-index: 999;
 }
 
 .footer-content p {

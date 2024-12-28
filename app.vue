@@ -112,6 +112,7 @@ table {
 .app-content {
   margin-left: 250px;
   padding: 1rem;
+  margin-bottom: 60px;
 }
 
 @media (max-width: 1366px) {
