@@ -109,10 +109,11 @@ table {
   width: 50% !important;
 }
 
-.app-content {
+#app-content {
   margin-left: 250px;
   padding: 1rem;
   margin-bottom: 60px;
+  transition: margin-left 0.3s ease-in-out;
 }
 
 @media (max-width: 1366px) {

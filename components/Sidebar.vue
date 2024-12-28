@@ -7,7 +7,7 @@
       ></i>
     </button>
     <!-- Sidebar -->
-    <aside :class="['sidebar', { 'sidebar-hidden': !isSidebarVisible }]">
+    <aside id="sidebar" :class="{ 'sidebar-hidden': !isSidebarVisible }">
       <!-- Logo -->
       <div class="logo">
         <img src="/layout/images/logo.svg" alt="Logo" class="logo-image" />
@@ -76,6 +76,17 @@ const menuItems = [
 
 // Toggle sidebar visibility
 const toggleSidebar = () => {
+  const sidebar = document.getElementById("sidebar");
+  const appContent = document.getElementById("app-content");
+
+  if (isSidebarVisible.value) {
+    sidebar.classList.add("sidebar-hidden");
+    appContent.style.marginLeft = "0";
+  } else {
+    sidebar.classList.remove("sidebar-hidden");
+    appContent.style.marginLeft = "250px";
+  }
+
   isSidebarVisible.value = !isSidebarVisible.value;
 };
 
@@ -104,7 +115,7 @@ onMounted(() => {
 
 <style scoped>
 /* Sidebar styles */
-.sidebar {
+#sidebar {
   width: 250px;
   background-color: #f8f9fa;
   border-right: 1px solid #ddd;
@@ -248,5 +259,9 @@ li.active {
 
 li.active a {
   color: #ffffff;
+}
+
+.sidebar-hidden {
+  transform: translateX(-100%);
 }
 </style>
