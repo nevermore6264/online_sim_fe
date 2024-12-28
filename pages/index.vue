@@ -110,7 +110,93 @@
           </div>
         </article>
 
-        <!-- Add more FAQ items here following the same structure -->
+        <article class="faq-item" @click="toggle(3)">
+          <header>
+            <span
+              >Will I be given a SIM card with a virtual number linked to
+              it?</span
+            >
+            <i class="icon"></i>
+          </header>
+          <div class="body" :class="{ active: activeIndex === 3 }">
+            <div class="content">
+              <p>
+                Our service is designed so that you do not have to use a SIM
+                card yourself. You just use the mobile number that you have
+                acquired online without a SIM card.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <article class="faq-item" @click="toggle(4)">
+          <header>
+            <span>Will someone access my number when I stop renting it?</span>
+            <i class="icon"></i>
+          </header>
+          <div class="body" :class="{ active: activeIndex === 4 }">
+            <div class="content">
+              <p>
+                The numbers that are purchased through our service are
+                disposable and cannot be reused by our clients after the order
+                time has expired.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <article class="faq-item" @click="toggle(5)">
+          <header>
+            <span
+              >What is a short-rent mobile number (to receive messages from one
+              website)?</span
+            >
+            <i class="icon"></i>
+          </header>
+          <div class="body" :class="{ active: activeIndex === 5 }">
+            <div class="content">
+              <p>
+                If you select this tariff, you get a virtual number for a short
+                time from 10 minutes to 1 hour. The exact time depends on the
+                selected country.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <article class="faq-item" @click="toggle(6)">
+          <header>
+            <span>What happens if I cannot receive SMS?</span>
+            <i class="icon"></i>
+          </header>
+          <div class="body" :class="{ active: activeIndex === 6 }">
+            <div class="content">
+              <p>
+                If a message does not arrive at the temporary number you
+                ordered, you can close the phone number and order another; money
+                from your balance will not be debited.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <article class="faq-item" @click="toggle(7)">
+          <header>
+            <span
+              >Can I test your service for receiving messages for online
+              activation?</span
+            >
+            <i class="icon"></i>
+          </header>
+          <div class="body" :class="{ active: activeIndex === 7 }">
+            <div class="content">
+              <p>
+                Sure. We have a special module with temporary free numbers for
+                one-time text message reception available on this webpage.
+              </p>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </div>
@@ -230,12 +316,6 @@ function toggle(index) {
   padding: 20px;
 }
 
-.title {
-  font-size: 2em;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
 .faq-list {
   margin: 0;
   padding: 0;
@@ -248,7 +328,6 @@ function toggle(index) {
   border: 1px solid #e5eaf4;
   border-radius: 8px;
   box-shadow: 0 6px 10px #00000008;
-  cursor: pointer;
   transition: 0.3s;
 }
 
@@ -265,12 +344,14 @@ header {
 }
 
 .body {
-  display: none;
-  padding: 15px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease, padding 0.3s ease;
 }
 
 .body.active {
-  display: block;
+  max-height: 200px; /* Adjust based on your content size */
+  padding: 15px;
 }
 
 .content {
