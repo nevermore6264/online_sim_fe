@@ -3,7 +3,7 @@
     <!-- Logo Section -->
     <div class="p-menubar-start">
       <a class="layout-topbar-logo" href="/">
-        <img src="/layout/images/logo.svg" alt="logo" />
+        <img src="/layout/images/logo.png" alt="logo" class="logo-image" />
       </a>
     </div>
 
@@ -30,7 +30,7 @@
           <form @submit.prevent="handleLogin">
             <div class="auth-left">
               <img
-                src="/layout/images/logo.svg"
+                src="/layout/images/logo.png"
                 alt="Logo"
                 class="logo-image"
               />
@@ -87,7 +87,7 @@
           <form @submit.prevent="handleSignUp">
             <div class="auth-left">
               <img
-                src="/layout/images/logo.svg"
+                src="/layout/images/logo.png"
                 alt="Logo"
                 class="logo-image"
               />

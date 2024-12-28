@@ -10,7 +10,7 @@
     <aside id="sidebar" :class="{ 'sidebar-hidden': !isSidebarVisible }">
       <!-- Logo -->
       <div class="logo">
-        <img src="/layout/images/logo.svg" alt="Logo" class="logo-image" />
+        <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
       </div>
       <!-- Balance and Recharge -->
       <div class="balance-container">

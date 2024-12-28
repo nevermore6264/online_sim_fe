@@ -116,6 +116,10 @@ table {
   transition: margin-left 0.3s ease-in-out;
 }
 
+.logo-image {
+  width: 150px;
+}
+
 @media (max-width: 1366px) {
   .auth-dialog {
     width: 75% !important;
