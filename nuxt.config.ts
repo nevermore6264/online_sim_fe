@@ -26,6 +26,9 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'format-detection', content: 'telephone=no' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/gif', href: 'layout/images/onlinesim-logo.png' } // Set your logo here
       ]
     }
   }
