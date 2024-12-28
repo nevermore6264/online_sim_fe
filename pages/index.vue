@@ -9,24 +9,8 @@
       <li>Short and long-term number rental</li>
       <li>New phone numbers added daily</li>
     </ul>
-    <div class="actions">
-      <a href="/auth/register?redirect=/v2/numbers/" class="btn primary"
-        >Get Access</a
-      >
-      <a href="/#try" class="btn ghost">Try it for Free</a>
-    </div>
 
     <h2>Buy OTP Service</h2>
-
-    <!-- Search Input for countries -->
-    <div class="search-container">
-      <input
-        type="text"
-        v-model="searchQuery"
-        placeholder="Search for a country..."
-        class="search-input"
-      />
-    </div>
 
     <!-- Flex container to hold two tables on the same row -->
     <div class="flex-container">
@@ -290,9 +274,6 @@ definePageMeta({
 
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
 const customers = ref([]);
 const loading = ref(false);
 const selectedCustomer = ref(null);
@@ -403,29 +384,6 @@ function toggle(index) {
 
 .unordered-list li {
   margin: 5px 0;
-}
-
-.actions {
-  margin-top: 20px;
-}
-
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px;
-  text-decoration: none;
-  border-radius: 5px;
-  color: #fff;
-}
-
-.primary {
-  background-color: #007bff;
-}
-
-.ghost {
-  background-color: transparent;
-  border: 2px solid #007bff;
-  color: #007bff;
 }
 
 .timeline-title {
@@ -539,18 +497,6 @@ header {
 .row-content .dialCode {
   margin-left: 15px;
   color: #859398;
-}
-
-/* Style for search input */
-.search-container {
-  margin: auto;
-}
-
-.search-input {
-  width: 500px;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
 .lbl_services {
