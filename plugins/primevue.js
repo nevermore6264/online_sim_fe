@@ -9,6 +9,9 @@ import Dropdown from "primevue/dropdown";
 import Checkbox from "primevue/checkbox";
 import Toast from "primevue/toast";
 import Breadcrumb from "primevue/breadcrumb";
+import Timeline from "primevue/timeline";
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordion";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -22,4 +25,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("Checkbox", Checkbox);
   nuxtApp.vueApp.component("Toast", Toast);
   nuxtApp.vueApp.component("Breadcrumb", Breadcrumb);
+  nuxtApp.vueApp.component("Timeline", Timeline);
+  nuxtApp.vueApp.component("Accordion", Accordion);
+  nuxtApp.vueApp.component("AccordionTab", AccordionTab);
 });
