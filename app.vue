@@ -54,25 +54,46 @@ button:hover {
 table {
   width: 100%;
   border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 table th,
 table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  padding: 12px 15px;
+  text-align: left;
 }
 
 table th {
-  background-color: #f2f2f2;
-  text-align: left;
+  background: #3a7bd5; /* fallback for old browsers */
+  color: white;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 table tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
+table tr {
+  border-bottom: 1px solid #ddd;
+}
+
 table tr:hover {
   background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+table td {
+  border-bottom: 1px solid #ddd;
+}
+
+/* Optional: Add rounded corners to the table */
+table {
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .p-datatable .p-datatable-header {

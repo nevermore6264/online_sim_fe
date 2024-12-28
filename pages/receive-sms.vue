@@ -67,7 +67,9 @@
           :loading="loading"
         >
           <template #header>
-            <h5>Services for {{ selectedCustomer?.country?.name }}</h5>
+            <h4 class="lbl_services">
+              Services for {{ selectedCustomer?.country?.name }}
+            </h4>
           </template>
           <template #empty> No services found. </template>
           <template #loading> Loading services data. Please wait. </template>
@@ -316,5 +318,9 @@ onMounted(() => {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.lbl_services {
+  margin-top: 0px !important;
 }
 </style>
