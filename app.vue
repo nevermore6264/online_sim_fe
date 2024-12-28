@@ -111,7 +111,7 @@ table {
 
 #app-content {
   margin-left: 250px;
-  padding: 1rem;
+  padding: 25px 10px;
   margin-bottom: 60px;
   transition: margin-left 0.3s ease-in-out;
 }
