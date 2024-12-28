@@ -16,13 +16,94 @@
       <a href="/#try" class="btn ghost">Try it for Free</a>
     </div>
 
+    <h2>Buy OTP Service</h2>
+
+    <!-- Search Input for countries -->
+    <div class="search-container">
+      <input
+        type="text"
+        v-model="searchQuery"
+        placeholder="Search for a country..."
+        class="search-input"
+      />
+    </div>
+
+    <!-- Flex container to hold two tables on the same row -->
+    <div class="flex-container">
+      <!-- Main DataTable -->
+      <div class="table-container">
+        <DataTable
+          :value="filteredCustomers"
+          scrollable
+          scrollHeight="400px"
+          dataKey="id"
+          :loading="loading"
+          @row-click="onRowClick"
+        >
+          <template #header>
+            <div class="flex justify-content-end">
+              <!-- Không cần thêm ô tìm kiếm tại header nữa -->
+            </div>
+          </template>
+          <template #empty> No customers found. </template>
+          <template #loading> Loading customers data. Please wait. </template>
+
+          <Column
+            header="Country"
+            filterField="country.name"
+            style="min-width: 12rem"
+          >
+            <template #body="{ data }">
+              <div class="flex align-items-center row-content">
+                <img
+                  alt="flag"
+                  :src="`https://flagsapi.com/${data.country.code}/flat/64.png`"
+                  :class="`flag flag-${data.country.code}`"
+                  style="width: 24px"
+                />
+                <span class="country">{{ data.country.name }}</span>
+                <span class="dialCode" v-if="data.country.dialCode">
+                  ({{ data.country.dialCode }})
+                </span>
+              </div>
+            </template>
+          </Column>
+        </DataTable>
+      </div>
+
+      <!-- Sub DataTable for services -->
+      <div class="table-container">
+        <DataTable
+          :value="selectedCustomer?.services"
+          scrollable
+          scrollHeight="200px"
+          dataKey="id"
+          :loading="loading"
+        >
+          <template #header>
+            <h4 class="lbl_services">
+              Services for {{ selectedCustomer?.country?.name }}
+            </h4>
+          </template>
+          <template #empty> No services found. </template>
+          <template #loading> Loading services data. Please wait. </template>
+
+          <Column header="Service" field="text" style="min-width: 12rem" />
+          <Column header="Code" field="code" style="min-width: 12rem" />
+          <Column header="Price" style="min-width: 12rem">
+            <template #body="{ data }"> {{ data?.price }} USD </template>
+          </Column>
+        </DataTable>
+      </div>
+    </div>
+
     <h2 class="timeline-title">How It All Works</h2>
     <p class="timeline-subtitle">Three easy steps to receive SMS messages</p>
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-content">
           <h3>01</h3>
-          <p>Order a phone number in your personal account</p>
+          <h4>Order a phone number in your personal account</h4>
           <p>
             For example, if you want to create a second mail on Gmail, then go
             to the cabinet, select the country, and then the Google site.
@@ -32,7 +113,7 @@
       <div class="timeline-item">
         <div class="timeline-content">
           <h3>02</h3>
-          <p>Use it to receive SMS</p>
+          <h4>Use it to receive SMS</h4>
           <p>
             Copy the issued number and paste it into the Google registration
             form to receive SMS with the registration code.
@@ -42,7 +123,7 @@
       <div class="timeline-item">
         <div class="timeline-content">
           <h3>03</h3>
-          <p>Receive SMS from sites</p>
+          <h4>Receive SMS from sites</h4>
           <p>
             After receiving an SMS message, you just need to copy the
             confirmation code and use it to complete the activation of your
@@ -207,7 +288,84 @@ definePageMeta({
   layout: "landing",
 });
 
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const customers = ref([]);
+const loading = ref(false);
+const selectedCustomer = ref(null);
+const searchQuery = ref("");
+
+// Function to filter customers by search query
+const filteredCustomers = computed(() => {
+  if (!searchQuery.value) return customers.value;
+  return customers.value.filter((customer) =>
+    customer.country.name
+      .toLowerCase()
+      .includes(searchQuery.value.toLowerCase())
+  );
+});
+
+// Fetch countries function
+const fetchCountries = async () => {
+  try {
+    const response = await fetch("https://restcountries.com/v3.1/all");
+    const data = await response.json();
+    return data?.map((country) => ({
+      id: country.cca2,
+      country: {
+        name: country.name.common,
+        code: country.cca2,
+        cca3: country.cca3,
+        dialCode:
+          country.idd && country.idd.root
+            ? country.idd.root +
+              (country.idd?.suffixes?.length ? country.idd?.suffixes[0] : "")
+            : "N/A",
+      },
+      services: [],
+    }));
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+    return [];
+  }
+};
+
+// Initialize data function
+const initializeData = async () => {
+  loading.value = true;
+  const countries = await fetchCountries();
+  customers.value = countries;
+  loading.value = false;
+};
+
+// Row click handler
+const onRowClick = async (event) => {
+  selectedCustomer.value = event.data;
+
+  if (selectedCustomer.value?.country?.cca3) {
+    try {
+      const countryCode = selectedCustomer.value.country.cca3;
+      const response = await axios.get(
+        `https://japansim.net/api/services?platform=web&countryCode=${countryCode}`
+      );
+
+      if (response?.data?.success) {
+        selectedCustomer.value.services = response.data.data;
+      } else {
+        console.error("Failed to fetch services");
+      }
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+  }
+};
+
+onMounted(() => {
+  initializeData();
+});
 
 const activeIndex = ref(-1);
 
@@ -361,5 +519,41 @@ header {
 .content p {
   text-align: left;
   color: dimgrey;
+}
+
+.table-container {
+  flex: 1; /* Make tables take equal width */
+  min-width: 300px; /* Optional: Ensure tables don't get too narrow */
+}
+
+.row-content {
+  display: flex;
+  align-items: center;
+  margin: auto 0;
+}
+
+.row-content .country {
+  margin-left: 15px;
+}
+
+.row-content .dialCode {
+  margin-left: 15px;
+  color: #859398;
+}
+
+/* Style for search input */
+.search-container {
+  margin: auto;
+}
+
+.search-input {
+  width: 500px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.lbl_services {
+  margin-top: 20px !important;
 }
 </style>
