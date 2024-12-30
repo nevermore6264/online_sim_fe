@@ -285,6 +285,9 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.02), 0 0 2px rgba(0, 0, 0, 0.05),
+    0 1px 4px rgba(0, 0, 0, 0.08);
+  background-image: linear-gradient(90deg, #fc4a1a, #f7b733);
 }
 
 .p-menubar-start {
@@ -389,8 +392,8 @@ onMounted(async () => {
 
 .auth-submit {
   width: 100%;
-  background-color: #007bff;
-  color: #fff;
+  background-image: linear-gradient(90deg, #fc4a1a, #f7b733);
+  color: #f5f7fa;
   border: none;
   padding: 0.75rem;
   border-radius: 4px;
@@ -406,7 +409,7 @@ onMounted(async () => {
   display: block;
   text-align: right;
   margin-top: 1rem;
-  color: #007bff;
+  color: #fc4a1a;
   text-decoration: none;
 }
 
@@ -423,8 +426,8 @@ onMounted(async () => {
   width: 50%;
   height: 425px;
   padding: 2rem;
-  background-color: #007bff;
-  color: white;
+  background-image: linear-gradient(90deg, #fc4a1a, #f7b733);
+  color: #f5f7fa;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -442,8 +445,8 @@ onMounted(async () => {
 }
 
 .auth-signup {
-  background-color: white;
-  color: #007bff;
+  background-image: linear-gradient(90deg, #fc4a1a, #f7b733);
+  color: #f5f7fa;
   border: 1px solid white;
   padding: 0.75rem 1.5rem;
   border-radius: 4px;
@@ -451,8 +454,8 @@ onMounted(async () => {
 }
 
 .auth-signup:hover {
-  background-color: #e8e8e8;
-  color: #0056b3;
+  background-image: linear-gradient(90deg, #fc4a1a, #f7b733);
+  color: #f5f7fa;
 }
 
 .input-field {
@@ -467,6 +470,10 @@ onMounted(async () => {
 
 .p-button-icon {
   margin-right: 8px;
+}
+
+.p-button.p-button-text {
+  color: #f5f7fa;
 }
 
 /* Responsive Layout for Mobile and Tablet */

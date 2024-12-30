@@ -241,7 +241,7 @@ b {
   box-shadow: rgb(0 0 0 / 8%) 0px 4px 12px;
   padding: 0.4rem 1rem 0.4rem 1rem;
   border-radius: 3px;
-  color: #82074a;
+  color: #fc4a1a;
   font-size: 16px;
   margin-right: 12px;
   background-color: #f5f7fa;
@@ -287,7 +287,7 @@ li {
 .address-links li i {
   font-size: 16px;
   padding-right: 8px;
-  color: #82074a;
+  color: #f5f7fa;
 }
 
 .address-links li i:nth-child(1) {

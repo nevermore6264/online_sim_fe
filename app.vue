@@ -133,7 +133,7 @@ table {
 }
 
 .logo-image {
-  width: 150px;
+  width: 75px;
 }
 
 @media (max-width: 1366px) {
