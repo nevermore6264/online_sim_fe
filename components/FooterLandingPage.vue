@@ -32,6 +32,7 @@
                     Receive SMS online to temporary numbers from all over the
                     world
                   </p>
+                  <p>Copyright © 2024 ❤ Japan Sim. All rights reserved.</p>
                 </div>
               </div>
               <div class="p-col-12 p-md-6">
@@ -74,9 +75,6 @@
             </div>
           </div>
         </footer>
-        <div>
-          <p>Copyright © 2024 ❤ Japan Sim. All rights reserved.</p>
-        </div>
       </div>
       <svg style="position: fixed; top: 100vh">
         <defs>
@@ -104,11 +102,9 @@
 <style scoped>
 .main {
   display: grid;
-  grid-template-rows: 1fr 10rem auto;
+  grid-template-rows: 0fr 10rem auto;
   grid-template-areas: "main" "." "footer";
   overflow-x: hidden;
-  background: #f5f7fa;
-  min-height: 100vh;
   font-family: "Open Sans", sans-serif;
 }
 
