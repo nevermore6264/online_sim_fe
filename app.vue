@@ -1,4 +1,8 @@
 <template>
+  <Notivue v-slot="item">
+    <Notification :item="item" />
+  </Notivue>
+
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
@@ -43,12 +47,15 @@ input {
 
 button {
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth zoom and shadow transition */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Smooth zoom and shadow transition */
 }
 
 button:hover {
-  transform: scale(1.05); /* Slight zoom in */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Add a subtle shadow for emphasis */
+  transform: scale(1.05);
+  /* Slight zoom in */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  /* Add a subtle shadow for emphasis */
 }
 
 table {
@@ -67,7 +74,8 @@ table td {
 }
 
 table th {
-  background: #3a7bd5; /* fallback for old browsers */
+  background: #3a7bd5;
+  /* fallback for old browsers */
   color: white;
   text-transform: uppercase;
   font-weight: 600;

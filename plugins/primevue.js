@@ -1,5 +1,6 @@
 import { defineNuxtPlugin } from "#app";
 import PrimeVue from "primevue/config";
+import Tag from "primevue/tag";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
@@ -16,6 +17,7 @@ import AccordionTab from "primevue/accordion";
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue);
 
+  nuxtApp.vueApp.component("Tag", Tag);
   nuxtApp.vueApp.component("DataTable", DataTable);
   nuxtApp.vueApp.component("Column", Column);
   nuxtApp.vueApp.component("Button", Button);

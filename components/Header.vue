@@ -150,6 +150,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { push } from "notivue";
 
 const visibleLogin = ref(false);
 const visibleSignUp = ref(false);
@@ -195,7 +196,7 @@ const handleLogin = async () => {
   loading.value = true;
   try {
     const response = await axios.post(
-      "https://japansim.net/api/web/login",
+      "https://verifysms.org/api/web/login",
       loginData.value
     );
     const { token } = response.data?.data;
@@ -204,11 +205,11 @@ const handleLogin = async () => {
       await fetchUserInfo(token);
 
       localStorage.setItem("token", token);
-      alert("Login successful!");
+      push.success("Login successful!");
       visibleLogin.value = false;
       router.push("/receive-sms");
     } else {
-      alert("Invalid login credentials.");
+      push.error("Invalid login credentials.");
     }
   } catch (error) {
     console.error(error);

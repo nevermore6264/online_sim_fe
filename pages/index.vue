@@ -330,7 +330,7 @@ const onRowClick = async (event) => {
     try {
       const countryCode = selectedCustomer.value.country.cca3;
       const response = await axios.get(
-        `https://japansim.net/api/services?platform=web&countryCode=${countryCode}`
+        `https://verifysms.org/api/services?platform=web&countryCode=${countryCode}`
       );
 
       if (response?.data?.success) {

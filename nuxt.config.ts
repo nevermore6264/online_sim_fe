@@ -1,10 +1,12 @@
 import { defineNuxtConfig } from 'nuxt/config';
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/i18n'],
+  modules: ['notivue/nuxt', '@nuxtjs/i18n'],
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   vite: {},
   css: [
+    'notivue/notification.css', // Only needed if using built-in <Notification />
+    'notivue/animations.css', // Only needed if using default animations
     'primevue/resources/themes/aura-light-blue/theme.css',
     'primevue/resources/primevue.min.css',
     'primeicons/primeicons.css'

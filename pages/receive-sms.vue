@@ -6,26 +6,15 @@
 
     <!-- Search Input for countries -->
     <div class="search-container">
-      <input
-        type="text"
-        v-model="searchQuery"
-        placeholder="Search for a country..."
-        class="search-input"
-      />
+      <input type="text" v-model="searchQuery" placeholder="Search for a country..." class="search-input" />
     </div>
 
     <!-- Flex container to hold two tables on the same row -->
     <div class="flex-container">
       <!-- Main DataTable -->
       <div class="table-container">
-        <DataTable
-          :value="filteredCustomers"
-          scrollable
-          scrollHeight="400px"
-          dataKey="id"
-          :loading="loading"
-          @row-click="onRowClick"
-        >
+        <DataTable :value="filteredCustomers" scrollable scrollHeight="400px" dataKey="id" :loading="loading"
+          @row-click="onRowClick">
           <template #header>
             <div class="flex justify-content-end">
               <!-- Không cần thêm ô tìm kiếm tại header nữa -->
@@ -34,19 +23,11 @@
           <template #empty> No customers found. </template>
           <template #loading> Loading customers data. Please wait. </template>
 
-          <Column
-            header="Country"
-            filterField="country.name"
-            style="min-width: 12rem"
-          >
+          <Column header="Country" filterField="country.name" style="min-width: 12rem">
             <template #body="{ data }">
               <div class="flex align-items-center row-content">
-                <img
-                  alt="flag"
-                  :src="`https://flagsapi.com/${data.country.code}/flat/64.png`"
-                  :class="`flag flag-${data.country.code}`"
-                  style="width: 24px"
-                />
+                <img alt="flag" :src="`https://flagsapi.com/${data.country.code}/flat/64.png`"
+                  :class="`flag flag-${data.country.code}`" style="width: 24px" />
                 <span class="country">{{ data.country.name }}</span>
                 <span class="dialCode" v-if="data.country.dialCode">
                   ({{ data.country.dialCode }})
@@ -59,25 +40,20 @@
 
       <!-- Sub DataTable for services -->
       <div class="table-container">
-        <DataTable
-          :value="selectedCustomer?.services"
-          scrollable
-          scrollHeight="200px"
-          dataKey="id"
-          :loading="loading"
-        >
-          <template #header>
-            <h4 class="lbl_services">
-              Services for {{ selectedCustomer?.country?.name }}
-            </h4>
-          </template>
+        <DataTable :value="selectedCustomer?.services" scrollable scrollHeight="400px" dataKey="id" :loading="loading">
           <template #empty> No services found. </template>
           <template #loading> Loading services data. Please wait. </template>
 
+          <Column>
+            <template #body="{ data }">
+              <img :src="data?.image.replace('/japan-sim/images/', '/')" width="24px"
+                class="w-24 rounded" />
+            </template>
+          </Column>
+
           <Column header="Service" field="text" style="min-width: 12rem" />
-          <Column header="Code" field="code" style="min-width: 12rem" />
           <Column header="Price" style="min-width: 12rem">
-            <template #body="{ data }"> {{ data?.price }} USD </template>
+            <template #body="{ data }"> {{ data?.price }} USDT </template>
           </Column>
           <Column header="Action" style="min-width: 12rem">
             <template #body="{ data }">
@@ -93,28 +69,37 @@
     <!-- Table for purchased SIMs -->
     <div class="purchased-sim-container">
       <h2>Purchased SIMs</h2>
-      <DataTable
-        :value="purchasedSims"
-        scrollable
-        scrollHeight="300px"
-        dataKey="id"
-        :loading="loading"
-      >
+      <DataTable :value="orderList" scrollable scrollHeight="300px" dataKey="id" :loading="loading">
         <template #empty> No SIMs purchased yet. </template>
         <template #loading> Loading SIM data. Please wait. </template>
 
-        <Column header="Country" field="country" style="min-width: 12rem" />
-        <Column
-          header="Phone Number"
-          field="phoneNumber"
-          style="min-width: 12rem"
-        />
-        <Column header="Service" field="service" style="min-width: 12rem" />
-        <Column header="Price" field="price" style="min-width: 12rem" />
-        <Column header="SMS Status" field="status" style="min-width: 12rem">
+        <Column header="Country" field="countryCode" style="min-width: 12rem" />
+        <Column header="Phone Number" field="stock.phone" style="min-width: 12rem" />
+        <Column header="Service" field="stock.serviceCode" style="min-width: 12rem" />
+        <Column header="Price" field="cost" style="min-width: 12rem" />
+        <Column header="SMS Status" style="min-width: 12rem">
           <template #body="{ data }">
             <span>
-              {{ data.status }}
+              <Tag v-if="data.statusCode == 'PENDING'" severity="warning" value="PENDING"></Tag>
+              <Tag v-else-if="data.statusCode == 'SUCCESS'" severity="success" value="SUCCESS"></Tag>
+              <Tag v-else-if="data.statusCode == 'REFUNDED'" severity="danger" value="REFUNDED"></Tag>
+              <Tag v-else severity="info" :value="data.statusCode"></Tag>
+            </span>
+          </template>
+        </Column>
+
+        <Column header="Expire Time" style="min-width: 12rem">
+          <template #body="{ data }">
+            <span>
+              {{ trackingExpiredTime(data.stock.expiredAt) }}
+            </span>
+          </template>
+        </Column>
+
+        <Column header="Message Content" style="min-width: 12rem">
+          <template #body="{ data }">
+            <span>
+              {{ data.stock?.messages.length == 0 ? "No content" : data.stock.messages[0].content }}
             </span>
           </template>
         </Column>
@@ -127,6 +112,7 @@
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import orderService from "../services/order";
 
 const router = useRouter();
 const home = ref({
@@ -134,10 +120,12 @@ const home = ref({
 });
 const items = ref([{ label: "Receive SMS" }]);
 const customers = ref([]);
-const purchasedSims = ref([]);
+const orderList = ref([]);
 const loading = ref(false);
 const selectedCustomer = ref(null);
 const searchQuery = ref("");
+
+const currentTime = ref(new Date());
 
 // Function to filter customers by search query
 const filteredCustomers = computed(() => {
@@ -148,6 +136,18 @@ const filteredCustomers = computed(() => {
       .includes(searchQuery.value.toLowerCase())
   );
 });
+
+const trackingExpiredTime = (value) => {
+  const diff = new Date(value) - currentTime.value
+
+  if (diff <= 0) return 'Expired'
+
+  const totalSeconds = Math.floor(diff / 1000) // Total seconds remaining
+  const minutes = Math.floor(totalSeconds / 60) // Total minutes
+  const seconds = totalSeconds % 60 // Remaining seconds
+
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+}
 
 // Fetch countries function
 const fetchCountries = async () => {
@@ -163,7 +163,7 @@ const fetchCountries = async () => {
         dialCode:
           country.idd && country.idd.root
             ? country.idd.root +
-              (country.idd?.suffixes?.length ? country.idd?.suffixes[0] : "")
+            (country.idd?.suffixes?.length ? country.idd?.suffixes[0] : "")
             : "N/A",
       },
       services: [],
@@ -175,7 +175,7 @@ const fetchCountries = async () => {
 };
 
 // Fetch purchased SIMs function
-const fetchPurchasedSims = async () => {
+const fetchOrderList = async () => {
   loading.value = true;
   const token = localStorage.getItem("token");
   if (!token) {
@@ -186,7 +186,7 @@ const fetchPurchasedSims = async () => {
 
   try {
     const response = await axios.get(
-      `https://japansim.net/api/account/order-list`,
+      `https://verifysms.org/api/account/order-list`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -195,14 +195,7 @@ const fetchPurchasedSims = async () => {
     );
 
     if (response?.data?.success) {
-      purchasedSims.value = response?.data?.data?.docs.map((doc) => ({
-        id: doc.id,
-        country: doc.countryCode,
-        phoneNumber: doc.stock.phone,
-        service: doc.stock.serviceCode,
-        price: doc.cost,
-        status: doc.isActive ? "Active" : "Inactive",
-      }));
+      orderList.value = response?.data?.data?.docs;
     } else {
       console.error("Failed to fetch data from API");
     }
@@ -229,7 +222,7 @@ const onRowClick = async (event) => {
     try {
       const countryCode = selectedCustomer.value.country.cca3;
       const response = await axios.get(
-        `https://japansim.net/api/services?platform=web&countryCode=${countryCode}`
+        `https://verifysms.org/api/services?platform=web&countryCode=${countryCode}`
       );
 
       if (response?.data?.success) {
@@ -245,13 +238,24 @@ const onRowClick = async (event) => {
 
 // Buy service handler
 const buyService = (service) => {
-  localStorage.setItem("selectedService", JSON.stringify(service));
-  router.push("/payment");
+  orderService.BuyOTP(service.code).then((res) => {
+    if (res.success) {
+      push.success("Buy service successfully");
+    } else {
+      push.error("Buy service failed");
+    }
+  }).catch((err) => {
+    push.error("Buy service failed");
+  });
 };
 
 onMounted(() => {
+  setInterval(() => {
+    currentTime.value = new Date();
+  }, 1e3);
+
   initializeData();
-  fetchPurchasedSims();
+  fetchOrderList();
 });
 </script>
 
@@ -259,12 +263,15 @@ onMounted(() => {
 /* Flex container to align two tables side by side */
 .flex-container {
   display: flex;
-  gap: 2rem; /* Add some space between the tables */
+  gap: 2rem;
+  /* Add some space between the tables */
 }
 
 .table-container {
-  flex: 1; /* Make tables take equal width */
-  min-width: 300px; /* Optional: Ensure tables don't get too narrow */
+  flex: 1;
+  /* Make tables take equal width */
+  min-width: 300px;
+  /* Optional: Ensure tables don't get too narrow */
 }
 
 .row-content {
@@ -287,11 +294,13 @@ onMounted(() => {
 }
 
 .p-datatable-scrollable-wrapper {
-  overflow-y: auto; /* Tùy chỉnh cuộn */
+  overflow-y: auto;
+  /* Tùy chỉnh cuộn */
 }
 
 .p-datatable-scrollable-view {
-  max-height: 400px; /* Đảm bảo đúng chiều cao */
+  max-height: 400px;
+  /* Đảm bảo đúng chiều cao */
 }
 
 .recharge-button {
@@ -309,7 +318,8 @@ onMounted(() => {
 
 /* Style for search input */
 .search-container {
-  margin-bottom: 1rem; /* Space below the search input */
+  margin-bottom: 1rem;
+  /* Space below the search input */
   margin-right: 40px;
 }
 

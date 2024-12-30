@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <div class="footer-content">
-      <p>Copyright ©2024 By ❤ David®. All rights reserved.</p>
+      <p>Copyright © 2024 ❤ Japan Sim. All rights reserved.</p>
     </div>
   </footer>
 </template>
