@@ -18,20 +18,19 @@
       <div class="content">
         <footer id="footer">
           <div class="container">
-            <div class="p-grid">
-              <div class="p-col-12 p-md-3">
-                <a href="index.html">
-                  <img
+            <div class="row">
+              <div class="col-md-3">
+                <a href="index.html"
+                  ><img
                     src="https://logo-download.com/wp-content/data/images/2021/08/Levi_Strauss__Co.-Logo.png"
                     alt=""
                     class="img-fluid logo-footer"
-                  />
-                </a>
+                /></a>
                 <div class="footer-about">
                   <p>
                     Lorem Ipsum is simply dummy text of the printing and
                     typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s.
+                    standard dummy text ever since the 1500s,
                   </p>
                 </div>
               </div>
@@ -94,15 +93,28 @@
           <p>Copyright © 2024 ❤ Japan Sim. All rights reserved.</p>
         </div>
       </div>
+      <svg style="position: fixed; top: 100vh">
+        <defs>
+          <filter id="blob">
+            <feGaussianBlur
+              in="SourceGraphic"
+              stdDeviation="10"
+              result="blur"
+            />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+              result="blob"
+            />
+          </filter>
+        </defs>
+      </svg>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "FooterComponent",
-};
-</script>
+<script></script>
 
 <style scoped>
 .main {
@@ -201,11 +213,19 @@ b {
 }
 
 /* footer section start */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 #footer {
   padding-top: 7rem;
 }
 
-#footer .p-grid {
+#footer .row {
   display: flex;
   gap: 150px;
 }
@@ -247,6 +267,18 @@ b {
 li {
   list-style: none;
 }
+.useful-link h2 {
+  padding-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.useful-link img {
+  padding-bottom: 15px;
+}
+
+.address-links li a {
+  color: #f5f7fa;
+}
 
 .address h2 {
   padding-bottom: 15px;
@@ -258,13 +290,10 @@ li {
   padding-bottom: 15px;
 }
 
-.address-links li {
+.address-links li a {
   color: #f5f7fa;
   font-size: 15px;
   font-weight: 500;
-}
-
-.address-links li a {
   color: #f5f7fa;
 }
 
@@ -304,4 +333,6 @@ li {
 a {
   text-decoration: none;
 }
+
+/* footer section end */
 </style>
