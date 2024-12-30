@@ -18,26 +18,25 @@
       <div class="content">
         <footer id="footer">
           <div class="container">
-            <div class="row">
-              <div class="col-md-3">
-                <a href="index.html"
-                  ><img
-                    src="https://logo-download.com/wp-content/data/images/2021/08/Levi_Strauss__Co.-Logo.png"
+            <div class="p-grid">
+              <div class="p-col-12 p-md-3">
+                <a href="index.html">
+                  <img
+                    src="/layout/images/logo.png"
                     alt=""
                     class="img-fluid logo-footer"
-                /></a>
+                  />
+                </a>
                 <div class="footer-about">
                   <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s,
+                    Receive SMS online to temporary numbers from all over the
+                    world
                   </p>
                 </div>
               </div>
               <div class="p-col-12 p-md-6">
                 <div class="social-links">
                   <h2>Follow Us</h2>
-                  <img src="./assets/images/about/home_line.png" alt="" />
                   <ul class="social-icons p-d-flex p-flex-column p-gap-2">
                     <li>
                       <a href="#"><i class="pi pi-facebook"></i> Facebook</a>
@@ -54,11 +53,6 @@
               <div class="p-col-12 p-md-3">
                 <div class="address">
                   <h2>Address</h2>
-                  <img
-                    src="./assets/images/about/home_line.png"
-                    alt=""
-                    class="img-fluid"
-                  />
                   <ul class="address-links">
                     <li class="address1">
                       <i class="pi pi-map-marker"></i> Kolathur Ramankulam,
@@ -81,15 +75,6 @@
           </div>
         </footer>
         <div>
-          <a
-            class="image"
-            href="https://codepen.io/z-"
-            target="_blank"
-            :style="{
-              backgroundImage:
-                'url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/199011/happy.svg)',
-            }"
-          ></a>
           <p>Copyright © 2024 ❤ Japan Sim. All rights reserved.</p>
         </div>
       </div>
@@ -158,13 +143,12 @@
 
 .content {
   display: grid;
-  grid-gap: 4rem;
   padding: 2rem;
   background: var(--footer-background);
 }
 
 .content img {
-  width: 300px;
+  width: 200px;
 }
 
 a,
@@ -225,7 +209,7 @@ b {
   padding-top: 7rem;
 }
 
-#footer .row {
+#footer .p-grid {
   display: flex;
   gap: 150px;
 }
@@ -244,7 +228,9 @@ b {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  color: #777777;
+  color: #f5f7fa;
+  margin: 0px;
+  padding: 0px;
 }
 
 .social-icons a {
@@ -262,11 +248,13 @@ b {
   color: #82074a;
   font-size: 16px;
   margin-right: 12px;
+  background-color: #f5f7fa;
 }
 
 li {
   list-style: none;
 }
+
 .useful-link h2 {
   padding-bottom: 15px;
   font-size: 20px;
@@ -290,10 +278,13 @@ li {
   padding-bottom: 15px;
 }
 
-.address-links li a {
+.address-links li {
   color: #f5f7fa;
   font-size: 15px;
   font-weight: 500;
+}
+
+.address-links li a {
   color: #f5f7fa;
 }
 
@@ -334,5 +325,9 @@ a {
   text-decoration: none;
 }
 
+.address-links {
+  padding: 0px;
+  margin: 0px;
+}
 /* footer section end */
 </style>
