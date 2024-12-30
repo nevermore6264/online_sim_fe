@@ -305,18 +305,6 @@ li {
   color: #f5f7fa;
 }
 
-.copy-right-sec {
-  padding: 1.8rem;
-  background: #82074a;
-  color: #fff;
-  text-align: center;
-}
-
-.copy-right-sec a {
-  color: #fcd462;
-  font-weight: 500;
-}
-
 a {
   text-decoration: none;
 }
