@@ -18,46 +18,41 @@
       <div class="content">
         <footer id="footer">
           <div class="container">
-            <div class="row">
-              <div class="col-md-3">
-                <a href="index.html"
-                  ><img
+            <div class="p-grid">
+              <div class="p-col-12 p-md-3">
+                <a href="index.html">
+                  <img
                     src="https://logo-download.com/wp-content/data/images/2021/08/Levi_Strauss__Co.-Logo.png"
                     alt=""
                     class="img-fluid logo-footer"
-                /></a>
+                  />
+                </a>
                 <div class="footer-about">
                   <p>
                     Lorem Ipsum is simply dummy text of the printing and
                     typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s,
+                    standard dummy text ever since the 1500s.
                   </p>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="p-col-12 p-md-6">
                 <div class="social-links">
                   <h2>Follow Us</h2>
                   <img src="./assets/images/about/home_line.png" alt="" />
-                  <div class="social-icons">
+                  <ul class="social-icons p-d-flex p-flex-column p-gap-2">
                     <li>
-                      <a href=""
-                        ><i class="fa-brands fa-facebook-f"></i> Facebook</a
-                      >
+                      <a href="#"><i class="pi pi-facebook"></i> Facebook</a>
                     </li>
                     <li>
-                      <a href=""
-                        ><i class="fa-brands fa-instagram"></i> Instagram</a
-                      >
+                      <a href="#"><i class="pi pi-instagram"></i> Instagram</a>
                     </li>
                     <li>
-                      <a href=""
-                        ><i class="fa-brands fa-linkedin-in"></i> Linkedin</a
-                      >
+                      <a href="#"><i class="pi pi-linkedin"></i> Linkedin</a>
                     </li>
-                  </div>
+                  </ul>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="p-col-12 p-md-3">
                 <div class="address">
                   <h2>Address</h2>
                   <img
@@ -65,23 +60,22 @@
                     alt=""
                     class="img-fluid"
                   />
-                  <div class="address-links">
+                  <ul class="address-links">
                     <li class="address1">
-                      <i class="fa-solid fa-location-dot"></i> Kolathur
-                      ramankulam- Malappuram Dt Kerala 679338
+                      <i class="pi pi-map-marker"></i> Kolathur Ramankulam,
+                      Malappuram Dt Kerala 679338
                     </li>
                     <li>
-                      <a href=""
-                        ><i class="fa-solid fa-phone"></i> +91 90904500112</a
+                      <a href="#"
+                        ><i class="pi pi-phone"></i> +91 90904500112</a
                       >
                     </li>
                     <li>
-                      <a href=""
-                        ><i class="fa-solid fa-envelope"></i>
-                        mail@1234567.com</a
+                      <a href="#"
+                        ><i class="pi pi-envelope"></i> mail@1234567.com</a
                       >
                     </li>
-                  </div>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -100,28 +94,15 @@
           <p>Copyright © 2024 ❤ Japan Sim. All rights reserved.</p>
         </div>
       </div>
-      <svg style="position: fixed; top: 100vh">
-        <defs>
-          <filter id="blob">
-            <feGaussianBlur
-              in="SourceGraphic"
-              stdDeviation="10"
-              result="blur"
-            />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
-              result="blob"
-            />
-          </filter>
-        </defs>
-      </svg>
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: "FooterComponent",
+};
+</script>
 
 <style scoped>
 .main {
@@ -220,19 +201,11 @@ b {
 }
 
 /* footer section start */
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
 #footer {
   padding-top: 7rem;
 }
 
-#footer .row {
+#footer .p-grid {
   display: flex;
   gap: 150px;
 }
@@ -274,34 +247,6 @@ b {
 li {
   list-style: none;
 }
-.useful-link h2 {
-  padding-bottom: 15px;
-  font-size: 20px;
-  font-weight: 600;
-}
-.useful-link img {
-  padding-bottom: 15px;
-}
-.use-links {
-  line-height: 32px;
-}
-
-.use-links li i {
-  font-size: 14px;
-  padding-right: 8px;
-  color: #f5f7fa;
-}
-
-.use-links li a {
-  color: #f5f7fa;
-  font-size: 15px;
-  font-weight: 500;
-  color: #f5f7fa;
-}
-
-.use-links li a:hover {
-  color: #000;
-}
 
 .address h2 {
   padding-bottom: 15px;
@@ -313,10 +258,13 @@ li {
   padding-bottom: 15px;
 }
 
-.address-links li a {
+.address-links li {
   color: #f5f7fa;
   font-size: 15px;
   font-weight: 500;
+}
+
+.address-links li a {
   color: #f5f7fa;
 }
 
@@ -356,6 +304,4 @@ li {
 a {
   text-decoration: none;
 }
-
-/* footer section end */
 </style>
