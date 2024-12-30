@@ -16,6 +16,7 @@
     "notivue": "^2.4.5",
     "nuxt": "^3.14.1592",
     "nuxt-i18n": "^2.4.1",
+    "particles.js": "^2.0.0",
     "primeicons": "^7.0.0",
     "primevue": "^3.51.1",
     "vue": "latest",

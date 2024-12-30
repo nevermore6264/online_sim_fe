@@ -17,21 +17,29 @@ body {
   font-family: Arial, sans-serif;
 }
 
-::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  background-color: #f5f5f5;
+html::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
 }
-
-::-webkit-scrollbar {
-  width: 8px;
-  background-color: #f5f5f5;
+html::-webkit-scrollbar-thumb:hover {
+  background: #f7b733;
 }
-
-::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  -webkit-box-shadow: inset 0 0 6px #929292;
-  background-color: rgba(172, 164, 164, 0.65);
+html::-webkit-scrollbar-thumb {
+  background: #f7b733;
+  border-radius: 8px;
+  cursor: pointer;
+}
+html::-webkit-scrollbar-track {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0) 48%,
+    rgba(174, 195, 249, 0.25) 0,
+    rgba(174, 195, 249, 0.25) 52%,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0)
+  );
+  border-radius: 0;
 }
 
 h1 {
