@@ -2,7 +2,7 @@
   <div class="news_tips_block ml-40-d">
     <div class="hNews-card__container">
       <div class="hNews-card_left">
-        <h4>Tips Smspva.com</h4>
+        <h4>Tips VerifySMS.com</h4>
         <p>
           We write about account registration, the intricacies of working with
           proxies, and other important topics.

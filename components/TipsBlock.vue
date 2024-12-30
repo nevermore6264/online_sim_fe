@@ -26,5 +26,6 @@ export default {
 .tips_block {
   margin: 0 auto;
   width: 95%;
+  margin-top: 50px;
 }
 </style>
