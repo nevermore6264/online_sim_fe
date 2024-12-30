@@ -16,12 +16,77 @@
         ></div>
       </div>
       <div class="content">
-        <div v-for="(group, index) in content" :key="index">
-          <b>{{ group.title }}</b>
-          <div v-for="item in group.links" :key="item.name">
-            <a :href="item.href">{{ item.name }}</a>
+        <footer id="footer">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3">
+                <a href="index.html"
+                  ><img
+                    src="https://logo-download.com/wp-content/data/images/2021/08/Levi_Strauss__Co.-Logo.png"
+                    alt=""
+                    class="img-fluid logo-footer"
+                /></a>
+                <div class="footer-about">
+                  <p>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s,
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="social-links">
+                  <h2>Follow Us</h2>
+                  <img src="./assets/images/about/home_line.png" alt="" />
+                  <div class="social-icons">
+                    <li>
+                      <a href=""
+                        ><i class="fa-brands fa-facebook-f"></i> Facebook</a
+                      >
+                    </li>
+                    <li>
+                      <a href=""
+                        ><i class="fa-brands fa-instagram"></i> Instagram</a
+                      >
+                    </li>
+                    <li>
+                      <a href=""
+                        ><i class="fa-brands fa-linkedin-in"></i> Linkedin</a
+                      >
+                    </li>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="address">
+                  <h2>Address</h2>
+                  <img
+                    src="./assets/images/about/home_line.png"
+                    alt=""
+                    class="img-fluid"
+                  />
+                  <div class="address-links">
+                    <li class="address1">
+                      <i class="fa-solid fa-location-dot"></i> Kolathur
+                      ramankulam- Malappuram Dt Kerala 679338
+                    </li>
+                    <li>
+                      <a href=""
+                        ><i class="fa-solid fa-phone"></i> +91 90904500112</a
+                      >
+                    </li>
+                    <li>
+                      <a href=""
+                        ><i class="fa-solid fa-envelope"></i>
+                        mail@1234567.com</a
+                      >
+                    </li>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </footer>
         <div>
           <a
             class="image"
@@ -99,12 +164,14 @@
 }
 
 .content {
-  z-index: 2;
   display: grid;
-  grid-template-columns: 1fr auto;
   grid-gap: 4rem;
   padding: 2rem;
   background: var(--footer-background);
+}
+
+.content img {
+  width: 300px;
 }
 
 a,
@@ -117,7 +184,7 @@ b {
   color: white;
 }
 
-p {
+.footer p {
   margin: 0;
   font-size: 0.75rem;
 }
@@ -151,4 +218,144 @@ p {
     bottom: var(--distance, 10rem);
   }
 }
+
+/* footer section start */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#footer {
+  padding-top: 7rem;
+}
+
+#footer .row {
+  display: flex;
+  gap: 150px;
+}
+
+.social-links h2 {
+  padding-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.social-links img {
+  padding-bottom: 25px;
+}
+
+.social-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: #777777;
+}
+
+.social-icons a {
+  color: #f5f7fa;
+}
+
+.social-icons a:hover {
+  color: #000;
+}
+
+.social-icons a i {
+  box-shadow: rgb(0 0 0 / 8%) 0px 4px 12px;
+  padding: 0.4rem 1rem 0.4rem 1rem;
+  border-radius: 3px;
+  color: #82074a;
+  font-size: 16px;
+  margin-right: 12px;
+}
+
+li {
+  list-style: none;
+}
+.useful-link h2 {
+  padding-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.useful-link img {
+  padding-bottom: 15px;
+}
+.use-links {
+  line-height: 32px;
+}
+
+.use-links li i {
+  font-size: 14px;
+  padding-right: 8px;
+  color: #f5f7fa;
+}
+
+.use-links li a {
+  color: #f5f7fa;
+  font-size: 15px;
+  font-weight: 500;
+  color: #f5f7fa;
+}
+
+.use-links li a:hover {
+  color: #000;
+}
+
+.address h2 {
+  padding-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.address img {
+  padding-bottom: 15px;
+}
+
+.address-links li a {
+  color: #f5f7fa;
+  font-size: 15px;
+  font-weight: 500;
+  color: #f5f7fa;
+}
+
+.address-links li i {
+  font-size: 16px;
+  padding-right: 8px;
+  color: #82074a;
+}
+
+.address-links li i:nth-child(1) {
+  padding-top: 9px;
+}
+
+.address-links .address1 {
+  font-weight: 500;
+  font-size: 15px;
+  display: flex;
+}
+
+.address-links {
+  line-height: 32px;
+  color: #f5f7fa;
+}
+
+.copy-right-sec {
+  padding: 1.8rem;
+  background: #82074a;
+  color: #fff;
+  text-align: center;
+}
+
+.copy-right-sec a {
+  color: #fcd462;
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* footer section end */
 </style>
