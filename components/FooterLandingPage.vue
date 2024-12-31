@@ -110,7 +110,7 @@
 
 .footer {
   z-index: 1;
-  --footer-background: #fc4a1a;
+  --footer-background: #2aabee;
   display: grid;
   position: relative;
   grid-area: footer;
@@ -241,7 +241,7 @@ b {
   box-shadow: rgb(0 0 0 / 8%) 0px 4px 12px;
   padding: 0.4rem 1rem 0.4rem 1rem;
   border-radius: 3px;
-  color: #fc4a1a;
+  color: #2aabee;
   font-size: 16px;
   margin-right: 12px;
   background-color: #f5f7fa;

@@ -5,6 +5,7 @@
     <main>
       <NuxtPage />
     </main>
+    <SignupBlock />
     <NewsTips />
     <TipsBlock />
     <FooterLandingPage />

@@ -22,10 +22,10 @@ html::-webkit-scrollbar {
   height: 7px;
 }
 html::-webkit-scrollbar-thumb:hover {
-  background: #f7b733;
+  background: #2aabee;
 }
 html::-webkit-scrollbar-thumb {
-  background: #f7b733;
+  background: #2aabee;
   border-radius: 8px;
   cursor: pointer;
 }
