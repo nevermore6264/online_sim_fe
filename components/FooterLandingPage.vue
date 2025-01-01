@@ -144,7 +144,8 @@
 }
 
 .content img {
-  width: 200px;
+  width: 50px;
+  margin-top: 30px;
 }
 
 a,
@@ -207,7 +208,7 @@ b {
 
 #footer .p-grid {
   display: flex;
-  gap: 150px;
+  gap: 100px;
 }
 
 .social-links h2 {
