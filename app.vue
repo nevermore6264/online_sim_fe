@@ -82,8 +82,7 @@ table td {
 }
 
 table th {
-  background: #3a7bd5;
-  /* fallback for old browsers */
+  background: #2f80ed;
   color: white;
   text-transform: uppercase;
   font-weight: 600;

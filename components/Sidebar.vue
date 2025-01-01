@@ -190,9 +190,7 @@ li a {
 
 li:hover {
   width: 100%;
-  background: #00d2ff;
-  background: -webkit-linear-gradient(to right, #3a7bd5, #00d2ff);
-  background: linear-gradient(to right, #3a7bd5, #00d2ff);
+  background: linear-gradient(to left, #56ccf2, #2f80ed);
 }
 
 li a:hover {
