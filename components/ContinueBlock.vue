@@ -18,8 +18,9 @@ export default {
 
 <style scoped>
 .continue-block {
-  padding: 1rem; /* Example padding */
   border-radius: 5px; /* Rounded corners */
+  margin: 2rem auto;
+  width: 95%;
 }
 
 .try_it_out {
@@ -31,14 +32,11 @@ export default {
   padding: 14px 15px 15px 15px;
   padding-inline: 25px;
   border-radius: 15px;
-  margin-top: 25px;
+  margin-top: 10px;
 }
 
 .try_it_out:hover {
   background-color: #0056b3; /* Darker on hover */
 }
 
-.signup-block-info {
-  margin: 10px 0 !important;
-}
 </style>
