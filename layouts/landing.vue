@@ -5,7 +5,8 @@
     <main>
       <NuxtPage />
     </main>
-    <SignupBlock />
+    <FeaturesBlock/>
+    <ContinueBlock />
     <NewsTips />
     <TipsBlock />
     <FooterLandingPage />
