@@ -13,7 +13,7 @@
     <h2>Buy OTP Service</h2>
 
     <!-- Flex container to hold two tables on the same row -->
-    <div class="flex-container">
+    <div class="flex-container landing-page-container">
       <!-- Main DataTable -->
       <div class="table-container">
         <DataTable
@@ -172,6 +172,10 @@ function toggle(index) {
 </script>
 
 <style scoped>
+.landing-page-container {
+  
+}
+
 .landing-page {
   display: flex;
   flex-direction: column;
