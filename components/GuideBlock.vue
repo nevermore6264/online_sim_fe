@@ -28,19 +28,19 @@ export default {
                     title: 'Get the temp number',
                     action1: 'Choose the service from which you will be expecting the SMS',
                     action2: 'Choose the country from which this number should be',
-                    image: '/img/order_panel__icons/guide1.svg'
+                    image: '/layout/images/guide1.svg'
                 },
                 {
                     title: 'Send SMS to the phone number',
                     action1: 'Enter this phone number into the registration form on the required website',
                     action2: 'Send the confirmation code to the number',
-                    image: '/img/order_panel__icons/guide2.svg'
+                    image: '/layout/images/guide2.svg'
                 },
                 {
                     title: 'Get an SMS on the website',
                     action1: 'After receiving the SMS message with the confirmation code,',
                     action2: 'copy it and use it to complete the account activation',
-                    image: '/img/order_panel__icons/guide3.svg'
+                    image: '/layout/images/guide3.svg'
                 }
             ]
         };
@@ -76,10 +76,28 @@ export default {
 
 .guide-card-body {
     flex: 1;
+    height: 175px;
+}
+
+.guide-card-body h3 {
+    margin-top: 10px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: rgb(56, 56, 56);
+}
+
+.guide-card-body p {
+    font-style: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: rgb(56, 56, 56);
+    opacity: 0.6;
 }
 
 .image {
-    margin-left: 20px;
+    text-align: right;
 }
 
 .image img {

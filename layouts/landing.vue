@@ -5,6 +5,7 @@
     <main>
       <NuxtPage />
     </main>
+    <!-- <ClientBlock/> -->
     <GuideBlock/>
     <FeaturesBlock/>
     <ContinueBlock />
