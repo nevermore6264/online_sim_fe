@@ -78,10 +78,20 @@ export default {
   justify-content: space-between;
 }
 
-.hNews-card_left,
-.hNews-card__right {
-  width: 48%;
+.hNews-card_left{
+  width: 65%;
+    min-height: 100%;
+    position: relative;
+    border-radius: 15px;
 }
+
+.hNews-card__right {
+  width: 33%;
+    min-height: 100%;
+    position: relative;
+    background-color: #2aabee;
+    border-radius: 5px;
+  }
 
 .info_block {
   margin-top: 1rem;

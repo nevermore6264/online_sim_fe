@@ -2,11 +2,12 @@
   <div class="landing-page">
     <div class="flex-container landing-page-container">
       <!-- Main DataTable -->
-      <div class="table-container">
+      <div class="table-container table-services">
         <DataTable :value="filteredCustomers" scrollable scrollHeight="400px" dataKey="code" :loading="loading"
           @row-click="onRowClick">
           <template #header>
-            <div class="flex justify-content-end">
+            <div class="lbl_services">
+              Select countries
             </div>
           </template>
           <template #empty> No countries found. </template>
@@ -168,7 +169,7 @@ function toggle(index) {
 .lbl_services {
   text-align: left;
   font-size: 14px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .table-services {
