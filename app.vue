@@ -128,6 +128,10 @@ table {
   width: 50% !important;
 }
 
+a:link {
+  color: #2aabee;
+}
+
 #app-content {
   margin-left: 250px;
   padding: 25px 10px;

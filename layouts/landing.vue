@@ -13,10 +13,10 @@
         <ContinueBlock />
         <NewsTips />
         <TipsBlock />
-        <FooterLandingPage />
       </div>
     </div>
   </div>
+  <FooterLandingPage />
 </template>
 
 <script setup></script>
