@@ -1,22 +1,10 @@
 <template>
   <div class="landing-page">
-    <h3 class="title">Receive SMS Online to Virtual Phone Number</h3>
-    <p class="subtitle">
-      For private registration on various sites, services, and apps
-    </p>
-
-    <!-- Flex container to hold two tables on the same row -->
     <div class="flex-container landing-page-container">
       <!-- Main DataTable -->
       <div class="table-container">
-        <DataTable
-          :value="filteredCustomers"
-          scrollable
-          scrollHeight="400px"
-          dataKey="code"
-          :loading="loading"
-          @row-click="onRowClick"
-        >
+        <DataTable :value="filteredCustomers" scrollable scrollHeight="400px" dataKey="code" :loading="loading"
+          @row-click="onRowClick">
           <template #header>
             <div class="flex justify-content-end">
             </div>
@@ -24,19 +12,10 @@
           <template #empty> No countries found. </template>
           <!-- <template #loading> Loading customers data. Please wait. </template> -->
 
-          <Column
-            header="Country"
-            filterField="country.name"
-            style="min-width: 12rem"
-          >
+          <Column header="Country" filterField="country.name" style="min-width: 12rem">
             <template #body="{ data }">
               <div class="flex align-items-center row-content">
-                <img
-                  alt="flag"
-                  :src="`${data.flagImage}`"
-                  :class="`flag flag-${data.code}`"
-                  style="width: 24px"
-                />
+                <img alt="flag" :src="`${data.flagImage}`" :class="`flag flag-${data.code}`" style="width: 24px" />
                 <span class="country">{{ data.name }}</span>
               </div>
             </template>
@@ -45,18 +24,12 @@
       </div>
 
       <!-- Sub DataTable for services -->
-      <div class="table-container">
-        <DataTable
-          :value="selectedCustomer?.services"
-          scrollable
-          scrollHeight="200px"
-          dataKey="id"
-          :loading="loading"
-        >
+      <div class="table-container table-services">
+        <DataTable :value="selectedCustomer?.services" scrollable scrollHeight="200px" dataKey="id" :loading="loading">
           <template #header>
-            <h4 class="lbl_services">
-              Services for {{ selectedCustomer?.country?.name }}
-            </h4>
+            <div class="lbl_services">
+              Select Services
+            </div>
           </template>
           <template #empty> No services found. </template>
           <template #loading> Loading services data. Please wait. </template>
@@ -148,11 +121,7 @@ function toggle(index) {
 }
 </script>
 
-<style scoped>
-.landing-page-container {
-  
-}
-
+<style>
 .landing-page {
   display: flex;
   flex-direction: column;
@@ -175,8 +144,10 @@ function toggle(index) {
 }
 
 .table-container {
-  flex: 1; /* Make tables take equal width */
-  min-width: 300px; /* Optional: Ensure tables don't get too narrow */
+  flex: 1;
+  /* Make tables take equal width */
+  min-width: 300px;
+  /* Optional: Ensure tables don't get too narrow */
 }
 
 .row-content {
@@ -195,6 +166,25 @@ function toggle(index) {
 }
 
 .lbl_services {
-  margin-top: 20px !important;
+  text-align: left;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.table-services {
+  margin-top: 20px;
+}
+
+.table-services .p-datatable-header {
+  margin-bottom: -15px !important;
+  min-width: 135px !important;
+  width: max-content !important;
+  max-width: 60% !important;
+  padding: 0px 15px !important;
+  height: 45px !important;
+  border-radius: 15px 15px 0 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 </style>
