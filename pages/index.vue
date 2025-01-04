@@ -13,17 +13,16 @@
           :value="filteredCustomers"
           scrollable
           scrollHeight="400px"
-          dataKey="id"
+          dataKey="code"
           :loading="loading"
           @row-click="onRowClick"
         >
           <template #header>
             <div class="flex justify-content-end">
-              <!-- Không cần thêm ô tìm kiếm tại header nữa -->
             </div>
           </template>
-          <template #empty> No customers found. </template>
-          <template #loading> Loading customers data. Please wait. </template>
+          <template #empty> No countries found. </template>
+          <!-- <template #loading> Loading customers data. Please wait. </template> -->
 
           <Column
             header="Country"
@@ -34,14 +33,11 @@
               <div class="flex align-items-center row-content">
                 <img
                   alt="flag"
-                  :src="`https://flagsapi.com/${data.country.code}/flat/64.png`"
-                  :class="`flag flag-${data.country.code}`"
+                  :src="`${data.flagImage}`"
+                  :class="`flag flag-${data.code}`"
                   style="width: 24px"
                 />
-                <span class="country">{{ data.country.name }}</span>
-                <span class="dialCode" v-if="data.country.dialCode">
-                  ({{ data.country.dialCode }})
-                </span>
+                <span class="country">{{ data.name }}</span>
               </div>
             </template>
           </Column>
@@ -83,6 +79,8 @@ definePageMeta({
 
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
+import { GetAllCountries } from '@/services/country.js'; // Adjust the path as necessary
+
 const customers = ref([]);
 const loading = ref(false);
 const selectedCustomer = ref(null);
@@ -98,25 +96,11 @@ const filteredCustomers = computed(() => {
   );
 });
 
-// Fetch countries function
+// Fetch countries function using GetAllCountries
 const fetchCountries = async () => {
   try {
-    const response = await fetch("https://restcountries.com/v3.1/all");
-    const data = await response.json();
-    return data?.map((country) => ({
-      id: country.cca2,
-      country: {
-        name: country.name.common,
-        code: country.cca2,
-        cca3: country.cca3,
-        dialCode:
-          country.idd && country.idd.root
-            ? country.idd.root +
-              (country.idd?.suffixes?.length ? country.idd?.suffixes[0] : "")
-            : "N/A",
-      },
-      services: [],
-    }));
+    const countries = await GetAllCountries(); // Call your service function
+    return countries;
   } catch (error) {
     console.error("Error fetching countries:", error);
     return [];
@@ -188,99 +172,6 @@ function toggle(index) {
 .subtitle {
   font-size: 1.5em;
   margin: 20px 0;
-}
-
-.timeline-title {
-  margin-top: 40px;
-  font-size: 2em;
-}
-
-.timeline-subtitle {
-  margin: 10px 0 20px;
-  font-size: 1.2em;
-}
-
-.timeline {
-  position: relative;
-  display: flex;
-  margin: 0 auto;
-  width: 95%;
-}
-
-.timeline-item {
-  padding: 20px;
-  border-left: 4px solid #007bff;
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.timeline-content {
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 5px;
-  text-align: left;
-}
-
-.timeline-item h3 {
-  margin: 0;
-  font-size: 1.5em;
-}
-
-.timeline-item p {
-  margin: 5px 0;
-}
-
-.index-faq {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.faq-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.faq-item {
-  margin-bottom: 10px;
-  cursor: pointer;
-  border: 1px solid #e5eaf4;
-  border-radius: 8px;
-  box-shadow: 0 6px 10px #00000008;
-  transition: 0.3s;
-}
-
-header {
-  padding: 15px;
-  background: #f7f7f7;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header span {
-  font-weight: bold;
-}
-
-.body {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s ease, padding 0.3s ease;
-}
-
-.body.active {
-  max-height: 200px; /* Adjust based on your content size */
-  padding: 15px;
-}
-
-.content {
-  display: block;
-}
-
-.content p {
-  text-align: left;
-  color: dimgrey;
 }
 
 .table-container {

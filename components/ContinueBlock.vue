@@ -3,7 +3,7 @@
     <h2 class="signup-block-info">Complete a simple registration and receive a phone number for SMS</h2>
     <p class="signup-block-info">Get the opportunity to use our numbers for registration!
     </p>
-    <Button href="/index.php?do=register" class="try_it_out noselect">
+    <Button class="try_it_out noselect">
       Sign up
       <i class="pi pi-arrow-right" style="font-size: 0.75rem; margin-left: 10px;"></i>
     </Button>

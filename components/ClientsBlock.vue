@@ -5,7 +5,7 @@
             Receive SMS online to temporary numbers from all over the world
         </h2>
         <div class="spacer-25"></div>
-        <a href="/index.php?do=register" class="try_it_out noselect">Try it out</a>
+        <a class="try_it_out noselect">Try it out</a>
 
         <div class="col-lg-10 clients_stars">
             <div class="stars noselect">

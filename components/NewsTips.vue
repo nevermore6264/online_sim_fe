@@ -22,7 +22,7 @@
             <i class="pi pi-newspaper" style="font-size: 100px"></i>
             <!-- Prime Icon for News -->
           </div>
-          <nuxt-link class="hNews-card__btnImg" to="/index.php?do=lastnews">
+          <nuxt-link class="hNews-card__btnImg">
             <i class="pi pi-arrow-right" style="font-size: 24px"></i>
           </nuxt-link>
         </div>
