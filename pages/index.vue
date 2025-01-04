@@ -1,16 +1,9 @@
 <template>
   <div class="landing-page">
-    <h1 class="title">Receive SMS Online to Virtual Phone Number</h1>
+    <h3 class="title">Receive SMS Online to Virtual Phone Number</h3>
     <p class="subtitle">
       For private registration on various sites, services, and apps
     </p>
-    <ul class="unordered-list">
-      <li>90 countries and more than 1 million numbers</li>
-      <li>Short and long-term number rental</li>
-      <li>New phone numbers added daily</li>
-    </ul>
-
-    <h2>Buy OTP Service</h2>
 
     <!-- Flex container to hold two tables on the same row -->
     <div class="flex-container landing-page-container">
@@ -195,15 +188,6 @@ function toggle(index) {
 .subtitle {
   font-size: 1.5em;
   margin: 20px 0;
-}
-
-.unordered-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.unordered-list li {
-  margin: 5px 0;
 }
 
 .timeline-title {
