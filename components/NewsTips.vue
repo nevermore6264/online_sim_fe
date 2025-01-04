@@ -11,20 +11,27 @@
           <i class="pi pi-file-text" style="font-size: 120px"></i>
           <!-- Prime Icon for Blog -->
         </div>
-        <nuxt-link class="hNews-card__btnImg" to="/blog">
-          <i class="pi pi-arrow-right" style="font-size: 24px"></i>
-        </nuxt-link>
+        <div class="hNews-card__btnWrap">
+          <nuxt-link class="hNews-card__btnImg" to="/blog">
+            <i class="pi pi-arrow-right"></i>
+          </nuxt-link>
+        </div>
       </div>
       <div class="hNews-card__right">
         <div class="lastnews_box">
           <h4>News</h4>
           <div class="hNews-card__img">
             <i class="pi pi-newspaper" style="font-size: 100px"></i>
-            <!-- Prime Icon for News -->
+            <div class="telegram_box__img">
+              <i class="pi pi-telegram" style="font-size: 90px"></i>
+              <!-- Prime Icon for Telegram -->
+            </div>
           </div>
-          <nuxt-link class="hNews-card__btnImg">
-            <i class="pi pi-arrow-right" style="font-size: 24px"></i>
-          </nuxt-link>
+          <div class="hNews-card__btnWrap">
+            <nuxt-link class="hNews-card__btnImg">
+              <i class="pi pi-arrow-right"></i>
+            </nuxt-link>
+          </div>
         </div>
         <div class="telegram_box">
           <h4>@smspva_news_official</h4>
@@ -32,9 +39,11 @@
             <i class="pi pi-telegram" style="font-size: 90px"></i>
             <!-- Prime Icon for Telegram -->
           </div>
-          <a href="https://t.me/smspva_news_official">
-            <i class="pi pi-arrow-right" style="font-size: 24px"></i>
-          </a>
+          <div class="telegram_box__btnWrap">
+            <a href="https://t.me/smspva_news_official" class="hNews-card__btnImg">
+              <i class="pi pi-arrow-right"></i>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -57,12 +66,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "NewsTips",
-};
-</script>
-
 <style scoped>
 .news_tips_block {
   margin: 0 auto;
@@ -78,31 +81,63 @@ export default {
   justify-content: space-between;
 }
 
-.hNews-card_left{
+.hNews-card_left {
   width: 65%;
-    min-height: 100%;
-    position: relative;
-    border-radius: 15px;
+  min-height: 100%;
+  position: relative;
+  border-radius: 15px;
 }
 
 .hNews-card__right {
   width: 33%;
-    min-height: 100%;
-    position: relative;
-    background-color: #2aabee;
-    border-radius: 5px;
-  }
+  min-height: 100%;
+  position: relative;
+  background-color: #2aabee;
+  border-radius: 5px;
+}
+
+.hNews-card__btnWrap,
+.telegram_box__btnWrap {
+  display: flex;
+  justify-content: flex-end;
+  /* Align to the right */
+  margin-top: 10px;
+  /* Space above the button */
+}
+
+.hNews-card__btnImg,
+.telegram_box__btnWrap a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  /* Width of the circular button */
+  height: 40px;
+  /* Height of the circular button */
+  border-radius: 50%;
+  /* Make it circular */
+  background-color: #2aabee;
+  /* Match the background color */
+  color: #ffffff;
+  /* Icon color */
+  text-decoration: none;
+  /* Remove underline */
+}
+
+.hNews-card__btnImg:hover,
+.telegram_box__btnWrap a:hover {
+  background-color: #1a7bbf;
+  /* Darken on hover */
+}
 
 .info_block {
   margin-top: 1rem;
-  /* Space above info block */
 }
 
 .info_block .row {
   color: rgb(56, 56, 56);
   padding: 15px 0;
 }
-
 
 .hNews-card_left p {
   max-width: 80%;
@@ -121,5 +156,20 @@ export default {
   line-height: 31px;
   margin-left: 35px;
   margin-top: 37px;
+}
+
+.hNews-card__right h4 {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 31px;
+  color: #ffffff;
+  margin: 20px;
+}
+
+.telegram_box__img {
+  width: 90px;
+  height: 90px;
+  color: #ffffff;
+  margin-left: 20px;
 }
 </style>
