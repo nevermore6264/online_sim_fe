@@ -2,7 +2,8 @@
     <div class="features-block">
         <h2>SMSpva is one of the first websites for selling phone numbers</h2>
         <span style="margin-left: 2px; margin-top: 5px;">
-            SmsPva provides the opportunity to use short-term temp phone numbers from different countries at fair and affordable prices for receiving SMS messages.
+            SmsPva provides the opportunity to use short-term temp phone numbers from different countries at fair and
+            affordable prices for receiving SMS messages.
         </span>
         <div class="cards-block w-100">
             <div class="card" v-for="(feature, index) in features" :key="index">
@@ -69,7 +70,7 @@ export default {
 }
 
 .card {
-    flex: 1 1 calc(33.333% - 20px);
+    flex: 1 1 calc(50% - 20px);
     padding: 20px 20px 30px 20px;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -87,11 +88,26 @@ export default {
 }
 
 .card-header {
-    font-weight: bold;
-    margin-top: 10px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 26px;
+    padding: 0 10px 0 10px;
+    color: rgb(56, 56, 56);
 }
 
 .card-body {
-    margin-top: 5px;
+    padding: 0 10px 0 10px;
+    margin-top: 20px;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 17px;
+    color: rgb(56, 56, 56);
+}
+
+.card .image {
+    margin-bottom: 30px;
+    margin-left: 10px;
 }
 </style>

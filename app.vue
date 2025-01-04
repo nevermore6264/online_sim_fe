@@ -14,7 +14,7 @@
 /* Thêm các style toàn cục cho ứng dụng ở đây nếu cần */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font: 400 14px / 16px MyriadSetPro, Arial, sans-serif;
 }
 
 html::-webkit-scrollbar {
@@ -73,7 +73,6 @@ button:hover {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-family: Arial, sans-serif;
   font-size: 14px;
   color: #333;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

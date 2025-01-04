@@ -105,7 +105,6 @@
   grid-template-rows: 0fr 7rem auto;
   grid-template-areas: "main" "." "footer";
   overflow-x: hidden;
-  font-family: "Open Sans", sans-serif;
   background: linear-gradient(to right, #d7f2fe, #ffffff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }

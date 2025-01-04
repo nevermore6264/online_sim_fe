@@ -68,12 +68,9 @@ export default {
   margin: 0 auto;
   width: 95%;
   border: 1px solid #ddd;
-  /* Add a border for better visibility */
   border-radius: 10px;
   padding: 1rem;
-  /* Add padding for spacing */
   background-color: #ffffff;
-  /* Light background color */
 }
 
 .hNews-card__container {
@@ -84,7 +81,6 @@ export default {
 .hNews-card_left,
 .hNews-card__right {
   width: 48%;
-  /* Adjust width for left and right sections */
 }
 
 .info_block {
@@ -92,10 +88,11 @@ export default {
   /* Space above info block */
 }
 
-.row {
-  margin-bottom: 0.5rem;
-  /* Space between rows */
+.info_block .row {
+  color: rgb(56, 56, 56);
+  padding: 15px 0;
 }
+
 
 .hNews-card_left p {
   max-width: 80%;
@@ -108,12 +105,11 @@ export default {
 }
 
 .hNews-card_left h3 {
-    max-width: 80%;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 31px;
-    margin-left: 35px;
-    margin-top: 37px;
+  max-width: 80%;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 31px;
+  margin-left: 35px;
+  margin-top: 37px;
 }
-
 </style>
