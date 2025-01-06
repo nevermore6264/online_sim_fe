@@ -12,6 +12,7 @@
           <!-- Prime Icon for Blog -->
         </div>
         <div class="hNews-card__btnWrap">
+          <img src="/layout/images/blog.svg" alt="Logo" class="logo-image" />
           <nuxt-link class="hNews-card__btnImg" to="/blog">
             <i class="pi pi-arrow-right"></i>
           </nuxt-link>
@@ -21,10 +22,12 @@
         <div class="lastnews_box">
           <h4>News</h4>
           <div class="hNews-card__img-btnWrap">
-            <div class="hNews-card__img">
-              <i class="pi pi-newspaper" style="font-size: 100px"></i>
-            </div>
-            <div class="hNews-card__btnWrap">
+            <div class="hNews-card__img-btn">
+              <img
+                src="/layout/images/news.svg"
+                alt="Logo"
+                class="logo-image"
+              />
               <nuxt-link class="hNews-card__btnImg">
                 <i class="pi pi-arrow-right"></i>
               </nuxt-link>
@@ -33,10 +36,8 @@
         </div>
         <div class="telegram_box">
           <h4>@smspva_news_official</h4>
-          <div class="telegram_box__img">
-            <i class="pi pi-telegram" style="font-size: 90px"></i>
-          </div>
-          <div class="telegram_box__btnWrap">
+          <div class="telegram_box__img-btn">
+            <img src="/layout/images/tele.svg" alt="Logo" class="logo-image" />
             <nuxt-link class="hNews-card__btnImg">
               <i class="pi pi-arrow-right"></i>
             </nuxt-link>
@@ -96,8 +97,16 @@
 .hNews-card__btnWrap,
 .telegram_box__btnWrap {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 10px;
+}
+
+.hNews-card__btnWrap img {
+  margin-left: 35px;
+}
+
+.hNews-card__btnWrap a {
+  margin-right: 35px;
 }
 
 .hNews-card__btnImg,
@@ -111,12 +120,21 @@
   background-color: #2aabee;
   color: #ffffff;
   text-decoration: none;
+  margin-right: 30px;
 }
 
-.hNews-card__btnImg:hover,
-.telegram_box__btnWrap a:hover {
-  background-color: #1a7bbf;
-  /* Darken on hover */
+.hNews-card__right .hNews-card__btnImg,
+.telegram_box__btnWrap a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #2aabee;
+  text-decoration: none;
+  margin-right: 30px;
 }
 
 .info_block {
@@ -159,13 +177,28 @@
   width: 30%;
   height: 90px;
   color: #ffffff;
-  margin-left: 20px;
 }
 
-.hNews-card__img-btnWrap {
-  display: flex; /* Sử dụng Flexbox để gộp các phần tử vào cùng một hàng */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  margin-top: 10px; /* Thêm khoảng cách phía trên */
+.hNews-card__img-btn {
+  display: flex; /* Dùng Flexbox để sắp xếp hàng ngang */
+  justify-content: space-between; /* Đẩy các phần tử ra hai đầu */
+  width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng */
+  margin-left: 15px;
+}
+
+.hNews-card__img {
+  flex-shrink: 0; /* Ngăn không để ảnh bị co lại */
+}
+
+.hNews-card__btnImg {
+  flex-shrink: 0; /* Ngăn không để icon bị co lại */
+}
+
+.telegram_box__img-btn {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 15px;
 }
 
 .hNews-card__img {
