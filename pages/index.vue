@@ -68,7 +68,9 @@
                     class="flag-image"
                   />
                   <span class="service-name">{{ service.text }}</span>
-                  <span class="service-price">{{ service.price }} USD</span>
+                  <span class="service-price"
+                    >from {{ service.price }} USD</span
+                  >
                 </div>
               </div>
             </template>
@@ -304,6 +306,7 @@ function toggle(index) {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between; /* Tạo khoảng cách giữa tên và giá */
   cursor: pointer;
   padding: 8px;
   transition: background-color 0.3s;
@@ -319,11 +322,14 @@ function toggle(index) {
 .service-name {
   font-size: 14px;
   font-weight: bold;
+  flex: 1; /* Chiếm tối đa không gian còn lại */
+  text-align: left; /* Đảm bảo căn trái */
 }
 
 .service-price {
   font-size: 12px;
   color: gray;
-  text-align: right;
+  text-align: right; /* Căn phải */
+  white-space: nowrap; /* Tránh xuống dòng */
 }
 </style>
