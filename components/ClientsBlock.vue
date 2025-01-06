@@ -97,7 +97,7 @@
 .clients_text span {
   display: block;
   margin-top: 5px;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   color: rgb(110, 120, 130);
 }
@@ -114,6 +114,7 @@
   margin-top: 10px;
   background-color: #2aabee;
   margin: 2rem auto;
+  border: none;
 }
 
 .try_it_out:hover {
