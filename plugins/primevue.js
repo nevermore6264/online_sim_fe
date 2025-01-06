@@ -13,6 +13,7 @@ import Breadcrumb from "primevue/breadcrumb";
 import Timeline from "primevue/timeline";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordion";
+import DataView from "primevue/dataview"; // Import DataView
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -30,4 +31,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("Timeline", Timeline);
   nuxtApp.vueApp.component("Accordion", Accordion);
   nuxtApp.vueApp.component("AccordionTab", AccordionTab);
+  nuxtApp.vueApp.component("DataView", DataView);
 });

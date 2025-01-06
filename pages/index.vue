@@ -3,20 +3,33 @@
     <div class="flex-container landing-page-container">
       <!-- Main DataTable -->
       <div class="table-container table-services">
-        <DataTable :value="filteredCustomers" scrollable scrollHeight="400px" dataKey="code" :loading="loading"
-          @row-click="onRowClick">
+        <DataTable
+          :value="filteredCustomers"
+          scrollable
+          scrollHeight="400px"
+          dataKey="code"
+          :loading="loading"
+          @row-click="onRowClick"
+        >
           <template #header>
-            <div class="lbl_services">
-              Select countries
-            </div>
+            <div class="lbl_services">Select countries</div>
           </template>
           <template #empty> No countries found. </template>
           <!-- <template #loading> Loading customers data. Please wait. </template> -->
 
-          <Column header="Country" filterField="country.name" style="min-width: 12rem">
+          <Column
+            header="Country"
+            filterField="country.name"
+            style="min-width: 12rem"
+          >
             <template #body="{ data }">
               <div class="flex align-items-center row-content">
-                <img alt="flag" :src="`${data.flagImage}`" :class="`flag flag-${data.code}`" style="width: 24px" />
+                <img
+                  alt="flag"
+                  :src="`${data.flagImage}`"
+                  :class="`flag flag-${data.code}`"
+                  style="width: 24px"
+                />
                 <span class="country">{{ data.name }}</span>
               </div>
             </template>
@@ -26,11 +39,15 @@
 
       <!-- Sub DataTable for services -->
       <div class="table-container table-services">
-        <DataTable :value="selectedCustomer?.services" scrollable scrollHeight="200px" dataKey="id" :loading="loading">
+        <DataTable
+          :value="selectedCustomer?.services"
+          scrollable
+          scrollHeight="200px"
+          dataKey="id"
+          :loading="loading"
+        >
           <template #header>
-            <div class="lbl_services">
-              Select Services
-            </div>
+            <div class="lbl_services">Select Services</div>
           </template>
           <template #empty> No services found. </template>
           <template #loading> Loading services data. Please wait. </template>
@@ -53,7 +70,7 @@ definePageMeta({
 
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import { GetAllCountries } from '@/services/country.js'; // Adjust the path as necessary
+import { GetAllCountries } from "@/services/country.js"; // Adjust the path as necessary
 
 const customers = ref([]);
 const loading = ref(false);

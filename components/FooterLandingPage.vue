@@ -20,13 +20,6 @@
           <div class="container">
             <div class="p-grid">
               <div class="p-col-12 p-md-3">
-                <a href="index.html">
-                  <img
-                    src="/layout/images/logo.png"
-                    alt=""
-                    class="img-fluid logo-footer"
-                  />
-                </a>
                 <div class="footer-about">
                   <p>
                     Receive SMS online to temporary numbers from all over the
@@ -37,7 +30,6 @@
               </div>
               <div class="p-col-12 p-md-6">
                 <div class="social-links">
-                  <h2>Follow Us</h2>
                   <ul class="social-icons p-d-flex p-flex-column p-gap-2">
                     <li>
                       <a href="#"><i class="pi pi-facebook"></i> Facebook</a>
@@ -53,20 +45,17 @@
               </div>
               <div class="p-col-12 p-md-3">
                 <div class="address">
-                  <h2>Address</h2>
                   <ul class="address-links">
                     <li class="address1">
-                      <i class="pi pi-map-marker"></i> Kolathur Ramankulam,
-                      Malappuram Dt Kerala 679338
+                      <i class="pi pi-map-marker"></i> Ngũ Hành Sơn Đà Nẵng
+                    </li>
+                    <li>
+                      <a href="#"><i class="pi pi-phone"></i> +84 862478150</a>
                     </li>
                     <li>
                       <a href="#"
-                        ><i class="pi pi-phone"></i> +91 90904500112</a
-                      >
-                    </li>
-                    <li>
-                      <a href="#"
-                        ><i class="pi pi-envelope"></i> mail@1234567.com</a
+                        ><i class="pi pi-envelope"></i>
+                        spteam.coder@gmail.com</a
                       >
                     </li>
                   </ul>
@@ -105,8 +94,11 @@
   grid-template-rows: 0fr 7rem auto;
   grid-template-areas: "main" "." "footer";
   overflow-x: hidden;
-  background: linear-gradient(to right, #d7f2fe, #ffffff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+  background: linear-gradient(
+    to right,
+    #d7f2fe,
+    #ffffff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .footer {
@@ -176,8 +168,8 @@ b {
 @keyframes bubble-size {
   0%,
   75% {
-    width: var(--size, 4rem);
-    height: var(--size, 4rem);
+    width: var(--size, 1rem);
+    height: var(--size, 1rem);
   }
   100% {
     width: 0rem;
@@ -187,10 +179,10 @@ b {
 
 @keyframes bubble-move {
   0% {
-    bottom: -4rem;
+    bottom: -1rem;
   }
   100% {
-    bottom: var(--distance, 10rem);
+    bottom: var(--distance, 1rem);
   }
 }
 
@@ -204,18 +196,12 @@ b {
 }
 
 #footer {
-  padding-top: 7rem;
+  padding-top: 5rem;
 }
 
 #footer .p-grid {
   display: flex;
   gap: 100px;
-}
-
-.social-links h2 {
-  padding-bottom: 15px;
-  font-size: 20px;
-  font-weight: 600;
 }
 
 .social-links img {
@@ -264,12 +250,6 @@ li {
 
 .address-links li a {
   color: #f5f7fa;
-}
-
-.address h2 {
-  padding-bottom: 15px;
-  font-size: 20px;
-  font-weight: 600;
 }
 
 .address img {
