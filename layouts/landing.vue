@@ -23,21 +23,70 @@
 <style scoped>
 .main {
   display: flex;
+  flex-direction: column; /* Make the main container stack on small screens */
 }
 
 .container {
   display: flex;
   flex: 1;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 .main-content {
   padding: 20px;
-  min-width: 560px;
+  width: 560px;
 }
 
 .side-content {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  flex: 1;
+}
+
+@media (max-width: 1366px) {
+  .container {
+    flex-direction: column; /* Stack the main content and side content for tablets */
+  }
+
+  .main-content {
+    min-width: 100%; /* Ensure main content takes full width on tablets */
+  }
+
+  .side-content {
+    width: 100%; /* Side content takes full width on tablets */
+    margin-top: 20px; /* Add margin between side content and main content */
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 10px; /* Add some padding to the main container on mobile */
+  }
+
+  .container {
+    flex-direction: column; /* Stack the elements vertically */
+  }
+
+  .main-content {
+    padding: 10px;
+    min-width: 100%;
+  }
+
+  .side-content {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    font-size: 14px; /* Adjust font size on very small screens */
+  }
+
+  .side-content {
+    padding: 10px;
+  }
 }
 </style>

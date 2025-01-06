@@ -3,15 +3,15 @@
     <div class="footer">
       <div class="bubbles">
         <div
-          v-for="i in 128"
+          v-for="(style, i) in bubbleStyles"
           :key="i"
           class="bubble"
           :style="{
-            '--size': `${2 + Math.random() * 4}rem`,
-            '--distance': `${6 + Math.random() * 4}rem`,
-            '--position': `${-5 + Math.random() * 110}%`,
-            '--time': `${2 + Math.random() * 2}s`,
-            '--delay': `${-1 * (2 + Math.random() * 2)}s`,
+            '--size': style.size,
+            '--distance': style.distance,
+            '--position': style.position,
+            '--time': style.time,
+            '--delay': style.delay,
           }"
         ></div>
       </div>
@@ -98,7 +98,32 @@
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      bubbleStyles: [],
+    };
+  },
+  mounted() {
+    // Ensure random values are calculated only on the client-side
+    this.generateBubbleStyles();
+  },
+  methods: {
+    generateBubbleStyles() {
+      this.bubbleStyles = Array.from({ length: 128 }).map(() => {
+        return {
+          size: `${2 + Math.random() * 4}rem`,
+          distance: `${6 + Math.random() * 4}rem`,
+          position: `${-5 + Math.random() * 110}%`,
+          time: `${2 + Math.random() * 2}s`,
+          delay: `${-1 * (2 + Math.random() * 2)}s`,
+        };
+      });
+    },
+  },
+};
+</script>
 
 <style scoped>
 .main-footer {
@@ -214,6 +239,7 @@ b {
 #footer .p-grid {
   display: flex;
   gap: 100px;
+  flex-wrap: wrap;
 }
 
 .social-links img {
@@ -271,15 +297,6 @@ li {
   list-style: none;
 }
 
-.useful-link h2 {
-  padding-bottom: 15px;
-  font-size: 20px;
-  font-weight: 600;
-}
-.useful-link img {
-  padding-bottom: 15px;
-}
-
 .address-links li a {
   color: #f5f7fa;
 }
@@ -327,5 +344,4 @@ a {
   padding: 0px;
   margin: 0px;
 }
-/* footer section end */
 </style>

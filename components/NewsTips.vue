@@ -20,24 +20,21 @@
       <div class="hNews-card__right">
         <div class="lastnews_box">
           <h4>News</h4>
-          <div class="hNews-card__img">
-            <i class="pi pi-newspaper" style="font-size: 100px"></i>
-            <div class="telegram_box__img">
-              <i class="pi pi-telegram" style="font-size: 90px"></i>
-              <!-- Prime Icon for Telegram -->
+          <div class="hNews-card__img-btnWrap">
+            <div class="hNews-card__img">
+              <i class="pi pi-newspaper" style="font-size: 100px"></i>
             </div>
-          </div>
-          <div class="hNews-card__btnWrap">
-            <nuxt-link class="hNews-card__btnImg">
-              <i class="pi pi-arrow-right"></i>
-            </nuxt-link>
+            <div class="hNews-card__btnWrap">
+              <nuxt-link class="hNews-card__btnImg">
+                <i class="pi pi-arrow-right"></i>
+              </nuxt-link>
+            </div>
           </div>
         </div>
         <div class="telegram_box">
           <h4>@smspva_news_official</h4>
           <div class="telegram_box__img">
             <i class="pi pi-telegram" style="font-size: 90px"></i>
-            <!-- Prime Icon for Telegram -->
           </div>
           <div class="telegram_box__btnWrap">
             <nuxt-link class="hNews-card__btnImg">
@@ -163,5 +160,15 @@
   height: 90px;
   color: #ffffff;
   margin-left: 20px;
+}
+
+.hNews-card__img-btnWrap {
+  display: flex; /* Sử dụng Flexbox để gộp các phần tử vào cùng một hàng */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-top: 10px; /* Thêm khoảng cách phía trên */
+}
+
+.hNews-card__img {
+  margin-right: 10px; /* Khoảng cách giữa biểu tượng và nút */
 }
 </style>
