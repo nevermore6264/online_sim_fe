@@ -11,10 +11,10 @@
           :loading="loading"
         >
           <template #header>
-            <div class="lbl_services">Select countries</div>
+            <div class="lbl_services">Select country</div>
           </template>
           <template #empty> No countries found. </template>
-          <!-- <template #loading> Loading customers data. Please wait. </template> -->
+          <template #loading> Loading customers data. Please wait. </template>
 
           <Column style="min-width: 12rem">
             <template #body="{ data }">
@@ -43,18 +43,18 @@
         <DataTable
           :value="selectedCustomer?.services"
           scrollable
-          scrollHeight="200px"
+          scrollHeight="400px"
           dataKey="id"
           :loading="loading"
         >
           <template #header>
-            <div class="lbl_services">Select Services</div>
+            <div class="lbl_services">Select service</div>
           </template>
           <template #empty> No services found. </template>
           <template #loading> Loading services data. Please wait. </template>
 
           <Column style="min-width: 12rem">
-            <template #body="{ data }">
+            <template #body="{}">
               <div class="service-row">
                 <div
                   v-for="service in selectedCustomer?.services"
@@ -118,8 +118,8 @@ const fetchCountries = async () => {
 
 const groupedCustomers = computed(() => {
   const groups = [];
-  for (let i = 0; i < filteredCustomers.value.length; i += 2) {
-    groups.push(filteredCustomers.value.slice(i, i + 2));
+  for (let i = 0; i < filteredCustomers.value.length; i += 3) {
+    groups.push(filteredCustomers.value.slice(i, i + 3));
   }
   return groups;
 });
@@ -137,7 +137,7 @@ const onCountryClick = (country) => {
         )
         .then((response) => {
           if (response?.data?.success) {
-            selectedCustomer.value.services = response.data.data;
+            selectedCustomer.value.services = response?.data?.data;
           } else {
             console.error("Failed to fetch services");
           }
@@ -157,28 +157,6 @@ const initializeData = async () => {
   const countries = await fetchCountries();
   customers.value = countries;
   loading.value = false;
-};
-
-// Row click handler
-const onRowClick = async (event) => {
-  selectedCustomer.value = event.data;
-
-  if (selectedCustomer.value?.country?.cca3) {
-    try {
-      const countryCode = selectedCustomer.value.country.cca3;
-      const response = await axios.get(
-        `https://verifysms.org/api/services?platform=web&countryCode=${countryCode}`
-      );
-
-      if (response?.data?.success) {
-        selectedCustomer.value.services = response.data.data;
-      } else {
-        console.error("Failed to fetch services");
-      }
-    } catch (error) {
-      console.error("Error fetching services:", error);
-    }
-  }
 };
 
 onMounted(() => {
@@ -202,6 +180,11 @@ function toggle(index) {
   height: auto;
   color: #333;
   margin-bottom: 60px;
+}
+
+.landing-page .p-datatable .p-datatable-tbody > tr > td {
+  border: none;
+  padding: 5px 5px;
 }
 
 .title {
@@ -239,7 +222,8 @@ function toggle(index) {
 .lbl_services {
   text-align: left;
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
+  font-weight: normal;
 }
 
 .table-services {
@@ -272,7 +256,7 @@ function toggle(index) {
   cursor: pointer; /* Thêm hiệu ứng trỏ chuột */
   padding: 8px;
   transition: background-color 0.3s;
-  width: 49%;
+  width: 32%;
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
 }
@@ -310,7 +294,7 @@ function toggle(index) {
   cursor: pointer;
   padding: 8px;
   transition: background-color 0.3s;
-  width: 48%;
+  width: 48.5%;
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
 }

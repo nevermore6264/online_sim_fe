@@ -14,7 +14,7 @@
 /* Thêm các style toàn cục cho ứng dụng ở đây nếu cần */
 body {
   margin: 0;
-  font: 400 14px / 16px MyriadSetPro, Arial, sans-serif;
+  font-family: "MyriadSetPro", Arial, sans-serif !important;
 }
 
 ::-webkit-scrollbar {
@@ -79,7 +79,7 @@ button:hover {
 
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: unset;
   font-size: 14px;
   color: #333;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -102,18 +102,18 @@ table th {
   background-color: #f9f9f9;
 } */
 
-table tr {
+/* table tr {
   border-bottom: 1px solid #ddd;
-}
+} */
 
 table tr:hover {
   /* background-color: #f1f1f1; */
   cursor: pointer;
 }
 
-table td {
+/* table td {
   border-bottom: 1px solid #ddd;
-}
+} */
 
 /* Optional: Add rounded corners to the table */
 table {
