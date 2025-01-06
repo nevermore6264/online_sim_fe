@@ -277,4 +277,8 @@ function toggle(index) {
 .country-name {
   font-size: 14px;
 }
+
+.landing-page .p-datatable-thead {
+  display: none;
+}
 </style>

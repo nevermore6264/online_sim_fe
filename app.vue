@@ -17,19 +17,22 @@ body {
   font: 400 14px / 16px MyriadSetPro, Arial, sans-serif;
 }
 
-html::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 5px;
   height: 7px;
 }
-html::-webkit-scrollbar-thumb:hover {
+
+::-webkit-scrollbar-thumb:hover {
   background: #2aabee;
 }
-html::-webkit-scrollbar-thumb {
+
+::-webkit-scrollbar-thumb {
   background: #2aabee;
   border-radius: 8px;
   cursor: pointer;
 }
-html::-webkit-scrollbar-track {
+
+::-webkit-scrollbar-track {
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0),
