@@ -18,8 +18,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 7px;
+  width: 7px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
