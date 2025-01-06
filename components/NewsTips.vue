@@ -40,9 +40,9 @@
             <!-- Prime Icon for Telegram -->
           </div>
           <div class="telegram_box__btnWrap">
-            <a href="https://t.me/smspva_news_official" class="hNews-card__btnImg">
+            <nuxt-link class="hNews-card__btnImg">
               <i class="pi pi-arrow-right"></i>
-            </a>
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -100,9 +100,7 @@
 .telegram_box__btnWrap {
   display: flex;
   justify-content: flex-end;
-  /* Align to the right */
   margin-top: 10px;
-  /* Space above the button */
 }
 
 .hNews-card__btnImg,
@@ -111,17 +109,11 @@
   align-items: center;
   justify-content: center;
   width: 40px;
-  /* Width of the circular button */
   height: 40px;
-  /* Height of the circular button */
   border-radius: 50%;
-  /* Make it circular */
   background-color: #2aabee;
-  /* Match the background color */
   color: #ffffff;
-  /* Icon color */
   text-decoration: none;
-  /* Remove underline */
 }
 
 .hNews-card__btnImg:hover,
@@ -167,7 +159,7 @@
 }
 
 .telegram_box__img {
-  width: 90px;
+  width: 30%;
   height: 90px;
   color: #ffffff;
   margin-left: 20px;
