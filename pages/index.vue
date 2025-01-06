@@ -62,6 +62,11 @@
                   class="service-item"
                   @click="onServiceClick(service)"
                 >
+                  <img
+                    :src="service.image"
+                    :alt="service.text"
+                    class="flag-image"
+                  />
                   <span class="service-name">{{ service.text }}</span>
                   <span class="service-price">{{ service.price }} USD</span>
                 </div>
@@ -297,12 +302,12 @@ function toggle(index) {
 
 .service-item {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  cursor: pointer; /* Thêm hiệu ứng trỏ chuột */
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
   padding: 8px;
   transition: background-color 0.3s;
-  width: 49%; /* Chia đôi chiều rộng giống như countries */
+  width: 48%;
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
 }
@@ -319,6 +324,6 @@ function toggle(index) {
 .service-price {
   font-size: 12px;
   color: gray;
-  margin-top: 5px;
+  text-align: right;
 }
 </style>
