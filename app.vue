@@ -193,7 +193,12 @@ a:link {
   }
 
   .hNews-card__right {
-    width: 100%;
+    width: 100% !important;
+  }
+
+  .hNews-card_left {
+    width: 100% !important;
+    margin-bottom: 20px !important;
   }
 }
 

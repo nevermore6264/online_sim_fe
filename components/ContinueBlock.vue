@@ -118,9 +118,9 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import axios from "axios";
 import { useRouter } from "vue-router";
 import { push } from "notivue";
+import UserService from "@/services/user"; // Import từ user.js
 
 const visibleLogin = ref(false);
 const visibleSignUp = ref(false);
@@ -157,19 +157,17 @@ const switchToSignUp = () => {
   visibleSignUp.value = true;
 };
 
+// Sử dụng UserService để xử lý login
 const handleLogin = async () => {
   if (!loginData.value.username || !loginData.value.password) {
-    alert("Please fill in both fields.");
+    push.warning("Please fill in both fields.");
     return;
   }
 
   loading.value = true;
   try {
-    const response = await axios.post(
-      "https://verifysms.org/api/web/login",
-      loginData.value
-    );
-    const { token } = response.data?.data;
+    const response = await UserService.Login(loginData.value);
+    const { token } = response.data;
 
     if (token) {
       await fetchUserInfo(token);
@@ -182,62 +180,54 @@ const handleLogin = async () => {
       push.error("Invalid login credentials.");
     }
   } catch (error) {
-    console.error(error);
-    alert("An error occurred during login.");
+    console.error("Error during login:", error);
+    push.error("An error occurred during login.");
   } finally {
     loading.value = false;
   }
 };
 
+// Sử dụng UserService để xử lý đăng ký
 const handleSignUp = async () => {
   const { firstName, lastName, username, password, confirmPassword } =
     signUpData.value;
+
   if (!firstName || !lastName || !username || !password || !confirmPassword) {
-    alert("Please fill in all fields.");
+    push.warning("Please fill in all fields.");
     return;
   }
 
   if (password !== confirmPassword) {
-    alert("Passwords do not match.");
+    push.warning("Passwords do not match.");
     return;
   }
 
   loading.value = true;
   try {
-    const response = await axios.post(
-      "https://japansim.net/api/web/register",
-      signUpData.value
-    );
+    const response = await UserService.CreateUser(signUpData.value);
+    if (response.success) {
+      push.success("Registration successful! Please log in.");
 
-    if (response.data.success) {
-      alert("Registration successful! Please log in.");
       visibleSignUp.value = false;
     } else {
-      alert("Registration failed.");
+      push.error("Registration failed.");
     }
   } catch (error) {
-    console.error(error);
-    alert("An error occurred during registration.");
+    push.error("An error occurred during registration.");
   } finally {
     loading.value = false;
   }
 };
 
+// Sử dụng UserService để lấy thông tin người dùng
 const fetchUserInfo = async (token) => {
   try {
-    // Gọi API lấy thông tin người dùng
-    const response = await axios.get(
-      `https://japansim.net/api/account/get-info`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    Object.assign(userInfo, response.data?.data); // Lưu thông tin vào userInfo
+    const response = await UserService.GetCurrentAccount(token);
+    Object.assign(userInfo, response); // Lưu thông tin vào `userInfo`
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
   } catch (error) {
     console.error("Error fetching user info:", error);
+    push.error("An error occurred during fetchUserInfo.");
   }
 };
 
