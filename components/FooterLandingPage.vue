@@ -32,13 +32,25 @@
                 <div class="social-links">
                   <ul class="social-icons p-d-flex p-flex-column p-gap-2">
                     <li>
-                      <a href="#"><i class="pi pi-facebook"></i> Facebook</a>
+                      <a
+                        href="https://www.facebook.com/callmeiwn/"
+                        target="_blank"
+                        ><i class="pi pi-facebook"></i> Facebook</a
+                      >
                     </li>
                     <li>
-                      <a href="#"><i class="pi pi-instagram"></i> Instagram</a>
+                      <a
+                        href="https://www.instagram.com/hieu_david266/"
+                        target="_blank"
+                        ><i class="pi pi-instagram"></i> Instagram</a
+                      >
                     </li>
                     <li>
-                      <a href="#"><i class="pi pi-linkedin"></i> Linkedin</a>
+                      <a
+                        href="https://vn.linkedin.com/in/hieupikas"
+                        target="_blank"
+                        ><i class="pi pi-linkedin"></i> Linkedin</a
+                      >
                     </li>
                   </ul>
                 </div>
@@ -217,14 +229,6 @@ b {
   padding: 0px;
 }
 
-.social-icons a {
-  color: #f5f7fa;
-}
-
-.social-icons a:hover {
-  color: #000;
-}
-
 .social-icons a i {
   box-shadow: rgb(0 0 0 / 8%) 0px 4px 12px;
   padding: 0.4rem 1rem 0.4rem 1rem;
@@ -233,6 +237,34 @@ b {
   font-size: 16px;
   margin-right: 12px;
   background-color: #f5f7fa;
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.social-icons a {
+  position: relative; /* Position context for the pseudo-element */
+  color: #f5f7fa; /* Default text color */
+  text-decoration: none; /* Remove underline */
+  padding: 0.5rem; /* Add padding for better click area */
+}
+
+.social-icons a::before {
+  content: ""; /* Create a pseudo-element */
+  position: absolute;
+  left: 50%; /* Center the pseudo-element */
+  bottom: 0; /* Position it at the bottom */
+  width: 100%; /* Full width */
+  height: 2px; /* Height of the underline */
+  background: #f5f7fa; /* Color of the underline */
+  transform: translateX(-50%) scaleX(0); /* Initially hidden */
+  transition: transform 0.3s ease; /* Smooth scale transition */
+}
+
+.social-icons a:hover {
+  color: #f5f7fa; /* Change text color on hover */
+}
+
+.social-icons a:hover::before {
+  transform: translateX(-50%) scaleX(1); /* Show the underline */
 }
 
 li {
