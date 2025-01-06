@@ -11,59 +11,138 @@
     <div class="p-menubar-end">
       <div class="d-flex align-items-center">
         <!-- Login Button -->
-        <Button aria-label="Login" class="p-button p-component p-button-text" @click="openLoginDialog">
+        <Button
+          aria-label="Login"
+          class="p-button p-component p-button-text"
+          @click="openLoginDialog"
+        >
           <span class="p-button-icon pi pi-sign-in"></span>
           <span>Login</span>
         </Button>
 
         <!-- Login Dialog -->
-        <Dialog v-model:visible="visibleLogin" modal header="Login" class="auth-dialog">
+        <Dialog
+          v-model:visible="visibleLogin"
+          modal
+          header="Login"
+          class="auth-dialog"
+        >
           <form @submit.prevent="handleLogin">
             <div class="auth-left">
               <div class="logo">
-                <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
+                <img
+                  src="/layout/images/logo.png"
+                  alt="Logo"
+                  class="logo-image"
+                />
               </div>
-              <InputText v-model="loginData.username" placeholder="Username" required class="auth-input" />
-              <InputText v-model="loginData.password" type="password" placeholder="Password" required
-                class="auth-input" />
-              <Button label="Login" type="submit" class="auth-submit" :disabled="loading" />
+              <InputText
+                v-model="loginData.username"
+                placeholder="Username"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="loginData.password"
+                type="password"
+                placeholder="Password"
+                required
+                class="auth-input"
+              />
+              <Button
+                label="Login"
+                type="submit"
+                class="auth-submit"
+                :disabled="loading"
+              />
               <a href="#" class="forgot-password">Forgot password?</a>
             </div>
           </form>
           <div class="auth-right">
             <h2>Register</h2>
             <p>Don't have an account? Sign up now!</p>
-            <Button label="Sign Up!" class="auth-signup" @click="switchToSignUp" />
+            <Button
+              label="Sign Up!"
+              class="auth-signup"
+              @click="switchToSignUp"
+            />
           </div>
         </Dialog>
 
         <!-- Sign Up Button -->
-        <Button aria-label="Sign Up" class="p-button p-component p-button-text" @click="openSignUpDialog">
+        <Button
+          aria-label="Sign Up"
+          class="p-button p-component p-button-text"
+          @click="openSignUpDialog"
+        >
           <span class="p-button-icon pi pi-user-plus"></span>
           <span>Sign Up</span>
         </Button>
 
         <!-- Sign Up Dialog -->
-        <Dialog v-model:visible="visibleSignUp" modal header="Sign Up" class="auth-dialog">
+        <Dialog
+          v-model:visible="visibleSignUp"
+          modal
+          header="Sign Up"
+          class="auth-dialog"
+        >
           <form @submit.prevent="handleSignUp">
             <div class="auth-left">
               <div class="logo">
-                <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
+                <img
+                  src="/layout/images/logo.png"
+                  alt="Logo"
+                  class="logo-image"
+                />
               </div>
-              <InputText v-model="signUpData.firstName" placeholder="First Name" required class="auth-input" />
-              <InputText v-model="signUpData.lastName" placeholder="Last Name" required class="auth-input" />
-              <InputText v-model="signUpData.username" placeholder="Username" required class="auth-input" />
-              <InputText v-model="signUpData.password" type="password" placeholder="Password" required
-                class="auth-input" />
-              <InputText v-model="signUpData.confirmPassword" type="password" placeholder="Confirm Password" required
-                class="auth-input" />
-              <Button label="Sign Up" type="submit" class="auth-submit" :disabled="loading" />
+              <InputText
+                v-model="signUpData.firstName"
+                placeholder="First Name"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="signUpData.lastName"
+                placeholder="Last Name"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="signUpData.username"
+                placeholder="Username"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="signUpData.password"
+                type="password"
+                placeholder="Password"
+                required
+                class="auth-input"
+              />
+              <InputText
+                v-model="signUpData.confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                required
+                class="auth-input"
+              />
+              <Button
+                label="Sign Up"
+                type="submit"
+                class="auth-submit"
+                :disabled="loading"
+              />
             </div>
           </form>
           <div class="auth-right">
             <h2>Login</h2>
             <p>Already have an account? Log in here.</p>
-            <Button label="Sign In!" class="auth-signup" @click="switchToLogin" />
+            <Button
+              label="Sign In!"
+              class="auth-signup"
+              @click="switchToLogin"
+            />
           </div>
         </Dialog>
       </div>
@@ -205,7 +284,7 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style>
 .layout-topbar {
   display: flex;
   justify-content: space-between;
@@ -214,23 +293,23 @@ onMounted(async () => {
     0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-.p-menubar-start {
+.layout-topbar .p-menubar-start {
   display: flex;
   align-items: center;
 }
 
-.p-menubar-end {
+.layout-topbar .p-menubar-end {
   display: flex;
   align-items: center;
 }
 
-.p-menuitem-link {
+.layout-topbar .p-menuitem-link {
   display: flex;
   align-items: center;
   padding: 0 15px;
 }
 
-.p-menubar {
+.layout-topbar .p-menubar {
   border: 0 !important;
   border-bottom: 1px solid #e2e8f0 !important;
   border-radius: 0px !important;
@@ -238,7 +317,7 @@ onMounted(async () => {
     0px 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-.auth-dialog .p-dialog-header {
+.layout-topbar .auth-dialog .p-dialog-header {
   background-color: #007bff;
   color: white;
   text-align: center;
@@ -383,15 +462,15 @@ onMounted(async () => {
   margin-bottom: 15px;
 }
 
-.p-button-rounded {
+.layout-topbar .p-button-rounded {
   width: 100%;
 }
 
-.p-button-icon {
+.layout-topbar .p-button-icon {
   margin-right: 8px;
 }
 
-.p-button.p-button-text {
+.layout-topbar .p-button.p-button-text {
   color: #56ccf2;
 }
 
@@ -410,14 +489,14 @@ onMounted(async () => {
     padding: 10px;
   }
 
-  .p-menubar-start,
+  .layout-topbar .p-menubar-start,
   .p-menubar-end {
     width: 100%;
     justify-content: center;
     margin-top: 1rem;
   }
 
-  .p-menubar-end {
+  .layout-topbar .p-menubar-end {
     margin-top: 10px;
     justify-content: flex-end;
   }
@@ -454,7 +533,7 @@ onMounted(async () => {
     text-align: center;
   }
 
-  .p-button-icon {
+  .layout-topbar .p-button-icon {
     margin-right: 4px;
   }
 
@@ -472,7 +551,7 @@ onMounted(async () => {
     padding: 5px;
   }
 
-  .p-menubar-end {
+  .layout-topbar .p-menubar-end {
     flex-direction: column;
     align-items: center;
   }
