@@ -4,12 +4,11 @@
       <!-- Main DataTable -->
       <div class="table-container table-services">
         <DataTable
-          :value="filteredCustomers"
+          :value="groupedCustomers"
           scrollable
           scrollHeight="400px"
           dataKey="code"
           :loading="loading"
-          @row-click="onRowClick"
         >
           <template #header>
             <div class="lbl_services">Select countries</div>
@@ -23,14 +22,20 @@
             style="min-width: 12rem"
           >
             <template #body="{ data }">
-              <div class="flex align-items-center row-content">
-                <img
-                  alt="flag"
-                  :src="`${data.flagImage}`"
-                  :class="`flag flag-${data.code}`"
-                  style="width: 24px"
-                />
-                <span class="country">{{ data.name }}</span>
+              <div class="country-row">
+                <div
+                  v-for="country in data"
+                  :key="country.code"
+                  class="country-item"
+                  @click="onCountryClick(country)"
+                >
+                  <img
+                    :src="country.flagImage"
+                    :alt="country.name"
+                    class="flag-image"
+                  />
+                  <span class="country-name">{{ country.name }}</span>
+                </div>
               </div>
             </template>
           </Column>
@@ -95,6 +100,41 @@ const fetchCountries = async () => {
   } catch (error) {
     console.error("Error fetching countries:", error);
     return [];
+  }
+};
+
+const groupedCustomers = computed(() => {
+  const groups = [];
+  for (let i = 0; i < filteredCustomers.value.length; i += 2) {
+    groups.push(filteredCustomers.value.slice(i, i + 2));
+  }
+  return groups;
+});
+
+const onCountryClick = (country) => {
+  console.log(country);
+  selectedCustomer.value = country;
+
+  if (country?.code) {
+    try {
+      const countryCode = country.code;
+      axios
+        .get(
+          `https://verifysms.org/api/services?platform=web&countryCode=${countryCode}`
+        )
+        .then((response) => {
+          if (response?.data?.success) {
+            selectedCustomer.value.services = response.data.data;
+          } else {
+            console.error("Failed to fetch services");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching services:", error);
+        });
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 };
 
@@ -204,5 +244,37 @@ function toggle(index) {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  background-color: rgb(0, 174, 255);
+  color: #ffffff;
+}
+
+.country-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.country-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer; /* Thêm hiệu ứng trỏ chuột */
+  padding: 8px;
+  transition: background-color 0.3s;
+  width: 49%;
+  background-color: rgb(245, 245, 245);
+  border-radius: 5px;
+}
+
+.country-item:hover {
+  background-color: rgb(201, 200, 200);
+}
+
+.flag-image {
+  width: 24px;
+  height: auto;
+  margin-right: 8px;
+}
+
+.country-name {
+  font-size: 14px;
 }
 </style>

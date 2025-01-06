@@ -43,7 +43,11 @@ html::-webkit-scrollbar-track {
 }
 
 .main {
-  background: linear-gradient(to right, #d7f2fe, #ffffff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(
+    to right,
+    #d7f2fe,
+    #ffffff
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 h1 {
@@ -91,16 +95,16 @@ table th {
   font-weight: 600;
 }
 
-table tr:nth-child(even) {
+/* table tr:nth-child(even) {
   background-color: #f9f9f9;
-}
+} */
 
 table tr {
   border-bottom: 1px solid #ddd;
 }
 
 table tr:hover {
-  background-color: #f1f1f1;
+  /* background-color: #f1f1f1; */
   cursor: pointer;
 }
 
