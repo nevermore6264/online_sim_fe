@@ -16,11 +16,7 @@
           <template #empty> No countries found. </template>
           <!-- <template #loading> Loading customers data. Please wait. </template> -->
 
-          <Column
-            header="Country"
-            filterField="country.name"
-            style="min-width: 12rem"
-          >
+          <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="country-row">
                 <div
@@ -57,10 +53,20 @@
           <template #empty> No services found. </template>
           <template #loading> Loading services data. Please wait. </template>
 
-          <Column header="Service" field="text" style="min-width: 12rem" />
-          <Column header="Code" field="code" style="min-width: 12rem" />
-          <Column header="Price" style="min-width: 12rem">
-            <template #body="{ data }"> {{ data?.price }} USD </template>
+          <Column style="min-width: 12rem">
+            <template #body="{ data }">
+              <div class="service-row">
+                <div
+                  v-for="service in selectedCustomer?.services"
+                  :key="service.id"
+                  class="service-item"
+                  @click="onServiceClick(service)"
+                >
+                  <span class="service-name">{{ service.text }}</span>
+                  <span class="service-price">{{ service.price }} USD</span>
+                </div>
+              </div>
+            </template>
           </Column>
         </DataTable>
       </div>
@@ -280,5 +286,39 @@ function toggle(index) {
 
 .landing-page .p-datatable-thead {
   display: none;
+}
+
+.service-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px; /* Khoảng cách giữa các item */
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  cursor: pointer; /* Thêm hiệu ứng trỏ chuột */
+  padding: 8px;
+  transition: background-color 0.3s;
+  width: 49%; /* Chia đôi chiều rộng giống như countries */
+  background-color: rgb(245, 245, 245);
+  border-radius: 5px;
+}
+
+.service-item:hover {
+  background-color: rgb(201, 200, 200);
+}
+
+.service-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.service-price {
+  font-size: 12px;
+  color: gray;
+  margin-top: 5px;
 }
 </style>

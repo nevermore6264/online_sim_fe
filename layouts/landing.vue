@@ -7,7 +7,6 @@
         <NuxtPage />
       </main>
       <div class="side-content">
-
         <GuideBlock />
         <FeaturesBlock />
         <ContinueBlock />
@@ -33,6 +32,7 @@
 
 .main-content {
   padding: 20px;
+  min-width: 560px;
 }
 
 .side-content {

@@ -149,6 +149,10 @@ a:link {
   width: 75px;
 }
 
+.landing-page-container {
+  width: 100%;
+}
+
 @media (max-width: 1366px) {
   .auth-dialog {
     width: 75% !important;
