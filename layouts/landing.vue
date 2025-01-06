@@ -7,6 +7,7 @@
         <NuxtPage />
       </main>
       <div class="side-content">
+        <ClientsBlock />
         <GuideBlock />
         <FeaturesBlock />
         <ContinueBlock />
