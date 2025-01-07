@@ -1,6 +1,14 @@
 import { defineNuxtConfig } from 'nuxt/config';
 export default defineNuxtConfig({
   modules: ['notivue/nuxt', '@nuxtjs/i18n'],
+  i18n: {
+    locales: [
+      { code: 'en', name: 'English' },
+      { code: 'vi', name: 'Tiếng Việt' }
+    ],
+    defaultLocale: 'en',
+    vueI18n: './i18n.config.ts', // Chỉ định đường dẫn tới file cấu hình i18n
+  },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   vite: {},
@@ -9,7 +17,8 @@ export default defineNuxtConfig({
     'notivue/animations.css', // Only needed if using default animations
     'primevue/resources/themes/aura-light-blue/theme.css',
     'primevue/resources/primevue.min.css',
-    'primeicons/primeicons.css'
+    'primeicons/primeicons.css',
+    'flag-icon-css/css/flag-icons.min.css'
   ],
   build: {
     transpile: ['primevue'] // Đảm bảo các thành phần PrimeVue được biên dịch đúng cách
