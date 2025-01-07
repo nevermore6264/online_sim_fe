@@ -87,28 +87,20 @@ definePageMeta({
 });
 
 import { ref, onMounted, computed } from "vue";
+import { useWindowSize } from "@vueuse/core";
 import axios from "axios";
-import { GetAllCountries } from "@/services/country.js"; // Adjust the path as necessary
+import { GetAllCountries } from "@/services/country.js";
 
 const customers = ref([]);
 const loading = ref(false);
 const selectedCustomer = ref(null);
-const searchQuery = ref("");
 
-// Function to filter customers by search query
-const filteredCustomers = computed(() => {
-  if (!searchQuery.value) return customers.value;
-  return customers.value.filter((customer) =>
-    customer.country.name
-      .toLowerCase()
-      .includes(searchQuery.value.toLowerCase())
-  );
-});
+// Theo dõi kích thước màn hình
+const { width } = useWindowSize();
 
-// Fetch countries function using GetAllCountries
 const fetchCountries = async () => {
   try {
-    const countries = await GetAllCountries(); // Call your service function
+    const countries = await GetAllCountries();
     return countries;
   } catch (error) {
     console.error("Error fetching countries:", error);
@@ -116,10 +108,12 @@ const fetchCountries = async () => {
   }
 };
 
+// Phân nhóm dựa trên kích thước màn hình
 const groupedCustomers = computed(() => {
+  const itemsPerRow = width.value < 600 ? 1 : width.value < 1024 ? 2 : 3; // 1: Mobile, 2: Tablet, 3: Desktop
   const groups = [];
-  for (let i = 0; i < filteredCustomers.value.length; i += 3) {
-    groups.push(filteredCustomers.value.slice(i, i + 3));
+  for (let i = 0; i < customers.value.length; i += itemsPerRow) {
+    groups.push(customers.value.slice(i, i + itemsPerRow));
   }
   return groups;
 });
@@ -151,7 +145,6 @@ const onCountryClick = (country) => {
   }
 };
 
-// Initialize data function
 const initializeData = async () => {
   loading.value = true;
   const countries = await fetchCountries();
@@ -162,12 +155,6 @@ const initializeData = async () => {
 onMounted(() => {
   initializeData();
 });
-
-const activeIndex = ref(-1);
-
-function toggle(index) {
-  activeIndex.value = activeIndex.value === index ? -1 : index;
-}
 </script>
 
 <style>
@@ -199,9 +186,7 @@ function toggle(index) {
 
 .table-container {
   flex: 1;
-  /* Make tables take equal width */
   min-width: 300px;
-  /* Optional: Ensure tables don't get too narrow */
 }
 
 .row-content {
@@ -246,8 +231,12 @@ function toggle(index) {
 }
 
 .country-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(100px, 1fr)
+  ); /* Tự động điều chỉnh */
+  gap: 10px;
 }
 
 .country-item {
@@ -256,13 +245,35 @@ function toggle(index) {
   cursor: pointer; /* Thêm hiệu ứng trỏ chuột */
   padding: 8px;
   transition: background-color 0.3s;
-  width: 32%;
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
 }
 
 .country-item:hover {
   background-color: rgb(201, 200, 200);
+}
+
+.flag-image {
+  width: 24px;
+  height: auto;
+}
+
+@media (max-width: 599px) {
+  .country-row {
+    grid-template-columns: 1fr; /* 1 cột trên mobile */
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1023px) {
+  .country-row {
+    grid-template-columns: repeat(2, 1fr); /* 2 cột trên tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .country-row {
+    grid-template-columns: repeat(3, 1fr); /* 3 cột trên desktop */
+  }
 }
 
 .flag-image {

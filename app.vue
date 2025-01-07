@@ -199,6 +199,10 @@ a:link {
     width: 100% !important;
     margin-bottom: 20px !important;
   }
+
+  .social-icons a {
+    padding: 0px !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -219,6 +223,10 @@ a:link {
   #footer .p-grid {
     flex-direction: column !important;
     gap: 10px !important;
+  }
+
+  .main-content[data-v-fe8b218c] {
+    width: auto !important;
   }
 }
 </style>
