@@ -8,49 +8,47 @@
     </div>
 
     <!-- Menu Section -->
-    <div class="p-menubar-end">
-      <div class="d-flex align-items-center">
-        <!-- Kiểm tra nếu userInfo tồn tại -->
-        <template v-if="userInfo?.data?.id">
-          <!-- Hiển thị tên người dùng -->
-          <span class="user-name">
-            Hello, {{ userInfo.data.firstName }} {{ userInfo.data.lastName }}
-          </span>
+    <div class="p-menubar-end d-flex align-items-center">
+      <!-- Kiểm tra nếu userInfo tồn tại -->
+      <template v-if="userInfo?.data?.id">
+        <!-- Hiển thị tên người dùng -->
+        <span class="user-name">
+          Hello, {{ userInfo.data.firstName }} {{ userInfo.data.lastName }}
+        </span>
 
-          <!-- Logout Button -->
-          <Button
-            aria-label="Logout"
-            class="p-button p-component p-button-text"
-            @click="handleLogout"
-          >
-            <span class="p-button-icon pi pi-sign-out"></span>
-            <span>Logout</span>
-          </Button>
-        </template>
+        <!-- Logout Button -->
+        <Button
+          aria-label="Logout"
+          class="p-button p-component p-button-text"
+          @click="handleLogout"
+        >
+          <span class="p-button-icon pi pi-sign-out"></span>
+          <span>Logout</span>
+        </Button>
+      </template>
 
-        <!-- Hiển thị Login và Sign Up nếu không có userInfo -->
-        <template v-else>
-          <!-- Login Button -->
-          <Button
-            aria-label="Login"
-            class="p-button p-component p-button-text"
-            @click="openLoginDialog"
-          >
-            <span class="p-button-icon pi pi-sign-in"></span>
-            <span>Login</span>
-          </Button>
+      <!-- Hiển thị Login và Sign Up nếu không có userInfo -->
+      <template v-else>
+        <!-- Login Button -->
+        <Button
+          aria-label="Login"
+          class="p-button p-component p-button-text"
+          @click="openLoginDialog"
+        >
+          <span class="p-button-icon pi pi-sign-in"></span>
+          <span>Login</span>
+        </Button>
 
-          <!-- Sign Up Button -->
-          <Button
-            aria-label="Sign Up"
-            class="p-button p-component p-button-text"
-            @click="openSignUpDialog"
-          >
-            <span class="p-button-icon pi pi-user-plus"></span>
-            <span>Sign Up</span>
-          </Button>
-        </template>
-      </div>
+        <!-- Sign Up Button -->
+        <Button
+          aria-label="Sign Up"
+          class="p-button p-component p-button-text"
+          @click="openSignUpDialog"
+        >
+          <span class="p-button-icon pi pi-user-plus"></span>
+          <span>Sign Up</span>
+        </Button>
+      </template>
     </div>
   </div>
 
