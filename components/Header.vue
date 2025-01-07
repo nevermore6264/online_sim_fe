@@ -10,149 +10,153 @@
     <!-- Menu Section -->
     <div class="p-menubar-end">
       <div class="d-flex align-items-center">
-        <!-- Login Button -->
-        <Button
-          aria-label="Login"
-          class="p-button p-component p-button-text"
-          @click="openLoginDialog"
-        >
-          <span class="p-button-icon pi pi-sign-in"></span>
-          <span>Login</span>
-        </Button>
+        <!-- Kiểm tra nếu userInfo tồn tại -->
+        <template v-if="userInfo?.data?.id">
+          <!-- Hiển thị tên người dùng -->
+          <span class="user-name">
+            Hello, {{ userInfo.data.firstName }} {{ userInfo.data.lastName }}
+          </span>
 
-        <!-- Login Dialog -->
-        <Dialog
-          v-model:visible="visibleLogin"
-          modal
-          header="Login"
-          class="auth-dialog"
-        >
-          <form @submit.prevent="handleLogin">
-            <div class="auth-left">
-              <div class="logo">
-                <img
-                  src="/layout/images/logo.png"
-                  alt="Logo"
-                  class="logo-image"
-                />
-              </div>
-              <InputText
-                v-model="loginData.username"
-                placeholder="Username"
-                required
-                class="auth-input"
-              />
-              <InputText
-                v-model="loginData.password"
-                type="password"
-                placeholder="Password"
-                required
-                class="auth-input"
-              />
-              <Button
-                label="Login"
-                type="submit"
-                class="auth-submit"
-                :disabled="loading"
-              />
-              <a href="#" class="forgot-password">Forgot password?</a>
-            </div>
-          </form>
-          <div class="auth-right">
-            <h2>Register</h2>
-            <p>Don't have an account? Sign up now!</p>
-            <Button
-              label="Sign Up!"
-              class="auth-signup"
-              @click="switchToSignUp"
-            />
-          </div>
-        </Dialog>
+          <!-- Logout Button -->
+          <Button
+            aria-label="Logout"
+            class="p-button p-component p-button-text"
+            @click="handleLogout"
+          >
+            <span class="p-button-icon pi pi-sign-out"></span>
+            <span>Logout</span>
+          </Button>
+        </template>
 
-        <!-- Sign Up Button -->
-        <Button
-          aria-label="Sign Up"
-          class="p-button p-component p-button-text"
-          @click="openSignUpDialog"
-        >
-          <span class="p-button-icon pi pi-user-plus"></span>
-          <span>Sign Up</span>
-        </Button>
+        <!-- Hiển thị Login và Sign Up nếu không có userInfo -->
+        <template v-else>
+          <!-- Login Button -->
+          <Button
+            aria-label="Login"
+            class="p-button p-component p-button-text"
+            @click="openLoginDialog"
+          >
+            <span class="p-button-icon pi pi-sign-in"></span>
+            <span>Login</span>
+          </Button>
 
-        <!-- Sign Up Dialog -->
-        <Dialog
-          v-model:visible="visibleSignUp"
-          modal
-          header="Sign Up"
-          class="auth-dialog"
-        >
-          <form @submit.prevent="handleSignUp">
-            <div class="auth-left">
-              <div class="logo">
-                <img
-                  src="/layout/images/logo.png"
-                  alt="Logo"
-                  class="logo-image"
-                />
-              </div>
-              <InputText
-                v-model="signUpData.firstName"
-                placeholder="First Name"
-                required
-                class="auth-input"
-              />
-              <InputText
-                v-model="signUpData.lastName"
-                placeholder="Last Name"
-                required
-                class="auth-input"
-              />
-              <InputText
-                v-model="signUpData.username"
-                placeholder="Username"
-                required
-                class="auth-input"
-              />
-              <InputText
-                v-model="signUpData.password"
-                type="password"
-                placeholder="Password"
-                required
-                class="auth-input"
-              />
-              <InputText
-                v-model="signUpData.confirmPassword"
-                type="password"
-                placeholder="Confirm Password"
-                required
-                class="auth-input"
-              />
-              <Button
-                label="Sign Up"
-                type="submit"
-                class="auth-submit"
-                :disabled="loading"
-              />
-            </div>
-          </form>
-          <div class="auth-right">
-            <h2>Login</h2>
-            <p>Already have an account? Log in here.</p>
-            <Button
-              label="Sign In!"
-              class="auth-signup"
-              @click="switchToLogin"
-            />
-          </div>
-        </Dialog>
+          <!-- Sign Up Button -->
+          <Button
+            aria-label="Sign Up"
+            class="p-button p-component p-button-text"
+            @click="openSignUpDialog"
+          >
+            <span class="p-button-icon pi pi-user-plus"></span>
+            <span>Sign Up</span>
+          </Button>
+        </template>
       </div>
     </div>
   </div>
+
+  <!-- Login Dialog -->
+  <Dialog
+    v-model:visible="visibleLogin"
+    modal
+    header="Login"
+    class="auth-dialog"
+  >
+    <form @submit.prevent="handleLogin">
+      <div class="auth-left">
+        <div class="logo">
+          <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
+        </div>
+        <InputText
+          v-model="loginData.username"
+          placeholder="Username"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="loginData.password"
+          type="password"
+          placeholder="Password"
+          required
+          class="auth-input"
+        />
+        <Button
+          label="Login"
+          type="submit"
+          class="auth-submit"
+          :disabled="loading"
+        />
+        <a href="#" class="forgot-password">Forgot password?</a>
+      </div>
+    </form>
+    <div class="auth-right">
+      <h2>Register</h2>
+      <p>Don't have an account? Sign up now!</p>
+      <Button label="Sign Up!" class="auth-signup" @click="switchToSignUp" />
+    </div>
+  </Dialog>
+
+  <!-- Sign Up Dialog -->
+  <Dialog
+    v-model:visible="visibleSignUp"
+    modal
+    header="Sign Up"
+    class="auth-dialog"
+  >
+    <form @submit.prevent="handleSignUp">
+      <div class="auth-left">
+        <div class="logo">
+          <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
+        </div>
+        <InputText
+          v-model="signUpData.firstName"
+          placeholder="First Name"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="signUpData.lastName"
+          placeholder="Last Name"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="signUpData.username"
+          placeholder="Username"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="signUpData.password"
+          type="password"
+          placeholder="Password"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="signUpData.confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          required
+          class="auth-input"
+        />
+        <Button
+          label="Sign Up"
+          type="submit"
+          class="auth-submit"
+          :disabled="loading"
+        />
+      </div>
+    </form>
+    <div class="auth-right">
+      <h2>Login</h2>
+      <p>Already have an account? Log in here.</p>
+      <Button label="Sign In!" class="auth-signup" @click="switchToLogin" />
+    </div>
+  </Dialog>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import { useRouter } from "vue-router";
 import { push } from "notivue";
 import UserService from "@/services/user"; // Import từ user.js
@@ -254,6 +258,15 @@ const handleSignUp = async () => {
   }
 };
 
+const handleLogout = () => {
+  // Xóa thông tin người dùng và token khỏi localStorage
+  localStorage.removeItem("token");
+  localStorage.removeItem("userInfo");
+  Object.keys(userInfo).forEach((key) => delete userInfo[key]);
+  push.success("Logged out successfully!");
+  router.push("/");
+};
+
 // Sử dụng UserService để lấy thông tin người dùng
 const fetchUserInfo = async (token) => {
   try {
@@ -265,11 +278,11 @@ const fetchUserInfo = async (token) => {
     push.error("An error occurred during fetchUserInfo.");
   }
 };
-// Lấy thông tin khi component được mount (nếu đã có api_key trong localStorage)
+
 onMounted(async () => {
-  const api_key = localStorage.getItem("api_key");
-  if (api_key) {
-    await fetchUserInfo(api_key);
+  const token = localStorage.getItem("token");
+  if (token) {
+    await fetchUserInfo(token);
   }
 });
 </script>
@@ -469,6 +482,12 @@ onMounted(async () => {
   display: block;
   background: #ffffff;
   text-align: center;
+}
+
+.user-name {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #333;
 }
 
 /* Responsive Layout for Mobile and Tablet */
