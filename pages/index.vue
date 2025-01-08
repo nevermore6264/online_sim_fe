@@ -91,6 +91,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: "landing",
+});
+
 import { ref, onMounted, computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import axios from "axios";

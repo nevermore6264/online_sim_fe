@@ -1,12 +1,22 @@
 <template>
   <FraudWarning />
   <LanguageSwitcher />
+
   <Header />
   <div class="main">
     <div class="container">
       <main class="main-content">
         <NuxtPage />
       </main>
+      <div class="side-content">
+        <!-- Hiển thị các thành phần chỉ khi đã login -->
+        <ClientsBlock v-if="!isLoggedIn" />
+        <GuideBlock v-if="!isLoggedIn" />
+        <FeaturesBlock v-if="!isLoggedIn" />
+        <ContinueBlock v-if="!isLoggedIn" />
+        <NewsTips />
+        <TipsBlock />
+      </div>
     </div>
   </div>
   <FooterLandingPage />
