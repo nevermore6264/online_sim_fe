@@ -1,64 +1,51 @@
 <template>
   <div class="language-switcher">
-    <Dropdown
-      v-model="selectedLocale"
-      :options="locales"
-      option-label="label"
-      option-value="value"
-      @change="switchLocale"
-      placeholder="Select Language"
-      class="language-dropdown"
+    <button
+      v-for="locale in locales"
+      :key="locale"
+      @click="switchLocale(locale)"
+      :class="{ active: locale === currentLocale }"
     >
-      <template #item="slotProps">
-        <div class="language-item">
-          <span :class="`flag-icon ${slotProps.option.icon}`"></span>
-          <!-- Biểu tượng lá cờ -->
-          {{ slotProps.option.label }}
-          <!-- Tên ngôn ngữ -->
-        </div>
-      </template>
-    </Dropdown>
+      {{ locale.toUpperCase() }}
+    </button>
   </div>
+  <p>{{ $t("welcome") }}</p>
 </template>
 
 <script setup>
 import { useI18n } from "vue-i18n";
 
-// Lưu trữ thông tin ngôn ngữ cùng với biểu tượng lá cờ
 const { locale, availableLocales } = useI18n();
+const locales = availableLocales;
+const currentLocale = locale;
 
-const locales = [
-  { label: "English", value: "en", icon: "flag-icon-us" },
-  { label: "Tiếng Việt", value: "vi", icon: "flag-icon-vn" },
-  // Thêm các ngôn ngữ và biểu tượng lá cờ tương ứng tại đây
-];
-
-const selectedLocale = locale;
-
-const switchLocale = (event) => {
-  locale.value = event.value;
+const switchLocale = (newLocale) => {
+  locale.value = newLocale;
 };
 </script>
 
 <style scoped>
 .language-switcher {
   display: flex;
-  justify-content: flex-end; /* Đặt ngôn ngữ ở bên phải */
+  gap: 10px;
   margin: 10px 0;
 }
 
-.language-dropdown {
-  width: 150px;
+button {
+  padding: 5px 10px;
+  border: none;
+  background: #f0f0f0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
 }
 
-.language-item {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Khoảng cách giữa biểu tượng và tên ngôn ngữ */
+button:hover {
+  background: #ddd;
 }
 
-.language-item .flag-icon {
-  width: 20px; /* Điều chỉnh kích thước lá cờ */
-  height: 15px;
+button.active {
+  background: #007bff;
+  color: #fff;
 }
 </style>
