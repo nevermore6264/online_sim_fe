@@ -1,12 +1,11 @@
+import en from './locales/en';
+import vi from './locales/vi';
+
 export default {
     legacy: false,
     locale: 'en',
     messages: {
-        en: {
-            welcome: 'Welcome',
-        },
-        vi: {
-            welcome: 'Chào mừng',
-        },
+        en,
+        vi
     },
 }
