@@ -3,8 +3,13 @@
     <div class="flex-container landing-page-container">
       <!-- Main DataTable -->
       <div class="table-container table-services">
+        <input
+          v-model="searchCountry"
+          placeholder="Search country"
+          class="search-input"
+        />
         <DataTable
-          :value="groupedCustomers"
+          :value="filteredCountries"
           scrollable
           scrollHeight="400px"
           dataKey="code"
@@ -15,7 +20,11 @@
           </template>
           <template #empty> No countries found. </template>
           <template #loading> Loading customers data. Please wait. </template>
-
+          <input
+            v-model="searchCountry"
+            placeholder="Search country"
+            class="search-input"
+          />
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="country-row">
@@ -40,8 +49,13 @@
 
       <!-- Sub DataTable for services -->
       <div class="table-container table-services">
+        <input
+          v-model="searchService"
+          placeholder="Search service"
+          class="search-input"
+        />
         <DataTable
-          :value="selectedCustomer?.services"
+          :value="filteredServices"
           scrollable
           scrollHeight="400px"
           dataKey="id"
@@ -57,7 +71,7 @@
             <template #body="{}">
               <div class="service-row">
                 <div
-                  v-for="service in selectedCustomer?.services"
+                  v-for="service in filteredServices"
                   :key="service.id"
                   class="service-item"
                   @click="onServiceClick(service)"
@@ -98,15 +112,9 @@ const selectedCustomer = ref(null);
 // Theo dõi kích thước màn hình
 const { width } = useWindowSize();
 
-const fetchCountries = async () => {
-  try {
-    const countries = await GetAllCountries();
-    return countries;
-  } catch (error) {
-    console.error("Error fetching countries:", error);
-    return [];
-  }
-};
+// Tìm kiếm
+const searchCountry = ref("");
+const searchService = ref("");
 
 // Phân nhóm dựa trên kích thước màn hình
 const groupedCustomers = computed(() => {
@@ -118,36 +126,47 @@ const groupedCustomers = computed(() => {
   return groups;
 });
 
+// Lọc danh sách quốc gia theo tìm kiếm
+const filteredCountries = computed(() => {
+  if (!searchCountry.value.trim()) return groupedCustomers.value;
+  return groupedCustomers.value.map((group) =>
+    group.filter((country) =>
+      country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
+    )
+  );
+});
+
+// Lọc danh sách dịch vụ theo tìm kiếm
+const filteredServices = computed(() => {
+  if (!searchService.value.trim())
+    return selectedCustomer.value?.services || [];
+  return selectedCustomer.value?.services.filter((service) =>
+    service.text.toLowerCase().includes(searchService.value.toLowerCase())
+  );
+});
+
 const onCountryClick = (country) => {
-  console.log(country);
   selectedCustomer.value = country;
 
   if (country?.code) {
-    try {
-      const countryCode = country.code;
-      axios
-        .get(
-          `https://verifysms.org/api/services?platform=web&countryCode=${countryCode}`
-        )
-        .then((response) => {
-          if (response?.data?.success) {
-            selectedCustomer.value.services = response?.data?.data;
-          } else {
-            console.error("Failed to fetch services");
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching services:", error);
-        });
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    axios
+      .get(
+        `https://verifysms.org/api/services?platform=web&countryCode=${country.code}`
+      )
+      .then((response) => {
+        if (response?.data?.success) {
+          selectedCustomer.value.services = response?.data?.data;
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching services:", error);
+      });
   }
 };
 
 const initializeData = async () => {
   loading.value = true;
-  const countries = await fetchCountries();
+  const countries = await GetAllCountries();
   customers.value = countries;
   loading.value = false;
 };
@@ -158,6 +177,15 @@ onMounted(() => {
 </script>
 
 <style>
+.search-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
 .landing-page {
   display: flex;
   flex-direction: column;
