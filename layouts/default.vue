@@ -39,12 +39,6 @@ onUnmounted(() => {
   flex-direction: column; /* Make the main container stack on small screens */
 }
 
-.container {
-  display: flex;
-  flex: 1;
-  flex-wrap: wrap; /* Allow wrapping for smaller screens */
-}
-
 .main-content {
   padding: 20px;
 }
