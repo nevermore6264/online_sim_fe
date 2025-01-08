@@ -20,11 +20,6 @@
           </template>
           <template #empty> No countries found. </template>
           <template #loading> Loading customers data. Please wait. </template>
-          <input
-            v-model="searchCountry"
-            placeholder="Search country"
-            class="search-input"
-          />
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="country-row">
