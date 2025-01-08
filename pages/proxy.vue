@@ -8,19 +8,21 @@
       white purposes.
     </h4>
     <div class="tab-container">
-      <TabMenu :model="tabs" v-model="activeTab" class="custom-tab-menu" />
+      <TabMenu
+        :model="tabs"
+        v-model="activeTab"
+        class="custom-tab-menu"
+        @update:activeIndex="activeTab = $event"
+      />
 
       <div class="tab-content">
         <div v-if="activeTab === 0">
-          zzz
           <OrderSection />
         </div>
         <div v-if="activeTab === 1">
-          yyy
           <MyProxySection />
         </div>
         <div v-if="activeTab === 2">
-          xxx
           <FAQSection />
         </div>
       </div>
@@ -29,15 +31,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref } from "vue";
 
 const home = ref({
   icon: "pi pi-home",
 });
 const items = ref([{ label: "Proxy" }]);
-const customers = ref([]);
-const loading = ref(false);
-const searchQuery = ref("");
+
 const tabs = [
   { label: "Order", icon: "pi pi-shopping-cart" },
   { label: "My Proxy", icon: "pi pi-server" },
@@ -45,7 +45,6 @@ const tabs = [
 ];
 
 const activeTab = ref(0);
-
 </script>
 
 <style scoped>
@@ -95,17 +94,7 @@ const activeTab = ref(0);
   font-size: 14px;
 }
 
-.tab-container {
-  padding: 1rem;
-}
-
 .custom-tab-menu {
   margin-bottom: 1rem;
-}
-
-.tab-content {
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
 }
 </style>
