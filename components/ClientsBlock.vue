@@ -206,7 +206,6 @@ const handleLogin = async () => {
       localStorage.setItem("token", token);
       push.success("Login successful!");
       visibleLogin.value = false;
-      router.push("/receive-sms");
     } else {
       push.error("Invalid login credentials.");
     }
