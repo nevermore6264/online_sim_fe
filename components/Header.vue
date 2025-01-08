@@ -504,6 +504,7 @@ onMounted(async () => {
   margin-right: 10px;
   font-weight: bold;
   color: #333;
+  padding: 1rem 0;
 }
 
 .additional-functions {

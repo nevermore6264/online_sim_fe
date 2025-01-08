@@ -125,9 +125,9 @@ table {
   padding: 0px !important;
 }
 
-.p-breadcrumb {
+/* .p-breadcrumb {
   padding: 0 !important;
-}
+} */
 
 .auth-dialog {
   width: 50% !important;

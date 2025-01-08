@@ -1,8 +1,12 @@
 <template>
-  <div>
+  <div class="proxy-containter">
     <Breadcrumb :home="home" :model="items" />
 
-    <h2>Buy OTP Service</h2>
+    <h4 class="grey-doc-text-red-bg">
+      ⚠ Proxies are not allowed to be used in illegal activities. Responsibility
+      when using a proxy lies with the buyer. Our proxies are suitable only for
+      white purposes.
+    </h4>
 
     <!-- Search Input for countries -->
     <div class="search-container">
@@ -24,7 +28,6 @@
           scrollHeight="400px"
           dataKey="id"
           :loading="loading"
-          @row-click="onRowClick"
         >
           <template #header>
             <div class="flex justify-content-end">
@@ -176,7 +179,7 @@ const router = useRouter();
 const home = ref({
   icon: "pi pi-home",
 });
-const items = ref([{ label: "Receive SMS" }]);
+const items = ref([{ label: "Proxy" }]);
 const customers = ref([]);
 const orderList = ref([]);
 const loading = ref(false);
@@ -275,28 +278,6 @@ const initializeData = async () => {
   loading.value = false;
 };
 
-// Row click handler
-const onRowClick = async (event) => {
-  selectedCustomer.value = event.data;
-
-  if (selectedCustomer.value?.country?.cca3) {
-    try {
-      const countryCode = selectedCustomer.value.country.cca3;
-      const response = await axios.get(
-        `https://verifysms.org/api/services?platform=web&countryCode=${countryCode}`
-      );
-
-      if (response?.data?.success) {
-        selectedCustomer.value.services = response.data.data;
-      } else {
-        console.error("Failed to fetch services");
-      }
-    } catch (error) {
-      console.error("Error fetching services:", error);
-    }
-  }
-};
-
 // Buy service handler
 const buyService = (service) => {
   orderService
@@ -324,18 +305,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Flex container to align two tables side by side */
 .flex-container {
   display: flex;
   gap: 2rem;
-  /* Add some space between the tables */
 }
 
 .table-container {
   flex: 1;
-  /* Make tables take equal width */
   min-width: 300px;
-  /* Optional: Ensure tables don't get too narrow */
 }
 
 .row-content {
@@ -359,12 +336,10 @@ onMounted(() => {
 
 .p-datatable-scrollable-wrapper {
   overflow-y: auto;
-  /* Tùy chỉnh cuộn */
 }
 
 .p-datatable-scrollable-view {
   max-height: 400px;
-  /* Đảm bảo đúng chiều cao */
 }
 
 .recharge-button {
@@ -396,5 +371,15 @@ onMounted(() => {
 
 .lbl_services {
   margin-top: 0px !important;
+}
+
+.grey-doc-text-red-bg {
+  background: rgb(255, 68, 0);
+  color: #ffffff;
+  font-weight: normal;
+  margin: 10px 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
 }
 </style>
