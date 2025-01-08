@@ -23,14 +23,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 const isLoggedIn = ref(false);
 
-onMounted(() => {
-  // Kiểm tra trạng thái đăng nhập dựa vào thông tin trong localStorage
+const checkLoginStatus = () => {
   const userInfo = localStorage.getItem("userInfo");
   isLoggedIn.value = !!userInfo; // Đã login nếu userInfo không rỗng
+};
+
+onMounted(() => {
+  checkLoginStatus();
+
+  window.addEventListener("storage", checkLoginStatus);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("storage", checkLoginStatus);
 });
 </script>
 
