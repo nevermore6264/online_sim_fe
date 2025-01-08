@@ -513,11 +513,11 @@ onMounted(async () => {
 }
 
 .additional-functions .p-button-text {
-  color: #007bff;
+  color: #2aabee;
 }
 
 .additional-functions .p-button-text:hover {
-  color: #0056b3;
+  color: #3b82f6;
 }
 
 /* Responsive Layout for Mobile and Tablet */
