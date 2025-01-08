@@ -1,17 +1,31 @@
 <template>
+  <!-- Dropdown for filtering by status -->
+  <div class="filter-container">
+    <label for="status-filter">Filter by Status:</label>
+    <select
+      id="status-filter"
+      v-model="selectedStatus"
+      @change="filterOrderList"
+    >
+      <option value="all">All</option>
+      <option value="active">Active</option>
+      <option value="expired">Expired</option>
+    </select>
+  </div>
+
   <!-- Table for purchased SIMs -->
   <div class="purchased-sim-container">
     <DataTable
-      :value="orderList"
+      :value="filteredOrderList"
       scrollable
       scrollHeight="300px"
+      min-height="300px"
       dataKey="id"
       :loading="loading"
     >
-      <template #empty> No SIMs purchased yet. </template>
+      <template #empty> No SIMs match the selected status. </template>
       <template #loading> Loading SIM data. Please wait. </template>
       <Column header="ID" field="id" style="min-width: 1rem" />
-
       <Column header="Country" field="countryCode" style="min-width: 12rem" />
       <Column header="Proxy" field="stock.phone" style="min-width: 12rem" />
       <Column
@@ -20,7 +34,6 @@
         style="min-width: 12rem"
       />
       <Column header="Price" field="cost" style="min-width: 12rem" />
-
       <Column header="Expire Time" style="min-width: 12rem">
         <template #body="{ data }">
           <span>
@@ -31,16 +44,18 @@
     </DataTable>
   </div>
 </template>
-
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 
 const orderList = ref([]);
+const filteredOrderList = ref([]);
+const selectedStatus = ref("all"); // Default to "all"
 const loading = ref(false);
 
 const currentTime = ref(new Date());
 
+// Function to calculate expired time
 const trackingExpiredTime = (value) => {
   const diff = new Date(value) - currentTime.value;
 
@@ -56,7 +71,7 @@ const trackingExpiredTime = (value) => {
   )}`;
 };
 
-// Fetch purchased SIMs function
+// Function to fetch purchased SIMs
 const fetchOrderList = async () => {
   loading.value = true;
   const token = localStorage.getItem("token");
@@ -78,6 +93,7 @@ const fetchOrderList = async () => {
 
     if (response?.data?.success) {
       orderList.value = response?.data?.data?.docs;
+      filterOrderList(); // Apply filtering after fetching data
     } else {
       console.error("Failed to fetch data from API");
     }
@@ -88,9 +104,37 @@ const fetchOrderList = async () => {
   }
 };
 
+// Function to filter order list based on selected status
+const filterOrderList = () => {
+  if (selectedStatus.value === "all") {
+    filteredOrderList.value = orderList.value;
+  } else if (selectedStatus.value === "active") {
+    filteredOrderList.value = orderList.value.filter(
+      (item) => new Date(item.stock.expiredAt) > currentTime.value
+    );
+  } else if (selectedStatus.value === "expired") {
+    filteredOrderList.value = orderList.value.filter(
+      (item) => new Date(item.stock.expiredAt) <= currentTime.value
+    );
+  }
+};
+
 onMounted(() => {
   fetchOrderList();
 });
 </script>
 
-<style></style>
+<style>
+.filter-container {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#status-filter {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+</style>
