@@ -9,10 +9,11 @@
         <NuxtPage />
       </main>
       <div class="side-content">
-        <ClientsBlock />
-        <GuideBlock />
-        <FeaturesBlock />
-        <ContinueBlock />
+        <!-- Hiển thị các thành phần chỉ khi đã login -->
+        <ClientsBlock v-if="!isLoggedIn" />
+        <GuideBlock v-if="!isLoggedIn" />
+        <FeaturesBlock v-if="!isLoggedIn" />
+        <ContinueBlock v-if="!isLoggedIn" />
         <NewsTips />
         <TipsBlock />
       </div>
@@ -21,7 +22,17 @@
   <FooterLandingPage />
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted } from "vue";
+
+const isLoggedIn = ref(false);
+
+onMounted(() => {
+  // Kiểm tra trạng thái đăng nhập dựa vào thông tin trong localStorage
+  const userInfo = localStorage.getItem("userInfo");
+  isLoggedIn.value = !!userInfo; // Đã login nếu userInfo không rỗng
+});
+</script>
 
 <style scoped>
 .main {
