@@ -14,7 +14,7 @@
       />
     </Button>
   </div>
-  <p>{{ $t("welcome") }}</p>
+  <!-- <p>{{ $t("welcome") }}</p> -->
 </template>
 
 <script setup>

@@ -137,6 +137,10 @@ a:link {
   color: #2aabee;
 }
 
+ul {
+  padding-inline-start: 20px !important;
+}
+
 #app-content {
   margin-left: 250px;
   padding: 25px 10px;

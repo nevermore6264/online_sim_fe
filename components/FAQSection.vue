@@ -149,10 +149,11 @@ const toggleItem = (index) => {
   list-style-type: decimal;
 }
 
-.faq-content li {
+.faq-content ul li {
   margin-bottom: 0.5rem;
   line-height: 20px;
   font-size: 14px;
+  padding: 10px;
 }
 
 .faq-content p {
