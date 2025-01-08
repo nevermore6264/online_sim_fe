@@ -7,6 +7,15 @@
       </a>
     </div>
 
+    <div class="additional-functions">
+      <Button
+        label="Rent Number"
+        class="p-button-text"
+        @click="handleRentNumber"
+      />
+      <Button label="Proxy" class="p-button-text" @click="handleProxy" />
+    </div>
+
     <!-- Menu Section -->
     <div class="p-menubar-end d-flex align-items-center">
       <!-- Kiểm tra nếu userInfo tồn tại -->
@@ -264,6 +273,16 @@ const handleLogout = () => {
   router.push("/");
 };
 
+const handleRentNumber = () => {
+  push.info("Redirecting to Rent Number...");
+  router.push("/rent-number"); // Điều hướng tới trang "Rent Number"
+};
+
+const handleProxy = () => {
+  push.info("Redirecting to Proxy...");
+  router.push("/proxy"); // Điều hướng tới trang "Proxy"
+};
+
 // Sử dụng UserService để lấy thông tin người dùng
 const fetchUserInfo = async (token) => {
   try {
@@ -300,7 +319,7 @@ onMounted(async () => {
 
 .layout-topbar .p-menubar-end {
   display: flex;
-  align-items: center;
+  margin-left: auto;
 }
 
 .layout-topbar .p-menuitem-link {
@@ -485,6 +504,20 @@ onMounted(async () => {
   margin-right: 10px;
   font-weight: bold;
   color: #333;
+}
+
+.additional-functions {
+  display: flex;
+  gap: 1rem; /* Khoảng cách giữa các nút */
+  margin-left: 20px; /* Khoảng cách giữa logo và các nút */
+}
+
+.additional-functions .p-button-text {
+  color: #007bff;
+}
+
+.additional-functions .p-button-text:hover {
+  color: #0056b3;
 }
 
 /* Responsive Layout for Mobile and Tablet */
