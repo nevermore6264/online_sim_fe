@@ -33,22 +33,21 @@
       </template>
     </DataView>
 
-    <div class="slider-container">
+    <div class="slider-container rental-period-slider">
       <h4>2. Select rental period days</h4>
       <Slider
         v-model="rentalDays"
-        :min="5"
-        :max="360"
-        :step="5"
-        :style="{ width: '80%' }"
+        :min="0"
+        :max="100"
+        :step="1"
         :range="false"
       />
-      <div class="slider-labels">
+      <div class="slider-labels rental-labels">
         <span
           v-for="(label, index) in labels"
           :key="index"
           :style="{ left: `${(label / maxDays) * 100}%` }"
-          class="slider-label"
+          class="slider-label rental-label"
         >
           {{ label }}
         </span>
@@ -56,8 +55,7 @@
       <p class="selected-days">Selected Days: {{ rentalDays }}</p>
     </div>
 
-    <div class="row">
-      <!-- Slider Section -->
+    <div class="row quantity-slider">
       <div class="col-xs-30">
         <h4>3. Select quantity</h4>
         <Slider
@@ -68,6 +66,16 @@
           class="w-full"
           :style="{ marginTop: '20px', marginBottom: '20px' }"
         />
+        <div class="slider-labels quantity-labels">
+          <span
+            v-for="(label, index) in quantityLabels"
+            :key="index"
+            :style="{ left: `${(label / 1000) * 100}%` }"
+            class="slider-label quantity-label"
+          >
+            {{ label }}
+          </span>
+        </div>
         <p class="quantity-display">Selected Quantity: {{ quantity }}</p>
       </div>
     </div>
@@ -95,15 +103,13 @@ const rentalDays = ref(5); // Giá trị ban đầu
 const quantity = ref(1);
 const totalPrice = ref(1.92); // Giá mặc định (có thể thay đổi)
 
-const minDays = 5;
-const maxDays = 360;
-const step = 30;
+const maxDays = 100;
+const step = 5;
 
-// Sinh ra các nhãn (ví dụ: 5, 30, 60, 90, ...)
-const labels = Array.from(
-  { length: (maxDays - minDays) / step + 1 },
-  (_, i) => minDays + i * step
-);
+const labels = Array.from({ length: maxDays / step + 1 }, (_, i) => i * step);
+
+const quantityLabels = Array.from({ length: 11 }, (_, i) => i * 100);
+
 const filteredCustomers = computed(() => {
   if (!searchQuery.value) return customers.value;
   return customers.value.filter((customer) =>
@@ -178,17 +184,33 @@ onMounted(() => {
   color: #555;
 }
 
-.slider-labels {
+.rental-period-slider .slider-labels {
   height: 30px;
-  width: 80%;
+  width: 100%;
   position: relative;
 }
 
-.slider-label {
+.rental-period-slider .slider-label {
   position: absolute;
   top: 10px;
   transform: translateX(-50%);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+/* Quantity slider styles */
+.quantity-slider .slider-labels {
+  height: 30px;
+  width: 100%;
+  position: relative;
+  margin-top: -10px;
+}
+
+.quantity-slider .slider-label {
+  position: absolute;
+  top: 10px;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
   color: #555;
 }
 
