@@ -34,7 +34,7 @@
     </DataView>
 
     <div class="slider-container">
-      <h4>Select rental period days</h4>
+      <h4>2. Select rental period days</h4>
       <Slider
         v-model="rentalDays"
         :min="5"
@@ -55,6 +55,31 @@
       </div>
       <p class="selected-days">Selected Days: {{ rentalDays }}</p>
     </div>
+
+    <div class="row">
+      <!-- Slider Section -->
+      <div class="col-xs-30">
+        <h4>3. Select quantity</h4>
+        <Slider
+          v-model="quantity"
+          :min="1"
+          :max="1000"
+          :step="1"
+          class="w-full"
+          :style="{ marginTop: '20px', marginBottom: '20px' }"
+        />
+        <p class="quantity-display">Selected Quantity: {{ quantity }}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Total Price Section -->
+      <div class="col-xs-30">
+        <h4>Total</h4>
+        <p>Price: {{ totalPrice }} USD</p>
+        <Button label="Buy" class="p-button-success btn-buy" @click="onBuy" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -66,6 +91,9 @@ const customers = ref([]);
 const loading = ref(false);
 const searchQuery = ref("");
 const rentalDays = ref(5); // Giá trị ban đầu
+const quantity = ref(1);
+const totalPrice = ref(1.92); // Giá mặc định (có thể thay đổi)
+
 const minDays = 5;
 const maxDays = 360;
 const step = 30;
@@ -89,6 +117,10 @@ const initializeData = async () => {
   const countries = await GetAllCountries();
   customers.value = countries;
   loading.value = false;
+};
+
+const onBuy = () => {
+  alert(`You have bought items for ${totalPrice.value} USD!`);
 };
 
 onMounted(() => {
@@ -144,17 +176,9 @@ onMounted(() => {
   color: #555;
 }
 
-.slider-container {
-  margin: 20px;
-  text-align: center;
-  position: relative;
-}
-
 .slider-labels {
-  position: relative;
   height: 30px;
   width: 80%;
-  margin: 0 auto;
 }
 
 .slider-label {
@@ -165,8 +189,22 @@ onMounted(() => {
   color: #555;
 }
 
-.selected-days {
+.quantity-display {
+  font-size: 16px;
   margin-top: 10px;
-  font-weight: bold;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.btn-buy {
+  background: linear-gradient(to left, #56ccf2, #2f80ed);
+  color: #f5f7fa;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.75rem;
 }
 </style>
