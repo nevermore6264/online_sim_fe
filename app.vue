@@ -149,7 +149,7 @@ ul {
 }
 
 .logo-image {
-  width: 75px;
+  width: 100px;
 }
 
 .landing-page-container {
