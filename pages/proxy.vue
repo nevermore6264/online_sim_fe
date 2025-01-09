@@ -53,6 +53,10 @@ const activeTab = ref(0);
   gap: 2rem;
 }
 
+.tab-container {
+  min-height: 274px;
+}
+
 .table-container {
   flex: 1;
   min-width: 300px;

@@ -156,6 +156,11 @@ ul {
   width: 100%;
 }
 
+ol,
+ul {
+  padding-left: 15px;
+}
+
 @media (max-width: 1366px) {
   .auth-dialog {
     width: 75% !important;
