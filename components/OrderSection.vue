@@ -86,6 +86,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { GetAllCountries } from "@/services/country.js";
+import { push } from "notivue";
 
 const customers = ref([]);
 const loading = ref(false);
@@ -119,8 +120,9 @@ const initializeData = async () => {
   loading.value = false;
 };
 
+// `You have bought items for ${totalPrice.value} USD!`;
 const onBuy = () => {
-  alert(`You have bought items for ${totalPrice.value} USD!`);
+  push.warning("Feature in development");
 };
 
 onMounted(() => {
@@ -179,6 +181,7 @@ onMounted(() => {
 .slider-labels {
   height: 30px;
   width: 80%;
+  position: relative;
 }
 
 .slider-label {
