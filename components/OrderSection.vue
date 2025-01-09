@@ -17,7 +17,6 @@
       dataKey="code"
       :loading="loading"
     >
-      <!-- Removed the empty header template -->
       <template #empty> No countries found. </template>
       <template #loading> Loading customers data. Please wait. </template>
       <Column style="min-width: 12rem">
@@ -28,6 +27,10 @@
               :key="country.code"
               class="country-item"
               @click="onCountryClick(country)"
+              :class="{
+                'selected-country':
+                  selectedCountry && selectedCountry.code === country.code,
+              }"
             >
               <img
                 :src="country.flagImage"
@@ -107,6 +110,7 @@ import { useWindowSize } from "@vueuse/core";
 
 const customers = ref([]);
 const loading = ref(false);
+const selectedCountry = ref(null); // Track the selected country
 
 // Theo dõi kích thước màn hình
 const { width } = useWindowSize();
@@ -144,6 +148,11 @@ const initializeData = async () => {
 onMounted(() => {
   initializeData();
 });
+
+const onCountryClick = (country) => {
+  selectedCountry.value = country; // Update selected country
+  console.log("Selected Country: ", selectedCountry.value);
+};
 
 // `You have bought items for ${totalPrice.value} USD!`;
 const onBuy = () => {
@@ -262,5 +271,31 @@ const onBuy = () => {
   border-radius: 4px;
   cursor: pointer;
   margin-top: 0.75rem;
+}
+
+.selected-country {
+  background-color: #56ccf2; /* Highlight color */
+  color: white;
+  border-radius: 5px;
+}
+
+.country-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.country-item:hover {
+  background-color: #f1f1f1;
+}
+
+.flag-image {
+  width: 30px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.country-name {
+  font-size: 1rem;
 }
 </style>
