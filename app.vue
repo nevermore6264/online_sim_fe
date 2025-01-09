@@ -97,24 +97,10 @@ table th {
   font-weight: 600;
 }
 
-/* table tr:nth-child(even) {
-  background-color: #f9f9f9;
-} */
-
-/* table tr {
-  border-bottom: 1px solid #ddd;
-} */
-
 table tr:hover {
-  /* background-color: #f1f1f1; */
   cursor: pointer;
 }
 
-/* table td {
-  border-bottom: 1px solid #ddd;
-} */
-
-/* Optional: Add rounded corners to the table */
 table {
   border-radius: 8px;
   overflow: hidden;
@@ -124,10 +110,6 @@ table {
   border: 0px !important;
   padding: 0px !important;
 }
-
-/* .p-breadcrumb {
-  padding: 0 !important;
-} */
 
 .auth-dialog {
   width: 50% !important;

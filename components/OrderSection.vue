@@ -1,5 +1,6 @@
 <template>
   <div class="search-container">
+    <h4>1. Select proxy country</h4>
     <input
       type="text"
       v-model="searchQuery"
@@ -9,29 +10,36 @@
   </div>
 
   <div class="dataview-container">
-    <DataView
-      :value="filteredCustomers"
-      :layout="'grid'"
-      :rows="4"
+    <DataTable
+      :value="filteredCountries"
+      scrollable
+      scrollHeight="400px"
+      dataKey="code"
       :loading="loading"
-      :emptyMessage="'No countries found.'"
     >
-      <template #grid="{ data }">
-        <!-- <div v-if="data.length" class="grid-container"> -->
-        <div v-for="item in data" :key="item.id" class="grid-item">
-          <img
-            :src="`https://flagsapi.com/${item.code}/flat/64.png`"
-            alt="flag"
-            class="flag"
-          />
-          <div class="country-info">
-            <h4>{{ item.text.name }}</h4>
-            <p>Code: {{ item.code }}</p>
+      <!-- Removed the empty header template -->
+      <template #empty> No countries found. </template>
+      <template #loading> Loading customers data. Please wait. </template>
+      <Column style="min-width: 12rem">
+        <template #body="{ data }">
+          <div class="country-row">
+            <div
+              v-for="country in data"
+              :key="country.code"
+              class="country-item"
+              @click="onCountryClick(country)"
+            >
+              <img
+                :src="country.flagImage"
+                :alt="country.name"
+                class="flag-image"
+              />
+              <span class="country-name">{{ country.name }}</span>
+            </div>
           </div>
-        </div>
-        <!-- <div v-else>No data to display.</div> -->
-      </template>
-    </DataView>
+        </template>
+      </Column>
+    </DataTable>
 
     <div class="slider-container rental-period-slider">
       <h4>2. Select rental period days</h4>
@@ -95,27 +103,34 @@
 import { ref, onMounted, computed } from "vue";
 import { GetAllCountries } from "@/services/country.js";
 import { push } from "notivue";
+import { useWindowSize } from "@vueuse/core";
 
 const customers = ref([]);
 const loading = ref(false);
-const searchQuery = ref("");
-const rentalDays = ref(5); // Giá trị ban đầu
-const quantity = ref(1);
-const totalPrice = ref(1.92); // Giá mặc định (có thể thay đổi)
 
-const maxDays = 100;
-const step = 5;
+// Theo dõi kích thước màn hình
+const { width } = useWindowSize();
 
-const labels = Array.from({ length: maxDays / step + 1 }, (_, i) => i * step);
+// Tìm kiếm
+const searchCountry = ref("");
 
-const quantityLabels = Array.from({ length: 11 }, (_, i) => i * 100);
+// Phân nhóm dựa trên kích thước màn hình
+const groupedCustomers = computed(() => {
+  const itemsPerRow = width.value < 600 ? 1 : width.value < 1024 ? 2 : 3; // 1: Mobile, 2: Tablet, 3: Desktop
+  const groups = [];
+  for (let i = 0; i < customers.value.length; i += itemsPerRow) {
+    groups.push(customers.value.slice(i, i + itemsPerRow));
+  }
+  return groups;
+});
 
-const filteredCustomers = computed(() => {
-  if (!searchQuery.value) return customers.value;
-  return customers.value.filter((customer) =>
-    customer.country.name
-      .toLowerCase()
-      .includes(searchQuery.value.toLowerCase())
+// Lọc danh sách quốc gia theo tìm kiếm
+const filteredCountries = computed(() => {
+  if (!searchCountry.value.trim()) return groupedCustomers.value;
+  return groupedCustomers.value.map((group) =>
+    group.filter((country) =>
+      country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
+    )
   );
 });
 
@@ -126,19 +141,23 @@ const initializeData = async () => {
   loading.value = false;
 };
 
+onMounted(() => {
+  initializeData();
+});
+
 // `You have bought items for ${totalPrice.value} USD!`;
 const onBuy = () => {
   push.warning("Feature in development");
 };
-
-onMounted(() => {
-  initializeData();
-});
 </script>
 
 <style scoped>
 .search-container {
   margin-bottom: 1rem;
+}
+
+.proxy-containter .p-datatable-thead {
+  display: none !important;
 }
 
 .search-input {
@@ -147,6 +166,18 @@ onMounted(() => {
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
+}
+
+.search-container h4,
+.slider-container h4,
+.quantity-slider h4 {
+  padding: 15px 25px;
+  font-weight: 600;
+  background: grey;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  margin-bottom: 15px;
 }
 
 .dataview-container {
