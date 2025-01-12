@@ -39,9 +39,11 @@ const home = ref({
 const items = ref([{ label: "Proxy" }]);
 
 const tabs = [
-  { label: "Order", icon: "pi pi-shopping-cart" },
-  { label: "My Proxy", icon: "pi pi-server" },
-  { label: "F.A.Q.", icon: "pi pi-question" },
+  { label: "Rent Number", icon: "pi pi-shopping-cart" },
+  { label: "My Number", icon: "pi pi-phone" },
+  { label: "F.A.Q.", icon: "pi pi-info-circle" },
+  { label: "API", icon: "pi pi-code" },
+  { label: "Archie", icon: "pi pi-users" },
 ];
 
 const activeTab = ref(0);

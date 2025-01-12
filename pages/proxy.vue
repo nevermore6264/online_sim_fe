@@ -41,7 +41,7 @@ const items = ref([{ label: "Proxy" }]);
 const tabs = [
   { label: "Order", icon: "pi pi-shopping-cart" },
   { label: "My Proxy", icon: "pi pi-server" },
-  { label: "F.A.Q.", icon: "pi pi-question" },
+  { label: "F.A.Q.", icon: "pi pi-info-circle" },
 ];
 
 const activeTab = ref(0);
