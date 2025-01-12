@@ -22,7 +22,8 @@
       <template v-if="userInfo?.data?.id">
         <!-- Hiển thị tên người dùng -->
         <span class="user-name">
-          Hello, {{ userInfo.data.firstName }} {{ userInfo.data.lastName }}
+          {{ $t("landing.hello") }}, {{ userInfo.data.firstName }}
+          {{ userInfo.data.lastName }}
         </span>
 
         <!-- Logout Button -->

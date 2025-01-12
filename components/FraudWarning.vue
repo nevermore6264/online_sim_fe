@@ -1,10 +1,7 @@
 <template>
   <div class="fraud-warning">
     <p>
-      There are fraudulent sites that copy our design. Check the site domain
-      when you visit the site. Our domain is <strong>Verifysms.com</strong>. Be
-      careful and do not trust fraudulent sites. We are not responsible for the
-      actions of these fraudulent sites.
+      {{ $t("landing.berrors_top_yellow") }}
     </p>
   </div>
 </template>
