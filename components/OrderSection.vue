@@ -110,17 +110,16 @@ import { useWindowSize } from "@vueuse/core";
 
 const customers = ref([]);
 const loading = ref(false);
-const selectedCountry = ref(null); // Track the selected country
-
-// Theo dõi kích thước màn hình
-const { width } = useWindowSize();
-
-// Tìm kiếm
+const selectedCountry = ref(null);
+const rentalDays = ref(1); // Default rental days
+const quantity = ref(1); // Default quantity
+const pricePerDay = 10; // Example price per day
 const searchCountry = ref("");
 
-// Phân nhóm dựa trên kích thước màn hình
+const { width } = useWindowSize();
+
 const groupedCustomers = computed(() => {
-  const itemsPerRow = width.value < 600 ? 1 : width.value < 1024 ? 2 : 3; // 1: Mobile, 2: Tablet, 3: Desktop
+  const itemsPerRow = width.value < 600 ? 1 : width.value < 1024 ? 2 : 3;
   const groups = [];
   for (let i = 0; i < customers.value.length; i += itemsPerRow) {
     groups.push(customers.value.slice(i, i + itemsPerRow));
@@ -128,7 +127,6 @@ const groupedCustomers = computed(() => {
   return groups;
 });
 
-// Lọc danh sách quốc gia theo tìm kiếm
 const filteredCountries = computed(() => {
   if (!searchCountry.value.trim()) return groupedCustomers.value;
   return groupedCustomers.value.map((group) =>
@@ -145,18 +143,20 @@ const initializeData = async () => {
   loading.value = false;
 };
 
+const totalPrice = computed(() => {
+  return rentalDays.value * quantity.value * pricePerDay;
+});
+
 onMounted(() => {
   initializeData();
 });
 
 const onCountryClick = (country) => {
-  selectedCountry.value = country; // Update selected country
-  console.log("Selected Country: ", selectedCountry.value);
+  selectedCountry.value = country;
 };
 
-// `You have bought items for ${totalPrice.value} USD!`;
 const onBuy = () => {
-  push.warning("Feature in development");
+  push.success(`You have bought items for ${totalPrice.value} USD!`);
 };
 </script>
 
