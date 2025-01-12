@@ -221,6 +221,7 @@ const handleLogin = async () => {
       localStorage.setItem("token", token);
       push.success("Login successful!");
       visibleLogin.value = false;
+      window.location.reload();
     } else {
       push.error("Invalid login credentials.");
     }
@@ -265,12 +266,11 @@ const handleSignUp = async () => {
 };
 
 const handleLogout = () => {
-  // Xóa thông tin người dùng và token khỏi localStorage
-  localStorage.removeItem("token");
-  localStorage.removeItem("userInfo");
+  localStorage.clear();
   Object.keys(userInfo).forEach((key) => delete userInfo[key]);
   push.success("Logged out successfully!");
   router.push("/");
+  window.location.reload();
 };
 
 const handleRentNumber = () => {

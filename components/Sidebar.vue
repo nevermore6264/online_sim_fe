@@ -97,9 +97,9 @@ const goToPayment = () => {
 
 // Đăng xuất
 const logout = () => {
-  console.log("Logged out");
   router.push("/");
   localStorage.clear();
+  window.location.reload();
 };
 
 onMounted(() => {

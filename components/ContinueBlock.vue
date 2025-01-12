@@ -175,6 +175,7 @@ const handleLogin = async () => {
       localStorage.setItem("token", token);
       push.success("Login successful!");
       visibleLogin.value = false;
+      window.location.reload();
     } else {
       push.error("Invalid login credentials.");
     }
