@@ -1,5 +1,5 @@
 <template>
-  <!-- Dropdown for filtering by status -->
+  <!-- Filter container -->
   <div class="filter-container">
     <label for="status-filter">Filter by Status:</label>
     <select
@@ -11,6 +11,15 @@
       <option value="active">Active</option>
       <option value="expired">Expired</option>
     </select>
+
+    <label for="phone-search">Search by Phone Number:</label>
+    <input
+      id="phone-search"
+      type="text"
+      v-model="searchPhone"
+      placeholder="Enter phone number"
+      @input="filterOrderList"
+    />
   </div>
 
   <!-- Table for purchased SIMs -->
@@ -33,19 +42,21 @@
     </DataTable>
   </div>
 </template>
+
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
-import UserService from "@/services/user"; // Import từ user.js
+import UserService from "@/services/user";
 
 const orderList = ref([]);
 const filteredOrderList = ref([]);
 const selectedStatus = ref("all");
+const searchPhone = ref(""); // Thêm biến cho ô tìm kiếm
 const loading = ref(false);
 
 const currentTime = ref(new Date());
 
-// Function to fetch purchased SIMs
+// Fetch purchased SIMs
 const fetchOrderList = async () => {
   loading.value = true;
   const token = localStorage.getItem("token");
@@ -71,19 +82,30 @@ const fetchOrderList = async () => {
   }
 };
 
-// Function to filter order list based on selected status
+// Filter order list based on status and phone number
 const filterOrderList = () => {
-  if (selectedStatus.value === "all") {
-    filteredOrderList.value = orderList.value;
-  } else if (selectedStatus.value === "active") {
-    filteredOrderList.value = orderList.value.filter(
+  let tempList = orderList.value;
+
+  // Filter by status
+  if (selectedStatus.value === "active") {
+    tempList = tempList.filter(
       (item) => new Date(item.stock.expiredAt) > currentTime.value
     );
   } else if (selectedStatus.value === "expired") {
-    filteredOrderList.value = orderList.value.filter(
+    tempList = tempList.filter(
       (item) => new Date(item.stock.expiredAt) <= currentTime.value
     );
   }
+
+  // Filter by phone number
+  if (searchPhone.value) {
+    const searchLower = searchPhone.value.toLowerCase();
+    tempList = tempList.filter((item) =>
+      item.stock.phone.toLowerCase().includes(searchLower)
+    );
+  }
+
+  filteredOrderList.value = tempList;
 };
 
 onMounted(() => {
@@ -100,6 +122,12 @@ onMounted(() => {
 }
 
 #status-filter {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#phone-search {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
