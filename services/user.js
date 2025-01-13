@@ -19,4 +19,13 @@ export default {
     const response = await api.post("/api/web/login", loginData);
     return response.data;
   },
+
+  async OrderList(token) {
+    const response = await api.get(`/api/account/order-list`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
 };

@@ -12,7 +12,7 @@
         line-height: 22px;
       "
     >
-      Receive SMS online to temporary numbers from all over the world
+      {{ $t("landing.footerDesc") }}
     </h2>
     <div class="spacer-25"></div>
     <Button class="try_it_out noselect" @click="openSignUpDialog">

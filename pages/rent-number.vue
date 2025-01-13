@@ -25,6 +25,12 @@
         <div v-if="activeTab === 2">
           <FAQSection />
         </div>
+        <div v-if="activeTab === 3">
+          <API />
+        </div>
+        <div v-if="activeTab === 4">
+          <Archie />
+        </div>
       </div>
     </div>
   </div>
