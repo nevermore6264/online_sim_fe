@@ -1,18 +1,7 @@
 <template>
   <!-- Filter container -->
   <div class="filter-container">
-    <label for="status-filter">Filter by Status:</label>
-    <select
-      id="status-filter"
-      v-model="selectedStatus"
-      @change="filterOrderList"
-    >
-      <option value="all">All</option>
-      <option value="active">Active</option>
-      <option value="expired">Expired</option>
-    </select>
-
-    <label for="phone-search">Search by Phone Number:</label>
+    <label for="phone-search">Find Number:</label>
     <input
       id="phone-search"
       type="text"
@@ -44,8 +33,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import axios from "axios";
+import { ref, onMounted } from "vue";
 import UserService from "@/services/user";
 
 const orderList = ref([]);
