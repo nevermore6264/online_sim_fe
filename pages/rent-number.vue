@@ -42,7 +42,7 @@ import { ref } from "vue";
 const home = ref({
   icon: "pi pi-home",
 });
-const items = ref([{ label: "Proxy" }]);
+const items = ref([{ label: "Rent Number" }]);
 
 const tabs = [
   { label: "Rent Number", icon: "pi pi-shopping-cart" },

@@ -175,7 +175,7 @@ import orderService from "../services/order";
 const home = ref({
   icon: "pi pi-home",
 });
-const items = ref([{ label: "Receive SMS" }]);
+const items = ref([{ label: "Rent OTP" }]);
 const customers = ref([]);
 const orderList = ref([]);
 const loading = ref(false);
