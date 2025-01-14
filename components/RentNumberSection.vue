@@ -1,7 +1,5 @@
 <template>
   <div>
-    <Breadcrumb :home="home" :model="items" />
-
     <ul>
       <li>Always active numbers</li>
       <li>Activation of numbers on by order, from 10 minutes</li>
@@ -9,14 +7,14 @@
     </ul>
 
     <!-- Dropdown for country selection -->
-    <div class="dropdown-container">
+    <div class="dropdown-container flex">
       <label for="country-select">Select Country:</label>
       <Dropdown
         id="country-select"
         :options="dropdownOptions"
-        optionLabel="label"
+        optionLabel="name"
         optionValue="value"
-        v-model="selectedCustomer"
+        v-model="selectedCustomer.value"
         placeholder="Choose a country"
         class="w-full"
         @change="onCountrySelect"
@@ -38,7 +36,7 @@
     <!-- Sub DataTable for services -->
     <div class="table-container">
       <DataTable
-        :value="selectedCustomer?.services"
+        :value="selectedCustomer.services || []"
         scrollable
         scrollHeight="400px"
         dataKey="id"
@@ -78,12 +76,11 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import orderService from "../services/order";
 
-const home = ref({
-  icon: "pi pi-home",
-});
-const items = ref([{ label: "Receive SMS" }]);
 const dropdownOptions = ref([]);
-const selectedCustomer = ref(null);
+const selectedCustomer = ref({
+  value: null, // Mã quốc gia
+  services: [], // Danh sách dịch vụ
+});
 const loading = ref(false);
 import { GetAllCountries } from "@/services/country.js";
 
@@ -106,7 +103,7 @@ const fetchCountries = async () => {
 const onCountrySelect = async () => {
   if (selectedCustomer.value) {
     try {
-      const countryCode = selectedCustomer.value; // Dùng giá trị được chọn từ dropdown
+      const countryCode = selectedCustomer.value; // Chỉ lấy mã quốc gia đã chọn
       loading.value = true;
 
       const response = await axios.get(
@@ -114,23 +111,23 @@ const onCountrySelect = async () => {
       );
 
       if (response?.data?.success) {
-        // Gán lại toàn bộ selectedCustomer, bao gồm cả services
+        // Chỉ thêm hoặc cập nhật dịch vụ, không thay đổi giá trị quốc gia đã chọn
         selectedCustomer.value = {
-          code: countryCode,
+          ...selectedCustomer.value,
           services: response.data.data,
         };
       } else {
         console.error("Failed to fetch services");
         selectedCustomer.value = {
-          code: countryCode,
-          services: [], // Không có dữ liệu
+          ...selectedCustomer.value,
+          services: [], // Không có dữ liệu dịch vụ
         };
       }
     } catch (error) {
       console.error("Error fetching services:", error);
       selectedCustomer.value = {
-        code: countryCode,
-        services: [], // Lỗi, không có dữ liệu
+        ...selectedCustomer.value,
+        services: [], // Lỗi khi gọi API, không có dịch vụ
       };
     } finally {
       loading.value = false;
