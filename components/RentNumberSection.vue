@@ -74,32 +74,16 @@ const customers = ref([]);
 const dropdownOptions = ref([]);
 const selectedCustomer = ref(null);
 const loading = ref(false);
+import { GetAllCountries } from "@/services/country.js";
 
 // Fetch countries function
 const fetchCountries = async () => {
   try {
-    const response = await fetch("https://restcountries.com/v3.1/all");
-    const data = await response.json();
-    const countries = data?.map((country) => ({
-      id: country.cca2,
-      country: {
-        name: country.name.common,
-        code: country.cca2,
-        cca3: country.cca3,
-        dialCode:
-          country.idd && country.idd.root
-            ? country.idd.root +
-              (country.idd?.suffixes?.length ? country.idd?.suffixes[0] : "")
-            : "N/A",
-      },
-      services: [],
-    }));
-
-    customers.value = countries;
-
+    const response = await GetAllCountries();
+    console.log(response);
     // Map dropdown options
-    dropdownOptions.value = countries.map((customer) => ({
-      label: `${customer.country.name} (${customer.country.dialCode})`,
+    dropdownOptions.value = response.map((customer) => ({
+      label: `${customer?.name} (${customer?.code})`,
       value: customer,
     }));
   } catch (error) {
