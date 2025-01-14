@@ -1,55 +1,51 @@
 <template>
   <div class="profile-page">
     <div class="profile-header">
-      <img
-        v-if="userInfo?.avatar"
-        :src="userInfo.avatar"
-        alt="User Avatar"
-        class="profile-avatar"
-      />
-      <img
-        v-else
+      <!-- <img
         src="/default-avatar.png"
         alt="Default Avatar"
         class="profile-avatar"
-      />
+      /> -->
       <h2>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</h2>
-      <p class="username">@{{ userInfo?.username }}</p>
+      <p class="username">ID: {{ userInfo?.id }}</p>
     </div>
 
     <div class="profile-body">
       <h3>About</h3>
-      <p>{{ userInfo?.bio || "This user has not provided a bio yet." }}</p>
-
-      <h3>Contact</h3>
-      <ul>
-        <li>Email: {{ userInfo?.email || "Not provided" }}</li>
-        <li>Phone: {{ userInfo?.phone || "Not provided" }}</li>
-      </ul>
+      <p>Số dư tài khoản: {{ userInfo?.balanceAmount }} USD</p>
+      <p v-if="userInfo?.depositAddress">
+        Địa chỉ nạp: {{ userInfo?.depositAddress }}
+      </p>
+      <p v-else>Địa chỉ nạp chưa được cung cấp.</p>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import UserService from "@/services/user"; // Import UserService để fetch thông tin user
 
-const route = useRoute();
-const userId = route.params.id; // Lấy ID từ URL
 const userInfo = ref(null);
 
-// Fetch thông tin user từ API
-const fetchUserProfile = async () => {
-  try {
-    const response = await UserService.GetUserProfile(userId);
-    userInfo.value = response.data;
-  } catch (error) {
-    console.error("Error fetching user profile:", error);
+// Lấy thông tin người dùng từ localStorage
+const fetchUserInfoFromLocalStorage = () => {
+  const storedData = localStorage.getItem("userInfo");
+  if (storedData) {
+    try {
+      const parsedData = JSON.parse(storedData);
+      if (parsedData.success) {
+        userInfo.value = parsedData.data;
+      } else {
+        console.error("User data is not valid.");
+      }
+    } catch (error) {
+      console.error("Error parsing user info from localStorage:", error);
+    }
+  } else {
+    console.warn("No user info found in localStorage.");
   }
 };
 
-onMounted(fetchUserProfile);
+onMounted(fetchUserInfoFromLocalStorage);
 </script>
 
 <style scoped>
@@ -84,14 +80,5 @@ onMounted(fetchUserProfile);
 .profile-body h3 {
   margin-top: 20px;
   color: #007bff;
-}
-
-.profile-body ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.profile-body ul li {
-  margin-bottom: 10px;
 }
 </style>
