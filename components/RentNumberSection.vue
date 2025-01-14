@@ -8,16 +8,6 @@
       <li>Both types of numbers, priority for always active numbers</li>
     </ul>
 
-    <!-- Search Input for countries -->
-    <div class="search-container">
-      <input
-        type="text"
-        v-model="searchQuery"
-        placeholder="Search for a country..."
-        class="search-input"
-      />
-    </div>
-
     <!-- Flex container to hold two tables on the same row -->
     <div class="flex-container">
       <!-- Main DataTable -->
@@ -112,19 +102,10 @@ const items = ref([{ label: "Receive SMS" }]);
 const customers = ref([]);
 const loading = ref(false);
 const selectedCustomer = ref(null);
-const searchQuery = ref("");
 
 const currentTime = ref(new Date());
 
-// Function to filter customers by search query
-const filteredCustomers = computed(() => {
-  if (!searchQuery.value) return customers.value;
-  return customers.value.filter((customer) =>
-    customer.country.name
-      .toLowerCase()
-      .includes(searchQuery.value.toLowerCase())
-  );
-});
+const filteredCustomers = computed(() => customers.value);
 
 // Fetch countries function
 const fetchCountries = async () => {
