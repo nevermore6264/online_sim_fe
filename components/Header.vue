@@ -21,7 +21,7 @@
       <!-- Kiểm tra nếu userInfo tồn tại -->
       <template v-if="userInfo?.data?.id">
         <!-- Hiển thị tên người dùng -->
-        <span class="user-name">
+        <span class="user-name clickable" @click="goToProfile">
           {{ $t("landing.hello") }}, {{ userInfo.data.firstName }}
           {{ userInfo.data.lastName }}
         </span>
@@ -296,6 +296,14 @@ const fetchUserInfo = async (token) => {
   }
 };
 
+const goToProfile = () => {
+  if (userInfo?.data?.id) {
+    router.push(`/profile`);
+  } else {
+    push.warning("User information not available.");
+  }
+};
+
 onMounted(async () => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -314,6 +322,15 @@ onMounted(async () => {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
     rgba(0, 0, 0, 0.2) -2px -3px 10px inset;
+}
+
+.user-name.clickable {
+  cursor: pointer;
+  color: #007bff;
+}
+
+.user-name.clickable:hover {
+  color: #0056b3;
 }
 
 .layout-topbar .p-menubar-start {
