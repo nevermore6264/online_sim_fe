@@ -17,7 +17,7 @@
 
       <div class="tab-content">
         <div v-if="activeTab === 0">
-          <OrderSection />
+          <RentNumberSection />
         </div>
         <div v-if="activeTab === 1">
           <MyNumbersSection />
