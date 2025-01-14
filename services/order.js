@@ -9,15 +9,11 @@ export default {
   },
 
   async RentOTP(token, data) {
-    const response = await api.post(
-      `/api/sim-service/rent-otp`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await api.post(`/api/sim-service/rent-otp`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      data
-    );
+    });
     return response.data;
   },
 };

@@ -160,20 +160,43 @@ const onCountrySelect = async () => {
   }
 };
 
-// Buy service handler
-const buyService = (service) => {
-  orderService
-    .BuyOTP(service.code)
-    .then((res) => {
-      if (res.success) {
-        push.success("Buy service successfully");
-      } else {
-        push.error("Buy service failed");
-      }
-    })
-    .catch((err) => {
+import { toRaw } from "vue";
+
+const buyService = async (service) => {
+  const token = localStorage.getItem("token");
+
+  // Kiểm tra xem giá trị service có đúng không
+  if (!service || !service.code) {
+    console.error("Invalid service data:", service);
+    return;
+  }
+
+  // Sử dụng `toRaw` để tránh vòng lặp nếu `selectedCustomer` là một đối tượng `reactive`
+  const customer = toRaw(selectedCustomer.value);
+
+  // Kiểm tra xem customer có đúng không
+  if (!customer || !customer.value) {
+    console.error("Invalid customer data:", customer);
+    return;
+  }
+
+  const data = {
+    serviceCode:
+      service.code + "_" + String(customer.value || "").toUpperCase(),
+    rentDays: selectedRentalPeriod,
+  };
+
+  try {
+    const response = await orderService.RentOTP(token, data);
+    if (response.success) {
+      push.success("Buy service successfully");
+    } else {
       push.error("Buy service failed");
-    });
+    }
+  } catch (err) {
+    push.error("Buy service failed");
+    console.error("Error during service purchase:", err);
+  }
 };
 
 onMounted(() => {
