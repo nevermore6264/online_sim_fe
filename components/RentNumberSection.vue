@@ -106,18 +106,34 @@ const fetchCountries = async () => {
 const onCountrySelect = async () => {
   if (selectedCustomer.value) {
     try {
-      const countryCode = selectedCustomer.value; // Dùng trực tiếp giá trị đã chọn
+      const countryCode = selectedCustomer.value; // Dùng giá trị được chọn từ dropdown
+      loading.value = true;
+
       const response = await axios.get(
         `https://verifysms.org/api/services?platform=web&countryCode=${countryCode}`
       );
 
       if (response?.data?.success) {
-        selectedCustomer.value.services = response.data.data;
+        // Gán lại toàn bộ selectedCustomer, bao gồm cả services
+        selectedCustomer.value = {
+          code: countryCode,
+          services: response.data.data,
+        };
       } else {
         console.error("Failed to fetch services");
+        selectedCustomer.value = {
+          code: countryCode,
+          services: [], // Không có dữ liệu
+        };
       }
     } catch (error) {
       console.error("Error fetching services:", error);
+      selectedCustomer.value = {
+        code: countryCode,
+        services: [], // Lỗi, không có dữ liệu
+      };
+    } finally {
+      loading.value = false;
     }
   }
 };

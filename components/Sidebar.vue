@@ -14,7 +14,7 @@
       </div>
       <!-- Balance and Recharge -->
       <div class="balance-container">
-        <p>Balance: {{ balanceAmount }} USD</p>
+        <p>Balance: {{ balanceAmount }} USDT</p>
         <button @click="goToPayment" class="recharge-button">Recharge</button>
       </div>
 

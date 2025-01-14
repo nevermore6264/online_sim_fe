@@ -95,7 +95,7 @@
       <!-- Total Price Section -->
       <div class="col-xs-30">
         <h4>Total</h4>
-        <p>Price: {{ totalPrice }} USD</p>
+        <p>Price: {{ totalPrice }} USDT</p>
         <Button label="Buy" class="p-button-success btn-buy" @click="onBuy" />
       </div>
     </div>
@@ -160,7 +160,7 @@ const onCountryClick = (country) => {
 };
 
 const onBuy = () => {
-  push.success(`You have bought items for ${totalPrice.value} USD!`);
+  push.success(`You have bought items for ${totalPrice.value} USDT!`);
 };
 </script>
 

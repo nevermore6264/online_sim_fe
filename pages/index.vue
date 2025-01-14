@@ -78,7 +78,7 @@
                   />
                   <span class="service-name">{{ service.text }}</span>
                   <span class="service-price"
-                    >from {{ service.price }} USD</span
+                    >from {{ service.price }} USDT</span
                   >
                 </div>
               </div>
