@@ -114,7 +114,7 @@ const selectedCountry = ref(null);
 const rentalDays = ref(1); // Default rental days
 const quantity = ref(1); // Default quantity
 const pricePerDay = 10; // Example price per day
-const searchCountry = ref("");
+const searchQuery = ref("");
 
 const { width } = useWindowSize();
 
@@ -128,21 +128,25 @@ const groupedCustomers = computed(() => {
 });
 
 const filteredCountries = computed(() => {
-  if (!searchCountry.value.trim()) return groupedCustomers.value;
+  if (!searchQuery.value.trim()) return groupedCustomers.value;
   return groupedCustomers.value.map((group) =>
     group.filter((country) =>
-      country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
+      country.name.toLowerCase().includes(searchQuery.value.toLowerCase())
     )
   );
 });
 
 const initializeData = async () => {
   loading.value = true;
-  const countries = await GetAllCountries();
-  customers.value = countries;
-  loading.value = false;
+  try {
+    const countries = await GetAllCountries();
+    customers.value = countries; // Gán toàn bộ danh sách vào customers
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+  } finally {
+    loading.value = false;
+  }
 };
-
 const totalPrice = computed(() => {
   return rentalDays.value * quantity.value * pricePerDay;
 });
@@ -163,6 +167,10 @@ const onBuy = () => {
 <style scoped>
 .search-container {
   margin-bottom: 1rem;
+}
+
+.dataview-container .p-datatable .p-datatable-tbody > tr > td {
+  border: none !important;
 }
 
 .proxy-containter .p-datatable-thead {
