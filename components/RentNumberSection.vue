@@ -64,11 +64,7 @@
 
         <Column>
           <template #body="{ data }">
-            <img
-              :src="data?.image.replace('/japan-sim/images/', '/')"
-              width="24px"
-              class="w-24 rounded"
-            />
+            <img :src="data?.image" width="24px" class="w-24 rounded" />
           </template>
         </Column>
 
@@ -100,12 +96,12 @@ const selectedCustomer = ref({
 });
 
 const rentalPeriodOptions = ref([
-  { label: "1 week", value: "1_week" },
-  { label: "2 weeks", value: "2_weeks" },
-  { label: "3 weeks", value: "3_weeks" },
-  { label: "1 month", value: "1_month" },
-  { label: "2 months", value: "2_months" },
-  { label: "3 months", value: "3_months" },
+  { label: "1 week", value: "7" },
+  { label: "2 weeks", value: "14" },
+  { label: "3 weeks", value: "21" },
+  { label: "1 month", value: "30" },
+  { label: "2 months", value: "60" },
+  { label: "3 months", value: "90" },
 ]);
 
 const selectedRentalPeriod = ref(null);
@@ -235,10 +231,10 @@ img {
 }
 
 .recharge-button {
-  background-color: #007bff;
-  color: #fff;
+  background: linear-gradient(to left, #56ccf2, #2f80ed);
+  color: #f5f7fa;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 1rem 3rem;
   border-radius: 5px;
   cursor: pointer;
 }

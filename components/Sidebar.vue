@@ -155,8 +155,8 @@ onMounted(() => {
 }
 
 .recharge-button {
-  background-color: #007bff;
-  color: #fff;
+  background: linear-gradient(to left, #56ccf2, #2f80ed);
+  color: #f5f7fa;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;
