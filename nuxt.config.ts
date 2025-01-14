@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config';
+
 export default defineNuxtConfig({
   modules: ['notivue/nuxt', '@nuxtjs/i18n'],
   i18n: {
@@ -18,7 +19,8 @@ export default defineNuxtConfig({
     'primevue/resources/themes/aura-light-blue/theme.css',
     'primevue/resources/primevue.min.css',
     'primeicons/primeicons.css',
-    'flag-icon-css/css/flag-icons.min.css'
+    'flag-icon-css/css/flag-icons.min.css',
+    'primeflex/primeflex.css'
   ],
   build: {
     transpile: ['primevue'] // Đảm bảo các thành phần PrimeVue được biên dịch đúng cách

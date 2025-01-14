@@ -20,7 +20,19 @@
         placeholder="Choose a country"
         class="w-full"
         @change="onCountrySelect"
-      />
+      >
+        <template #option="slotProps">
+          <div class="flex align-items-center">
+            <img
+              :alt="slotProps.option?.name"
+              :src="slotProps.option?.flagImage"
+              :class="`mr-2 flag flag-${slotProps.option?.code?.toLowerCase()}`"
+              style="width: 18px"
+            />
+            <div>{{ slotProps.option?.name }}</div>
+          </div>
+        </template>
+      </Dropdown>
     </div>
 
     <!-- Sub DataTable for services -->
@@ -70,7 +82,6 @@ const home = ref({
   icon: "pi pi-home",
 });
 const items = ref([{ label: "Receive SMS" }]);
-const customers = ref([]);
 const dropdownOptions = ref([]);
 const selectedCustomer = ref(null);
 const loading = ref(false);
@@ -83,19 +94,19 @@ const fetchCountries = async () => {
     console.log(response);
     // Map dropdown options
     dropdownOptions.value = response.map((customer) => ({
-      label: `${customer?.name} (${customer?.code})`,
-      value: customer,
+      name: `${customer?.name} (${customer?.code})`,
+      value: customer?.code,
+      flagImage: customer?.flagImage,
     }));
   } catch (error) {
     console.error("Error fetching countries:", error);
   }
 };
 
-// Handle dropdown selection
 const onCountrySelect = async () => {
-  if (selectedCustomer.value?.country?.cca3) {
+  if (selectedCustomer.value) {
     try {
-      const countryCode = selectedCustomer.value.country.cca3;
+      const countryCode = selectedCustomer.value; // Dùng trực tiếp giá trị đã chọn
       const response = await axios.get(
         `https://verifysms.org/api/services?platform=web&countryCode=${countryCode}`
       );
@@ -133,18 +144,19 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Flex container to align two tables side by side */
 .flex-container {
   display: flex;
   gap: 2rem;
-  /* Add some space between the tables */
 }
 
 .table-container {
   flex: 1;
-  /* Make tables take equal width */
   min-width: 300px;
-  /* Optional: Ensure tables don't get too narrow */
+}
+
+img {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .row-content {
