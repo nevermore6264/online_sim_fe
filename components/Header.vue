@@ -13,6 +13,7 @@
         class="p-button-text"
         @click="handleRentNumber"
       />
+      <Button label="Rent OTP" class="p-button-text" @click="handleRentOTP" />
       <Button label="Proxy" class="p-button-text" @click="handleProxy" />
     </div>
 
@@ -277,6 +278,11 @@ const handleLogout = () => {
 const handleRentNumber = () => {
   push.info("Redirecting to Rent Number...");
   router.push("/rent-number"); // Điều hướng tới trang "Rent Number"
+};
+
+const handleRentOTP = () => {
+  push.info("Redirecting to Rent OTP...");
+  router.push("/rent-otp"); // Điều hướng tới trang "Rent OTP"
 };
 
 const handleProxy = () => {
