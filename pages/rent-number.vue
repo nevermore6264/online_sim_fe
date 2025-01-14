@@ -29,7 +29,7 @@
           <API />
         </div>
         <div v-if="activeTab === 4">
-          <Archie />
+          <ArchieSection />
         </div>
       </div>
     </div>

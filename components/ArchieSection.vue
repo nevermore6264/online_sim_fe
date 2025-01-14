@@ -1,7 +1,7 @@
 <template>
   <!-- Filter container -->
   <div class="filter-container">
-    <label for="phone-search">Find Number:</label>
+    <label for="phone-search">Find number:</label>
     <input
       id="phone-search"
       type="text"
@@ -23,10 +23,23 @@
     >
       <template #empty> No matching records found </template>
       <template #loading> Loading records. Please wait. </template>
-      <Column header="Begin" field="id" style="min-width: 1rem" />
-      <Column header="Closed" field="countryCode" style="min-width: 12rem" />
-      <Column header="Service" field="stock.phone" style="min-width: 12rem" />
-      <Column header="Phone number" field="cost" style="min-width: 12rem" />
+      <Column header="Begin" field="begin" style="min-width: 1rem" />
+      <Column header="Closed" style="min-width: 12rem">
+        <template #body="slotProps">
+          {{ formatDate(slotProps.data.stock.expiredAt) }}
+        </template>
+      </Column>
+      <Column
+        header="Service"
+        field="stock.serviceCode"
+        style="min-width: 12rem"
+      />
+      <Column
+        header="Phone number"
+        field="stock.phone"
+        style="min-width: 12rem"
+      />
+
       <Column header="Action" style="min-width: 12rem"> </Column>
     </DataTable>
   </div>
@@ -38,13 +51,9 @@ import UserService from "@/services/user";
 
 const orderList = ref([]);
 const filteredOrderList = ref([]);
-const selectedStatus = ref("all");
-const searchPhone = ref(""); // Thêm biến cho ô tìm kiếm
+const searchPhone = ref("");
 const loading = ref(false);
 
-const currentTime = ref(new Date());
-
-// Fetch purchased SIMs
 const fetchOrderList = async () => {
   loading.value = true;
   const token = localStorage.getItem("token");
@@ -56,10 +65,9 @@ const fetchOrderList = async () => {
 
   try {
     const response = await UserService.OrderList(token);
-
-    if (response?.data?.success) {
-      orderList.value = response?.data?.data?.docs;
-      filterOrderList(); // Apply filtering after fetching data
+    if (response?.success) {
+      orderList.value = response?.data?.docs;
+      filterOrderList();
     } else {
       console.error("Failed to fetch data from API");
     }
@@ -70,20 +78,23 @@ const fetchOrderList = async () => {
   }
 };
 
-// Filter order list based on status and phone number
+const formatDate = (dateString) => {
+  if (!dateString) return "N/A"; // Xử lý nếu ngày không tồn tại
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false, // Hiển thị giờ 24h
+  }).format(date);
+};
+
+// Filter order list based on phone number
 const filterOrderList = () => {
   let tempList = orderList.value;
-
-  // Filter by status
-  if (selectedStatus.value === "active") {
-    tempList = tempList.filter(
-      (item) => new Date(item.stock.expiredAt) > currentTime.value
-    );
-  } else if (selectedStatus.value === "expired") {
-    tempList = tempList.filter(
-      (item) => new Date(item.stock.expiredAt) <= currentTime.value
-    );
-  }
 
   // Filter by phone number
   if (searchPhone.value) {
@@ -107,12 +118,6 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-#status-filter {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
 #phone-search {
