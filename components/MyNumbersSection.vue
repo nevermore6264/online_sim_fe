@@ -26,7 +26,7 @@
       <Column header="Status" field="statusCode" style="min-width: 1rem" />
       <Column
         header="Phone number"
-        field="stock.cost"
+        field="stock.phone"
         style="min-width: 12rem"
       />
       <Column
@@ -34,11 +34,11 @@
         field="stock.serviceCode"
         style="min-width: 12rem"
       />
-      <Column
-        header="Expire At"
-        field="stock.expiredAt"
-        style="min-width: 12rem"
-      />
+      <Column header="Expire At" style="min-width: 12rem">
+        <template #body="slotProps">
+          {{ formatDate(slotProps.data.stock.expiredAt) }}
+        </template>
+      </Column>
 
       <Column header="Action" style="min-width: 12rem"> </Column>
     </DataTable>
@@ -51,10 +51,9 @@ import UserService from "@/services/user";
 
 const orderList = ref([]);
 const filteredOrderList = ref([]);
-const searchPhone = ref(""); // Biến cho ô tìm kiếm
+const searchPhone = ref("");
 const loading = ref(false);
 
-// Fetch purchased SIMs
 const fetchOrderList = async () => {
   loading.value = true;
   const token = localStorage.getItem("token");
@@ -66,10 +65,9 @@ const fetchOrderList = async () => {
 
   try {
     const response = await UserService.OrderList(token);
-
-    if (response?.data?.success) {
-      orderList.value = response?.data?.data?.docs;
-      filterOrderList(); // Apply filtering after fetching data
+    if (response?.success) {
+      orderList.value = response?.data?.docs;
+      filterOrderList();
     } else {
       console.error("Failed to fetch data from API");
     }
@@ -78,6 +76,20 @@ const fetchOrderList = async () => {
   } finally {
     loading.value = false;
   }
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) return "N/A"; // Xử lý nếu ngày không tồn tại
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false, // Hiển thị giờ 24h
+  }).format(date);
 };
 
 // Filter order list based on phone number
