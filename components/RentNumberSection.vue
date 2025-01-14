@@ -2,7 +2,11 @@
   <div>
     <Breadcrumb :home="home" :model="items" />
 
-    <h2>Buy OTP Service</h2>
+    <ul>
+      <li>Always active numbers</li>
+      <li>Activation of numbers on by order, from 10 minutes</li>
+      <li>Both types of numbers, priority for always active numbers</li>
+    </ul>
 
     <!-- Search Input for countries -->
     <div class="search-container">
@@ -275,5 +279,9 @@ onMounted(() => {
 
 .lbl_services {
   margin-top: 0px !important;
+}
+
+li {
+  margin-bottom: 10px;
 }
 </style>
