@@ -6,15 +6,26 @@
 
     <!-- Search Input for countries -->
     <div class="search-container">
-      <input type="text" v-model="searchQuery" placeholder="Search for a country..." class="search-input" />
+      <input
+        type="text"
+        v-model="searchQuery"
+        placeholder="Search for a country..."
+        class="search-input"
+      />
     </div>
 
     <!-- Flex container to hold two tables on the same row -->
     <div class="flex-container">
       <!-- Main DataTable -->
       <div class="table-container">
-        <DataTable :value="filteredCustomers" scrollable scrollHeight="400px" dataKey="id" :loading="loading"
-          @row-click="onRowClick">
+        <DataTable
+          :value="filteredCustomers"
+          scrollable
+          scrollHeight="400px"
+          dataKey="id"
+          :loading="loading"
+          @row-click="onRowClick"
+        >
           <template #header>
             <div class="flex justify-content-end">
               <!-- Không cần thêm ô tìm kiếm tại header nữa -->
@@ -23,11 +34,19 @@
           <template #empty> No customers found. </template>
           <template #loading> Loading customers data. Please wait. </template>
 
-          <Column header="Country" filterField="country.name" style="min-width: 12rem">
+          <Column
+            header="Country"
+            filterField="country.name"
+            style="min-width: 12rem"
+          >
             <template #body="{ data }">
               <div class="flex align-items-center row-content">
-                <img alt="flag" :src="`https://flagsapi.com/${data.country.code}/flat/64.png`"
-                  :class="`flag flag-${data.country.code}`" style="width: 24px" />
+                <img
+                  alt="flag"
+                  :src="`https://flagsapi.com/${data.country.code}/flat/64.png`"
+                  :class="`flag flag-${data.country.code}`"
+                  style="width: 24px"
+                />
                 <span class="country">{{ data.country.name }}</span>
                 <span class="dialCode" v-if="data.country.dialCode">
                   ({{ data.country.dialCode }})
@@ -40,14 +59,23 @@
 
       <!-- Sub DataTable for services -->
       <div class="table-container">
-        <DataTable :value="selectedCustomer?.services" scrollable scrollHeight="400px" dataKey="id" :loading="loading">
+        <DataTable
+          :value="selectedCustomer?.services"
+          scrollable
+          scrollHeight="400px"
+          dataKey="id"
+          :loading="loading"
+        >
           <template #empty> No services found. </template>
           <template #loading> Loading services data. Please wait. </template>
 
           <Column>
             <template #body="{ data }">
-              <img :src="data?.image.replace('/japan-sim/images/', '/')" width="24px"
-                class="w-24 rounded" />
+              <img
+                :src="data?.image.replace('/japan-sim/images/', '/')"
+                width="24px"
+                class="w-24 rounded"
+              />
             </template>
           </Column>
 
@@ -69,20 +97,46 @@
     <!-- Table for purchased SIMs -->
     <div class="purchased-sim-container">
       <h2>Purchased SIMs</h2>
-      <DataTable :value="orderList" scrollable scrollHeight="300px" dataKey="id" :loading="loading">
+      <DataTable
+        :value="orderList"
+        scrollable
+        scrollHeight="300px"
+        dataKey="id"
+        :loading="loading"
+      >
         <template #empty> No SIMs purchased yet. </template>
         <template #loading> Loading SIM data. Please wait. </template>
 
         <Column header="Country" field="countryCode" style="min-width: 12rem" />
-        <Column header="Phone Number" field="stock.phone" style="min-width: 12rem" />
-        <Column header="Service" field="stock.serviceCode" style="min-width: 12rem" />
+        <Column
+          header="Phone Number"
+          field="stock.phone"
+          style="min-width: 12rem"
+        />
+        <Column
+          header="Service"
+          field="stock.serviceCode"
+          style="min-width: 12rem"
+        />
         <Column header="Price" field="cost" style="min-width: 12rem" />
         <Column header="SMS Status" style="min-width: 12rem">
           <template #body="{ data }">
             <span>
-              <Tag v-if="data.statusCode == 'PENDING'" severity="warning" value="PENDING"></Tag>
-              <Tag v-else-if="data.statusCode == 'SUCCESS'" severity="success" value="SUCCESS"></Tag>
-              <Tag v-else-if="data.statusCode == 'REFUNDED'" severity="danger" value="REFUNDED"></Tag>
+              <Tag
+                v-if="data.statusCode == 'PENDING'"
+                severity="warning"
+                value="PENDING"
+              ></Tag>
+              <Tag
+                v-else-if="data.statusCode == 'SUCCESS'"
+                severity="success"
+                value="SUCCESS"
+              ></Tag>
+              <Tag
+                v-else-if="data.statusCode == 'REFUNDED'"
+                severity="danger"
+                value="REFUNDED"
+              ></Tag>
               <Tag v-else severity="info" :value="data.statusCode"></Tag>
             </span>
           </template>
@@ -99,7 +153,11 @@
         <Column header="Message Content" style="min-width: 12rem">
           <template #body="{ data }">
             <span>
-              {{ data.stock?.messages.length == 0 ? "No content" : data.stock.messages[0].content }}
+              {{
+                data.stock?.messages.length == 0
+                  ? "No content"
+                  : data.stock.messages[0].content
+              }}
             </span>
           </template>
         </Column>
@@ -114,7 +172,6 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import orderService from "../services/order";
 
-const router = useRouter();
 const home = ref({
   icon: "pi pi-home",
 });
@@ -138,16 +195,19 @@ const filteredCustomers = computed(() => {
 });
 
 const trackingExpiredTime = (value) => {
-  const diff = new Date(value) - currentTime.value
+  const diff = new Date(value) - currentTime.value;
 
-  if (diff <= 0) return 'Expired'
+  if (diff <= 0) return "Expired";
 
-  const totalSeconds = Math.floor(diff / 1000) // Total seconds remaining
-  const minutes = Math.floor(totalSeconds / 60) // Total minutes
-  const seconds = totalSeconds % 60 // Remaining seconds
+  const totalSeconds = Math.floor(diff / 1000); // Total seconds remaining
+  const minutes = Math.floor(totalSeconds / 60); // Total minutes
+  const seconds = totalSeconds % 60; // Remaining seconds
 
-  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
-}
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+    2,
+    "0"
+  )}`;
+};
 
 // Fetch countries function
 const fetchCountries = async () => {
@@ -163,7 +223,7 @@ const fetchCountries = async () => {
         dialCode:
           country.idd && country.idd.root
             ? country.idd.root +
-            (country.idd?.suffixes?.length ? country.idd?.suffixes[0] : "")
+              (country.idd?.suffixes?.length ? country.idd?.suffixes[0] : "")
             : "N/A",
       },
       services: [],
@@ -238,15 +298,18 @@ const onRowClick = async (event) => {
 
 // Buy service handler
 const buyService = (service) => {
-  orderService.BuyOTP(service.code).then((res) => {
-    if (res.success) {
-      push.success("Buy service successfully");
-    } else {
+  orderService
+    .BuyOTP(service.code)
+    .then((res) => {
+      if (res.success) {
+        push.success("Buy service successfully");
+      } else {
+        push.error("Buy service failed");
+      }
+    })
+    .catch((err) => {
       push.error("Buy service failed");
-    }
-  }).catch((err) => {
-    push.error("Buy service failed");
-  });
+    });
 };
 
 onMounted(() => {
