@@ -20,7 +20,7 @@
           <OrderSection />
         </div>
         <div v-if="activeTab === 1">
-          <MyProxySection />
+          <MyNumbersSection />
         </div>
         <div v-if="activeTab === 2">
           <FAQRentNumber />
