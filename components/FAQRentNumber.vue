@@ -15,74 +15,49 @@ import { ref } from "vue";
 
 const faqItems = ref([
   {
-    question: "For what purposes is it forbidden to use our proxies?",
+    question: "Why do not receive SMS?",
     answer: `
-        <ul>
-          <li>Fraud, burglaries, insults, threats, and slander;</li>
-          <li>Password selection (brute force), scanning, and port vulnerability checks;</li>
-          <li>Creating phishing sites;</li>
-          <li>Spam (including on forums, websites, and blogs), or any activity leading to IP blacklists;</li>
-          <li>Email spamming;</li>
-          <li>Spreading malware (viruses, trojans, etc.);</li>
-          <li>Hacking websites or searching for vulnerabilities (e.g., SQL injection);</li>
-          <li>Distributing copyrighted materials without permission (e.g., videos, music, software);</li>
-          <li>Violating laws of the server's hosting country.</li>
-        </ul>
+        First, check that you activated the phone number before sending SMS. We recommend using a private proxy, clearing the cache, and cookies of the browser when creating accounts using numbers.
       `,
     open: false,
   },
   {
-    question: "What protocols do your proxies support?",
+    question: "Why is the button for prolongation disabled?",
     answer:
-      "Our proxies support HTTP, HTTPS, and SOCKS5 protocols. Full details are provided after purchase.",
+      "You can prolong a number only if there are less than 7 days remaining before the expiration date.",
     open: false,
   },
   {
-    question: "Can I get a refund for a proxy?",
-    answer:
-      "A refund can only be provided if the proxy is not working. If the proxies are technically functional, refunds will not be issued.",
+    question: "What is max period for rent number? ?",
+    answer: "Max guarantee period for the rent - 90 days.",
     open: false,
   },
   {
-    question: "How to set up a proxy in an Android device?",
+    question: "What to do if I did not manage to renew the number manually?",
     answer: `
-        <ol>
-          <li>Open your Android's Settings.</li>
-          <li>Tap Wi-Fi.</li>
-          <li>Tap and hold the Wi-Fi network name.</li>
-          <li>Select Modify Network.</li>
-          <li>Click Advanced Options.</li>
-          <li>Tap Manual.</li>
-          <li>Enter the proxy's hostname and port (e.g., 127.0.0.1:10101).</li>
-          <li>Tap Save.</li>
-        </ol>
+        If the rental period has expired and you have not had time to renew the rental, you can restore the rental in the Archive section on the Rental page yourself. Please note that it is not always possible to restore the number, but only if it is technically possible.
       `,
     open: false,
   },
   {
-    question: "How to set up a proxy on an iPhone?",
+    question: "Why is the number not activated for a long time?",
     answer: `
-        <ol>
-          <li>Open your iPhone settings.</li>
-          <li>Tap Wi-Fi.</li>
-          <li>Select the info icon next to the Wi-Fi network.</li>
-          <li>Scroll to HTTP Proxy and select Configure Proxy.</li>
-          <li>Tap Manual and enter the server and port (e.g., us.smartproxy.com:10101).</li>
-          <li>Turn on authentication (if needed) and add your username and password.</li>
-          <li>Tap back to save your settings.</li>
-        </ol>
+       After the activation request, your number appears in a certain queue for activation, where there are numbers and other users, so activation of the number may take some time. On average, a phone number is activated in 10-15 minutes, but it can take longer. If the number is not activated for a very long period of time, then you can contact the support team and we will try to resolve the issue.
+PHONE NUMBER STAYS ACTIVE FOR 10-30 MINUTES, THEN IS DEACTIVATED
       `,
     open: false,
   },
   {
-    question: "How to set up a proxy in Windows 10?",
+    question: "Will there be a refund for unused days upon removal",
     answer: `
-        <ol>
-          <li>Click the Windows logo and search for "Change proxy settings".</li>
-          <li>In the Proxy settings window, scroll to "Manual proxy setup".</li>
-          <li>Turn on "Use a proxy server".</li>
-          <li>Enter the address and port, then click Save.</li>
-        </ol>
+        We do not refund if you used the number, i.e. received SMS and you had no problems with the number. Refunds are made only when there are unsolvable problems with the number. In most cases, the issue of return is decided individually.
+      `,
+    open: false,
+  },
+  {
+    question: "Rental reinstatement cost",
+    answer: `
+        The cost of restoring the rental = the cost of overdue days (without discount) + prepayment from 30 days of rent
       `,
     open: false,
   },

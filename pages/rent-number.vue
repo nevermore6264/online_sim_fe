@@ -23,7 +23,7 @@
           <MyProxySection />
         </div>
         <div v-if="activeTab === 2">
-          <FAQSection />
+          <FAQRentNumber />
         </div>
         <div v-if="activeTab === 3">
           <API />

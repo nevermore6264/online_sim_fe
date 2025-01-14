@@ -267,8 +267,8 @@ const onBuy = () => {
   background: linear-gradient(to left, #56ccf2, #2f80ed);
   color: #f5f7fa;
   border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 4px;
+  padding: 1rem 5rem;
+  border-radius: 5px;
   cursor: pointer;
   margin-top: 0.75rem;
 }
