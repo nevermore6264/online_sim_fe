@@ -17,6 +17,12 @@ body {
   font-family: "MyriadSetPro", Arial, sans-serif !important;
 }
 
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
 ::-webkit-scrollbar {
   width: 7px;
 }

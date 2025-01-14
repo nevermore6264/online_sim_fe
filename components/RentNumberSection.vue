@@ -8,29 +8,46 @@
 
     <!-- Dropdown for country selection -->
     <div class="dropdown-container flex">
-      <label for="country-select">Select Country:</label>
-      <Dropdown
-        id="country-select"
-        :options="dropdownOptions"
-        optionLabel="name"
-        optionValue="value"
-        v-model="selectedCustomer.value"
-        placeholder="Choose a country"
-        class="w-full"
-        @change="onCountrySelect"
-      >
-        <template #option="slotProps">
-          <div class="flex align-items-center">
-            <img
-              :alt="slotProps.option?.name"
-              :src="slotProps.option?.flagImage"
-              :class="`mr-2 flag flag-${slotProps.option?.code?.toLowerCase()}`"
-              style="width: 18px"
-            />
-            <div>{{ slotProps.option?.name }}</div>
-          </div>
-        </template>
-      </Dropdown>
+      <!-- Dropdown for country selection -->
+      <div class="dropdown-item">
+        <label for="country-select">Select Country:</label>
+        <Dropdown
+          id="country-select"
+          :options="dropdownOptions"
+          optionLabel="name"
+          optionValue="value"
+          v-model="selectedCustomer.value"
+          placeholder="Choose a country"
+          class="w-full"
+          @change="onCountrySelect"
+        >
+          <template #option="slotProps">
+            <div class="flex align-items-center">
+              <img
+                :alt="slotProps.option?.name"
+                :src="slotProps.option?.flagImage"
+                :class="`mr-2 flag flag-${slotProps.option?.code?.toLowerCase()}`"
+                style="width: 18px"
+              />
+              <div>{{ slotProps.option?.name }}</div>
+            </div>
+          </template>
+        </Dropdown>
+      </div>
+
+      <!-- Dropdown for rental period selection -->
+      <div class="dropdown-item">
+        <label for="rental-period-select">Select Rental Period:</label>
+        <Dropdown
+          id="rental-period-select"
+          :options="rentalPeriodOptions"
+          optionLabel="label"
+          optionValue="value"
+          v-model="selectedRentalPeriod"
+          placeholder="Choose a period"
+          class="w-full"
+        />
+      </div>
     </div>
 
     <!-- Sub DataTable for services -->
@@ -81,6 +98,18 @@ const selectedCustomer = ref({
   value: null, // Mã quốc gia
   services: [], // Danh sách dịch vụ
 });
+
+const rentalPeriodOptions = ref([
+  { label: "1 week", value: "1_week" },
+  { label: "2 weeks", value: "2_weeks" },
+  { label: "3 weeks", value: "3_weeks" },
+  { label: "1 month", value: "1_month" },
+  { label: "2 months", value: "2_months" },
+  { label: "3 months", value: "3_months" },
+]);
+
+const selectedRentalPeriod = ref(null);
+
 const loading = ref(false);
 import { GetAllCountries } from "@/services/country.js";
 
@@ -107,7 +136,7 @@ const onCountrySelect = async () => {
       loading.value = true;
 
       const response = await axios.get(
-        `https://verifysms.org/api/services?platform=web&countryCode=${countryCode}`
+        `https://verifysms.org/api/services?platform=web&countryCode=${countryCode?.value}`
       );
 
       if (response?.data?.success) {
@@ -165,6 +194,10 @@ onMounted(() => {
 .table-container {
   flex: 1;
   min-width: 300px;
+}
+
+.dropdown-item {
+  margin-right: 10px;
 }
 
 img {
