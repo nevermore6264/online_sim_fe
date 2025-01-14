@@ -23,10 +23,22 @@
     >
       <template #empty> No matching records found </template>
       <template #loading> Loading records. Please wait. </template>
-      <Column header="Status" field="status" style="min-width: 1rem" />
-      <Column header="Phone number" field="cost" style="min-width: 12rem" />
-      <Column header="Service" field="stock.phone" style="min-width: 12rem" />
-      <Column header="Expire At" field="phone" style="min-width: 12rem" />
+      <Column header="Status" field="statusCode" style="min-width: 1rem" />
+      <Column
+        header="Phone number"
+        field="stock.cost"
+        style="min-width: 12rem"
+      />
+      <Column
+        header="Service"
+        field="stock.serviceCode"
+        style="min-width: 12rem"
+      />
+      <Column
+        header="Expire At"
+        field="stock.expiredAt"
+        style="min-width: 12rem"
+      />
 
       <Column header="Action" style="min-width: 12rem"> </Column>
     </DataTable>
