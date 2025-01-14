@@ -42,8 +42,6 @@ const filteredOrderList = ref([]);
 const searchPhone = ref(""); // Biến cho ô tìm kiếm
 const loading = ref(false);
 
-const currentTime = ref(new Date());
-
 // Fetch purchased SIMs
 const fetchOrderList = async () => {
   loading.value = true;
