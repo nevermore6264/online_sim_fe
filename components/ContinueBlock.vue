@@ -18,7 +18,7 @@
     <Dialog
       v-model:visible="visibleLogin"
       modal
-      header="Login"
+      :header="$t('landing.login')"
       class="auth-dialog"
     >
       <form @submit.prevent="handleLogin">
@@ -40,7 +40,7 @@
             class="auth-input"
           />
           <Button
-            label="Login"
+            :label="$t('landing.login')"
             type="submit"
             class="auth-submit"
             :disabled="loading"
@@ -108,7 +108,7 @@
         </div>
       </form>
       <div class="auth-right">
-        <h2>Login</h2>
+        <h2>{{ $t("landing.login") }}</h2>
         <p>Already have an account? Log in here.</p>
         <Button label="Sign In!" class="auth-signup" @click="switchToLogin" />
       </div>

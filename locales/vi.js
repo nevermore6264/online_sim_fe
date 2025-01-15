@@ -7,5 +7,10 @@ export default {
     footerDesc:
       "Nhận tin nhắn SMS trực tuyến đến các số tạm thời từ khắp nơi trên thế giới",
     footerCopyRight: "Bản quyền © 2024 ❤ Japan Sim. Bảo lưu mọi quyền.",
+    headerRentNumber: "Thuê Sim",
+    headerRentOTP: "Thuê OTP",
+    headerProxy: "Proxy",
+    login: "Đăng nhập",
+    signup: "Đăng ký",
   },
 };

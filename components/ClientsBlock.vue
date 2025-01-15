@@ -50,7 +50,7 @@
   <Dialog
     v-model:visible="visibleLogin"
     modal
-    header="Login"
+    :header="$t('landing.login')"
     class="auth-dialog"
   >
     <form @submit.prevent="handleLogin">
@@ -72,7 +72,7 @@
           class="auth-input"
         />
         <Button
-          label="Login"
+          :label="$t('landing.login')"
           type="submit"
           class="auth-submit"
           :disabled="loading"
@@ -140,7 +140,7 @@
       </div>
     </form>
     <div class="auth-right">
-      <h2>Login</h2>
+      <h2>{{ $t("landing.login") }}</h2>
       <p>Already have an account? Log in here.</p>
       <Button label="Sign In!" class="auth-signup" @click="switchToLogin" />
     </div>
@@ -149,14 +149,12 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useRouter } from "vue-router";
 import { push } from "notivue";
 import UserService from "@/services/user"; // Import từ user.js
 
 const visibleLogin = ref(false);
 const visibleSignUp = ref(false);
 const loading = ref(false);
-const router = useRouter();
 const userInfo = reactive({}); // Lưu trữ thông tin người dùng
 
 const loginData = ref({ username: "", password: "" });

@@ -9,12 +9,20 @@
 
     <div class="additional-functions">
       <Button
-        label="Rent Number"
+        :label="$t('landing.headerRentNumber')"
         class="p-button-text"
         @click="handleRentNumber"
       />
-      <Button label="Rent OTP" class="p-button-text" @click="handleRentOTP" />
-      <Button label="Proxy" class="p-button-text" @click="handleProxy" />
+      <Button
+        :label="$t('landing.headerRentOTP')"
+        class="p-button-text"
+        @click="handleRentOTP"
+      />
+      <Button
+        :label="$t('landing.headerProxy')"
+        class="p-button-text"
+        @click="handleProxy"
+      />
     </div>
 
     <!-- Menu Section -->
@@ -47,7 +55,7 @@
           @click="openLoginDialog"
         >
           <span class="p-button-icon pi pi-sign-in"></span>
-          <span>Login</span>
+          <span>{{ $t("landing.login") }}</span>
         </Button>
 
         <!-- Sign Up Button -->
@@ -67,7 +75,7 @@
   <Dialog
     v-model:visible="visibleLogin"
     modal
-    header="Login"
+    :header="$t('landing.login')"
     class="auth-dialog"
   >
     <form @submit.prevent="handleLogin">
@@ -89,7 +97,7 @@
           class="auth-input"
         />
         <Button
-          label="Login"
+          :label="$t('landing.login')"
           type="submit"
           class="auth-submit"
           :disabled="loading"
@@ -276,17 +284,14 @@ const handleLogout = () => {
 };
 
 const handleRentNumber = () => {
-  push.info("Redirecting to Rent Number...");
   router.push("/rent-number"); // Điều hướng tới trang "Rent Number"
 };
 
 const handleRentOTP = () => {
-  push.info("Redirecting to Rent OTP...");
   router.push("/rent-otp"); // Điều hướng tới trang "Rent OTP"
 };
 
 const handleProxy = () => {
-  push.info("Redirecting to Proxy...");
   router.push("/proxy"); // Điều hướng tới trang "Proxy"
 };
 

@@ -6,7 +6,11 @@ export default {
     hello: "Hello",
     footerDesc:
       "Receive SMS online to temporary numbers from all over the world",
-    footerCopyRight:
-      "Copyright © 2024 ❤ Japan Sim. All rights reserved.",
+    footerCopyRight: "Copyright © 2024 ❤ Japan Sim. All rights reserved.",
+    headerRentNumber: "Rent Number",
+    headerRentOTP: "Rent OTP",
+    headerProxy: "Proxy",
+    login: "Login",
+    signup: "Sign Up",
   },
 };
