@@ -13,4 +13,7 @@ export default {
     login: "Login",
     signup: "Sign Up",
   },
+  notify: {
+    no_rights: "You do not have the right!",
+  },
 };

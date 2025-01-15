@@ -13,4 +13,7 @@ export default {
     login: "Đăng nhập",
     signup: "Đăng ký",
   },
+  notify: {
+    no_rights: "Bạn không có quyền!",
+  },
 };
