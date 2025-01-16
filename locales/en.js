@@ -30,5 +30,19 @@ export default {
     api: {
       general: "General"
     }
-  }
+  },
+  faq: {
+    items: [
+      {
+        question: 'General',
+        answer:
+          'Only GET requests are accepted.\nThe server always responds in JSON format. If the request was successful, the status field will be 1; otherwise, 0. If status = 0, the error cause will be indicated in the msg field.\nMost requests require the user\'s API key to be specified.',
+      },
+      {
+        question: 'List of available countries',
+        answer:
+          '<h4>Request</h4><pre>https://smspva.com/api/rent.php?method=getcountries</pre><h4>Response</h4><pre>{\n  "status": 1,\n  "data": [\n    {\n      "name": "Россия", // country name\n      "code": "RU"      // country code\n    }\n  ]\n}</pre>',
+      },
+    ],
+  },
 };

@@ -31,5 +31,19 @@ export default {
     api: {
       general: "Tổng quan"
     }
-  }
+  },
+  faq: {
+    items: [
+      {
+        question: 'Thông tin chung',
+        answer:
+          'Chỉ chấp nhận các yêu cầu GET.\nMáy chủ luôn trả về định dạng JSON. Nếu yêu cầu thành công, trường trạng thái sẽ là 1; nếu không, là 0. Nếu trạng thái = 0, nguyên nhân lỗi sẽ được chỉ định trong trường msg.\nHầu hết các yêu cầu yêu cầu phải có API key của người dùng.',
+      },
+      {
+        question: 'Danh sách quốc gia',
+        answer:
+          '<h4>Yêu cầu</h4><pre>https://smspva.com/api/rent.php?method=getcountries</pre><h4>Kết quả</h4><pre>{\n  "status": 1,\n  "data": [\n    {\n      "name": "Россия", // Tên quốc gia\n      "code": "RU"      // Mã quốc gia\n    }\n  ]\n}</pre>',
+      },
+    ],
+  },
 };
