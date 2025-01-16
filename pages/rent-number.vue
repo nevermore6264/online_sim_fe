@@ -3,9 +3,7 @@
     <Breadcrumb :home="home" :model="items" />
 
     <h4 class="grey-doc-text-red-bg">
-      ⚠ Proxies are not allowed to be used in illegal activities. Responsibility
-      when using a proxy lies with the buyer. Our proxies are suitable only for
-      white purposes.
+      ⚠ {{ $t("rent_number.notify") }}
     </h4>
     <div class="tab-container">
       <TabMenu

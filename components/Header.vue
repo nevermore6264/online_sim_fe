@@ -42,7 +42,7 @@
           @click="handleLogout"
         >
           <span class="p-button-icon pi pi-sign-out"></span>
-          <span>Logout</span>
+          <span>{{ $t("landing.logout") }}</span>
         </Button>
       </template>
 

@@ -39,7 +39,7 @@
           <span>{{ firstName }} {{ lastName }}</span>
         </div>
         <button @click="logout" class="logout-button">
-          <i class="pi pi-sign-out"></i> Logout
+          <i class="pi pi-sign-out"></i> {{ $t("landing.logout") }}
         </button>
       </div>
     </aside>

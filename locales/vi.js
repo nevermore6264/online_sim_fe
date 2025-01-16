@@ -12,8 +12,13 @@ export default {
     headerProxy: "Proxy",
     login: "Đăng nhập",
     signup: "Đăng ký",
+    logout: "Đăng xuất",
+
   },
   notify: {
     no_rights: "Bạn không có quyền!",
   },
+  rent_number: {
+    notify: "Proxy không được phép sử dụng cho các hoạt động bất hợp pháp. Trách nhiệm khi sử dụng proxy thuộc về người mua. Proxy của chúng tôi chỉ phù hợp cho mục đích trắng."
+  }
 };
