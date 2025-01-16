@@ -63,22 +63,21 @@
           <template #loading> Loading services data. Please wait. </template>
 
           <Column style="min-width: 12rem">
-            <template #body="{}">
+            <template #body="{data}">
               <div class="service-row">
                 <div
-                  v-for="service in filteredServices"
-                  :key="service.id"
+                  :key="data.id"
                   class="service-item"
                   @click="onServiceClick(service)"
                 >
                   <img
-                    :src="service.image"
-                    :alt="service.text"
+                    :src="data.image"
+                    :alt="data.text"
                     class="flag-image"
                   />
-                  <span class="service-name">{{ service.text }}</span>
+                  <span class="service-name">{{ data.text }}</span>
                   <span class="service-price"
-                    >from {{ service.price }} USDT</span
+                    >from {{ data.price }} USDT</span
                   >
                 </div>
               </div>
@@ -258,7 +257,7 @@ onMounted(() => {
   grid-template-columns: repeat(
     auto-fit,
     minmax(100px, 1fr)
-  ); /* Tự động điều chỉnh */
+  );
   gap: 10px;
 }
 
@@ -299,6 +298,15 @@ onMounted(() => {
   }
 }
 
+.p-datatable .p-datatable-tbody > tr {
+  display: inline-block;
+  width: 50%;
+}
+
+.landing-page .p-datatable .p-datatable-tbody > tr > td {
+  display: block !important;
+}
+
 .flag-image {
   width: 24px;
   height: auto;
@@ -328,7 +336,7 @@ onMounted(() => {
   cursor: pointer;
   padding: 8px;
   transition: background-color 0.3s;
-  width: 48.5%;
+  width: 100%;
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
 }
