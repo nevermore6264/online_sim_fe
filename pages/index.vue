@@ -253,20 +253,21 @@ onMounted(() => {
 }
 
 .country-row {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(100px, 1fr)
-  );
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
 .country-item {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  cursor: pointer; /* Thêm hiệu ứng trỏ chuột */
+  justify-content: space-between; /* Tạo khoảng cách giữa tên và giá */
+  cursor: pointer;
   padding: 8px;
   transition: background-color 0.3s;
+  width: 100%;
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
 }
@@ -278,24 +279,6 @@ onMounted(() => {
 .flag-image {
   width: 24px;
   height: auto;
-}
-
-@media (max-width: 599px) {
-  .country-row {
-    grid-template-columns: 1fr; /* 1 cột trên mobile */
-  }
-}
-
-@media (min-width: 600px) and (max-width: 1023px) {
-  .country-row {
-    grid-template-columns: repeat(2, 1fr); /* 2 cột trên tablet */
-  }
-}
-
-@media (min-width: 1024px) {
-  .country-row {
-    grid-template-columns: repeat(3, 1fr); /* 3 cột trên desktop */
-  }
 }
 
 .p-datatable .p-datatable-tbody > tr {
