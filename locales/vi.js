@@ -22,6 +22,14 @@ export default {
     notify: "Proxy không được phép sử dụng cho các hoạt động bất hợp pháp. Trách nhiệm khi sử dụng proxy thuộc về người mua. Proxy của chúng tôi chỉ phù hợp cho mục đích trắng.",
     always_active: "Luôn có số hoạt động",
     activation_by_order: "Kích hoạt số theo thứ tự, từ 10 phút",
-    priority_numbers: "Cả hai loại số, ưu tiên cho số luôn hoạt động"
+    priority_numbers: "Cả hai loại số, ưu tiên cho số luôn hoạt động",
+    api: {
+      general: "Tổng quan"
+    }
+  },
+  proxy: {
+    api: {
+      general: "Tổng quan"
+    }
   }
 };

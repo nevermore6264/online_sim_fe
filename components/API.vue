@@ -12,10 +12,13 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const faqItems = ref([
   {
-    question: "General",
+    question: t("rent_number.api.general"),
     answer: `
       <pre>
 Only GET requests are accepted.
