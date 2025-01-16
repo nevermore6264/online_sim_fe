@@ -150,7 +150,7 @@ ul {
 }
 
 @media (max-width: 1366px) {
-  ul {
+  .social-icons, .address-links  {
     padding-inline-start: 0px !important;
   }
 

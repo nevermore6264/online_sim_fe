@@ -24,17 +24,16 @@
             <template #body="{ data }">
               <div class="country-row">
                 <div
-                  v-for="country in data"
-                  :key="country.code"
+                  :key="data.code"
                   class="country-item"
-                  @click="onCountryClick(country)"
+                  @click="onCountryClick(data)"
                 >
                   <img
-                    :src="country.flagImage"
-                    :alt="country.name"
+                    :src="data.flagImage"
+                    :alt="data.name"
                     class="flag-image"
                   />
-                  <span class="country-name">{{ country.name }}</span>
+                  <span class="country-name">{{ data.name }}</span>
                 </div>
               </div>
             </template>
@@ -68,7 +67,7 @@
                 <div
                   :key="data.id"
                   class="service-item"
-                  @click="onServiceClick(service)"
+                  @click="onServiceClick(data)"
                 >
                   <img
                     :src="data.image"
@@ -110,20 +109,10 @@ const { width } = useWindowSize();
 const searchCountry = ref("");
 const searchService = ref("");
 
-// Phân nhóm dựa trên kích thước màn hình
-const groupedCustomers = computed(() => {
-  const itemsPerRow = width.value < 600 ? 1 : width.value < 1024 ? 2 : 3; // 1: Mobile, 2: Tablet, 3: Desktop
-  const groups = [];
-  for (let i = 0; i < customers.value.length; i += itemsPerRow) {
-    groups.push(customers.value.slice(i, i + itemsPerRow));
-  }
-  return groups;
-});
-
 // Lọc danh sách quốc gia theo tìm kiếm
 const filteredCountries = computed(() => {
-  if (!searchCountry.value.trim()) return groupedCustomers.value;
-  return groupedCustomers.value.map((group) =>
+  if (!searchCountry.value.trim()) return customers.value;
+  return customers.value.map((group) =>
     group.filter((country) =>
       country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
     )
