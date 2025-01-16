@@ -150,6 +150,10 @@ ul {
 }
 
 @media (max-width: 1366px) {
+  ul {
+    padding-inline-start: 0px !important;
+  }
+
   .auth-dialog {
     width: 75% !important;
     margin: 0 auto !important;
