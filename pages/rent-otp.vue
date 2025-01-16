@@ -66,7 +66,7 @@
           dataKey="id"
           :loading="loading"
         >
-          <template #empty> No services found. </template>
+          <template #empty> No data found. </template>
           <template #loading> Loading services data. Please wait. </template>
 
           <Column>

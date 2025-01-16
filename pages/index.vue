@@ -59,7 +59,7 @@
           <template #header>
             <div class="lbl_services">Select service</div>
           </template>
-          <template #empty> No services found. </template>
+          <template #empty> No data found. </template>
           <template #loading> Loading services data. Please wait. </template>
 
           <Column style="min-width: 12rem">
