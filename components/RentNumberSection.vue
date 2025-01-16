@@ -1,9 +1,9 @@
 <template>
   <div>
     <ul>
-      <li>Always active numbers</li>
-      <li>Activation of numbers on by order, from 10 minutes</li>
-      <li>Both types of numbers, priority for always active numbers</li>
+      <li>{{ $t("rent_number.always_active") }}</li>
+      <li>{{ $t("rent_number.activation_by_order") }}</li>
+      <li>{{ $t("rent_number.priority_numbers") }}</li>
     </ul>
 
     <!-- Dropdown for country selection -->

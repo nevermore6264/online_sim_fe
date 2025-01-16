@@ -19,6 +19,9 @@ export default {
     no_rights: "Bạn không có quyền!",
   },
   rent_number: {
-    notify: "Proxy không được phép sử dụng cho các hoạt động bất hợp pháp. Trách nhiệm khi sử dụng proxy thuộc về người mua. Proxy của chúng tôi chỉ phù hợp cho mục đích trắng."
+    notify: "Proxy không được phép sử dụng cho các hoạt động bất hợp pháp. Trách nhiệm khi sử dụng proxy thuộc về người mua. Proxy của chúng tôi chỉ phù hợp cho mục đích trắng.",
+    always_active: "Luôn có số hoạt động",
+    activation_by_order: "Kích hoạt số theo thứ tự, từ 10 phút",
+    priority_numbers: "Cả hai loại số, ưu tiên cho số luôn hoạt động"
   }
 };

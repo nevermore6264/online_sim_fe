@@ -18,6 +18,9 @@ export default {
     no_rights: "You do not have the right!",
   },
   rent_number: {
-    notify: "Proxies are not allowed to be used in illegal activities. Responsibility when using a proxy lies with the buyer. Our proxies are suitable only for white purposes."
+    notify: "Proxies are not allowed to be used in illegal activities. Responsibility when using a proxy lies with the buyer. Our proxies are suitable only for white purposes.",
+    always_active: "Always active numbers",
+    activation_by_order: "Activation of numbers on by order, from 10 minutes",
+    priority_numbers: "Both types of numbers, priority for always active numbers"
   }
 };
