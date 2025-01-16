@@ -8,21 +8,9 @@
     </div>
     <template v-if="userInfo?.data?.id">
       <div class="additional-functions">
-        <Button
-          :label="$t('landing.headerRentNumber')"
-          class="p-button-text"
-          @click="handleRentNumber"
-        />
-        <Button
-          :label="$t('landing.headerRentOTP')"
-          class="p-button-text"
-          @click="handleRentOTP"
-        />
-        <Button
-          :label="$t('landing.headerProxy')"
-          class="p-button-text"
-          @click="handleProxy"
-        />
+        <Button :label="$t('landing.headerRentNumber')" class="p-button-text" @click="handleRentNumber" />
+        <Button :label="$t('landing.headerRentOTP')" class="p-button-text" @click="handleRentOTP" />
+        <Button :label="$t('landing.headerProxy')" class="p-button-text" @click="handleProxy" />
       </div>
     </template>
     <!-- Menu Section -->
@@ -36,11 +24,7 @@
         </span>
 
         <!-- Logout Button -->
-        <Button
-          aria-label="Logout"
-          class="p-button p-component p-button-text"
-          @click="handleLogout"
-        >
+        <Button aria-label="Logout" class="p-button p-component p-button-text" @click="handleLogout">
           <span class="p-button-icon pi pi-sign-out"></span>
           <span>{{ $t("landing.logout") }}</span>
         </Button>
@@ -49,21 +33,13 @@
       <!-- Hiển thị Login và Sign Up nếu không có userInfo -->
       <template v-else>
         <!-- Login Button -->
-        <Button
-          aria-label="Login"
-          class="p-button p-component p-button-text"
-          @click="openLoginDialog"
-        >
+        <Button aria-label="Login" class="p-button p-component p-button-text" @click="openLoginDialog">
           <span class="p-button-icon pi pi-sign-in"></span>
           <span>{{ $t("landing.login") }}</span>
         </Button>
 
         <!-- Sign Up Button -->
-        <Button
-          aria-label="Sign Up"
-          class="p-button p-component p-button-text"
-          @click="openSignUpDialog"
-        >
+        <Button aria-label="Sign Up" class="p-button p-component p-button-text" @click="openSignUpDialog">
           <span class="p-button-icon pi pi-user-plus"></span>
           <span>Sign Up</span>
         </Button>
@@ -72,37 +48,28 @@
   </div>
 
   <!-- Login Dialog -->
-  <Dialog
-    v-model:visible="visibleLogin"
-    modal
-    :header="$t('landing.login')"
-    class="auth-dialog"
-  >
+  <Dialog v-model:visible="visibleLogin" modal :header="$t('landing.login')" class="auth-dialog">
     <form @submit.prevent="handleLogin">
       <div class="auth-left">
         <div class="logo">
           <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
         </div>
-        <InputText
-          v-model="loginData.username"
-          placeholder="Username"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="loginData.password"
-          type="password"
-          placeholder="Password"
-          required
-          class="auth-input"
-        />
-        <Button
-          :label="$t('landing.login')"
-          type="submit"
-          class="auth-submit"
-          :disabled="loading"
-        />
+        <InputText v-model="loginData.username" placeholder="Username" required class="auth-input" />
+        <InputText v-model="loginData.password" type="password" placeholder="Password" required class="auth-input" />
+        <Button :label="$t('landing.login')" type="submit" class="auth-submit" :disabled="loading" />
         <a href="#" class="forgot-password">Forgot password?</a>
+        <div class="social-login">
+          <p>Or log in with:</p>
+          <Button class="google-login" @click="handleGoogleLogin">
+            <i class="pi pi-google"></i>
+          </Button>
+          <Button class="facebook-login" @click="handleFacebookLogin">
+            <i class="pi pi-facebook"></i>
+          </Button>
+          <Button class="telegram-login" @click="handleTelegramLogin">
+            <i class="pi pi-telegram"></i>
+          </Button>
+        </div>
       </div>
     </form>
     <div class="auth-right">
@@ -113,55 +80,19 @@
   </Dialog>
 
   <!-- Sign Up Dialog -->
-  <Dialog
-    v-model:visible="visibleSignUp"
-    modal
-    header="Sign Up"
-    class="auth-dialog"
-  >
+  <Dialog v-model:visible="visibleSignUp" modal header="Sign Up" class="auth-dialog">
     <form @submit.prevent="handleSignUp">
       <div class="auth-left">
         <div class="logo">
           <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
         </div>
-        <InputText
-          v-model="signUpData.firstName"
-          placeholder="First Name"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="signUpData.lastName"
-          placeholder="Last Name"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="signUpData.username"
-          placeholder="Username"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="signUpData.password"
-          type="password"
-          placeholder="Password"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="signUpData.confirmPassword"
-          type="password"
-          placeholder="Confirm Password"
-          required
-          class="auth-input"
-        />
-        <Button
-          label="Sign Up"
-          type="submit"
-          class="auth-submit"
-          :disabled="loading"
-        />
+        <InputText v-model="signUpData.firstName" placeholder="First Name" required class="auth-input" />
+        <InputText v-model="signUpData.lastName" placeholder="Last Name" required class="auth-input" />
+        <InputText v-model="signUpData.username" placeholder="Username" required class="auth-input" />
+        <InputText v-model="signUpData.password" type="password" placeholder="Password" required class="auth-input" />
+        <InputText v-model="signUpData.confirmPassword" type="password" placeholder="Confirm Password" required
+          class="auth-input" />
+        <Button label="Sign Up" type="submit" class="auth-submit" :disabled="loading" />
       </div>
     </form>
     <div class="auth-right">
@@ -177,6 +108,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { push } from "notivue";
 import UserService from "@/services/user"; // Import từ user.js
+import { gapi } from "gapi-script";
 
 const visibleLogin = ref(false);
 const visibleSignUp = ref(false);
@@ -315,11 +247,43 @@ const goToProfile = () => {
   }
 };
 
+const handleGoogleLogin = () => {
+  const auth = gapi.auth2.getAuthInstance();
+  auth.signIn().then(
+    (googleUser) => {
+      const profile = googleUser.getBasicProfile();
+      const token = googleUser.getAuthResponse().id_token;
+
+      // Gửi token đến backend để xử lý
+      UserService.LoginWithGoogle({ token })
+        .then(() => {
+          push.success("Login successful!");
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.error(err);
+          push.error("Google login failed.");
+        });
+    },
+    (error) => {
+      console.error("Google login error:", error);
+      push.error("Google login was canceled or failed.");
+    }
+  );
+};
+
 onMounted(async () => {
   const token = localStorage.getItem("token");
   if (token) {
     await fetchUserInfo(token);
   }
+
+  gapi.load("client:auth2", () => {
+    gapi.client.init({
+      clientId: "key-transformer-444006-i7.apps.googleusercontent.com",
+      scope: "email",
+    });
+  });
 });
 </script>
 
@@ -541,8 +505,10 @@ onMounted(async () => {
 
 .additional-functions {
   display: flex;
-  gap: 1rem; /* Khoảng cách giữa các nút */
-  margin-left: 20px; /* Khoảng cách giữa logo và các nút */
+  gap: 1rem;
+  /* Khoảng cách giữa các nút */
+  margin-left: 20px;
+  /* Khoảng cách giữa logo và các nút */
 }
 
 .additional-functions .p-button-text {
@@ -551,6 +517,37 @@ onMounted(async () => {
 
 .additional-functions .p-button-text:hover {
   color: #3b82f6;
+}
+
+.social-login {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.social-login p {
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.social-login .google-login {
+  background: #db4437;
+  color: white;
+  margin: 0 0.5rem 0.5rem 0.5rem;
+  border: none;
+}
+
+.social-login .facebook-login {
+  background: #3b5998;
+  color: white;
+  margin: 0 0.5rem 0.5rem 0.5rem;
+  border: none;
+}
+
+.social-login .telegram-login {
+  background: #0088cc;
+  color: white;
+  border: none;
+  margin: 0 0.5rem 0.5rem 0.5rem;
 }
 
 /* Responsive Layout for Mobile and Tablet */

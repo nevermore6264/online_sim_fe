@@ -17,6 +17,10 @@ body {
   font-family: "MyriadSetPro", Arial, sans-serif !important;
 }
 
+.p-datatable-emptymessage {
+  width: 100% !important; 
+}
+
 label {
   display: block;
   margin-bottom: 0.5rem;
@@ -154,6 +158,10 @@ ul {
     padding-inline-start: 0px !important;
   }
 
+  .p-datatable .p-datatable-tbody > tr {
+    width: 50% !important;
+  }
+
   .auth-dialog {
     width: 75% !important;
     margin: 0 auto !important;
@@ -228,6 +236,10 @@ ul {
 
   .main-content[data-v-fe8b218c] {
     width: auto !important;
+  }
+
+  .p-datatable .p-datatable-tbody > tr {
+    width: 100% !important;
   }
 }
 </style>
