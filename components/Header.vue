@@ -6,25 +6,25 @@
         <img src="/layout/images/logo.png" alt="logo" width="75px" />
       </a>
     </div>
-
-    <div class="additional-functions">
-      <Button
-        :label="$t('landing.headerRentNumber')"
-        class="p-button-text"
-        @click="handleRentNumber"
-      />
-      <Button
-        :label="$t('landing.headerRentOTP')"
-        class="p-button-text"
-        @click="handleRentOTP"
-      />
-      <Button
-        :label="$t('landing.headerProxy')"
-        class="p-button-text"
-        @click="handleProxy"
-      />
-    </div>
-
+    <template v-if="userInfo?.data?.id">
+      <div class="additional-functions">
+        <Button
+          :label="$t('landing.headerRentNumber')"
+          class="p-button-text"
+          @click="handleRentNumber"
+        />
+        <Button
+          :label="$t('landing.headerRentOTP')"
+          class="p-button-text"
+          @click="handleRentOTP"
+        />
+        <Button
+          :label="$t('landing.headerProxy')"
+          class="p-button-text"
+          @click="handleProxy"
+        />
+      </div>
+    </template>
     <!-- Menu Section -->
     <div class="p-menubar-end d-flex align-items-center">
       <!-- Kiểm tra nếu userInfo tồn tại -->
