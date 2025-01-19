@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/primevue.js',
     '~/plugins/vue3-toastify.ts',
-
+    '~/plugins/gapi.client.js',
   ],
   app: {
     head: {

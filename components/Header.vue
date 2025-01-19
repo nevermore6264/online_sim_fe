@@ -8,9 +8,21 @@
     </div>
     <template v-if="userInfo?.data?.id">
       <div class="additional-functions">
-        <Button :label="$t('landing.headerRentNumber')" class="p-button-text" @click="handleRentNumber" />
-        <Button :label="$t('landing.headerRentOTP')" class="p-button-text" @click="handleRentOTP" />
-        <Button :label="$t('landing.headerProxy')" class="p-button-text" @click="handleProxy" />
+        <Button
+          :label="$t('landing.headerRentNumber')"
+          class="p-button-text"
+          @click="handleRentNumber"
+        />
+        <Button
+          :label="$t('landing.headerRentOTP')"
+          class="p-button-text"
+          @click="handleRentOTP"
+        />
+        <Button
+          :label="$t('landing.headerProxy')"
+          class="p-button-text"
+          @click="handleProxy"
+        />
       </div>
     </template>
     <!-- Menu Section -->
@@ -24,7 +36,11 @@
         </span>
 
         <!-- Logout Button -->
-        <Button aria-label="Logout" class="p-button p-component p-button-text" @click="handleLogout">
+        <Button
+          aria-label="Logout"
+          class="p-button p-component p-button-text"
+          @click="handleLogout"
+        >
           <span class="p-button-icon pi pi-sign-out"></span>
           <span>{{ $t("landing.logout") }}</span>
         </Button>
@@ -33,13 +49,21 @@
       <!-- Hiển thị Login và Sign Up nếu không có userInfo -->
       <template v-else>
         <!-- Login Button -->
-        <Button aria-label="Login" class="p-button p-component p-button-text" @click="openLoginDialog">
+        <Button
+          aria-label="Login"
+          class="p-button p-component p-button-text"
+          @click="openLoginDialog"
+        >
           <span class="p-button-icon pi pi-sign-in"></span>
           <span>{{ $t("landing.login") }}</span>
         </Button>
 
         <!-- Sign Up Button -->
-        <Button aria-label="Sign Up" class="p-button p-component p-button-text" @click="openSignUpDialog">
+        <Button
+          aria-label="Sign Up"
+          class="p-button p-component p-button-text"
+          @click="openSignUpDialog"
+        >
           <span class="p-button-icon pi pi-user-plus"></span>
           <span>Sign Up</span>
         </Button>
@@ -48,15 +72,36 @@
   </div>
 
   <!-- Login Dialog -->
-  <Dialog v-model:visible="visibleLogin" modal :header="$t('landing.login')" class="auth-dialog">
+  <Dialog
+    v-model:visible="visibleLogin"
+    modal
+    :header="$t('landing.login')"
+    class="auth-dialog"
+  >
     <form @submit.prevent="handleLogin">
       <div class="auth-left">
         <div class="logo">
           <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
         </div>
-        <InputText v-model="loginData.username" placeholder="Username" required class="auth-input" />
-        <InputText v-model="loginData.password" type="password" placeholder="Password" required class="auth-input" />
-        <Button :label="$t('landing.login')" type="submit" class="auth-submit" :disabled="loading" />
+        <InputText
+          v-model="loginData.username"
+          placeholder="Username"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="loginData.password"
+          type="password"
+          placeholder="Password"
+          required
+          class="auth-input"
+        />
+        <Button
+          :label="$t('landing.login')"
+          type="submit"
+          class="auth-submit"
+          :disabled="loading"
+        />
         <a href="#" class="forgot-password">Forgot password?</a>
         <div class="social-login">
           <p>Or log in with:</p>
@@ -80,19 +125,55 @@
   </Dialog>
 
   <!-- Sign Up Dialog -->
-  <Dialog v-model:visible="visibleSignUp" modal header="Sign Up" class="auth-dialog">
+  <Dialog
+    v-model:visible="visibleSignUp"
+    modal
+    header="Sign Up"
+    class="auth-dialog"
+  >
     <form @submit.prevent="handleSignUp">
       <div class="auth-left">
         <div class="logo">
           <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
         </div>
-        <InputText v-model="signUpData.firstName" placeholder="First Name" required class="auth-input" />
-        <InputText v-model="signUpData.lastName" placeholder="Last Name" required class="auth-input" />
-        <InputText v-model="signUpData.username" placeholder="Username" required class="auth-input" />
-        <InputText v-model="signUpData.password" type="password" placeholder="Password" required class="auth-input" />
-        <InputText v-model="signUpData.confirmPassword" type="password" placeholder="Confirm Password" required
-          class="auth-input" />
-        <Button label="Sign Up" type="submit" class="auth-submit" :disabled="loading" />
+        <InputText
+          v-model="signUpData.firstName"
+          placeholder="First Name"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="signUpData.lastName"
+          placeholder="Last Name"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="signUpData.username"
+          placeholder="Username"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="signUpData.password"
+          type="password"
+          placeholder="Password"
+          required
+          class="auth-input"
+        />
+        <InputText
+          v-model="signUpData.confirmPassword"
+          type="password"
+          placeholder="Confirm Password"
+          required
+          class="auth-input"
+        />
+        <Button
+          label="Sign Up"
+          type="submit"
+          class="auth-submit"
+          :disabled="loading"
+        />
       </div>
     </form>
     <div class="auth-right">
@@ -247,27 +328,25 @@ const goToProfile = () => {
   }
 };
 
-const handleGoogleLogin = () => {
+const handleGoogleLogin = async () => {
+  const gapi = await this.$gapi.initGoogleApi();
   const auth = gapi.auth2.getAuthInstance();
+
   auth.signIn().then(
     (googleUser) => {
       const profile = googleUser.getBasicProfile();
       const token = googleUser.getAuthResponse().id_token;
 
-      // Gửi token đến backend để xử lý
-      UserService.LoginWithGoogle({ token })
-        .then(() => {
-          push.success("Login successful!");
-          window.location.reload();
-        })
-        .catch((err) => {
-          console.error(err);
-          push.error("Google login failed.");
-        });
+      console.log("Google User Info:", {
+        id: profile.getId(),
+        email: profile.getEmail(),
+        token,
+      });
+
+      // Gửi token đến backend để xác thực
     },
     (error) => {
       console.error("Google login error:", error);
-      push.error("Google login was canceled or failed.");
     }
   );
 };
@@ -277,13 +356,6 @@ onMounted(async () => {
   if (token) {
     await fetchUserInfo(token);
   }
-
-  gapi.load("client:auth2", () => {
-    gapi.client.init({
-      clientId: "key-transformer-444006-i7.apps.googleusercontent.com",
-      scope: "email",
-    });
-  });
 });
 </script>
 
