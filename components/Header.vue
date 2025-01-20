@@ -52,20 +52,19 @@
         <Button
           aria-label="Login"
           class="p-button p-component p-button-text"
-          @click="openLoginDialog"
+          @click="() => $router.push('/login')"
         >
           <span class="p-button-icon pi pi-sign-in"></span>
           <span>{{ $t("landing.login") }}</span>
         </Button>
 
-        <!-- Sign Up Button -->
         <Button
           aria-label="Sign Up"
           class="p-button p-component p-button-text"
-          @click="openSignUpDialog"
+          @click="() => $router.push('/signup')"
         >
           <span class="p-button-icon pi pi-user-plus"></span>
-          <span>Sign Up</span>
+          <span>{{ $t("landing.signup") }}</span>
         </Button>
       </template>
     </div>
@@ -575,7 +574,6 @@ onMounted(async () => {
 .logo {
   width: 100%;
   display: block;
-  background: #ffffff;
   text-align: center;
 }
 

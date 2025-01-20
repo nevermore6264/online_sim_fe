@@ -37,6 +37,7 @@ onUnmounted(() => {
 .main {
   display: flex;
   flex-direction: column; /* Make the main container stack on small screens */
+  min-height: calc(100vh - 262px);
 }
 
 .main-content {

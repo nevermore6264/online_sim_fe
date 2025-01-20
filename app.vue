@@ -18,7 +18,7 @@ body {
 }
 
 .p-datatable-emptymessage {
-  width: 100% !important; 
+  width: 100% !important;
 }
 
 label {
@@ -154,7 +154,8 @@ ul {
 }
 
 @media (max-width: 1366px) {
-  .social-icons, .address-links  {
+  .social-icons,
+  .address-links {
     padding-inline-start: 0px !important;
   }
 
