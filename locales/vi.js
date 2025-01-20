@@ -14,6 +14,8 @@ export default {
     signup: "Đăng ký",
     logout: "Đăng xuất",
     noAccount: "Bạn chưa có tài khoản?",
+    username: "Tài khoản",
+    password: "Mật khẩu",
   },
   notify: {
     no_rights: "Bạn không có quyền!",

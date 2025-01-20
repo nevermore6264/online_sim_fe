@@ -6,19 +6,27 @@
       </div>
       <h2>{{ $t("landing.login") }}</h2>
       <form @submit.prevent="handleLogin">
-        <InputText
-          v-model="loginData.username"
-          placeholder="Username"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="loginData.password"
-          type="password"
-          placeholder="Password"
-          required
-          class="auth-input"
-        />
+        <div class="input-group">
+          <label for="username">{{ $t("landing.username") }}</label>
+          <InputText
+            id="username"
+            v-model="loginData.username"
+            placeholder="Username"
+            required
+            class="auth-input"
+          />
+        </div>
+        <div class="input-group">
+          <label for="password">{{ $t("landing.password") }}</label>
+          <InputText
+            id="password"
+            v-model="loginData.password"
+            type="password"
+            placeholder="Password"
+            required
+            class="auth-input"
+          />
+        </div>
         <Button
           :label="$t('landing.login')"
           type="submit"
@@ -75,6 +83,44 @@ const handleLogin = async () => {
     loading.value = false;
   }
 };
+
+const handleLoginSuccess = async (response) => {
+  const { credential } = response;
+  console.log("Access Token:", credential);
+
+  // Giải mã JWT để lấy thông tin người dùng (nếu cần)
+  const userInfo = jwtDecode(credential);
+  console.log("User Info:", userInfo);
+
+  // Gửi token đến server bằng Axios
+  try {
+    const loginData = {
+      token: credential,
+    };
+
+    const response = await UserService.LoginGoogle(loginData);
+    const { token } = response.data;
+
+    if (token) {
+      await fetchUserInfo(token);
+
+      localStorage.setItem("token", token);
+      push.success("Login successful!");
+      visibleLogin.value = false;
+      window.location.reload();
+    } else {
+      push.error("Invalid login credentials.");
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    push.error("An error occurred during login.");
+  }
+};
+
+// handle an error event
+const handleLoginError = () => {
+  console.error("Login failed");
+};
 </script>
 
 <style scoped>
@@ -95,5 +141,19 @@ const handleLogin = async () => {
 
 .switch-link {
   margin-top: 1rem;
+}
+
+.input-group {
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 </style>

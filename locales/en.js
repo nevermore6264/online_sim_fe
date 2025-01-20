@@ -14,6 +14,8 @@ export default {
     signup: "Sign Up",
     logout: "Logout",
     noAccount: "Don't have an account?",
+    username: "Login / Username",
+    password: "Password",
   },
   notify: {
     no_rights: "You do not have the right!",
