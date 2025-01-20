@@ -212,13 +212,26 @@ const handleLoginSuccess = async (response) => {
 
   // Gửi token đến server bằng Axios
   try {
-    const serverResponse = await axios.post("/api/auth/google", {
+    const loginData = {
       token: credential,
-    });
+    };
 
-    console.log("Server Response:", serverResponse.data);
+    const response = await UserService.LoginGoogle(loginData);
+    const { token } = response.data;
+
+    if (token) {
+      await fetchUserInfo(token);
+
+      localStorage.setItem("token", token);
+      push.success("Login successful!");
+      visibleLogin.value = false;
+      window.location.reload();
+    } else {
+      push.error("Invalid login credentials.");
+    }
   } catch (error) {
-    console.error("Error sending token to server:", error);
+    console.error("Error during login:", error);
+    push.error("An error occurred during login.");
   }
 };
 

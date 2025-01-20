@@ -20,6 +20,11 @@ export default {
     return response.data;
   },
 
+  async LoginGoogle(loginData) {
+    const response = await api.post("/api/web/loginGoogle", loginData);
+    return response.data;
+  },
+
   async OrderList(token) {
     const response = await api.get(`/api/account/order-list`, {
       headers: {
