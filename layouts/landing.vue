@@ -18,8 +18,8 @@
         <TipsBlock />
       </div>
     </div>
+    <FooterLandingPage />
   </div>
-  <FooterLandingPage />
 </template>
 
 <script setup>
