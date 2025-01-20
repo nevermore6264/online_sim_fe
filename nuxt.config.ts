@@ -1,7 +1,8 @@
 import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
-  modules: ['notivue/nuxt', '@nuxtjs/i18n'],
+  modules: ['notivue/nuxt', '@nuxtjs/i18n', 'nuxt-vue3-google-signin'
+  ],
   i18n: {
     locales: [
       { code: 'en', name: 'English' },
@@ -9,6 +10,9 @@ export default defineNuxtConfig({
     ],
     defaultLocale: 'en',
     vueI18n: './i18n.config.ts', // Chỉ định đường dẫn tới file cấu hình i18n
+  },
+  googleSignIn: {
+    clientId: 'quethumatuy-1733488899792.apps.googleusercontent.com',
   },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
@@ -28,7 +32,6 @@ export default defineNuxtConfig({
   plugins: [
     '~/plugins/primevue.js',
     '~/plugins/vue3-toastify.ts',
-    '~/plugins/gapi.client.js',
   ],
   app: {
     head: {

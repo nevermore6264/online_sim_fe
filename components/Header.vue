@@ -105,15 +105,10 @@
         <a href="#" class="forgot-password">Forgot password?</a>
         <div class="social-login">
           <p>Or log in with:</p>
-          <Button class="google-login" @click="handleGoogleLogin">
-            <i class="pi pi-google"></i>
-          </Button>
-          <Button class="facebook-login" @click="handleFacebookLogin">
-            <i class="pi pi-facebook"></i>
-          </Button>
-          <Button class="telegram-login" @click="handleTelegramLogin">
-            <i class="pi pi-telegram"></i>
-          </Button>
+          <GoogleSignInButton
+            @success="handleLoginSuccess"
+            @error="handleLoginError"
+          ></GoogleSignInButton>
         </div>
       </div>
     </form>
@@ -189,7 +184,8 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { push } from "notivue";
 import UserService from "@/services/user"; // Import từ user.js
-import { gapi } from "gapi-script";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const visibleLogin = ref(false);
 const visibleSignUp = ref(false);
@@ -205,6 +201,31 @@ const signUpData = ref({
   password: "",
   confirmPassword: "",
 });
+
+const handleLoginSuccess = async (response) => {
+  const { credential } = response;
+  console.log("Access Token:", credential);
+
+  // Giải mã JWT để lấy thông tin người dùng (nếu cần)
+  const userInfo = jwtDecode(credential);
+  console.log("User Info:", userInfo);
+
+  // Gửi token đến server bằng Axios
+  try {
+    const serverResponse = await axios.post("/api/auth/google", {
+      token: credential,
+    });
+
+    console.log("Server Response:", serverResponse.data);
+  } catch (error) {
+    console.error("Error sending token to server:", error);
+  }
+};
+
+// handle an error event
+const handleLoginError = () => {
+  console.error("Login failed");
+};
 
 const openLoginDialog = () => {
   visibleLogin.value = true;
@@ -326,29 +347,6 @@ const goToProfile = () => {
   } else {
     push.warning("User information not available.");
   }
-};
-
-const handleGoogleLogin = async () => {
-  const gapi = await this.$gapi.initGoogleApi();
-  const auth = gapi.auth2.getAuthInstance();
-
-  auth.signIn().then(
-    (googleUser) => {
-      const profile = googleUser.getBasicProfile();
-      const token = googleUser.getAuthResponse().id_token;
-
-      console.log("Google User Info:", {
-        id: profile.getId(),
-        email: profile.getEmail(),
-        token,
-      });
-
-      // Gửi token đến backend để xác thực
-    },
-    (error) => {
-      console.error("Google login error:", error);
-    }
-  );
 };
 
 onMounted(async () => {
@@ -599,27 +597,6 @@ onMounted(async () => {
 .social-login p {
   margin-bottom: 0.5rem;
   color: #666;
-}
-
-.social-login .google-login {
-  background: #db4437;
-  color: white;
-  margin: 0 0.5rem 0.5rem 0.5rem;
-  border: none;
-}
-
-.social-login .facebook-login {
-  background: #3b5998;
-  color: white;
-  margin: 0 0.5rem 0.5rem 0.5rem;
-  border: none;
-}
-
-.social-login .telegram-login {
-  background: #0088cc;
-  color: white;
-  border: none;
-  margin: 0 0.5rem 0.5rem 0.5rem;
 }
 
 /* Responsive Layout for Mobile and Tablet */
