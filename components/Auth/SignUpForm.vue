@@ -6,38 +6,58 @@
       </div>
       <h2>Sign Up</h2>
       <form @submit.prevent="handleSignUp">
-        <InputText
-          v-model="signUpData.firstName"
-          placeholder="First Name"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="signUpData.lastName"
-          placeholder="Last Name"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="signUpData.username"
-          placeholder="Username"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="signUpData.password"
-          type="password"
-          placeholder="Password"
-          required
-          class="auth-input"
-        />
-        <InputText
-          v-model="signUpData.confirmPassword"
-          type="password"
-          placeholder="Confirm Password"
-          required
-          class="auth-input"
-        />
+        <div class="input-group">
+          <label for="firstName">First Name</label>
+          <InputText
+            id="firstName"
+            v-model="signUpData.firstName"
+            placeholder="First Name"
+            required
+            class="auth-input"
+          />
+        </div>
+        <div class="input-group">
+          <label for="lastName">Last Name</label>
+          <InputText
+            id="lastName"
+            v-model="signUpData.lastName"
+            placeholder="Last Name"
+            required
+            class="auth-input"
+          />
+        </div>
+        <div class="input-group">
+          <label for="username">Username</label>
+          <InputText
+            id="username"
+            v-model="signUpData.username"
+            placeholder="Username"
+            required
+            class="auth-input"
+          />
+        </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <InputText
+            id="password"
+            v-model="signUpData.password"
+            type="password"
+            placeholder="Password"
+            required
+            class="auth-input"
+          />
+        </div>
+        <div class="input-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <InputText
+            id="confirmPassword"
+            v-model="signUpData.confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+            required
+            class="auth-input"
+          />
+        </div>
         <Button
           label="Sign Up"
           type="submit"
@@ -111,5 +131,19 @@ const handleSignUp = async () => {
 }
 .switch-link {
   margin-top: 1rem;
+}
+
+.input-group {
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 </style>
