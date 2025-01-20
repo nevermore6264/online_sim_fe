@@ -7,9 +7,7 @@
         <div class="footer-text-box">
           <p class="footer-text">
             Kinelija, UAB | Registration code: 303336386 |
-            <nuxt-link to="/public-offer.html"
-              >Public Offer, Terms and Policy</nuxt-link
-            >
+            <nuxt-link to="/">Public Offer, Terms and Policy</nuxt-link>
           </p>
           <p class="footer-address">
             Vilniaus r. sav., Dūkštų sen., Vėlybniškių k., Dvaro g. 112,
