@@ -469,6 +469,7 @@ onMounted(async () => {
 .auth-form {
   width: 100%;
   max-width: 400px;
+  margin: 0 auto;
 }
 
 .auth-field {
