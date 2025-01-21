@@ -7,67 +7,69 @@
       <h2>{{ $t("landing.signup") }}</h2>
       <form @submit.prevent="handleSignUp">
         <div class="input-group">
-          <label for="firstName">First Name</label>
+          <label for="firstName">{{ $t("landing.firstName") }}</label>
           <InputText
             id="firstName"
             v-model="signUpData.firstName"
-            placeholder="First Name"
+            :placeholder="$t('landing.firstName')"
             required
             class="auth-input"
           />
         </div>
         <div class="input-group">
-          <label for="lastName">Last Name</label>
+          <label for="lastName">{{ $t("landing.lastName") }}</label>
           <InputText
             id="lastName"
             v-model="signUpData.lastName"
-            placeholder="Last Name"
+            :placeholder="$t('landing.lastName')"
             required
             class="auth-input"
           />
         </div>
         <div class="input-group">
-          <label for="username">Username</label>
+          <label for="username">{{ $t("landing.username") }}</label>
           <InputText
             id="username"
             v-model="signUpData.username"
-            placeholder="Username"
+            :placeholder="$t('landing.username')"
             required
             class="auth-input"
           />
         </div>
         <div class="input-group">
-          <label for="password">Password</label>
+          <label for="password">{{ $t("landing.password") }}</label>
           <InputText
             id="password"
             v-model="signUpData.password"
             type="password"
-            placeholder="Password"
+            :placeholder="$t('landing.password')"
             required
             class="auth-input"
           />
         </div>
         <div class="input-group">
-          <label for="confirmPassword">Confirm Password</label>
+          <label for="confirmPassword">{{
+            $t("landing.confirmPassword")
+          }}</label>
           <InputText
             id="confirmPassword"
             v-model="signUpData.confirmPassword"
             type="password"
-            placeholder="Confirm Password"
+            :placeholder="$t('landing.confirmPassword')"
             required
             class="auth-input"
           />
         </div>
         <Button
-          label="Sign Up"
+          :label="$t('landing.signup')"
           type="submit"
           class="auth-submit"
           :disabled="loading"
         />
       </form>
       <p class="switch-link">
-        Already have an account?
-        <nuxt-link to="/login">Log in here</nuxt-link>
+        {{ $t("landing.alreadyAccount") }}
+        <nuxt-link to="/login">{{ $t("landing.login") }}</nuxt-link>
       </p>
     </div>
   </div>

@@ -18,6 +18,11 @@ export default {
     password: "Mật khẩu",
     forgot_password: "Quên mật khẩu?",
     or_login: "Hoặc đăng nhập với:",
+    firstName: "Tên",
+    lastName: "Họ",
+    confirmPassword: "Xác nhận mật khẩu",
+    alreadyAccount: "Đã có tài khoản?",
+    signUpHere: "Đăng ký tại đây",
   },
   notify: {
     no_rights: "Bạn không có quyền!",
