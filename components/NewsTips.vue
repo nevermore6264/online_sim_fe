@@ -69,9 +69,10 @@
   margin: 0 auto;
   width: 95%;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 15px;
   padding: 1rem;
-  background-color: #ffffff;
+  background: rgb(255, 255, 255);
+  box-shadow: 0 0 8px rgb(227, 227, 227);
 }
 
 .hNews-card__container {

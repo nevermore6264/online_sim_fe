@@ -23,6 +23,10 @@ export default {
     confirmPassword: "Confirm Password",
     alreadyAccount: "Already have an account?",
     signUpHere: "Sign up here",
+    signup_info_heading:
+      "Complete a simple registration and receive a phone number for SMS",
+    signup_info_paragraph:
+      "Get the opportunity to use our numbers for registration!",
   },
   notify: {
     no_rights: "You do not have the right!",
