@@ -9,12 +9,12 @@
     <template v-if="userInfo?.data?.id">
       <div class="additional-functions">
         <Button
-          :label="$t('landing.headerRentNumber')"
+          :label="$t('landing.headerActivations')"
           class="p-button-text"
           @click="handleRentNumber"
         />
         <Button
-          :label="$t('landing.headerRentOTP')"
+          :label="$t('landing.headerBuyOTP')"
           class="p-button-text"
           @click="handleRentOTP"
         />

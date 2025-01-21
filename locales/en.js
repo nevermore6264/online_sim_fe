@@ -7,8 +7,8 @@ export default {
     footerDesc:
       "Receive SMS online to temporary numbers from all over the world",
     footerCopyRight: "Copyright © 2024 ❤ Japan Sim. All rights reserved.",
-    headerRentNumber: "Rent Number",
-    headerRentOTP: "Rent OTP",
+    headerActivations: "Activations",
+    headerBuyOTP: "Buy OTP",
     headerProxy: "Proxy",
     login: "Login",
     signup: "Sign Up",
