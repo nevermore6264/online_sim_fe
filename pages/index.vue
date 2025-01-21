@@ -61,20 +61,32 @@
           </template>
           <template #empty>{{ $t("landing.no_services_found") }}</template>
           <template #loading>{{ $t("landing.loading_services") }}</template>
-
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="service-row">
                 <div
-                  :key="data.id"
-                  class="service-item"
-                  @click="onServiceClick(data)"
+                  v-for="serviceGroup in data"
+                  :key="serviceGroup[0]?.id"
+                  class="service-item-group"
                 >
-                  <img :src="data.image" :alt="data.text" class="flag-image" />
-                  <span class="service-name">{{ data.text }}</span>
-                  <span class="service-price">
-                    {{ $t("landing.service_price", { price: data.price }) }}
-                  </span>
+                  <div
+                    v-for="service in serviceGroup"
+                    :key="service.id"
+                    class="service-item"
+                    @click="onServiceClick(service)"
+                  >
+                    <img
+                      :src="service.image"
+                      :alt="service.text"
+                      class="flag-image"
+                    />
+                    <span class="service-name">{{ service.text }}</span>
+                    <span class="service-price">
+                      {{
+                        $t("landing.service_price", { price: service.price })
+                      }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </template>
@@ -106,12 +118,23 @@ const { width } = useWindowSize();
 const searchCountry = ref("");
 const searchService = ref("");
 
-// Phân nhóm dựa trên kích thước màn hình
+// Phân nhóm quốc gia theo kích thước màn hình
 const groupedCustomers = computed(() => {
   const itemsPerRow = width.value < 600 ? 1 : 2;
   const groups = [];
   for (let i = 0; i < customers.value.length; i += itemsPerRow) {
     groups.push(customers.value.slice(i, i + itemsPerRow));
+  }
+  return groups;
+});
+
+// Phân nhóm dịch vụ theo kích thước màn hình
+const groupedServices = computed(() => {
+  const itemsPerRow = width.value < 600 ? 1 : 2;
+  const groups = [];
+  const services = selectedCustomer.value?.services || [];
+  for (let i = 0; i < services.length; i += itemsPerRow) {
+    groups.push(services.slice(i, i + itemsPerRow));
   }
   return groups;
 });
@@ -125,12 +148,14 @@ const filteredCountries = computed(() => {
     )
   );
 });
+
 // Lọc danh sách dịch vụ theo tìm kiếm
 const filteredServices = computed(() => {
-  if (!searchService.value.trim())
-    return selectedCustomer.value?.services || [];
-  return selectedCustomer.value?.services.filter((service) =>
-    service.text.toLowerCase().includes(searchService.value.toLowerCase())
+  if (!searchService.value.trim()) return groupedServices.value;
+  return groupedServices.value.map((group) =>
+    group.filter((service) =>
+      service.text.toLowerCase().includes(searchService.value.toLowerCase())
+    )
   );
 });
 
@@ -144,7 +169,23 @@ const onCountryClick = (country) => {
       )
       .then((response) => {
         if (response?.data?.success) {
-          selectedCustomer.value.services = response?.data?.data;
+          const newServices = response?.data?.data;
+          const uniqueServices = [];
+          const seen = new Set(
+            selectedCustomer.value.services?.map((s) => s.id) || []
+          );
+
+          for (const service of newServices) {
+            if (!seen.has(service.id)) {
+              uniqueServices.push(service);
+              seen.add(service.id);
+            }
+          }
+
+          selectedCustomer.value.services = [
+            ...(selectedCustomer.value.services || []),
+            ...uniqueServices,
+          ];
         }
       })
       .catch((error) => {
