@@ -50,6 +50,27 @@ export default {
     temporary_service:
       "With our Temporary Number service, you'll only get high-quality, billable numbers with the highest success rates on the market today.",
     users_count: "550,000+ users",
+    guide_title: "How to use the VerifySMS?",
+    guide_description:
+      "To get a temporary number for receiving SMS, you will need to do 3 simple steps.",
+    steps: [
+      {
+        title: "Get the temp number",
+        action1: "Choose the service from which you will be expecting the SMS",
+        action2: "Choose the country from which this number should be",
+      },
+      {
+        title: "Send SMS to the phone number",
+        action1:
+          "Enter this phone number into the registration form on the required website",
+        action2: "Send the confirmation code to the number",
+      },
+      {
+        title: "Get an SMS on the website",
+        action1: "After receiving the SMS message with the confirmation code,",
+        action2: "copy it and use it to complete the account activation",
+      },
+    ],
   },
   notify: {
     no_rights: "You do not have the right!",

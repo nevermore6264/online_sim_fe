@@ -50,6 +50,27 @@ export default {
     temporary_service:
       "Với dịch vụ Số tạm thời của chúng tôi, bạn sẽ chỉ nhận được các số có thể thanh toán chất lượng cao với tỷ lệ thành công cao nhất trên thị trường hiện nay.",
     users_count: "Hơn 550.000 người dùng",
+    guide_title: "Cách sử dụng VerifySMS?",
+    guide_description:
+      "Để nhận số điện thoại tạm thời để nhận tin nhắn SMS, bạn chỉ cần thực hiện 3 bước đơn giản.",
+    steps: [
+      {
+        title: "Nhận số tạm thời",
+        action1: "Chọn dịch vụ mà bạn muốn nhận tin nhắn SMS",
+        action2: "Chọn quốc gia mà số điện thoại này thuộc về",
+      },
+      {
+        title: "Gửi SMS đến số điện thoại",
+        action1:
+          "Nhập số điện thoại này vào biểu mẫu đăng ký trên trang web yêu cầu",
+        action2: "Gửi mã xác nhận đến số điện thoại này",
+      },
+      {
+        title: "Nhận tin nhắn SMS trên website",
+        action1: "Sau khi nhận được tin nhắn SMS chứa mã xác nhận,",
+        action2: "sao chép mã và sử dụng để hoàn tất việc kích hoạt tài khoản",
+      },
+    ],
   },
   notify: {
     no_rights: "Bạn không có quyền!",
