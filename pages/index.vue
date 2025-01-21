@@ -108,10 +108,9 @@ const searchService = ref("");
 // Lọc danh sách quốc gia theo tìm kiếm
 const filteredCountries = computed(() => {
   if (!searchCountry.value.trim()) return customers.value;
-  return customers.value.map((group) =>
-    group.filter((country) =>
-      country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
-    )
+
+  return customers.value.filter((country) =>
+    country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
   );
 });
 
