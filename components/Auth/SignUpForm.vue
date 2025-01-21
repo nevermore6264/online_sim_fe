@@ -121,10 +121,13 @@ const handleSignUp = async () => {
 <style scoped>
 /* Styles specific for SignUpForm.vue */
 .auth-container {
-  max-width: 400px;
-  margin: auto;
+  width: 70%;
+  margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background: rgb(255, 255, 255);
+  border-radius: 15px;
+  box-shadow: 0 0 8px rgb(227, 227, 227);
 }
 .auth-input {
   margin-bottom: 1rem;
