@@ -108,7 +108,9 @@ const handleSignUp = async () => {
     const response = await UserService.CreateUser(signUpData.value);
     if (response.success) {
       push.success("Registration successful! Please log in.");
-      window.location.href = "/login";
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
     } else {
       push.error("Registration failed.");
     }
