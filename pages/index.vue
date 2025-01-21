@@ -61,32 +61,20 @@
           </template>
           <template #empty>{{ $t("landing.no_services_found") }}</template>
           <template #loading>{{ $t("landing.loading_services") }}</template>
+
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="service-row">
                 <div
-                  v-for="serviceGroup in data"
-                  :key="serviceGroup[0]?.id"
-                  class="service-item-group"
+                  :key="data.id"
+                  class="service-item"
+                  @click="onServiceClick(data)"
                 >
-                  <div
-                    v-for="service in serviceGroup"
-                    :key="service.id"
-                    class="service-item"
-                    @click="onServiceClick(service)"
-                  >
-                    <img
-                      :src="service.image"
-                      :alt="service.text"
-                      class="flag-image"
-                    />
-                    <span class="service-name">{{ service.text }}</span>
-                    <span class="service-price">
-                      {{
-                        $t("landing.service_price", { price: service.price })
-                      }}
-                    </span>
-                  </div>
+                  <img :src="data.image" :alt="data.text" class="flag-image" />
+                  <span class="service-name">{{ data.text }}</span>
+                  <span class="service-price">
+                    {{ $t("landing.service_price", { price: data.price }) }}
+                  </span>
                 </div>
               </div>
             </template>
@@ -118,23 +106,12 @@ const { width } = useWindowSize();
 const searchCountry = ref("");
 const searchService = ref("");
 
-// Phân nhóm quốc gia theo kích thước màn hình
+// Phân nhóm dựa trên kích thước màn hình
 const groupedCustomers = computed(() => {
   const itemsPerRow = width.value < 600 ? 1 : 2;
   const groups = [];
   for (let i = 0; i < customers.value.length; i += itemsPerRow) {
     groups.push(customers.value.slice(i, i + itemsPerRow));
-  }
-  return groups;
-});
-
-// Phân nhóm dịch vụ theo kích thước màn hình
-const groupedServices = computed(() => {
-  const itemsPerRow = width.value < 600 ? 1 : 2;
-  const groups = [];
-  const services = selectedCustomer.value?.services || [];
-  for (let i = 0; i < services.length; i += itemsPerRow) {
-    groups.push(services.slice(i, i + itemsPerRow));
   }
   return groups;
 });
@@ -148,14 +125,12 @@ const filteredCountries = computed(() => {
     )
   );
 });
-
 // Lọc danh sách dịch vụ theo tìm kiếm
 const filteredServices = computed(() => {
-  if (!searchService.value.trim()) return groupedServices.value;
-  return groupedServices.value.map((group) =>
-    group.filter((service) =>
-      service.text.toLowerCase().includes(searchService.value.toLowerCase())
-    )
+  if (!searchService.value.trim())
+    return selectedCustomer.value?.services || [];
+  return selectedCustomer.value?.services.filter((service) =>
+    service.text.toLowerCase().includes(searchService.value.toLowerCase())
   );
 });
 
@@ -169,23 +144,7 @@ const onCountryClick = (country) => {
       )
       .then((response) => {
         if (response?.data?.success) {
-          const newServices = response?.data?.data;
-          const uniqueServices = [];
-          const seen = new Set(
-            selectedCustomer.value.services?.map((s) => s.id) || []
-          );
-
-          for (const service of newServices) {
-            if (!seen.has(service.id)) {
-              uniqueServices.push(service);
-              seen.add(service.id);
-            }
-          }
-
-          selectedCustomer.value.services = [
-            ...(selectedCustomer.value.services || []),
-            ...uniqueServices,
-          ];
+          selectedCustomer.value.services = response?.data?.data;
         }
       })
       .catch((error) => {
@@ -333,7 +292,7 @@ onMounted(() => {
 
 .service-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Chia mỗi row thành 2 cột */
+  grid-template-columns: repeat(1, 1fr); /* Chia mỗi row thành 2 cột */
   gap: 10px;
   grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
 }
