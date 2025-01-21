@@ -236,13 +236,6 @@ onMounted(() => {
   color: #ffffff;
 }
 
-.country-row {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
 .country-item {
   display: flex;
   flex-direction: row;
@@ -265,15 +258,6 @@ onMounted(() => {
   height: auto;
 }
 
-.p-datatable .p-datatable-tbody > tr {
-  display: inline-block;
-  width: 50%;
-}
-
-.landing-page .p-datatable .p-datatable-tbody > tr > td {
-  display: block !important;
-}
-
 .flag-image {
   width: 24px;
   height: auto;
@@ -288,11 +272,18 @@ onMounted(() => {
   display: none;
 }
 
+.country-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Chia mỗi row thành 2 cột */
+  gap: 10px; /* Khoảng cách giữa các ô */
+  grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
+}
+
 .service-row {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px; /* Khoảng cách giữa các item */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Chia mỗi row thành 2 cột */
+  gap: 10px;
+  grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
 }
 
 .service-item {
