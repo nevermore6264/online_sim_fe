@@ -27,6 +27,20 @@ export default {
       "Hoàn tất đăng ký đơn giản và nhận số điện thoại để gửi tin nhắn SMS",
     signup_info_paragraph:
       "Có cơ hội sử dụng số điện thoại của chúng tôi để đăng ký!",
+    tips_heading: "Mẹo VerifySMS.com",
+    tips_paragraph:
+      "Chúng tôi viết về việc đăng ký tài khoản, sự phức tạp khi làm việc với proxy và các chủ đề quan trọng khác.",
+    blog_button: "Blog",
+    news_heading: "Tin tức",
+    telegram_channel: "@verifysms_news_official",
+    terms_agreement: "Bằng cách đăng nhập vào dịch vụ, bạn đồng ý với",
+    terms: "Điều khoản",
+    privacy_policy: "Chính sách bảo mật",
+    number_storage:
+      "Chúng tôi không lưu trữ số điện thoại quá 24 giờ. Nếu bạn cần nhận SMS trong thời gian dài, hãy sử dụng",
+    rent_numbers: "Thuê số điện thoại",
+    telegram_info:
+      "Kênh điện tín chính thức của chúng tôi, nơi bạn sẽ là người đầu tiên biết về thay đổi giá và tin tức.",
   },
   notify: {
     no_rights: "Bạn không có quyền!",

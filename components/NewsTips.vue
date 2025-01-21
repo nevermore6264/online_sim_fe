@@ -2,14 +2,10 @@
   <div class="news_tips_block ml-40-d">
     <div class="hNews-card__container">
       <div class="hNews-card_left">
-        <h3>Tips VerifySMS.com</h3>
-        <p>
-          We write about account registration, the intricacies of working with
-          proxies, and other important topics.
-        </p>
+        <h3>{{ $t("landing.tips_heading") }}</h3>
+        <p>{{ $t("landing.tips_paragraph") }}</p>
         <div class="hNews-card__img">
           <i class="pi pi-file-text" style="font-size: 120px"></i>
-          <!-- Prime Icon for Blog -->
         </div>
         <div class="hNews-card__btnWrap">
           <img src="/layout/images/blog.svg" alt="Logo" class="logo-image" />
@@ -20,7 +16,7 @@
       </div>
       <div class="hNews-card__right">
         <div class="lastnews_box">
-          <h4>News</h4>
+          <h4>{{ $t("landing.news_heading") }}</h4>
           <div class="hNews-card__img-btnWrap">
             <div class="hNews-card__img-btn">
               <img
@@ -35,7 +31,7 @@
           </div>
         </div>
         <div class="telegram_box">
-          <h4>@smspva_news_official</h4>
+          <h4>{{ $t("landing.telegram_channel") }}</h4>
           <div class="telegram_box__img-btn">
             <img src="/layout/images/tele.svg" alt="Logo" class="logo-image" />
             <nuxt-link class="hNews-card__btnImg">
@@ -47,18 +43,24 @@
     </div>
     <div class="info_block">
       <div class="row">
-        By logging in to the service, you agree with the
-        <a href="/img/pdf/terms.pdf">Terms</a> and the
-        <a href="/img/pdf/privacy_policy.pdf">Privacy Policy</a>.
+        {{ $t("landing.terms_agreement") }}
+        <a href="/img/pdf/terms.pdf">{{ $t("landing.terms") }}</a>
+        {{ $t("landing.and") }}
+        <a href="/img/pdf/privacy_policy.pdf">{{
+          $t("landing.privacy_policy")
+        }}</a
+        >.
       </div>
       <div class="row">
-        We do not store numbers longer than 24 hours. If you need to receive SMS
-        for a long time, use <a href="/arenda.html">Rent numbers</a>.
+        {{ $t("landing.number_storage") }}
+        <a href="/arenda.html">{{ $t("landing.rent_numbers") }}</a
+        >.
       </div>
       <div class="row">
-        Our official telegram channel
-        <a href="https://t.me/smspva_news_official">@smspva_news_official</a>
-        where you will be the first to know about price changes and news.
+        {{ $t("landing.telegram_info") }}
+        <a href="https://t.me/smspva_news_official">
+          {{ $t("landing.telegram_channel") }} </a
+        >.
       </div>
     </div>
   </div>

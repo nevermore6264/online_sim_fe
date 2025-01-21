@@ -27,6 +27,20 @@ export default {
       "Complete a simple registration and receive a phone number for SMS",
     signup_info_paragraph:
       "Get the opportunity to use our numbers for registration!",
+    tips_heading: "Tips VerifySMS.com",
+    tips_paragraph:
+      "We write about account registration, the intricacies of working with proxies, and other important topics.",
+    blog_button: "Blog",
+    news_heading: "News",
+    telegram_channel: "@verifysms_news_official",
+    terms_agreement: "By logging in to the service, you agree with the",
+    terms: "Terms",
+    privacy_policy: "Privacy Policy",
+    number_storage:
+      "We do not store numbers longer than 24 hours. If you need to receive SMS for a long time, use",
+    rent_numbers: "Rent numbers",
+    telegram_info:
+      "Our official telegram channel where you will be the first to know about price changes and news.",
   },
   notify: {
     no_rights: "You do not have the right!",

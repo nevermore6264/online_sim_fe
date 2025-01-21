@@ -1,6 +1,6 @@
 <template>
     <div class="guide-block">
-        <h2>How to use the SMSpva?</h2>
+        <h2>How to use the VerifySMS?</h2>
         <span style="margin-left: 2px; margin-top: 5px;">
             To get a temporary number for receiving SMS, you will need to do 3 simple steps.
         </span>
