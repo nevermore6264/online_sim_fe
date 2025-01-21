@@ -18,6 +18,11 @@ export default {
     password: "Password",
     forgot_password: "Forgot password?",
     or_login: "Or log in with:",
+    firstName: "First Name",
+    lastName: "Last Name",
+    confirmPassword: "Confirm Password",
+    alreadyAccount: "Already have an account?",
+    signUpHere: "Sign up here",
   },
   notify: {
     no_rights: "You do not have the right!",

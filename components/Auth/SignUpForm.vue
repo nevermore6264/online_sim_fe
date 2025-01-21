@@ -4,7 +4,7 @@
       <div class="logo">
         <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
       </div>
-      <h2>Sign Up</h2>
+      <h2>{{ $t("landing.signup") }}</h2>
       <form @submit.prevent="handleSignUp">
         <div class="input-group">
           <label for="firstName">First Name</label>
