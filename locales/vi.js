@@ -41,6 +41,15 @@ export default {
     rent_numbers: "Thuê số điện thoại",
     telegram_info:
       "Kênh điện tín chính thức của chúng tôi, nơi bạn sẽ là người đầu tiên biết về thay đổi giá và tin tức.",
+    header_title: "Nhận SMS trực tuyến - Verifysms",
+    footerDesc:
+      "Nhận SMS trực tuyến đến các số tạm thời từ khắp nơi trên thế giới",
+    try_now: "Dùng thử ngay",
+    trusted_users:
+      "Chúng tôi được hơn 550.000 khách hàng trả phí tin tưởng và con số đó vẫn tiếp tục tăng...",
+    temporary_service:
+      "Với dịch vụ Số tạm thời của chúng tôi, bạn sẽ chỉ nhận được các số có thể thanh toán chất lượng cao với tỷ lệ thành công cao nhất trên thị trường hiện nay.",
+    users_count: "Hơn 550.000 người dùng",
   },
   notify: {
     no_rights: "Bạn không có quyền!",

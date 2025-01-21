@@ -62,7 +62,6 @@ onUnmounted(() => {
 }
 
 .side-content {
-  padding: 20px;
   display: flex;
   flex-direction: column;
   flex: 1;

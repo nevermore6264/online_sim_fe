@@ -41,6 +41,15 @@ export default {
     rent_numbers: "Rent numbers",
     telegram_info:
       "Our official telegram channel where you will be the first to know about price changes and news.",
+    header_title: "Receive SMS Online - Verifysms",
+    footerDesc:
+      "Receive SMS online to temporary numbers from all over the world",
+    try_now: "Try it now",
+    trusted_users:
+      "We are trusted by more than 550,000 paying customers, and that number continues to grow...",
+    temporary_service:
+      "With our Temporary Number service, you'll only get high-quality, billable numbers with the highest success rates on the market today.",
+    users_count: "550,000+ users",
   },
   notify: {
     no_rights: "You do not have the right!",
