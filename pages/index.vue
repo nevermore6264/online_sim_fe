@@ -5,7 +5,7 @@
       <div class="table-container table-services">
         <input
           v-model="searchCountry"
-          placeholder="Search country"
+          :placeholder="$t('landing.search_country')"
           class="search-input"
         />
         <DataTable
@@ -16,10 +16,10 @@
           :loading="loading"
         >
           <template #header>
-            <div class="lbl_services">Select country</div>
+            <div class="lbl_services">{{ $t("landing.select_country") }}</div>
           </template>
-          <template #empty> No countries found. </template>
-          <template #loading> Loading customers data. Please wait. </template>
+          <template #empty>{{ $t("landing.no_countries_found") }}</template>
+          <template #loading>{{ $t("landing.loading_countries") }}</template>
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="country-row">
@@ -45,7 +45,7 @@
       <div class="table-container table-services">
         <input
           v-model="searchService"
-          placeholder="Search service"
+          :placeholder="$t('landing.search_service')"
           class="search-input"
         />
         <DataTable
@@ -56,28 +56,24 @@
           :loading="loading"
         >
           <template #header>
-            <div class="lbl_services">Select service</div>
+            <div class="lbl_services">{{ $t("landing.select_service") }}</div>
           </template>
-          <template #empty> No data found. </template>
-          <template #loading> Loading services data. Please wait. </template>
+          <template #empty>{{ $t("landing.no_services_found") }}</template>
+          <template #loading>{{ $t("landing.loading_services") }}</template>
 
           <Column style="min-width: 12rem">
-            <template #body="{data}">
+            <template #body="{ data }">
               <div class="service-row">
                 <div
                   :key="data.id"
                   class="service-item"
                   @click="onServiceClick(data)"
                 >
-                  <img
-                    :src="data.image"
-                    :alt="data.text"
-                    class="flag-image"
-                  />
+                  <img :src="data.image" :alt="data.text" class="flag-image" />
                   <span class="service-name">{{ data.text }}</span>
-                  <span class="service-price"
-                    >from {{ data.price }} USDT</span
-                  >
+                  <span class="service-price">
+                    {{ $t("landing.service_price", { price: data.price }) }}
+                  </span>
                 </div>
               </div>
             </template>
