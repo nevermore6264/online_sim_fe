@@ -71,6 +71,42 @@ export default {
         action2: "sao chép mã và sử dụng để hoàn tất việc kích hoạt tài khoản",
       },
     ],
+    features_title:
+      "VerifySMS là một trong những trang web đầu tiên cung cấp dịch vụ bán số điện thoại",
+    features_description:
+      "VerifySMS cung cấp cơ hội sử dụng các số điện thoại tạm thời ngắn hạn từ nhiều quốc gia khác nhau với mức giá hợp lý để nhận tin nhắn SMS.",
+    features: [
+      {
+        icon: "pi-verified",
+        header: "Xác minh tài khoản",
+        body: "Đơn giản hóa việc xác minh tài khoản trực tuyến bằng cách nhận mã xác nhận tức thì trên các ứng dụng hoặc dịch vụ phổ biến. Thiết lập các bài kiểm tra QA SMS một cách dễ dàng.",
+      },
+      {
+        icon: "pi-flag-fill",
+        header: "Hơn 60 quốc gia",
+        body: "Lấy số điện thoại từ nhiều quốc gia như Mỹ, Anh, Trung Quốc, Úc, Ấn Độ, Đức, Hà Lan, Ba Lan, Tây Ban Nha và nhiều quốc gia khác.",
+      },
+      {
+        icon: "pi-clock",
+        header: "Chọn số tức thì",
+        body: "Chỉ với vài cú nhấp chuột, bạn có thể nhận được một số điện thoại thứ hai trên bất kỳ dịch vụ phổ biến nào và nhận tin nhắn SMS chứa mã xác nhận gần như ngay lập tức.",
+      },
+      {
+        icon: "pi-shield",
+        header: "Bảo vệ quyền riêng tư",
+        body: "Để bảo vệ quyền riêng tư của bạn, hãy sử dụng số điện thoại tạm thời của chúng tôi thay vì số điện thoại thật của bạn khi đăng ký trên các trang web hoặc ứng dụng.",
+      },
+      {
+        icon: "pi-whatsapp",
+        header: "Số ảo và số thực",
+        body: "Dịch vụ của chúng tôi cung cấp một loạt các số VOIP và thẻ SIM thực từ các nhà cung cấp trên toàn thế giới.",
+      },
+      {
+        icon: "pi-qrcode",
+        header: "API tương thích",
+        body: "API của VerifySMS cung cấp khả năng tự động hóa dễ dàng quy trình làm việc của bạn, dù bạn cần một lần xác minh hay hàng nghìn lần.",
+      },
+    ],
   },
   notify: {
     no_rights: "Bạn không có quyền!",

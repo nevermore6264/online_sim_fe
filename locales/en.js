@@ -71,6 +71,42 @@ export default {
         action2: "copy it and use it to complete the account activation",
       },
     ],
+    features_title:
+      "VerifySMS is one of the first websites to offer phone number sales",
+    features_description:
+      "VerifySMS offers the opportunity to use short-term temporary phone numbers from various countries at a reasonable price to receive SMS messages.",
+    features: [
+      {
+        icon: "pi-verified",
+        header: "Account Verification",
+        body: "Simplify online account verification by receiving instant confirmation codes on popular apps or services. Set up SMS QA tests easily.",
+      },
+      {
+        icon: "pi-flag-fill",
+        header: "Over 60 countries",
+        body: "Get phone numbers from many countries such as the US, UK, China, Australia, India, Germany, Netherlands, Poland, Spain and many more.",
+      },
+      {
+        icon: "pi-clock",
+        header: "Choose number instant",
+        body: "With just a few clicks, you can get a second phone number on any popular service and receive SMS messages containing verification codes almost instantly.",
+      },
+      {
+        icon: "pi-shield",
+        header: "Privacy protection",
+        body: "To protect your privacy, use our temporary phone number instead of your real phone number when registering on websites or apps.",
+      },
+      {
+        icon: "pi-whatsapp",
+        header: "Virtual and real numbers",
+        body: "Our service offers a wide range of VOIP numbers and real SIM cards from providers around the world.",
+      },
+      {
+        icon: "pi-qrcode",
+        header: "API compatibility",
+        body: "VerifySMS's API provides easy automation of your workflow, whether you need one verification or thousands.",
+      },
+    ],
   },
   notify: {
     no_rights: "You do not have the right!",
