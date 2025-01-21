@@ -24,16 +24,17 @@
             <template #body="{ data }">
               <div class="country-row">
                 <div
-                  :key="data.code"
+                  v-for="country in data"
+                  :key="country.code"
                   class="country-item"
-                  @click="onCountryClick(data)"
+                  @click="onCountryClick(country)"
                 >
                   <img
-                    :src="data.flagImage"
-                    :alt="data.name"
+                    :src="country.flagImage"
+                    :alt="country.name"
                     class="flag-image"
                   />
-                  <span class="country-name">{{ data.name }}</span>
+                  <span class="country-name">{{ country.name }}</span>
                 </div>
               </div>
             </template>
@@ -105,15 +106,25 @@ const { width } = useWindowSize();
 const searchCountry = ref("");
 const searchService = ref("");
 
-// Lọc danh sách quốc gia theo tìm kiếm
-const filteredCountries = computed(() => {
-  if (!searchCountry.value.trim()) return customers.value;
-
-  return customers.value.filter((country) =>
-    country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
-  );
+// Phân nhóm dựa trên kích thước màn hình
+const groupedCustomers = computed(() => {
+  const itemsPerRow = width.value < 600 ? 1 : 2;
+  const groups = [];
+  for (let i = 0; i < customers.value.length; i += itemsPerRow) {
+    groups.push(customers.value.slice(i, i + itemsPerRow));
+  }
+  return groups;
 });
 
+// Lọc danh sách quốc gia theo tìm kiếm
+const filteredCountries = computed(() => {
+  if (!searchCountry.value.trim()) return groupedCustomers.value;
+  return groupedCustomers.value.map((group) =>
+    group.filter((country) =>
+      country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
+    )
+  );
+});
 // Lọc danh sách dịch vụ theo tìm kiếm
 const filteredServices = computed(() => {
   if (!searchService.value.trim())
@@ -315,5 +326,11 @@ onMounted(() => {
   color: gray;
   text-align: right; /* Căn phải */
   white-space: nowrap; /* Tránh xuống dòng */
+}
+
+@media (max-width: 599px) {
+  .country-row {
+    grid-template-columns: 1fr; /* 1 cột trên mobile */
+  }
 }
 </style>
