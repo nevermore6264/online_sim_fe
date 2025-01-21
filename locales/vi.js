@@ -16,6 +16,8 @@ export default {
     noAccount: "Bạn chưa có tài khoản?",
     username: "Tài khoản",
     password: "Mật khẩu",
+    forgot_password: "Quên mật khẩu?",
+    or_login: "Hoặc đăng nhập với:",
   },
   notify: {
     no_rights: "Bạn không có quyền!",

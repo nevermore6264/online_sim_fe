@@ -16,6 +16,8 @@ export default {
     noAccount: "Don't have an account?",
     username: "Login / Username",
     password: "Password",
+    forgot_password: "Forgot password?",
+    or_login: "Or log in with:",
   },
   notify: {
     no_rights: "You do not have the right!",

@@ -33,9 +33,11 @@
           class="auth-submit"
           :disabled="loading"
         />
-        <a href="#" class="forgot-password">Forgot password?</a>
+        <a href="#" class="forgot-password">{{
+          $t("landing.forgot_password")
+        }}</a>
         <div class="social-login">
-          <p>Or log in with:</p>
+          <p>{{ $t("landing.or_login") }}</p>
           <GoogleSignInButton
             @success="handleLoginSuccess"
             @error="handleLoginError"

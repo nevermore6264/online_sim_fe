@@ -154,6 +154,10 @@ ul {
 }
 
 @media (max-width: 1366px) {
+  .auth-container {
+    width: 75% !important;
+  }
+
   .social-icons,
   .address-links {
     padding-inline-start: 0px !important;
@@ -219,6 +223,10 @@ ul {
   .auth-dialog {
     width: 90% !important;
     margin: 0 auto !important;
+  }
+
+  .auth-container {
+    width: 95% !important;
   }
 
   .flex-container {

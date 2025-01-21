@@ -18,10 +18,17 @@ export default {
   color: black;
   width: 100%;
   height: max-content;
-  padding: 5px 20px;
   text-align: center;
   font-weight: 400;
   font-size: 14px;
-  line-height: 18px;
+  min-height: 70px;
+  line-height: 70px;
+  text-align: center;
+}
+
+.fraud-warning p {
+  line-height: 1.5;
+  display: inline-block;
+  vertical-align: middle;
 }
 </style>

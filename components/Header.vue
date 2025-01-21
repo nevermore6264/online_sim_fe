@@ -79,7 +79,6 @@ import UserService from "@/services/user"; // Import từ user.js
 const router = useRouter();
 const userInfo = reactive({}); // Lưu trữ thông tin người dùng
 
-
 const handleLogout = () => {
   localStorage.clear();
   Object.keys(userInfo).forEach((key) => delete userInfo[key]);
@@ -387,7 +386,16 @@ onMounted(async () => {
 
   .layout-topbar .p-menubar-end {
     margin-top: 10px;
-    justify-content: flex-end;
+    justify-content: center;
+  }
+
+  .footer-content {
+    display: block !important;
+  }
+
+  .footer-icons-box {
+    justify-content: center !important;
+    margin-top: 20px !important;
   }
 
   .auth-dialog {
