@@ -26,11 +26,16 @@
 
 <script setup>
 import { ref } from "vue";
+import { useI18n } from "vue-i18n"; // Import useI18n
+
+const { t } = useI18n();
 
 const home = ref({
   icon: "pi pi-home",
 });
-const breadcrumbItems = ref([{ labelKey: "proxy.breadcrumb_label" }]);
+const breadcrumbItems = computed(() => [
+  { label: t("proxy.breadcrumb_label") }
+]);
 
 const tabs = [
   { labelKey: "proxy.tab_order", icon: "pi pi-shopping-cart" },
