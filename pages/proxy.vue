@@ -1,17 +1,13 @@
 <template>
   <div class="proxy-containter">
-    <Breadcrumb :home="home" :model="items" />
+    <Breadcrumb :home="home" :model="breadcrumbItems" />
 
     <h4 class="grey-doc-text-red-bg">
-      ⚠ {{ $t("rent_number.notify") }}
+      ⚠ {{ $t("proxy.notify") }}
     </h4>
     <div class="tab-container">
-      <TabMenu
-        :model="tabs"
-        v-model="activeTab"
-        class="custom-tab-menu"
-        @update:activeIndex="activeTab = $event"
-      />
+      <TabMenu :model="tabs.map(tab => ({ label: $t(tab.labelKey), icon: tab.icon }))" v-model="activeTab"
+        class="custom-tab-menu" @update:activeIndex="activeTab = $event" />
 
       <div class="tab-content">
         <div v-if="activeTab === 0">
@@ -34,12 +30,12 @@ import { ref } from "vue";
 const home = ref({
   icon: "pi pi-home",
 });
-const items = ref([{ label: "Proxy" }]);
+const breadcrumbItems = ref([{ labelKey: "proxy.breadcrumb_label" }]);
 
 const tabs = [
-  { label: "Order", icon: "pi pi-shopping-cart" },
-  { label: "My Proxy", icon: "pi pi-server" },
-  { label: "F.A.Q.", icon: "pi pi-info-circle" },
+  { labelKey: "proxy.tab_order", icon: "pi pi-shopping-cart" },
+  { labelKey: "proxy.tab_my_proxy", icon: "pi pi-server" },
+  { labelKey: "proxy.tab_faq", icon: "pi pi-info-circle" },
 ];
 
 const activeTab = ref(0);

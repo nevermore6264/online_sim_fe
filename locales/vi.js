@@ -167,4 +167,11 @@ export default {
     answer6:
       "<ol><li>Nhấp vào logo Windows và tìm kiếm 'Thay đổi cài đặt proxy'.</li><li>Trong cửa sổ cài đặt Proxy, cuộn đến 'Thiết lập proxy thủ công'.</li><li>Bật 'Sử dụng máy chủ proxy'.</li><li>Nhập địa chỉ và cổng, sau đó nhấp vào Lưu.</li></ol>",
   },
+  proxy: {
+    notify: "Vui lòng đọc kỹ thông tin sau trước khi tiếp tục.",
+    breadcrumb_label: "Proxy",
+    tab_order: "Đặt hàng",
+    tab_my_proxy: "Proxy của tôi",
+    tab_faq: "Câu hỏi thường gặp.",
+  },
 };
