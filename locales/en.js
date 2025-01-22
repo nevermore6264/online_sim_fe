@@ -149,5 +149,18 @@ export default {
           '<h4>Request</h4><pre>https://smspva.com/api/rent.php?method=getcountries</pre><h4>Response</h4><pre>{\n  "status": 1,\n  "data": [\n    {\n      "name": "Россия", // country name\n      "code": "RU"      // country code\n    }\n  ]\n}</pre>',
       },
     ],
+    question1: "For what purposes is it forbidden to use our proxies?",
+    answer1: "<ul><li>Fraud, burglaries, insults, threats, and slander;</li><li>Password selection (brute force), scanning, and port vulnerability checks;</li><li>Creating phishing sites;</li><li>Spam (including on forums, websites, and blogs), or any activity leading to IP blacklists;</li><li>Email spamming;</li><li>Spreading malware (viruses, trojans, etc.);</li><li>Hacking websites or searching for vulnerabilities (e.g., SQL injection);</li><li>Distributing copyrighted materials without permission (e.g., videos, music, software);</li><li>Violating laws of the server's hosting country.</li></ul>",
+    question2: "What protocols do your proxies support?",
+    answer2: "Our proxies support HTTP, HTTPS, and SOCKS5 protocols. Full details are provided after purchase.",
+    question3: "Can I get a refund for a proxy?",
+    answer3: "A refund can only be provided if the proxy is not working. If the proxies are technically functional, refunds will not be issued.",
+    question4: "How to set up a proxy in an Android device?",
+    answer4: "<ol><li>Open your Android's Settings.</li><li>Tap Wi-Fi.</li><li>Tap and hold the Wi-Fi network name.</li><li>Select Modify Network.</li><li>Click Advanced Options.</li><li>Tap Manual.</li><li>Enter the proxy's hostname and port (e.g., 127.0.0.1:10101).</li><li>Tap Save.</li></ol>",
+    question5: "How to set up a proxy on an iPhone?",
+    answer5: "<ol><li>Open your iPhone settings.</li><li>Tap Wi-Fi.</li><li>Select the info icon next to the Wi-Fi network.</li><li>Scroll to HTTP Proxy and select Configure Proxy.</li><li>Tap Manual and enter the server and port (e.g., us.smartproxy.com:10101).</li><li>Turn on authentication (if needed) and add your username and password.</li><li>Tap back to save your settings.</li></ol>",
+    question6: "How to set up a proxy in Windows 10?",
+    answer6: "<ol><li>Click the Windows logo and search for 'Change proxy settings'.</li><li>In the Proxy settings window, scroll to 'Manual proxy setup'.</li><li>Turn on 'Use a proxy server'.</li><li>Enter the address and port, then click Save.</li></ol>"
   },
+  
 };

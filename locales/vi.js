@@ -148,5 +148,23 @@ export default {
           '<h4>Yêu cầu</h4><pre>https://smspva.com/api/rent.php?method=getcountries</pre><h4>Kết quả</h4><pre>{\n  "status": 1,\n  "data": [\n    {\n      "name": "Россия", // Tên quốc gia\n      "code": "RU"      // Mã quốc gia\n    }\n  ]\n}</pre>',
       },
     ],
+    question1: "Mục đích nào bị cấm sử dụng proxy của chúng tôi?",
+    answer1:
+      "<ul><li>Gian lận, trộm cắp, lăng mạ, đe dọa và vu khống;</li><li>Chọn mật khẩu (brute force), quét và kiểm tra lỗ hổng cổng;</li><li>Tạo trang web lừa đảo;</li><li>Thư rác (bao gồm trên diễn đàn, trang web và blog) hoặc bất kỳ hoạt động nào dẫn đến danh sách đen IP;</li><li>Thư rác qua email;</li><li>Phát tán phần mềm độc hại (virus, trojan, v.v.);</li><li>Hack trang web hoặc tìm kiếm lỗ hổng (ví dụ: tiêm SQL);</li><li>Phân phối tài liệu có bản quyền mà không được phép (ví dụ: video, nhạc, phần mềm);</li><li>Vi phạm luật pháp của quốc gia lưu trữ máy chủ.</li></ul>",
+    question2: "Proxy của bạn hỗ trợ những giao thức nào?",
+    answer2:
+      "Proxy của chúng tôi hỗ trợ các giao thức HTTP, HTTPS và SOCKS5. Chi tiết đầy đủ là được cung cấp sau khi mua.",
+    question3: "Tôi có thể được hoàn lại tiền cho proxy không?",
+    answer3:
+      "Chỉ có thể hoàn lại tiền nếu proxy không hoạt động. Nếu proxy hoạt động về mặt kỹ thuật, sẽ không được hoàn lại tiền.",
+    question4: "Làm thế nào để thiết lập proxy trong thiết bị Android?",
+    answer4:
+      "<ol><li>Mở Cài đặt của Android.</li><li>Nhấn Wi-Fi.</li><li>Nhấn và giữ tên mạng Wi-Fi.</li><li>Chọn Sửa đổi mạng.</li><li>Nhấp vào Tùy chọn nâng cao.</li><li>Nhấn Thủ công.</li><li>Nhập tên máy chủ và cổng của proxy (ví dụ: 127.0.0.1:10101).</li><li>Nhấn Lưu.</li></ol>",
+    question5: "Làm thế nào để thiết lập proxy trên iPhone?",
+    answer5:
+      "<ol><li>Mở cài đặt iPhone của bạn.</li><li>Nhấn Wi-Fi.</li><li>Chọn biểu tượng thông tin bên cạnh mạng Wi-Fi.</li><li>Cuộn đến Proxy HTTP và chọn Cấu hình Proxy.</li><li>Nhấn vào Thủ công và nhập máy chủ và cổng (ví dụ: us.smartproxy.com:10101).</li><li>Bật xác thực (nếu cần) và thêm tên người dùng và mật khẩu của bạn.</li><li>Nhấn vào Quay lại để lưu cài đặt của bạn.</li></ol>",
+    question6: "Làm thế nào để thiết lập proxy trong Windows 10?",
+    answer6:
+      "<ol><li>Nhấp vào logo Windows và tìm kiếm 'Thay đổi cài đặt proxy'.</li><li>Trong cửa sổ cài đặt Proxy, cuộn đến 'Thiết lập proxy thủ công'.</li><li>Bật 'Sử dụng máy chủ proxy'.</li><li>Nhập địa chỉ và cổng, sau đó nhấp vào Lưu.</li></ol>",
   },
 };

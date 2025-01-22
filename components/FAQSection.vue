@@ -2,10 +2,10 @@
   <div class="faq-container">
     <div v-for="(item, index) in faqItems" :key="index" class="faq-item">
       <h5 @click="toggleItem(index)">
-        {{ item.question }}
+        {{ $t(item.question) }}
       </h5>
       <div v-if="item.open" class="faq-content">
-        <div v-html="item.answer"></div>
+        <div v-html="$t(item.answer)"></div>
       </div>
     </div>
   </div>
@@ -15,75 +15,33 @@ import { ref } from "vue";
 
 const faqItems = ref([
   {
-    question: "For what purposes is it forbidden to use our proxies?",
-    answer: `
-      <ul>
-        <li>Fraud, burglaries, insults, threats, and slander;</li>
-        <li>Password selection (brute force), scanning, and port vulnerability checks;</li>
-        <li>Creating phishing sites;</li>
-        <li>Spam (including on forums, websites, and blogs), or any activity leading to IP blacklists;</li>
-        <li>Email spamming;</li>
-        <li>Spreading malware (viruses, trojans, etc.);</li>
-        <li>Hacking websites or searching for vulnerabilities (e.g., SQL injection);</li>
-        <li>Distributing copyrighted materials without permission (e.g., videos, music, software);</li>
-        <li>Violating laws of the server's hosting country.</li>
-      </ul>
-    `,
+    question: "faq.question1",
+    answer: "faq.answer1",
     open: false,
   },
   {
-    question: "What protocols do your proxies support?",
-    answer:
-      "Our proxies support HTTP, HTTPS, and SOCKS5 protocols. Full details are provided after purchase.",
+    question: "faq.question2",
+    answer: "faq.answer2",
     open: false,
   },
   {
-    question: "Can I get a refund for a proxy?",
-    answer:
-      "A refund can only be provided if the proxy is not working. If the proxies are technically functional, refunds will not be issued.",
+    question: "faq.question3",
+    answer: "faq.answer3",
     open: false,
   },
   {
-    question: "How to set up a proxy in an Android device?",
-    answer: `
-      <ol>
-        <li>Open your Android's Settings.</li>
-        <li>Tap Wi-Fi.</li>
-        <li>Tap and hold the Wi-Fi network name.</li>
-        <li>Select Modify Network.</li>
-        <li>Click Advanced Options.</li>
-        <li>Tap Manual.</li>
-        <li>Enter the proxy's hostname and port (e.g., 127.0.0.1:10101).</li>
-        <li>Tap Save.</li>
-      </ol>
-    `,
+    question: "faq.question4",
+    answer: "faq.answer4",
     open: false,
   },
   {
-    question: "How to set up a proxy on an iPhone?",
-    answer: `
-      <ol>
-        <li>Open your iPhone settings.</li>
-        <li>Tap Wi-Fi.</li>
-        <li>Select the info icon next to the Wi-Fi network.</li>
-        <li>Scroll to HTTP Proxy and select Configure Proxy.</li>
-        <li>Tap Manual and enter the server and port (e.g., us.smartproxy.com:10101).</li>
-        <li>Turn on authentication (if needed) and add your username and password.</li>
-        <li>Tap back to save your settings.</li>
-      </ol>
-    `,
+    question: "faq.question5",
+    answer: "faq.answer5",
     open: false,
   },
   {
-    question: "How to set up a proxy in Windows 10?",
-    answer: `
-      <ol>
-        <li>Click the Windows logo and search for "Change proxy settings".</li>
-        <li>In the Proxy settings window, scroll to "Manual proxy setup".</li>
-        <li>Turn on "Use a proxy server".</li>
-        <li>Enter the address and port, then click Save.</li>
-      </ol>
-    `,
+    question: "faq.question6",
+    answer: "faq.answer6",
     open: false,
   },
 ]);
