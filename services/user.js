@@ -25,11 +25,12 @@ export default {
     return response.data;
   },
 
-  async OrderList(token) {
+  async OrderList(token, { page, limit }) {
     const response = await api.get(`/api/account/order-list`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      params: { page, limit },
     });
     return response.data;
   },

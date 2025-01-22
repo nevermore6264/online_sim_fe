@@ -12,7 +12,8 @@
   <!-- Table for purchased SIMs -->
   <div class="purchased-sim-container">
     <DataTable :value="filteredOrderList" scrollable scrollHeight="300px" min-height="300px" dataKey="id"
-      :loading="loading">
+      :loading="loading" paginator :rows="rowsPerPage" :total-records="totalDocs"
+      :first="(currentPage - 1) * rowsPerPage" @page="onPageChange">
       <template #empty> No SIMs match the selected status. </template>
       <template #loading> Loading SIM data. Please wait. </template>
       <Column header="ID" field="id" style="min-width: 1rem" />
@@ -34,22 +35,26 @@
 import { ref, onMounted } from "vue";
 import UserService from "@/services/user";
 
-const orderList = ref([]);
-const filteredOrderList = ref([]);
-const selectedStatus = ref("all"); // Default to "all"
+const orderList = ref([]); // Danh sách đầy đủ từ API
+const filteredOrderList = ref([]); // Danh sách đã lọc và hiển thị
+const selectedStatus = ref("all"); // Bộ lọc trạng thái
 const loading = ref(false);
+
+const rowsPerPage = ref(10); // Số dòng mỗi trang
+const currentPage = ref(1); // Trang hiện tại
+const totalDocs = ref(0); // Tổng số tài liệu (docs)
 
 const currentTime = ref(new Date());
 
-// Function to calculate expired time
+// Hàm tính thời gian hết hạn
 const trackingExpiredTime = (value) => {
   const diff = new Date(value) - currentTime.value;
 
   if (diff <= 0) return "Expired";
 
-  const totalSeconds = Math.floor(diff / 1000); // Total seconds remaining
-  const minutes = Math.floor(totalSeconds / 60); // Total minutes
-  const seconds = totalSeconds % 60; // Remaining seconds
+  const totalSeconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
 
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
     2,
@@ -57,10 +62,11 @@ const trackingExpiredTime = (value) => {
   )}`;
 };
 
-// Function to fetch purchased SIMs
-const fetchOrderList = async () => {
+// Hàm lấy dữ liệu từ API
+const fetchOrderList = async (page = 1) => {
   loading.value = true;
   const token = localStorage.getItem("token");
+
   if (!token) {
     console.error("Token is not found in localStorage");
     loading.value = false;
@@ -68,11 +74,14 @@ const fetchOrderList = async () => {
   }
 
   try {
-    const response = await UserService.OrderList(token);
+    const response = await UserService.OrderList(token, { page, limit: rowsPerPage.value });
 
     if (response?.success) {
-      orderList.value = response?.data?.docs;
-      filterOrderList(); // Apply filtering after fetching data
+      orderList.value = response.data.docs;
+      totalDocs.value = response.data.totalDocs;
+      currentPage.value = response.data.page;
+
+      filterOrderList(); // Lọc danh sách sau khi lấy dữ liệu
     } else {
       console.error("Failed to fetch data from API");
     }
@@ -83,7 +92,7 @@ const fetchOrderList = async () => {
   }
 };
 
-// Function to filter order list based on selected status
+// Hàm lọc danh sách
 const filterOrderList = () => {
   if (selectedStatus.value === "all") {
     filteredOrderList.value = orderList.value;
@@ -98,9 +107,15 @@ const filterOrderList = () => {
   }
 };
 
+// Hàm xử lý khi thay đổi trang
+const onPageChange = (event) => {
+  fetchOrderList(event.page + 1); // `event.page` là chỉ mục (index) trang bắt đầu từ 0
+};
+
 onMounted(() => {
   fetchOrderList();
 });
+
 </script>
 
 <style>
