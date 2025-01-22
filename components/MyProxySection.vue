@@ -2,11 +2,7 @@
   <!-- Dropdown for filtering by status -->
   <div class="filter-container">
     <label for="status-filter">Filter by Status:</label>
-    <select
-      id="status-filter"
-      v-model="selectedStatus"
-      @change="filterOrderList"
-    >
+    <select id="status-filter" v-model="selectedStatus" @change="filterOrderList">
       <option value="all">All</option>
       <option value="active">Active</option>
       <option value="expired">Expired</option>
@@ -15,24 +11,14 @@
 
   <!-- Table for purchased SIMs -->
   <div class="purchased-sim-container">
-    <DataTable
-      :value="filteredOrderList"
-      scrollable
-      scrollHeight="300px"
-      min-height="300px"
-      dataKey="id"
-      :loading="loading"
-    >
+    <DataTable :value="filteredOrderList" scrollable scrollHeight="300px" min-height="300px" dataKey="id"
+      :loading="loading">
       <template #empty> No SIMs match the selected status. </template>
       <template #loading> Loading SIM data. Please wait. </template>
       <Column header="ID" field="id" style="min-width: 1rem" />
       <Column header="Country" field="countryCode" style="min-width: 12rem" />
       <Column header="Proxy" field="stock.phone" style="min-width: 12rem" />
-      <Column
-        header="Service"
-        field="stock.serviceCode"
-        style="min-width: 12rem"
-      />
+      <Column header="Service" field="stock.serviceCode" style="min-width: 12rem" />
       <Column header="Price" field="cost" style="min-width: 12rem" />
       <Column header="Expire Time" style="min-width: 12rem">
         <template #body="{ data }">
@@ -46,7 +32,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import UserService from "@/services/user";
 
 const orderList = ref([]);
 const filteredOrderList = ref([]);
@@ -82,17 +68,10 @@ const fetchOrderList = async () => {
   }
 
   try {
-    const response = await axios.get(
-      `https://verifysms.org/api/account/order-list`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await UserService.OrderList(token);
 
-    if (response?.data?.success) {
-      orderList.value = response?.data?.data?.docs;
+    if (response?.success) {
+      orderList.value = response?.data?.docs;
       filterOrderList(); // Apply filtering after fetching data
     } else {
       console.error("Failed to fetch data from API");
