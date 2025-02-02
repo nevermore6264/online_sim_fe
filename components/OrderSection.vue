@@ -254,6 +254,49 @@ const onBuy = () => {
   margin-top: -10px;
 }
 
+.country-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between; /* Tạo khoảng cách giữa tên và giá */
+  cursor: pointer;
+  padding: 8px;
+  transition: background-color 0.3s;
+  width: 100%;
+  background-color: rgb(245, 245, 245);
+  border-radius: 5px;
+}
+
+.country-item:hover {
+  background-color: rgb(201, 200, 200);
+}
+
+.flag-image {
+  width: 24px;
+  height: auto;
+}
+
+.flag-image {
+  width: 24px;
+  height: auto;
+  margin-right: 8px;
+}
+
+.country-name {
+  font-size: 14px;
+}
+
+.landing-page .p-datatable-thead {
+  display: none;
+}
+
+.country-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Chia mỗi row thành 2 cột */
+  gap: 10px; /* Khoảng cách giữa các ô */
+  grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
+}
+
 .quantity-slider .slider-label {
   position: absolute;
   top: 10px;
@@ -305,5 +348,17 @@ const onBuy = () => {
 
 .country-name {
   font-size: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .country-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 599px) {
+  .country-row {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 </style>

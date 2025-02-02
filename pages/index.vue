@@ -165,7 +165,7 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .search-input {
   width: 100%;
   padding: 8px;
