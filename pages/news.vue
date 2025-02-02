@@ -1,5 +1,7 @@
 <template>
   <div class="card">
+    <h2>Buy OTP Service</h2>
+
     <DataView :value="products" paginator :rows="5">
       <template #list="slotProps">
         <div class="flex flex-col">
@@ -15,7 +17,7 @@
                 <img
                   class="block xl:block mx-auto rounded w-full"
                   :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`"
-                  :alt="item.name"
+                  :alt="item.text"
                 />
                 <div
                   class="absolute bg-black/70 rounded-border"
@@ -36,9 +38,9 @@
                   <div>
                     <span
                       class="font-medium text-surface-500 dark:text-surface-400 text-sm"
-                      >{{ item.category }}</span
+                      >{{ item.text }}</span
                     >
-                    <div class="text-lg font-medium mt-2">{{ item.name }}</div>
+                    <div class="text-lg font-medium mt-2">{{ item.text }}</div>
                   </div>
                   <div class="bg-surface-100 p-1" style="border-radius: 30px">
                     <div
@@ -78,7 +80,7 @@
 </template>
 
 <script>
-import { ProductService } from "@/service/ProductService";
+import NewsService from "@/services/new";
 
 export default {
   data() {
@@ -87,9 +89,18 @@ export default {
     };
   },
   mounted() {
-    ProductService.getProductsSmall().then((data) => (this.products = data));
+    this.fetchNews();
   },
   methods: {
+    async fetchNews() {
+      try {
+        const data = await NewsService.News();
+        this.products = data?.data;
+        console.log(products);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    },
     getSeverity(product) {
       switch (product.inventoryStatus) {
         case "INSTOCK":
