@@ -96,7 +96,7 @@ const handleRentNumber = () => {
 };
 
 const handleRentOTP = () => {
-  router.push("/rent-otp"); // Điều hướng tới trang "Rent OTP"
+  router.push("/buy-otp"); // Điều hướng tới trang "Rent OTP"
 };
 
 const handleProxy = () => {
