@@ -18,11 +18,10 @@
           class="p-button-text"
           @click="handleRentOTP"
         />
-        <Button
-          :label="$t('landing.headerProxy')"
-          class="p-button-text"
-          @click="handleProxy"
-        />
+        <Button class="p-button-text" @click="handleProxy">
+          <b style="color: red; font-size: 15px">HQ</b>
+          <span>{{ $t("landing.headerProxy") }}</span>
+        </Button>
         <Button
           :label="$t('landing.headerNews')"
           class="p-button-text"
