@@ -31,15 +31,6 @@
                   :src="`https://picsum.photos/200/300?random=${index}`"
                   :alt="item.text"
                 />
-                <div
-                  class="absolute bg-black/70 rounded-border"
-                  style="left: 4px; top: 4px"
-                >
-                  <Tag
-                    :value="item.inventoryStatus"
-                    :severity="getSeverity(item)"
-                  ></Tag>
-                </div>
               </div>
               <div class="flex flex-col md:items-end gap-8">
                 <div class="flex flex-row-reverse md:flex-row gap-2">
@@ -47,7 +38,6 @@
                     icon="pi pi-arrow-right"
                     label="Read more"
                     iconPos="right"
-                    :disabled="item.inventoryStatus === 'OUTOFSTOCK'"
                     class="flex-auto md:flex-initial whitespace-nowrap"
                   ></Button>
                 </div>
@@ -80,21 +70,6 @@ export default {
         console.log(products);
       } catch (error) {
         console.error("Error fetching news:", error);
-      }
-    },
-    getSeverity(product) {
-      switch (product.inventoryStatus) {
-        case "INSTOCK":
-          return "success";
-
-        case "LOWSTOCK":
-          return "warn";
-
-        case "OUTOFSTOCK":
-          return "danger";
-
-        default:
-          return null;
       }
     },
   },
