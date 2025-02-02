@@ -4,19 +4,31 @@
 
     <DataView :value="products" paginator :rows="5">
       <template #list="slotProps">
-        <div class="flex flex-col">
+        <div class="block">
           <div v-for="(item, index) in slotProps.items" :key="index">
-            <div
-              class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
-              :class="{
-                'border-t border-surface-200 dark:border-surface-700':
-                  index !== 0,
-              }"
-            >
-              <div class="md:w-40 relative">
+            <div class="flex sm:flex-row sm:items-center p-6 gap-4 shortNews">
+              <div class="flex justify-between md:items-center flex-1 gap-6">
+                <div class="flex flex-row justify-between items-start gap-2">
+                  <div>
+                    <span class="text-lg font-medium mt-2">
+                      <!-- {{ item.text }} -->
+                      Added Provider Selection in the Rental Section!
+                    </span>
+                    <div
+                      class="font-medium text-surface-500 dark:text-surface-400 text-sm"
+                    >
+                      <!-- {{ item.text }} -->
+                      Dear users! We have added the ability to select a provider
+                      for the desired country in the rental section! If you need
+                      a specific provider, you can choose it after selectin
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="md:w-40 relative img-news">
                 <img
                   class="block xl:block mx-auto rounded w-full"
-                  :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`"
+                  :src="`https://picsum.photos/200/300?random=${index}`"
                   :alt="item.text"
                 />
                 <div
@@ -29,46 +41,15 @@
                   ></Tag>
                 </div>
               </div>
-              <div
-                class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6"
-              >
-                <div
-                  class="flex flex-row md:flex-col justify-between items-start gap-2"
-                >
-                  <div>
-                    <span
-                      class="font-medium text-surface-500 dark:text-surface-400 text-sm"
-                      >{{ item.text }}</span
-                    >
-                    <div class="text-lg font-medium mt-2">{{ item.text }}</div>
-                  </div>
-                  <div class="bg-surface-100 p-1" style="border-radius: 30px">
-                    <div
-                      class="bg-surface-0 flex items-center gap-2 justify-center py-1 px-2"
-                      style="
-                        border-radius: 30px;
-                        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04),
-                          0px 1px 2px 0px rgba(0, 0, 0, 0.06);
-                      "
-                    >
-                      <span class="text-surface-900 font-medium text-sm">{{
-                        item.rating
-                      }}</span>
-                      <i class="pi pi-star-fill text-yellow-500"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex flex-col md:items-end gap-8">
-                  <span class="text-xl font-semibold">${{ item.price }}</span>
-                  <div class="flex flex-row-reverse md:flex-row gap-2">
-                    <Button icon="pi pi-heart" outlined></Button>
-                    <Button
-                      icon="pi pi-shopping-cart"
-                      label="Read more"
-                      :disabled="item.inventoryStatus === 'OUTOFSTOCK'"
-                      class="flex-auto md:flex-initial whitespace-nowrap"
-                    ></Button>
-                  </div>
+              <div class="flex flex-col md:items-end gap-8">
+                <div class="flex flex-row-reverse md:flex-row gap-2">
+                  <Button
+                    icon="pi pi-arrow-right"
+                    label="Read more"
+                    iconPos="right"
+                    :disabled="item.inventoryStatus === 'OUTOFSTOCK'"
+                    class="flex-auto md:flex-initial whitespace-nowrap"
+                  ></Button>
                 </div>
               </div>
             </div>
@@ -119,3 +100,25 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.img-news {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.shortNews {
+  width: 100%;
+  max-width: 700px;
+  height: 200px;
+  border: 0px;
+  background-color: rgb(245, 245, 245);
+  border-radius: 10px;
+  box-shadow: 0px 0px 0px 0px rgb(255, 255, 255);
+  padding: 10px;
+  margin: 0 auto 20px;
+}
+</style>
