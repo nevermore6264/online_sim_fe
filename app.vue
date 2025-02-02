@@ -133,6 +133,14 @@ ul {
   padding-inline-start: 20px !important;
 }
 
+.p-dataview .p-dataview-content {
+  background: linear-gradient(to right, #d7f2fe, #ffffff) !important;
+}
+
+.p-paginator {
+  background: linear-gradient(to right, #d7f2fe, #ffffff) !important;
+}
+
 #app-content {
   margin-left: 250px;
   padding: 25px 10px;

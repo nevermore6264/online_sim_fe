@@ -118,6 +118,7 @@ export default {
     no_services_found: "Không tìm thấy dữ liệu nào.",
     loading_services: "Đang tải dữ liệu dịch vụ. Vui lòng đợi.",
     service_price: "từ {price} USDT",
+    read_more: "Xem thêm",
   },
   notify: {
     no_rights: "Bạn không có quyền!",

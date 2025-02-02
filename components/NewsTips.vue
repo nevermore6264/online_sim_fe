@@ -9,7 +9,7 @@
         </div>
         <div class="hNews-card__btnWrap">
           <img src="/layout/images/blog.svg" alt="Logo" class="logo-image" />
-          <nuxt-link class="hNews-card__btnImg" to="/blog">
+          <nuxt-link class="hNews-card__btnImg" to="/news">
             <i class="pi pi-arrow-right"></i>
           </nuxt-link>
         </div>
@@ -24,7 +24,7 @@
                 alt="Logo"
                 class="logo-image"
               />
-              <nuxt-link class="hNews-card__btnImg">
+              <nuxt-link class="hNews-card__btnImg" to="/news">
                 <i class="pi pi-arrow-right"></i>
               </nuxt-link>
             </div>
@@ -34,7 +34,7 @@
           <h4>{{ $t("landing.telegram_channel") }}</h4>
           <div class="telegram_box__img-btn">
             <img src="/layout/images/tele.svg" alt="Logo" class="logo-image" />
-            <nuxt-link class="hNews-card__btnImg">
+            <nuxt-link class="hNews-card__btnImg" to="/news">
               <i class="pi pi-arrow-right"></i>
             </nuxt-link>
           </div>

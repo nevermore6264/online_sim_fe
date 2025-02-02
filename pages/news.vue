@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <h2>Buy OTP Service</h2>
+    <h2>{{ $t("landing.headerNews") }}</h2>
 
     <DataView :value="products" paginator :rows="5">
       <template #list="slotProps">
@@ -10,19 +10,24 @@
             :key="index"
             class="shortNews"
           >
+            <div class="flex flex-col md:items-end gap-2 mt-2">
+              <span class="text-sm p-1 font-medium mb-2">
+                30/01/25 | 10:12
+              </span>
+            </div>
             <div class="flex sm:items-start p-1 gap-4">
               <div class="flex justify-between md:items-center flex-1 gap-6">
                 <div class="flex flex-row justify-between items-start gap-2">
                   <div>
-                    <span class="text-lg font-medium mt-2">
+                    <p class="text-lg font-medium mt-2">
                       Added Provider Selection in the Rental Section!
-                    </span>
+                    </p>
                     <div
                       class="font-medium text-surface-500 dark:text-surface-400 text-sm"
                     >
                       Dear users! We have added the ability to select a provider
                       for the desired country in the rental section! If you need
-                      a specific provider, you can choose it after selecting.
+                      a specific provider, you can choose it after selecting...
                     </div>
                   </div>
                 </div>
@@ -38,9 +43,9 @@
             <div class="flex flex-col md:items-end gap-2 mt-2">
               <Button
                 icon="pi pi-arrow-right"
-                label="Read more"
+                :label="$t('landing.read_more')"
                 iconPos="right"
-                class="flex-auto md:flex-initial whitespace-nowrap"
+                class="flex-auto md:flex-initial whitespace-nowrap button-next-p"
               ></Button>
             </div>
           </div>
@@ -96,7 +101,17 @@ export default {
   margin: 0 auto 20px;
 }
 
-.p-dataview .p-dataview-content {
-  background: linear-gradient(to right, #d7f2fe, #ffffff) !important;
+.button-next-p {
+  background-color: rgb(0, 174, 255);
+  border-radius: 10px;
+  border: 1px solid rgb(0, 174, 255);
+}
+
+h2 {
+  padding: 70px 0px 50px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 53px;
 }
 </style>

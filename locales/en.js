@@ -118,6 +118,7 @@ export default {
     no_services_found: "No data found.",
     loading_services: "Loading services data. Please wait.",
     service_price: "from {price} USDT",
+    read_more: "Read more",
   },
   notify: {
     no_rights: "You do not have the right!",
