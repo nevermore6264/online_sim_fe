@@ -1,6 +1,7 @@
 export default {
   welcome: "Welcome",
   landing: {
+    and: "and the",
     berrors_top_yellow:
       "There are fraudulent sites that copy our design. Check the site domain when you visit the site. Our domain is Verifysms.com. Be careful and do not trust fraudulent sites. We are not responsible for the actions of these fraudulent sites.",
     hello: "Hello",
@@ -10,6 +11,7 @@ export default {
     headerActivations: "Activations",
     headerBuyOTP: "Buy OTP",
     headerProxy: "Proxy",
+    headerNews: "News",
     login: "Login",
     signup: "Sign Up",
     logout: "Logout",
@@ -32,7 +34,7 @@ export default {
       "We write about account registration, the intricacies of working with proxies, and other important topics.",
     blog_button: "Blog",
     news_heading: "News",
-    telegram_channel: "@verifysms_news_official",
+    telegram_channel: "verifysms_news_official",
     terms_agreement: "By logging in to the service, you agree with the",
     terms: "Terms",
     privacy_policy: "Privacy Policy",

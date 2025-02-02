@@ -1,6 +1,7 @@
 export default {
   welcome: "Chào mừng",
   landing: {
+    and: "và",
     berrors_top_yellow:
       "Có những trang web gian lận sao chép thiết kế của chúng tôi. Hãy kiểm tra tên miền của trang web khi bạn truy cập trang web. Tên miền của chúng tôi là Verifysms.com. Hãy cẩn thận và không tin tưởng các trang web gian lận. Chúng tôi không chịu trách nhiệm cho các hành động của các trang web gian lận này.",
     hello: "Chào",
@@ -10,6 +11,7 @@ export default {
     headerActivations: "Cho thuê Services",
     headerBuyOTP: "Mua OTP",
     headerProxy: "Proxy",
+    headerNews: "Tin tức",
     login: "Đăng nhập",
     signup: "Đăng ký",
     logout: "Đăng xuất",
@@ -32,7 +34,7 @@ export default {
       "Chúng tôi viết về việc đăng ký tài khoản, sự phức tạp khi làm việc với proxy và các chủ đề quan trọng khác.",
     blog_button: "Blog",
     news_heading: "Tin tức",
-    telegram_channel: "@verifysms_news_official",
+    telegram_channel: "verifysms_news_official",
     terms_agreement: "Bằng cách đăng nhập vào dịch vụ, bạn đồng ý với",
     terms: "Điều khoản",
     privacy_policy: "Chính sách bảo mật",

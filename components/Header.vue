@@ -23,6 +23,11 @@
           class="p-button-text"
           @click="handleProxy"
         />
+        <Button
+          :label="$t('landing.headerNews')"
+          class="p-button-text"
+          @click="handleNews"
+        />
       </div>
     </template>
     <!-- Menu Section -->
@@ -97,6 +102,10 @@ const handleRentOTP = () => {
 
 const handleProxy = () => {
   router.push("/proxy"); // Điều hướng tới trang "Proxy"
+};
+
+const handleNews = () => {
+  router.push("/news"); // Điều hướng tới trang "News"
 };
 
 // Sử dụng UserService để lấy thông tin người dùng

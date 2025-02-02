@@ -14,7 +14,7 @@
 /* Thêm các style toàn cục cho ứng dụng ở đây nếu cần */
 body {
   margin: 0;
-  font-family: "MyriadSetPro", Arial, sans-serif !important;
+  font-family: "Lato", sans-serif !important;
 }
 
 .p-datatable-emptymessage {
