@@ -179,4 +179,11 @@ export default {
     tab_my_proxy: "My Proxy",
     tab_faq: "F.A.Q.",
   },
+  tabs: {
+    rent_number: "Rent Number",
+    my_number: "My Number",
+    faq: "F.A.Q.",
+    api: "API",
+    archie: "Archie",
+  },
 };

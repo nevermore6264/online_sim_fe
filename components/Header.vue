@@ -11,7 +11,7 @@
         <Button
           :label="$t('landing.headerActivations')"
           class="p-button-text"
-          @click="handleRentNumber"
+          @click="handleActivations"
         />
         <Button
           :label="$t('landing.headerBuyOTP')"
@@ -91,8 +91,8 @@ const handleLogout = () => {
   window.location.reload();
 };
 
-const handleRentNumber = () => {
-  router.push("/rent-number"); // Điều hướng tới trang "Rent Number"
+const handleActivations = () => {
+  router.push("/activations"); // Điều hướng tới trang "Rent Number"
 };
 
 const handleRentOTP = () => {

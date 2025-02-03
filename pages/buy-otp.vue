@@ -169,7 +169,6 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
 import orderService from "../services/order";
 
 const home = ref({

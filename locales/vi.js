@@ -177,4 +177,11 @@ export default {
     tab_my_proxy: "Proxy của tôi",
     tab_faq: "Câu hỏi thường gặp.",
   },
+  tabs: {
+    rent_number: "Số thuê",
+    my_number: "Số của tôi",
+    faq: "Câu hỏi thường gặp",
+    api: "API",
+    archie: "Lưu trữ",
+  },
 };
