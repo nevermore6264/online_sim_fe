@@ -184,4 +184,9 @@ export default {
     api: "API",
     archie: "Lưu trữ",
   },
+  buy_otp: {
+    breadcrumb_label: "Mua OTP",
+    order: "Đặt hàng",
+    my_otp: "OTP của tôi",
+  },
 };

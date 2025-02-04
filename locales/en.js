@@ -186,4 +186,9 @@ export default {
     api: "API",
     archie: "Archie",
   },
+  buy_otp: {
+    breadcrumb_label: "Buy OTP",
+    order: "Order",
+    my_otp: "My OTP",
+  },
 };

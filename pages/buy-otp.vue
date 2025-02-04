@@ -20,9 +20,6 @@
         <div v-if="activeTab === 1">
           <MyProxySection />
         </div>
-        <div v-if="activeTab === 2">
-          <FAQSection />
-        </div>
       </div>
     </div>
   </div>
@@ -38,13 +35,12 @@ const home = ref({
   icon: "pi pi-home",
 });
 const breadcrumbItems = computed(() => [
-  { label: t("proxy.breadcrumb_label") },
+  { label: t("buy_otp.breadcrumb_label") },
 ]);
 
 const tabs = [
-  { labelKey: "proxy.tab_order", icon: "pi pi-shopping-cart" },
-  { labelKey: "proxy.tab_my_proxy", icon: "pi pi-server" },
-  { labelKey: "proxy.tab_faq", icon: "pi pi-info-circle" },
+  { labelKey: "buy_otp.order", icon: "pi pi-shopping-cart" },
+  { labelKey: "buy_otp.my_otp", icon: "pi pi-server" },
 ];
 
 const activeTab = ref(0);
