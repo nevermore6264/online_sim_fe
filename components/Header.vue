@@ -27,6 +27,11 @@
           class="p-button-text"
           @click="handleNews"
         />
+        <Button
+          :label="$t('landing.headerAPI')"
+          class="p-button-text"
+          @click="handleAPI"
+        />
       </div>
     </template>
     <!-- Menu Section -->
@@ -105,6 +110,10 @@ const handleProxy = () => {
 
 const handleNews = () => {
   router.push("/news"); // Điều hướng tới trang "News"
+};
+
+const handleAPI = () => {
+  window.location.href = "https://japansim.net/";
 };
 
 // Sử dụng UserService để lấy thông tin người dùng

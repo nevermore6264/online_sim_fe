@@ -12,6 +12,7 @@ export default {
     headerBuyOTP: "Mua OTP",
     headerProxy: "Proxy",
     headerNews: "Tin tức",
+    headerAPI: "API",
     login: "Đăng nhập",
     signup: "Đăng ký",
     logout: "Đăng xuất",

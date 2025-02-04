@@ -12,6 +12,7 @@ export default {
     headerBuyOTP: "Buy OTP",
     headerProxy: "Proxy",
     headerNews: "News",
+    headerAPI: "API",
     login: "Login",
     signup: "Sign Up",
     logout: "Logout",
