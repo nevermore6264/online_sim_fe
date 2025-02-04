@@ -18,7 +18,7 @@
           <OrderSection />
         </div>
         <div v-if="activeTab === 1">
-          <MyProxySection />
+          <MyOTPSection />
         </div>
       </div>
     </div>
