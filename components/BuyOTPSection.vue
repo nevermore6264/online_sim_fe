@@ -34,20 +34,6 @@
           </template>
         </Dropdown>
       </div>
-
-      <!-- Dropdown for rental period selection -->
-      <div class="dropdown-item">
-        <label for="rental-period-select">Select Rental Period:</label>
-        <Dropdown
-          id="rental-period-select"
-          :options="rentalPeriodOptions"
-          optionLabel="label"
-          optionValue="value"
-          v-model="selectedRentalPeriod"
-          placeholder="Choose a period"
-          class="w-full"
-        />
-      </div>
     </div>
 
     <!-- Sub DataTable for services -->
@@ -94,17 +80,6 @@ const selectedCustomer = ref({
   value: null, // Mã quốc gia
   services: [], // Danh sách dịch vụ
 });
-
-const rentalPeriodOptions = ref([
-  { label: "1 week", value: "7" },
-  { label: "2 weeks", value: "14" },
-  { label: "3 weeks", value: "21" },
-  { label: "1 month", value: "30" },
-  { label: "2 months", value: "60" },
-  { label: "3 months", value: "90" },
-]);
-
-const selectedRentalPeriod = ref(null);
 
 const loading = ref(false);
 import { GetAllCountries } from "@/services/country.js";
@@ -183,7 +158,6 @@ const buyService = async (service) => {
   const data = {
     serviceCode:
       service.code + "_" + String(customer.value || "").toUpperCase(),
-    rentDays: selectedRentalPeriod,
   };
 
   try {
