@@ -37,35 +37,33 @@
     </div>
 
     <!-- Sub DataTable for services -->
-    <div class="table-container">
-      <DataTable
-        :value="selectedCustomer.services || []"
-        scrollable
-        scrollHeight="400px"
-        dataKey="id"
+    <div class="data-view-container">
+      <DataView
+        :value="selectedCustomer?.services || []"
+        :layout="'grid'"
+        :rows="6"
         :loading="loading"
       >
-        <template #empty> No data found. </template>
+        <template #empty> No services found. </template>
         <template #loading> Loading services data. Please wait. </template>
 
-        <Column>
-          <template #body="{ data }">
-            <img :src="data?.image" width="24px" class="w-24 rounded" />
-          </template>
-        </Column>
-
-        <Column header="Service" field="text" style="min-width: 12rem" />
-        <Column header="Price" style="min-width: 12rem">
-          <template #body="{ data }"> {{ data?.price }} USDT </template>
-        </Column>
-        <Column header="Action" style="min-width: 12rem">
-          <template #body="{ data }">
-            <button class="recharge-button" @click="buyService(data)">
-              Buy
-            </button>
-          </template>
-        </Column>
-      </DataTable>
+        <!-- Template hiển thị mỗi service -->
+        <template #grid="{ data }">
+          <div class="service-card">
+            <input type="checkbox" :value="data" v-model="selectedServices" />
+            <img :src="data?.image" alt="Service Image" class="service-image" />
+            <h3>{{ data?.text }}</h3>
+            <p>{{ data?.price }} USDT</p>
+          </div>
+        </template>
+      </DataView>
+      <button
+        class="buy-button"
+        :disabled="selectedServices.length === 0"
+        @click="buySelectedServices"
+      >
+        Buy Selected Services
+      </button>
     </div>
   </div>
 </template>
@@ -122,6 +120,7 @@ const onCountrySelect = async () => {
           ...selectedCustomer.value,
           services: [], // Không có dữ liệu dịch vụ
         };
+        console.log(selectedCustomer?.services);
       }
     } catch (error) {
       console.error("Error fetching services:", error);
@@ -137,38 +136,41 @@ const onCountrySelect = async () => {
 
 import { toRaw } from "vue";
 
-const buyService = async (service) => {
+const selectedServices = ref([]); // Lưu danh sách dịch vụ đã chọn
+
+// Hàm mua nhiều dịch vụ cùng lúc
+const buySelectedServices = async () => {
   const token = localStorage.getItem("token");
 
-  // Kiểm tra xem giá trị service có đúng không
-  if (!service || !service.code) {
-    console.error("Invalid service data:", service);
+  if (selectedServices.value.length === 0) {
+    console.error("No services selected.");
+    push.error("Please select at least one service to buy.");
     return;
   }
 
-  // Sử dụng `toRaw` để tránh vòng lặp nếu `selectedCustomer` là một đối tượng `reactive`
   const customer = toRaw(selectedCustomer.value);
 
-  // Kiểm tra xem customer có đúng không
   if (!customer || !customer.value) {
     console.error("Invalid customer data:", customer);
     return;
   }
 
-  const data = {
+  const servicesData = selectedServices.value.map((service) => ({
     serviceCode:
       service.code + "_" + String(customer.value || "").toUpperCase(),
-  };
+  }));
 
   try {
-    const response = await orderService.RentOTP(token, data);
-    if (response.success) {
-      push.success("Buy service successfully");
-    } else {
-      push.error("Buy service failed");
+    for (const data of servicesData) {
+      const response = await orderService.RentOTP(token, data);
+      if (response.success) {
+        push.success(`Bought service: ${data.serviceCode} successfully`);
+      } else {
+        push.error(`Failed to buy service: ${data.serviceCode}`);
+      }
     }
   } catch (err) {
-    push.error("Buy service failed");
+    push.error("An error occurred while purchasing services.");
     console.error("Error during service purchase:", err);
   }
 };
