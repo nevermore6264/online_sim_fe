@@ -41,7 +41,7 @@
         <!-- Hiển thị tên người dùng -->
         <span class="user-name clickable" @click="goToProfile">
           {{ $t("landing.hello") }}, {{ userInfo.data.firstName }}
-          {{ userInfo.data.lastName }}
+          {{ userInfo.data.lastName }} ({{ userInfo.data.balanceAmount }} USDT)
         </span>
 
         <!-- Logout Button -->
