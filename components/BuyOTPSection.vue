@@ -204,20 +204,6 @@ img {
   color: #859398;
 }
 
-.quantity {
-  color: red !important;
-}
-
-.p-datatable-scrollable-wrapper {
-  overflow-y: auto;
-  /* Tùy chỉnh cuộn */
-}
-
-.p-datatable-scrollable-view {
-  max-height: 400px;
-  /* Đảm bảo đúng chiều cao */
-}
-
 .recharge-button {
   background: linear-gradient(to left, #56ccf2, #2f80ed);
   color: #f5f7fa;
@@ -229,24 +215,6 @@ img {
 
 .recharge-button:hover {
   background-color: #0056b3;
-}
-
-/* Style for search input */
-.search-container {
-  margin-bottom: 1rem;
-  /* Space below the search input */
-  margin-right: 40px;
-}
-
-.search-input {
-  width: 50%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.lbl_services {
-  margin-top: 0px !important;
 }
 
 li {
@@ -284,12 +252,6 @@ li {
 
 .selected-item:last-child {
   border-bottom: none;
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
 }
 
 /* Services Grid */
