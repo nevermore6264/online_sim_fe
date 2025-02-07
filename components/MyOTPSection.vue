@@ -65,19 +65,18 @@ const totalDocs = ref(0); // Tổng số tài liệu (docs)
 const currentTime = ref(new Date());
 
 // Hàm tính thời gian hết hạn
-const trackingExpiredTime = (value) => {
-  const diff = new Date(value) - currentTime.value;
-
-  if (diff <= 0) return "Expired";
-
-  const totalSeconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-    2,
-    "0"
-  )}`;
+const trackingExpiredTime = (dateString) => {
+  if (!dateString) return "N/A"; // Xử lý nếu ngày không tồn tại
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false, // Hiển thị giờ 24h
+  }).format(date);
 };
 
 // Hàm lấy dữ liệu từ API
