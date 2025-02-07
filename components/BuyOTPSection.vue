@@ -8,7 +8,6 @@
 
     <!-- Dropdown for country selection -->
     <div class="dropdown-container flex">
-      <!-- Dropdown for country selection -->
       <div class="dropdown-item">
         <label for="country-select">Select Country:</label>
         <Dropdown
@@ -26,7 +25,7 @@
               <img
                 :alt="slotProps.option?.name"
                 :src="slotProps.option?.flagImage"
-                :class="`mr-2 flag flag-${slotProps.option?.code?.toLowerCase()}`"
+                class="mr-2 flag"
                 style="width: 18px"
               />
               <div>{{ slotProps.option?.name }}</div>
@@ -36,70 +35,50 @@
       </div>
     </div>
 
-    <!-- Sub DataTable for services -->
-    <div class="data-view-container">
-      <DataView
-        :value="selectedCustomer?.services"
-        :layout="layout"
-        :loading="loading"
+    <!-- Services Grid -->
+    <div class="services-grid">
+      <div
+        v-for="(item, index) in selectedCustomer?.services"
+        :key="index"
+        class="service-card"
+        :class="{ selected: selectedServices.includes(item) }"
+        @click="toggleServiceSelection(item)"
       >
-        <template #empty> No services found. </template>
-        <template #loading> Loading services data. Please wait. </template>
-        <template #list="slotProps">
-          <div class="flex flex-col">
-            <div v-for="(item, index) in slotProps.items" :key="index">
-              <div class="service-card">
-                <input
-                  type="checkbox"
-                  :value="item"
-                  v-model="selectedServices"
-                />
-                <img
-                  :src="item?.image"
-                  alt="Service Image"
-                  class="service-image w-24 rounded"
-                  width="24px"
-                />
-                <h3>{{ item?.text }}</h3>
-                <p>{{ item?.price }} USDT</p>
-              </div>
-            </div>
-          </div>
-        </template>
-      </DataView>
-      <Button
-        class="buy-button"
-        :disabled="selectedServices.length === 0"
-        @click="buySelectedServices"
-      >
-        Buy Selected Services
-      </Button>
+        <img :src="item?.image" alt="Service Image" class="service-image" />
+        <h3>{{ item?.text }}</h3>
+        <p>{{ item?.price }} USDT</p>
+      </div>
     </div>
+
+    <!-- Buy button -->
+    <button
+      class="buy-button"
+      :disabled="selectedServices.length === 0"
+      @click="buySelectedServices"
+    >
+      Buy Selected Services
+    </button>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, toRaw } from "vue";
 import orderService from "../services/order";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 
-import { watchEffect } from "vue";
-
 const dropdownOptions = ref([]);
 const selectedCustomer = ref({
-  value: null, // Mã quốc gia
-  services: [], // Danh sách dịch vụ
+  value: null,
+  services: [],
 });
-
+const selectedServices = ref([]);
 const loading = ref(false);
 
-// Fetch countries function
+// Fetch country list
 const fetchCountries = async () => {
   try {
     const response = await GetAllCountries();
-    console.log(response);
-    // Map dropdown options
     dropdownOptions.value = response.map((customer) => ({
       name: `${customer?.name} (${customer?.code})`,
       value: customer?.code,
@@ -110,60 +89,51 @@ const fetchCountries = async () => {
   }
 };
 
+// Fetch services based on selected country
 const onCountrySelect = async () => {
   if (selectedCustomer.value) {
     try {
-      const countryCode = selectedCustomer.value; // Chỉ lấy mã quốc gia đã chọn
       loading.value = true;
-
+      const countryCode = selectedCustomer.value;
       const response = await serviceService.GetServicesByCountryCode(
         countryCode?.value
       );
-      console.log(response);
 
       if (response?.success) {
-        // Chỉ thêm hoặc cập nhật dịch vụ, không thay đổi giá trị quốc gia đã chọn
-        selectedCustomer.value = {
-          ...selectedCustomer.value,
-          services: response.data,
-        };
-        console.log(selectedCustomer.value);
+        selectedCustomer.value.services = response.data;
       } else {
-        console.error("Failed to fetch services");
-        selectedCustomer.value = {
-          ...selectedCustomer.value,
-          services: [], // Không có dữ liệu dịch vụ
-        };
-        console.log(selectedCustomer?.services);
+        selectedCustomer.value.services = [];
       }
     } catch (error) {
       console.error("Error fetching services:", error);
-      selectedCustomer.value = {
-        ...selectedCustomer.value,
-        services: [], // Lỗi khi gọi API, không có dịch vụ
-      };
+      selectedCustomer.value.services = [];
     } finally {
       loading.value = false;
     }
   }
 };
 
-import { toRaw } from "vue";
+// Toggle service selection
+const toggleServiceSelection = (service) => {
+  const index = selectedServices.value.findIndex(
+    (s) => s.code === service.code
+  );
+  if (index === -1) {
+    selectedServices.value.push(service);
+  } else {
+    selectedServices.value.splice(index, 1);
+  }
+};
 
-const selectedServices = ref([]); // Lưu danh sách dịch vụ đã chọn
-
-// Hàm mua nhiều dịch vụ cùng lúc
+// Buy selected services
 const buySelectedServices = async () => {
   const token = localStorage.getItem("token");
-
   if (selectedServices.value.length === 0) {
     console.error("No services selected.");
-    push.error("Please select at least one service to buy.");
     return;
   }
 
   const customer = toRaw(selectedCustomer.value);
-
   if (!customer || !customer.value) {
     console.error("Invalid customer data:", customer);
     return;
@@ -178,23 +148,18 @@ const buySelectedServices = async () => {
     for (const data of servicesData) {
       const response = await orderService.RentOTP(token, data);
       if (response.success) {
-        push.success(`Bought service: ${data.serviceCode} successfully`);
+        console.log(`Bought service: ${data.serviceCode} successfully`);
       } else {
-        push.error(`Failed to buy service: ${data.serviceCode}`);
+        console.error(`Failed to buy service: ${data.serviceCode}`);
       }
     }
   } catch (err) {
-    push.error("An error occurred while purchasing services.");
     console.error("Error during service purchase:", err);
   }
 };
 
 onMounted(() => {
   fetchCountries();
-});
-
-watchEffect(() => {
-  console.log("Current services data:", selectedCustomer.value.services);
 });
 </script>
 
@@ -282,8 +247,64 @@ li {
   margin-bottom: 10px;
 }
 
+/* Dropdown */
 .dropdown-container {
   margin-bottom: 1rem;
+}
+
+/* Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 1rem;
+}
+
+.service-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid transparent;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Highlight selected service */
+.service-card.selected {
+  border-color: #2f80ed;
+  box-shadow: 0 0 10px rgba(47, 128, 237, 0.5);
+}
+
+/* Image inside service card */
+.service-image {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+/* Buy button */
+.buy-button {
+  margin-top: 16px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.buy-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 .recharge-button {
