@@ -262,6 +262,18 @@ li {
   margin-top: 1rem;
 }
 
+@media (max-width: 1366px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .service-card {
   background-color: #fff;
   border-radius: 8px;
