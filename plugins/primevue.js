@@ -16,6 +16,7 @@ import AccordionTab from "primevue/accordion";
 import DataView from "primevue/dataview";
 import TabMenu from "primevue/tabmenu";
 import Slider from "primevue/slider";
+import Paginator from "primevue/paginator";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -36,4 +37,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("DataView", DataView);
   nuxtApp.vueApp.component("TabMenu", TabMenu);
   nuxtApp.vueApp.component("Slider", Slider);
+  nuxtApp.vueApp.component("Paginator", Paginator);
 });

@@ -21,11 +21,6 @@
         scrollable
         dataKey="id"
         :loading="loading"
-        paginator
-        :rows="rowsPerPage"
-        :totalRecords="totalDocs"
-        :first="(currentPage - 1) * rowsPerPage"
-        @page="onPageChange"
       >
         <template #empty> No SIMs match the selected status. </template>
         <template #loading> Loading SIM data. Please wait. </template>
@@ -38,6 +33,7 @@
           field="stock.serviceCode"
           style="min-width: 12rem"
         />
+        <Column header="Status" field="statusCode" style="min-width: 12rem" />
         <Column header="Price" field="cost" style="min-width: 8rem" />
 
         <Column header="Expire Time" style="min-width: 14rem">
@@ -47,6 +43,14 @@
         </Column>
       </DataTable>
     </div>
+
+    <!-- 🛠 Dùng Paginator riêng -->
+    <Paginator
+      :rows="rowsPerPage"
+      :totalRecords="totalDocs"
+      v-model:first="firstRowIndex"
+      @page="onPageChange"
+    />
   </div>
 </template>
 
@@ -54,7 +58,7 @@
 import { ref, onMounted } from "vue";
 import UserService from "@/services/user";
 
-const orderList = ref([]); // Danh sách đầy đủ từ API
+const orderList = ref([]); // Danh sách từ API
 const filteredOrderList = ref([]); // Danh sách sau khi lọc
 const selectedStatus = ref("all"); // Trạng thái lọc
 const loading = ref(false);
@@ -62,6 +66,8 @@ const loading = ref(false);
 const rowsPerPage = ref(10); // Số dòng trên mỗi trang
 const currentPage = ref(1); // Trang hiện tại
 const totalDocs = ref(0); // Tổng số đơn hàng từ API
+const totalPages = ref(1); // Tổng số trang
+const firstRowIndex = ref(0); // Chỉ mục của dòng đầu tiên trên trang hiện tại
 
 const currentTime = ref(new Date());
 
@@ -80,7 +86,7 @@ const trackingExpiredTime = (dateString) => {
   }).format(date);
 };
 
-// Hàm lấy danh sách đơn hàng từ API
+// 🛠 Hàm lấy danh sách từ API
 const fetchOrderList = async (page = 1) => {
   loading.value = true;
   const token = localStorage.getItem("token");
@@ -100,10 +106,11 @@ const fetchOrderList = async (page = 1) => {
     if (response?.success) {
       orderList.value = response.data.docs;
       totalDocs.value = response.data.totalDocs;
+      totalPages.value = response.data.totalPages;
       currentPage.value = response.data.page;
       filterOrderList();
     } else {
-      console.error("Failed to fetch data from API");
+      console.error("No data received from API");
     }
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -112,28 +119,32 @@ const fetchOrderList = async (page = 1) => {
   }
 };
 
-// Hàm lọc danh sách theo trạng thái
+// 🛠 Lọc danh sách theo trạng thái
 const filterOrderList = () => {
-  if (selectedStatus.value === "all") {
-    filteredOrderList.value = orderList.value;
-  } else if (selectedStatus.value === "active") {
-    filteredOrderList.value = orderList.value.filter(
+  let filteredData = [...orderList.value];
+
+  if (selectedStatus.value === "active") {
+    filteredData = filteredData.filter(
       (item) => new Date(item.stock.expiredAt) > currentTime.value
     );
   } else if (selectedStatus.value === "expired") {
-    filteredOrderList.value = orderList.value.filter(
+    filteredData = filteredData.filter(
       (item) => new Date(item.stock.expiredAt) <= currentTime.value
     );
   }
+
+  filteredOrderList.value = filteredData;
 };
 
-// Xử lý khi chuyển trang
+// 🛠 Xử lý khi chuyển trang
 const onPageChange = (event) => {
-  currentPage.value = event.page + 1;
-  fetchOrderList(currentPage.value);
+  const newPage = event.page + 1; // PrimeVue sử dụng index từ 0
+  currentPage.value = newPage;
+  firstRowIndex.value = event.first;
+  fetchOrderList(newPage);
 };
 
-// Gọi API khi component được mount
+// 🛠 Gọi API khi component được mount
 onMounted(() => {
   fetchOrderList();
 });
