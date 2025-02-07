@@ -37,8 +37,21 @@
             class="selected-item"
           >
             <div class="service-info">
+              <span class="service-name">Service: </span>
+              <img
+                :src="service?.image"
+                alt="Service Image"
+                class="w-24 rounded"
+                width="24px"
+              />
               <span class="service-name">{{ service.text }}</span>
-              <span class="service-price">{{ service.price }} USDT</span>
+              <span class="service-name">
+                Country: {{ selectedCustomer.value }}
+              </span>
+              <span class="service-name">For: 10 minutes </span>
+              <span class="service-price">
+                Total amount: {{ service.price }} USDT
+              </span>
             </div>
           </div>
         </div>
@@ -258,8 +271,7 @@ li {
 }
 
 .selected-services {
-  border: 1px solid #ddd;
-  padding: 10px;
+  border: 1px solid rgb(0, 174, 255);
   border-radius: 8px;
   background: #f9f9f9;
   min-width: 75%;
