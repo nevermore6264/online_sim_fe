@@ -39,13 +39,13 @@
     <!-- Sub DataTable for services -->
     <div class="data-view-container">
       <DataView
-        :value="selectedCustomer?.services || []"
+        :value="selectedCustomer?.services"
         :layout="'grid'"
         :rows="6"
         :loading="loading"
       >
-        <template #empty> No services found. </template>
-        <template #loading> Loading services data. Please wait. </template>
+        <!-- <template #empty> No services found. </template>
+        <template #loading> Loading services data. Please wait. </template> -->
 
         <!-- Template hiển thị mỗi service -->
         <template #grid="{ data }">
@@ -70,8 +70,9 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios";
 import orderService from "../services/order";
+import serviceService from "@/services/service";
+import { GetAllCountries } from "@/services/country.js";
 
 const dropdownOptions = ref([]);
 const selectedCustomer = ref({
@@ -80,7 +81,6 @@ const selectedCustomer = ref({
 });
 
 const loading = ref(false);
-import { GetAllCountries } from "@/services/country.js";
 
 // Fetch countries function
 const fetchCountries = async () => {
@@ -104,16 +104,18 @@ const onCountrySelect = async () => {
       const countryCode = selectedCustomer.value; // Chỉ lấy mã quốc gia đã chọn
       loading.value = true;
 
-      const response = await axios.get(
-        `https://verifysms.org/api/services?platform=web&countryCode=${countryCode?.value}`
+      const response = await serviceService.GetServicesByCountryCode(
+        countryCode?.value
       );
+      console.log(response);
 
-      if (response?.data?.success) {
+      if (response?.success) {
         // Chỉ thêm hoặc cập nhật dịch vụ, không thay đổi giá trị quốc gia đã chọn
         selectedCustomer.value = {
           ...selectedCustomer.value,
-          services: response.data.data,
+          services: response.data,
         };
+        console.log(selectedCustomer.value);
       } else {
         console.error("Failed to fetch services");
         selectedCustomer.value = {
