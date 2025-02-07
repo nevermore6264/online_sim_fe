@@ -60,7 +60,7 @@
       <!-- Buy Button -->
       <button
         class="buy-button"
-        :disabled="selectedServices.length === 0"
+        v-if="selectedServices.length > 0"
         @click="buySelectedServices"
       >
         Buy OTP
@@ -340,6 +340,7 @@ li {
   cursor: pointer;
   display: block;
   width: 100%;
+  min-width: 200px;
 }
 
 .buy-button:disabled {
@@ -358,5 +359,29 @@ li {
 
 .recharge-button:hover {
   background-color: #0056b3;
+}
+
+.service-info {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Tạo khoảng cách giữa các phần tử */
+  background: #f0f8ff;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  flex-wrap: wrap; /* Đảm bảo hiển thị đẹp nếu không đủ không gian */
+}
+
+.service-info span {
+  margin-right: 10px; /* Khoảng cách giữa các span */
+  white-space: nowrap; /* Giữ nội dung không bị xuống dòng */
+}
+
+.service-info img {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
 }
 </style>
