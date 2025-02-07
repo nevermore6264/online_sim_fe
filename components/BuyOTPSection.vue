@@ -40,30 +40,40 @@
     <div class="data-view-container">
       <DataView
         :value="selectedCustomer?.services"
-        :layout="'grid'"
-        :rows="6"
+        :layout="layout"
         :loading="loading"
       >
-        <!-- <template #empty> No services found. </template>
-        <template #loading> Loading services data. Please wait. </template> -->
-
-        <!-- Template hiển thị mỗi service -->
-        <template #grid="{ data }">
-          <div class="service-card">
-            <input type="checkbox" :value="data" v-model="selectedServices" />
-            <img :src="data?.image" alt="Service Image" class="service-image" />
-            <h3>{{ data?.text }}</h3>
-            <p>{{ data?.price }} USDT</p>
+        <template #empty> No services found. </template>
+        <template #loading> Loading services data. Please wait. </template>
+        <template #list="slotProps">
+          <div class="flex flex-col">
+            <div v-for="(item, index) in slotProps.items" :key="index">
+              <div class="service-card">
+                <input
+                  type="checkbox"
+                  :value="item"
+                  v-model="selectedServices"
+                />
+                <img
+                  :src="item?.image"
+                  alt="Service Image"
+                  class="service-image w-24 rounded"
+                  width="24px"
+                />
+                <h3>{{ item?.text }}</h3>
+                <p>{{ item?.price }} USDT</p>
+              </div>
+            </div>
           </div>
         </template>
       </DataView>
-      <button
+      <Button
         class="buy-button"
         :disabled="selectedServices.length === 0"
         @click="buySelectedServices"
       >
         Buy Selected Services
-      </button>
+      </Button>
     </div>
   </div>
 </template>
@@ -73,6 +83,8 @@ import { ref, onMounted } from "vue";
 import orderService from "../services/order";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
+
+import { watchEffect } from "vue";
 
 const dropdownOptions = ref([]);
 const selectedCustomer = ref({
@@ -179,6 +191,10 @@ const buySelectedServices = async () => {
 
 onMounted(() => {
   fetchCountries();
+});
+
+watchEffect(() => {
+  console.log("Current services data:", selectedCustomer.value.services);
 });
 </script>
 
