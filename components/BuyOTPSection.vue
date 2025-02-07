@@ -1,13 +1,7 @@
 <template>
-  <div>
-    <ul>
-      <li>{{ $t("rent_number.always_active") }}</li>
-      <li>{{ $t("rent_number.activation_by_order") }}</li>
-      <li>{{ $t("rent_number.priority_numbers") }}</li>
-    </ul>
-
-    <!-- Dropdown for country selection -->
-    <div class="dropdown-container flex">
+  <div class="main-container">
+    <!-- Country Selection & Selected Services -->
+    <div class="top-section">
       <div class="dropdown-item">
         <label for="country-select">Select Country:</label>
         <Dropdown
@@ -33,6 +27,31 @@
           </template>
         </Dropdown>
       </div>
+
+      <!-- Selected Services List -->
+      <div class="selected-services" v-if="selectedServices.length > 0">
+        <div class="selected-services-list">
+          <div
+            v-for="(service, index) in selectedServices"
+            :key="index"
+            class="selected-item"
+          >
+            <div class="service-info">
+              <span class="service-name">{{ service.text }}</span>
+              <span class="service-price">{{ service.price }} USDT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buy Button -->
+      <button
+        class="buy-button"
+        :disabled="selectedServices.length === 0"
+        @click="buySelectedServices"
+      >
+        Buy OTP
+      </button>
     </div>
 
     <!-- Services Grid -->
@@ -44,20 +63,15 @@
         :class="{ selected: selectedServices.includes(item) }"
         @click="toggleServiceSelection(item)"
       >
-        <img :src="item?.image" alt="Service Image" class="service-image" />
-        <h3>{{ item?.text }}</h3>
-        <p>{{ item?.price }} USDT</p>
+        <div class="service-content">
+          <img :src="item?.image" alt="Service Image" class="service-image" />
+          <div class="service-details">
+            <h3>{{ item?.text }}</h3>
+            <p>{{ item?.price }} USDT</p>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Buy button -->
-    <button
-      class="buy-button"
-      :disabled="selectedServices.length === 0"
-      @click="buySelectedServices"
-    >
-      Buy Selected Services
-    </button>
   </div>
 </template>
 
@@ -73,9 +87,7 @@ const selectedCustomer = ref({
   services: [],
 });
 const selectedServices = ref([]);
-const loading = ref(false);
 
-// Fetch country list
 const fetchCountries = async () => {
   try {
     const response = await GetAllCountries();
@@ -89,55 +101,38 @@ const fetchCountries = async () => {
   }
 };
 
-// Fetch services based on selected country
 const onCountrySelect = async () => {
+  selectedServices.value = [];
   if (selectedCustomer.value) {
     try {
-      loading.value = true;
       const countryCode = selectedCustomer.value;
       const response = await serviceService.GetServicesByCountryCode(
         countryCode?.value
       );
 
-      if (response?.success) {
-        selectedCustomer.value.services = response.data;
-      } else {
-        selectedCustomer.value.services = [];
-      }
+      selectedCustomer.value.services = response?.success ? response.data : [];
     } catch (error) {
       console.error("Error fetching services:", error);
       selectedCustomer.value.services = [];
-    } finally {
-      loading.value = false;
     }
   }
 };
 
-// Toggle service selection
 const toggleServiceSelection = (service) => {
   const index = selectedServices.value.findIndex(
     (s) => s.code === service.code
   );
-  if (index === -1) {
-    selectedServices.value.push(service);
-  } else {
-    selectedServices.value.splice(index, 1);
-  }
+  index === -1
+    ? selectedServices.value.push(service)
+    : selectedServices.value.splice(index, 1);
 };
 
-// Buy selected services
 const buySelectedServices = async () => {
   const token = localStorage.getItem("token");
-  if (selectedServices.value.length === 0) {
-    console.error("No services selected.");
-    return;
-  }
+  if (selectedServices.value.length === 0) return;
 
   const customer = toRaw(selectedCustomer.value);
-  if (!customer || !customer.value) {
-    console.error("Invalid customer data:", customer);
-    return;
-  }
+  if (!customer || !customer.value) return;
 
   const servicesData = selectedServices.value.map((service) => ({
     serviceCode:
@@ -147,11 +142,9 @@ const buySelectedServices = async () => {
   try {
     for (const data of servicesData) {
       const response = await orderService.RentOTP(token, data);
-      if (response.success) {
-        console.log(`Bought service: ${data.serviceCode} successfully`);
-      } else {
-        console.error(`Failed to buy service: ${data.serviceCode}`);
-      }
+      response.success
+        ? console.log(`Bought service: ${data.serviceCode} successfully`)
+        : console.error(`Failed to buy service: ${data.serviceCode}`);
     }
   } catch (err) {
     console.error("Error during service purchase:", err);
@@ -250,6 +243,41 @@ li {
 /* Dropdown */
 .dropdown-container {
   margin-bottom: 1rem;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.top-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.selected-services {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  background: #f9f9f9;
+  min-width: 75%;
+}
+
+.selected-item {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.selected-item:last-child {
+  border-bottom: none;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
 /* Services Grid */
