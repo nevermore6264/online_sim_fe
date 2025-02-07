@@ -1,72 +1,73 @@
 <template>
-  <!-- Dropdown for filtering by status -->
-  <div class="filter-container">
-    <label for="status-filter">Filter by Status:</label>
-    <select
-      id="status-filter"
-      v-model="selectedStatus"
-      @change="filterOrderList"
-    >
-      <option value="all">All</option>
-      <option value="active">Active</option>
-      <option value="expired">Expired</option>
-    </select>
-  </div>
+  <div>
+    <!-- Dropdown filter -->
+    <div class="filter-container">
+      <label for="status-filter">Filter by Status:</label>
+      <select
+        id="status-filter"
+        v-model="selectedStatus"
+        @change="filterOrderList"
+      >
+        <option value="all">All</option>
+        <option value="active">Active</option>
+        <option value="expired">Expired</option>
+      </select>
+    </div>
 
-  <!-- Table for purchased SIMs -->
-  <div class="purchased-sim-container">
-    <DataTable
-      :value="filteredOrderList"
-      scrollable
-      scrollHeight="300px"
-      min-height="300px"
-      dataKey="id"
-      :loading="loading"
-      paginator
-      :rows="rowsPerPage"
-      :total-records="totalDocs"
-      :first="(currentPage - 1) * rowsPerPage"
-      @page="onPageChange"
-    >
-      <template #empty> No SIMs match the selected status. </template>
-      <template #loading> Loading SIM data. Please wait. </template>
-      <Column header="ID" field="id" style="min-width: 1rem" />
-      <Column header="Country" field="countryCode" style="min-width: 12rem" />
-      <Column header="Proxy" field="stock.phone" style="min-width: 12rem" />
-      <Column
-        header="Service"
-        field="stock.serviceCode"
-        style="min-width: 12rem"
-      />
-      <Column header="Price" field="cost" style="min-width: 12rem" />
-      <Column header="Expire Time" style="min-width: 12rem">
-        <template #body="{ data }">
-          <span>
-            {{ trackingExpiredTime(data.stock.expiredAt) }}
-          </span>
-        </template>
-      </Column>
-    </DataTable>
+    <!-- Table for purchased SIMs -->
+    <div class="purchased-sim-container">
+      <DataTable
+        :value="filteredOrderList"
+        scrollable
+        dataKey="id"
+        :loading="loading"
+        paginator
+        :rows="rowsPerPage"
+        :totalRecords="totalDocs"
+        :first="(currentPage - 1) * rowsPerPage"
+        @page="onPageChange"
+      >
+        <template #empty> No SIMs match the selected status. </template>
+        <template #loading> Loading SIM data. Please wait. </template>
+
+        <Column header="ID" field="id" style="min-width: 12rem" />
+        <Column header="Country" field="countryCode" style="min-width: 12rem" />
+        <Column header="Phone" field="stock.phone" style="min-width: 12rem" />
+        <Column
+          header="Service"
+          field="stock.serviceCode"
+          style="min-width: 12rem"
+        />
+        <Column header="Price" field="cost" style="min-width: 8rem" />
+
+        <Column header="Expire Time" style="min-width: 14rem">
+          <template #body="{ data }">
+            <span>{{ trackingExpiredTime(data.stock.expiredAt) }}</span>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from "vue";
 import UserService from "@/services/user";
 
 const orderList = ref([]); // Danh sách đầy đủ từ API
-const filteredOrderList = ref([]); // Danh sách đã lọc và hiển thị
-const selectedStatus = ref("all"); // Bộ lọc trạng thái
+const filteredOrderList = ref([]); // Danh sách sau khi lọc
+const selectedStatus = ref("all"); // Trạng thái lọc
 const loading = ref(false);
 
-const rowsPerPage = ref(10); // Số dòng mỗi trang
+const rowsPerPage = ref(10); // Số dòng trên mỗi trang
 const currentPage = ref(1); // Trang hiện tại
-const totalDocs = ref(0); // Tổng số tài liệu (docs)
+const totalDocs = ref(0); // Tổng số đơn hàng từ API
 
 const currentTime = ref(new Date());
 
 // Hàm tính thời gian hết hạn
 const trackingExpiredTime = (dateString) => {
-  if (!dateString) return "N/A"; // Xử lý nếu ngày không tồn tại
+  if (!dateString) return "N/A";
   const date = new Date(dateString);
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
@@ -75,11 +76,11 @@ const trackingExpiredTime = (dateString) => {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: false, // Hiển thị giờ 24h
+    hour12: false,
   }).format(date);
 };
 
-// Hàm lấy dữ liệu từ API
+// Hàm lấy danh sách đơn hàng từ API
 const fetchOrderList = async (page = 1) => {
   loading.value = true;
   const token = localStorage.getItem("token");
@@ -100,8 +101,7 @@ const fetchOrderList = async (page = 1) => {
       orderList.value = response.data.docs;
       totalDocs.value = response.data.totalDocs;
       currentPage.value = response.data.page;
-
-      filterOrderList(); // Lọc danh sách sau khi lấy dữ liệu
+      filterOrderList();
     } else {
       console.error("Failed to fetch data from API");
     }
@@ -112,7 +112,7 @@ const fetchOrderList = async (page = 1) => {
   }
 };
 
-// Hàm lọc danh sách
+// Hàm lọc danh sách theo trạng thái
 const filterOrderList = () => {
   if (selectedStatus.value === "all") {
     filteredOrderList.value = orderList.value;
@@ -127,11 +127,13 @@ const filterOrderList = () => {
   }
 };
 
-// Hàm xử lý khi thay đổi trang
+// Xử lý khi chuyển trang
 const onPageChange = (event) => {
-  fetchOrderList(event.page + 1); // `event.page` là chỉ mục (index) trang bắt đầu từ 0
+  currentPage.value = event.page + 1;
+  fetchOrderList(currentPage.value);
 };
 
+// Gọi API khi component được mount
 onMounted(() => {
   fetchOrderList();
 });
