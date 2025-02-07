@@ -93,6 +93,7 @@ import { ref, onMounted, toRaw } from "vue";
 import orderService from "../services/order";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
+import { push } from "notivue";
 
 const dropdownOptions = ref([]);
 const selectedCustomer = ref({
@@ -148,19 +149,31 @@ const buySelectedServices = async () => {
   if (!customer || !customer.value) return;
 
   const servicesData = selectedServices.value.map((service) => ({
-    serviceCode:
-      service.code + "_" + String(customer.value || "").toUpperCase(),
+    serviceCode: service.code.toUpperCase(),
   }));
+
+  let successCount = 0;
+  let failedServices = [];
 
   try {
     for (const data of servicesData) {
-      const response = await orderService.RentOTP(token, data);
-      response.success
-        ? console.log(`Bought service: ${data.serviceCode} successfully`)
-        : console.error(`Failed to buy service: ${data.serviceCode}`);
+      const response = await orderService.BuyOTP(token, data);
+      if (response.success) {
+        successCount++;
+      } else {
+        failedServices.push(data.serviceCode);
+      }
+    }
+
+    // Hiển thị thông báo một lần
+    if (successCount > 0) {
+      push.success(`Successfully bought ${successCount} OTP(s)!`);
+    }
+    if (failedServices.length > 0) {
+      push.warning(`Failed to buy OTP for: ${failedServices.join(", ")}`);
     }
   } catch (err) {
-    console.error("Error during service purchase:", err);
+    push.error("Error during service purchase!");
   }
 };
 

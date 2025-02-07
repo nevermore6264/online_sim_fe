@@ -1,9 +1,11 @@
 import { api } from "../utils/axios";
 
 export default {
-  async BuyOTP(serviceCode) {
-    const response = await api.post(`/api/sim-service/buy-otp`, {
-      serviceCode,
+  async BuyOTP(token, data) {
+    const response = await api.post(`/api/sim-service/buy-otp`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data;
   },
