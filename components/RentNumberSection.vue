@@ -1,14 +1,12 @@
 <template>
-  <div>
-    <ul>
-      <li>{{ $t("rent_number.always_active") }}</li>
-      <li>{{ $t("rent_number.activation_by_order") }}</li>
-      <li>{{ $t("rent_number.priority_numbers") }}</li>
-    </ul>
-
-    <!-- Dropdown for country selection -->
-    <div class="dropdown-container flex">
-      <!-- Dropdown for country selection -->
+  <ul>
+    <li>{{ $t("rent_number.always_active") }}</li>
+    <li>{{ $t("rent_number.activation_by_order") }}</li>
+    <li>{{ $t("rent_number.priority_numbers") }}</li>
+  </ul>
+  <div class="main-container">
+    <!-- Country Selection & Selected Services -->
+    <div class="top-section">
       <div class="dropdown-item">
         <label for="country-select">Select Country:</label>
         <Dropdown
@@ -26,7 +24,7 @@
               <img
                 :alt="slotProps.option?.name"
                 :src="slotProps.option?.flagImage"
-                :class="`mr-2 flag flag-${slotProps.option?.code?.toLowerCase()}`"
+                class="mr-2 flag"
                 style="width: 18px"
               />
               <div>{{ slotProps.option?.name }}</div>
@@ -35,9 +33,17 @@
         </Dropdown>
       </div>
 
-      <!-- Dropdown for rental period selection -->
       <div class="dropdown-item">
         <label for="rental-period-select">Select Rental Period:</label>
+        <Dropdown
+          id="rental-period-select"
+          :options="rentalPeriodOptions"
+          optionLabel="label"
+          optionValue="value"
+          v-model="selectedRentalPeriod"
+          placeholder="Choose number"
+          class="w-full"
+        />
         <Dropdown
           id="rental-period-select"
           :options="rentalPeriodOptions"
@@ -48,73 +54,91 @@
           class="w-full"
         />
       </div>
+
+      <!-- Selected Services List -->
+      <div class="selected-services" v-if="selectedServices.length > 0">
+        <div class="selected-services-list">
+          <div
+            v-for="(service, index) in selectedServices"
+            :key="index"
+            class="selected-item"
+          >
+            <div class="service-info">
+              <span class="service-name">Service: </span>
+              <img
+                :src="service?.image"
+                alt="Service Image"
+                class="w-24 rounded"
+                width="24px"
+              />
+              <span class="service-name">{{ service.text }}</span>
+              <span class="service-name">
+                Country: {{ selectedCustomer.value }}
+              </span>
+              <span class="service-name">For: 10 minutes </span>
+              <span class="service-price">
+                Total amount: {{ service.price }} USDT
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buy Button -->
+      <div class="buy-section" v-if="selectedServices.length > 0">
+        <button class="buy-button" @click="buySelectedServices">Buy OTP</button>
+        <p class="total-amount">Total Amount: {{ totalAmount }} USDT</p>
+      </div>
     </div>
 
-    <!-- Sub DataTable for services -->
-    <div class="table-container">
-      <DataTable
-        :value="selectedCustomer.services || []"
-        scrollable
-        scrollHeight="400px"
-        dataKey="id"
-        :loading="loading"
+    <!-- Search Bar for Services -->
+    <div class="search-container" v-if="filteredServices.length > 0">
+      <input
+        type="text"
+        v-model="searchQuery"
+        placeholder="Search services..."
+        class="search-input"
+      />
+    </div>
+
+    <!-- Services Grid -->
+    <div class="services-grid">
+      <div
+        v-for="(item, index) in filteredServices"
+        :key="index"
+        class="service-card"
+        :class="{ selected: selectedServices.includes(item) }"
+        @click="toggleServiceSelection(item)"
       >
-            <template #empty> No data found. </template>
-        <template #loading> Loading services data. Please wait. </template>
-
-        <Column>
-          <template #body="{ data }">
-            <img :src="data?.image" width="24px" class="w-24 rounded" />
-          </template>
-        </Column>
-
-        <Column header="Service" field="text" style="min-width: 12rem" />
-        <Column header="Price" style="min-width: 12rem">
-          <template #body="{ data }"> {{ data?.price }} USDT </template>
-        </Column>
-        <Column header="Action" style="min-width: 12rem">
-          <template #body="{ data }">
-            <button class="recharge-button" @click="buyService(data)">
-              Buy
-            </button>
-          </template>
-        </Column>
-      </DataTable>
+        <div class="service-content">
+          <img :src="item?.image" alt="Service Image" class="service-image" />
+          <div class="service-details">
+            <h3>{{ item?.text }}</h3>
+            <p>{{ item?.price }} USDT</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
+import { ref, computed, onMounted, toRaw } from "vue";
 import orderService from "../services/order";
+import serviceService from "@/services/service";
+import { GetAllCountries } from "@/services/country.js";
+import { push } from "notivue";
 
 const dropdownOptions = ref([]);
 const selectedCustomer = ref({
-  value: null, // Mã quốc gia
-  services: [], // Danh sách dịch vụ
+  value: null,
+  services: [],
 });
+const selectedServices = ref([]);
 
-const rentalPeriodOptions = ref([
-  { label: "1 week", value: "7" },
-  { label: "2 weeks", value: "14" },
-  { label: "3 weeks", value: "21" },
-  { label: "1 month", value: "30" },
-  { label: "2 months", value: "60" },
-  { label: "3 months", value: "90" },
-]);
-
-const selectedRentalPeriod = ref(null);
-
-const loading = ref(false);
-import { GetAllCountries } from "@/services/country.js";
-
-// Fetch countries function
 const fetchCountries = async () => {
   try {
     const response = await GetAllCountries();
-    console.log(response);
-    // Map dropdown options
     dropdownOptions.value = response.map((customer) => ({
       name: `${customer?.name} (${customer?.code})`,
       value: customer?.code,
@@ -126,78 +150,86 @@ const fetchCountries = async () => {
 };
 
 const onCountrySelect = async () => {
+  selectedServices.value = [];
   if (selectedCustomer.value) {
     try {
-      const countryCode = selectedCustomer.value; // Chỉ lấy mã quốc gia đã chọn
-      loading.value = true;
-
-      const response = await axios.get(
-        `https://verifysms.org/api/services?platform=web&countryCode=${countryCode?.value}`
+      const countryCode = selectedCustomer.value;
+      const response = await serviceService.GetServicesByCountryCode(
+        countryCode?.value
       );
 
-      if (response?.data?.success) {
-        // Chỉ thêm hoặc cập nhật dịch vụ, không thay đổi giá trị quốc gia đã chọn
-        selectedCustomer.value = {
-          ...selectedCustomer.value,
-          services: response.data.data,
-        };
-      } else {
-        console.error("Failed to fetch services");
-        selectedCustomer.value = {
-          ...selectedCustomer.value,
-          services: [], // Không có dữ liệu dịch vụ
-        };
-      }
+      selectedCustomer.value.services = response?.success ? response.data : [];
     } catch (error) {
       console.error("Error fetching services:", error);
-      selectedCustomer.value = {
-        ...selectedCustomer.value,
-        services: [], // Lỗi khi gọi API, không có dịch vụ
-      };
-    } finally {
-      loading.value = false;
+      selectedCustomer.value.services = [];
     }
   }
 };
 
-import { toRaw } from "vue";
+const toggleServiceSelection = (service) => {
+  const index = selectedServices.value.findIndex(
+    (s) => s.code === service.code
+  );
+  index === -1
+    ? selectedServices.value.push(service)
+    : selectedServices.value.splice(index, 1);
+};
 
-const buyService = async (service) => {
+const buySelectedServices = async () => {
   const token = localStorage.getItem("token");
+  if (selectedServices.value.length === 0) return;
 
-  // Kiểm tra xem giá trị service có đúng không
-  if (!service || !service.code) {
-    console.error("Invalid service data:", service);
-    return;
-  }
-
-  // Sử dụng `toRaw` để tránh vòng lặp nếu `selectedCustomer` là một đối tượng `reactive`
   const customer = toRaw(selectedCustomer.value);
+  if (!customer || !customer.value) return;
 
-  // Kiểm tra xem customer có đúng không
-  if (!customer || !customer.value) {
-    console.error("Invalid customer data:", customer);
-    return;
-  }
+  const servicesData = selectedServices.value.map((service) => ({
+    serviceCode: service.code.toUpperCase(),
+  }));
 
-  const data = {
-    serviceCode:
-      service.code + "_" + String(customer.value || "").toUpperCase(),
-    rentDays: selectedRentalPeriod,
-  };
+  let successCount = 0;
+  let failedServices = [];
 
   try {
-    const response = await orderService.RentOTP(token, data);
-    if (response.success) {
-      push.success("Buy service successfully");
-    } else {
-      push.error("Buy service failed");
+    for (const data of servicesData) {
+      const response = await orderService.BuyOTP(token, data);
+      if (response.success) {
+        successCount++;
+      } else {
+        failedServices.push(data.serviceCode);
+      }
+    }
+
+    if (successCount > 0) {
+      push.success(`Successfully bought ${successCount} OTP(s)!`);
+      window.location.reload();
+    }
+    if (failedServices.length > 0) {
+      push.warning(`Failed to buy OTP for: ${failedServices.join(", ")}`);
     }
   } catch (err) {
-    push.error("Buy service failed");
-    console.error("Error during service purchase:", err);
+    push.error("Error during service purchase!");
   }
 };
+
+// State của ô tìm kiếm
+const searchQuery = ref("");
+
+// Lọc danh sách dịch vụ hiển thị
+const filteredServices = computed(() => {
+  if (!searchQuery.value) {
+    return selectedCustomer.value.services;
+  }
+  return selectedCustomer.value.services.filter((service) =>
+    service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
+const totalAmount = computed(() => {
+  return selectedServices.value.reduce(
+    (sum, service) => sum + service.price,
+    0
+  );
+});
 
 onMounted(() => {
   fetchCountries();
@@ -205,6 +237,13 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.search-input {
+  width: 250px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .flex-container {
   display: flex;
   gap: 2rem;
@@ -239,20 +278,6 @@ img {
   color: #859398;
 }
 
-.quantity {
-  color: red !important;
-}
-
-.p-datatable-scrollable-wrapper {
-  overflow-y: auto;
-  /* Tùy chỉnh cuộn */
-}
-
-.p-datatable-scrollable-view {
-  max-height: 400px;
-  /* Đảm bảo đúng chiều cao */
-}
-
 .recharge-button {
   background: linear-gradient(to left, #56ccf2, #2f80ed);
   color: #f5f7fa;
@@ -266,30 +291,108 @@ img {
   background-color: #0056b3;
 }
 
-/* Style for search input */
-.search-container {
-  margin-bottom: 1rem;
-  /* Space below the search input */
-  margin-right: 40px;
-}
-
-.search-input {
-  width: 50%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.lbl_services {
-  margin-top: 0px !important;
-}
-
 li {
   margin-bottom: 10px;
 }
 
+/* Dropdown */
 .dropdown-container {
   margin-bottom: 1rem;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.top-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.selected-services {
+  border: 1px solid rgb(0, 174, 255);
+  border-radius: 8px;
+  background: #f9f9f9;
+  min-width: 50%;
+}
+
+.selected-item {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.selected-item:last-child {
+  border-bottom: none;
+}
+
+/* Services Grid */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 1rem;
+}
+
+@media (max-width: 1366px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.service-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid transparent;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Highlight selected service */
+.service-card.selected {
+  border-color: #2f80ed;
+  box-shadow: 0 0 10px rgba(47, 128, 237, 0.5);
+}
+
+/* Image inside service card */
+.service-image {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+/* Buy button */
+.buy-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  min-width: 200px;
+}
+
+.buy-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 .recharge-button {
@@ -303,5 +406,29 @@ li {
 
 .recharge-button:hover {
   background-color: #0056b3;
+}
+
+.service-info {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Tạo khoảng cách giữa các phần tử */
+  background: #f0f8ff;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  flex-wrap: wrap; /* Đảm bảo hiển thị đẹp nếu không đủ không gian */
+}
+
+.service-info span {
+  margin-right: 10px; /* Khoảng cách giữa các span */
+  white-space: nowrap; /* Giữ nội dung không bị xuống dòng */
+}
+
+.service-info img {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
 }
 </style>
