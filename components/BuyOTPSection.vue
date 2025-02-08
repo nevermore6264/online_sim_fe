@@ -66,6 +66,8 @@
         Buy OTP
       </button>
     </div>
+
+    <!-- Search Bar for Services -->
     <div class="search-container">
       <input
         type="text"
@@ -74,10 +76,11 @@
         class="search-input"
       />
     </div>
+
     <!-- Services Grid -->
     <div class="services-grid">
       <div
-        v-for="(item, index) in selectedCustomer?.services"
+        v-for="(item, index) in filteredServices"
         :key="index"
         class="service-card"
         :class="{ selected: selectedServices.includes(item) }"
@@ -96,7 +99,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, toRaw } from "vue";
+import { ref, computed, onMounted, toRaw } from "vue";
 import orderService from "../services/order";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
@@ -172,9 +175,9 @@ const buySelectedServices = async () => {
       }
     }
 
-    // Hiển thị thông báo một lần
     if (successCount > 0) {
       push.success(`Successfully bought ${successCount} OTP(s)!`);
+      window.location.reload();
     }
     if (failedServices.length > 0) {
       push.warning(`Failed to buy OTP for: ${failedServices.join(", ")}`);
@@ -184,13 +187,15 @@ const buySelectedServices = async () => {
   }
 };
 
+// State của ô tìm kiếm
 const searchQuery = ref("");
 
+// Lọc danh sách dịch vụ hiển thị
 const filteredServices = computed(() => {
   if (!searchQuery.value) {
-    return selectedServices.value;
+    return selectedCustomer.value.services;
   }
-  return selectedServices.value.filter((service) =>
+  return selectedCustomer.value.services.filter((service) =>
     service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
@@ -347,7 +352,6 @@ li {
 
 /* Buy button */
 .buy-button {
-  margin-top: 16px;
   background-color: #007bff;
   color: #fff;
   padding: 10px 20px;
