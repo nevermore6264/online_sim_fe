@@ -281,7 +281,7 @@ onMounted(() => {
 
 <style scoped>
 .search-input {
-  width: 250px;
+  width: 250px !important;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;

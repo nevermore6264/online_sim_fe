@@ -153,6 +153,7 @@ onMounted(() => {
 <style>
 .filter-container {
   margin-bottom: 1rem;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   gap: 10px;
