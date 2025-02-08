@@ -22,7 +22,7 @@
         dataKey="id"
         :loading="loading"
       >
-        <template #empty> No SIMs match the selected status. </template>
+        <template #empty> No data not found. </template>
         <template #loading> Loading SIM data. Please wait. </template>
 
         <Column header="ID" field="id" style="min-width: 12rem" />

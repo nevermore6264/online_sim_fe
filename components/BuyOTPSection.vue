@@ -66,7 +66,14 @@
         Buy OTP
       </button>
     </div>
-
+    <div class="search-container">
+      <input
+        type="text"
+        v-model="searchQuery"
+        placeholder="Search services..."
+        class="search-input"
+      />
+    </div>
     <!-- Services Grid -->
     <div class="services-grid">
       <div
@@ -177,12 +184,34 @@ const buySelectedServices = async () => {
   }
 };
 
+const searchQuery = ref("");
+
+const filteredServices = computed(() => {
+  if (!searchQuery.value) {
+    return selectedServices.value;
+  }
+  return selectedServices.value.filter((service) =>
+    service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
 onMounted(() => {
   fetchCountries();
 });
 </script>
 
 <style scoped>
+.search-container {
+  margin-bottom: 10px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .flex-container {
   display: flex;
   gap: 2rem;

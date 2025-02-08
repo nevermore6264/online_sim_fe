@@ -1,47 +1,56 @@
 <template>
-  <!-- Filter container -->
-  <div class="filter-container">
-    <label for="phone-search">Find number:</label>
-    <input
-      id="phone-search"
-      type="text"
-      v-model="searchPhone"
-      placeholder="Enter phone number"
-      @input="filterOrderList"
+  <div>
+    <!-- Dropdown filter -->
+    <div class="filter-container">
+      <label for="status-filter">Filter by Status:</label>
+      <select
+        id="status-filter"
+        v-model="selectedStatus"
+        @change="filterOrderList"
+      >
+        <option value="all">All</option>
+        <option value="active">Active</option>
+        <option value="expired">Expired</option>
+      </select>
+    </div>
+
+    <!-- Table for purchased SIMs -->
+    <div class="purchased-sim-container">
+      <DataTable
+        :value="filteredOrderList"
+        scrollable
+        dataKey="id"
+        :loading="loading"
+      >
+        <template #empty> No data not found. </template>
+        <template #loading> Loading SIM data. Please wait. </template>
+
+        <Column header="ID" field="id" style="min-width: 12rem" />
+        <Column header="Country" field="countryCode" style="min-width: 12rem" />
+        <Column header="Phone" field="stock.phone" style="min-width: 12rem" />
+        <Column
+          header="Service"
+          field="stock.serviceCode"
+          style="min-width: 12rem"
+        />
+        <Column header="Status" field="statusCode" style="min-width: 12rem" />
+        <Column header="Price" field="cost" style="min-width: 8rem" />
+
+        <Column header="Expire Time" style="min-width: 14rem">
+          <template #body="{ data }">
+            <span>{{ trackingExpiredTime(data.stock.expiredAt) }}</span>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+
+    <!-- 🛠 Dùng Paginator riêng -->
+    <Paginator
+      :rows="rowsPerPage"
+      :totalRecords="totalDocs"
+      v-model:first="firstRowIndex"
+      @page="onPageChange"
     />
-  </div>
-
-  <!-- Table for purchased SIMs -->
-  <div class="purchased-sim-container">
-    <DataTable
-      :value="filteredOrderList"
-      scrollable
-      scrollHeight="300px"
-      min-height="300px"
-      dataKey="id"
-      :loading="loading"
-    >
-      <template #empty> No matching records found </template>
-      <template #loading> Loading records. Please wait. </template>
-      <Column header="Status" field="statusCode" style="min-width: 1rem" />
-      <Column
-        header="Phone number"
-        field="stock.phone"
-        style="min-width: 12rem"
-      />
-      <Column
-        header="Service"
-        field="stock.serviceCode"
-        style="min-width: 12rem"
-      />
-      <Column header="Expire At" style="min-width: 12rem">
-        <template #body="slotProps">
-          {{ formatDate(slotProps.data.stock.expiredAt) }}
-        </template>
-      </Column>
-
-      <Column header="Action" style="min-width: 12rem"> </Column>
-    </DataTable>
   </div>
 </template>
 
@@ -49,37 +58,22 @@
 import { ref, onMounted } from "vue";
 import UserService from "@/services/user";
 
-const orderList = ref([]);
-const filteredOrderList = ref([]);
-const searchPhone = ref("");
+const orderList = ref([]); // Danh sách từ API
+const filteredOrderList = ref([]); // Danh sách sau khi lọc
+const selectedStatus = ref("all"); // Trạng thái lọc
 const loading = ref(false);
 
-const fetchOrderList = async () => {
-  loading.value = true;
-  const token = localStorage.getItem("token");
-  if (!token) {
-    console.error("Token is not found in localStorage");
-    loading.value = false;
-    return;
-  }
+const rowsPerPage = ref(10); // Số dòng trên mỗi trang
+const currentPage = ref(1); // Trang hiện tại
+const totalDocs = ref(0); // Tổng số đơn hàng từ API
+const totalPages = ref(1); // Tổng số trang
+const firstRowIndex = ref(0); // Chỉ mục của dòng đầu tiên trên trang hiện tại
 
-  try {
-    const response = await UserService.OrderList(token);
-    if (response?.success) {
-      orderList.value = response?.data?.docs;
-      filterOrderList();
-    } else {
-      console.error("Failed to fetch data from API");
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  } finally {
-    loading.value = false;
-  }
-};
+const currentTime = ref(new Date());
 
-const formatDate = (dateString) => {
-  if (!dateString) return "N/A"; // Xử lý nếu ngày không tồn tại
+// Hàm tính thời gian hết hạn
+const trackingExpiredTime = (dateString) => {
+  if (!dateString) return "N/A";
   const date = new Date(dateString);
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
@@ -88,25 +82,69 @@ const formatDate = (dateString) => {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: false, // Hiển thị giờ 24h
+    hour12: false,
   }).format(date);
 };
 
-// Filter order list based on phone number
-const filterOrderList = () => {
-  let tempList = orderList.value;
+// 🛠 Hàm lấy danh sách từ API
+const fetchOrderList = async (page = 1) => {
+  loading.value = true;
+  const token = localStorage.getItem("token");
 
-  // Filter by phone number
-  if (searchPhone.value) {
-    const searchLower = searchPhone.value.toLowerCase();
-    tempList = tempList.filter((item) =>
-      item.stock.phone.toLowerCase().includes(searchLower)
+  if (!token) {
+    console.error("Token is not found in localStorage");
+    loading.value = false;
+    return;
+  }
+
+  try {
+    const response = await UserService.OrderList(token, {
+      page,
+      limit: rowsPerPage.value,
+    });
+
+    if (response?.success) {
+      orderList.value = response.data.docs;
+      totalDocs.value = response.data.totalDocs;
+      totalPages.value = response.data.totalPages;
+      currentPage.value = response.data.page;
+      filterOrderList();
+    } else {
+      console.error("No data received from API");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 🛠 Lọc danh sách theo trạng thái
+const filterOrderList = () => {
+  let filteredData = [...orderList.value];
+
+  if (selectedStatus.value === "active") {
+    filteredData = filteredData.filter(
+      (item) => new Date(item.stock.expiredAt) > currentTime.value
+    );
+  } else if (selectedStatus.value === "expired") {
+    filteredData = filteredData.filter(
+      (item) => new Date(item.stock.expiredAt) <= currentTime.value
     );
   }
 
-  filteredOrderList.value = tempList;
+  filteredOrderList.value = filteredData;
 };
 
+// 🛠 Xử lý khi chuyển trang
+const onPageChange = (event) => {
+  const newPage = event.page + 1; // PrimeVue sử dụng index từ 0
+  currentPage.value = newPage;
+  firstRowIndex.value = event.first;
+  fetchOrderList(newPage);
+};
+
+// 🛠 Gọi API khi component được mount
 onMounted(() => {
   fetchOrderList();
 });
@@ -120,7 +158,7 @@ onMounted(() => {
   gap: 10px;
 }
 
-#phone-search {
+#status-filter {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;

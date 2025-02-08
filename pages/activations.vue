@@ -24,9 +24,6 @@
         <div v-if="activeTab === 3">
           <API />
         </div>
-        <div v-if="activeTab === 4">
-          <ArchieSection />
-        </div>
       </div>
     </div>
   </div>
@@ -50,7 +47,6 @@ const computedTabs = computed(() => [
   { label: t("tabs.my_number"), icon: "pi pi-phone" },
   { label: t("tabs.faq"), icon: "pi pi-info-circle" },
   { label: t("tabs.api"), icon: "pi pi-code" },
-  { label: t("tabs.archie"), icon: "pi pi-users" },
 ]);
 </script>
 

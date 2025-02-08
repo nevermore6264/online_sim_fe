@@ -54,6 +54,7 @@ const toggleItem = (index) => {
 <style scoped>
 .faq-container {
   margin: 0 auto;
+  margin-top: 1rem;
 }
 
 .faq-item {

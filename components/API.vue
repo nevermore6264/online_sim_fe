@@ -12,7 +12,7 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { useI18n } from 'vue-i18n';
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
@@ -123,6 +123,7 @@ const toggleItem = (index) => {
 <style scoped>
 .faq-container {
   margin: 0 auto;
+  margin-top: 1rem;
 }
 
 .faq-item {
