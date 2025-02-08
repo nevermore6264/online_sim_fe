@@ -34,25 +34,27 @@
       </div>
 
       <div class="dropdown-item">
-        <label for="rental-period-select">Select Rental Period:</label>
-        <Dropdown
-          id="rental-period-select"
-          :options="rentalPeriodOptions"
-          optionLabel="label"
-          optionValue="value"
-          v-model="selectedRentalPeriod"
-          placeholder="Choose number"
-          class="w-full"
-        />
-        <Dropdown
-          id="rental-period-select"
-          :options="rentalPeriodOptions"
-          optionLabel="label"
-          optionValue="value"
-          v-model="selectedRentalPeriod"
-          placeholder="Choose a period"
-          class="w-full"
-        />
+        <label for="rental-quantity-select">Select Rental Period:</label>
+        <div class="rental-selection">
+          <Dropdown
+            id="rental-quantity-select"
+            :options="rentalQuantityOptions"
+            optionLabel="label"
+            optionValue="value"
+            v-model="selectedRentalQuantity"
+            placeholder="Choose number"
+            class="w-full"
+          />
+          <Dropdown
+            id="rental-unit-select"
+            :options="rentalUnitOptions"
+            optionLabel="label"
+            optionValue="value"
+            v-model="selectedRentalUnit"
+            placeholder="Choose a period"
+            class="w-full"
+          />
+        </div>
       </div>
 
       <!-- Selected Services List -->
@@ -86,7 +88,9 @@
 
       <!-- Buy Button -->
       <div class="buy-section" v-if="selectedServices.length > 0">
-        <button class="buy-button" @click="buySelectedServices">Buy OTP</button>
+        <button class="buy-button" @click="buySelectedServices">
+          Rent Service
+        </button>
         <p class="total-amount">Total Amount: {{ totalAmount }} USDT</p>
       </div>
     </div>
@@ -135,6 +139,20 @@ const selectedCustomer = ref({
   services: [],
 });
 const selectedServices = ref([]);
+const rentalQuantityOptions = ref([
+  { label: "1", value: 1 },
+  { label: "2", value: 2 },
+  { label: "3", value: 3 },
+]);
+
+const rentalUnitOptions = ref([
+  { label: "Days", value: "days" },
+  { label: "Weeks", value: "weeks" },
+  { label: "Months", value: "months" },
+]);
+
+const selectedRentalQuantity = ref(null);
+const selectedRentalUnit = ref(null);
 
 const fetchCountries = async () => {
   try {
@@ -256,6 +274,11 @@ onMounted(() => {
 
 .dropdown-item {
   margin-right: 10px;
+}
+
+.rental-selection {
+  display: flex;
+  gap: 10px;
 }
 
 img {
