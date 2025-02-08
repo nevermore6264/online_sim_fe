@@ -77,9 +77,18 @@
               <span class="service-name">
                 Country: {{ selectedCustomer.value }}
               </span>
-              <span class="service-name">For: 10 minutes </span>
+              <span class="service-name"
+                >For: {{ selectedRentalQuantity }} {{ selectedRentalUnit }}
+              </span>
               <span class="service-price">
-                Total amount: {{ service.price }} USDT
+                Total amount:
+                {{
+                  getPriceByLabel(
+                    service?.rentDurationPrices,
+                    selectedRentalQuantity + " " + selectedRentalUnit
+                  )
+                }}
+                USDT
               </span>
             </div>
           </div>
@@ -118,7 +127,6 @@
           <img :src="item?.image" alt="Service Image" class="service-image" />
           <div class="service-details">
             <h3>{{ item?.text }}</h3>
-            <p>{{ item?.price }} USDT</p>
           </div>
         </div>
       </div>
@@ -154,22 +162,12 @@ const rentalUnitOptions = ref([
 const selectedRentalQuantity = ref(null);
 const selectedRentalUnit = ref(null);
 
-// Tính toán giá dựa vào selection
-const selectedPrice = computed(() => {
-  if (!selectedRentalQuantity.value || !selectedRentalUnit.value) return 0;
+const selectedRentalPeriod = ref("1 days"); // Giá trị mặc định
 
-  const totalDays =
-    selectedRentalUnit.value === "days"
-      ? selectedRentalQuantity.value
-      : selectedRentalUnit.value === "weeks"
-      ? selectedRentalQuantity.value * 7
-      : selectedRentalQuantity.value * 30; // Nếu là "months"
-
-  const priceEntry = rentDurationPrices.value.find(
-    (item) => item.days === totalDays
-  );
-  return priceEntry ? priceEntry.price : "N/A";
-});
+const getPriceByLabel = (rentDurationPrices, label) => {
+  const found = rentDurationPrices.find((item) => item.label === label);
+  return found ? found.price : "N/A"; // Nếu không tìm thấy, trả về 0
+};
 
 const fetchCountries = async () => {
   try {
@@ -249,21 +247,31 @@ const buySelectedServices = async () => {
 // State của ô tìm kiếm
 const searchQuery = ref("");
 
-// Lọc danh sách dịch vụ hiển thị
 const filteredServices = computed(() => {
   if (!searchQuery.value) {
     return selectedCustomer.value.services;
   }
-  return selectedCustomer.value.services.filter((service) =>
-    service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
+  return selectedCustomer.value.services
+    .map((service) => ({
+      ...service,
+      price: getPriceByLabel(
+        selectedCustomer.rentDurationPrices,
+        selectedRentalPeriod.value
+      ), // Gán giá từ danh sách
+    }))
+    .filter((service) =>
+      service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
+    );
 });
 
 const totalAmount = computed(() => {
-  return selectedServices.value.reduce(
-    (sum, service) => sum + service.price,
-    0
-  );
+  return selectedServices.value.reduce((sum, service) => {
+    const price = getPriceByLabel(
+      service?.rentDurationPrices,
+      selectedRentalQuantity.value + " " + selectedRentalUnit.value
+    );
+    return sum + (price === "N/A" ? 0 : Number(price));
+  }, 0);
 });
 
 onMounted(() => {
