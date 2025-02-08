@@ -58,17 +58,14 @@
       </div>
 
       <!-- Buy Button -->
-      <button
-        class="buy-button"
-        v-if="selectedServices.length > 0"
-        @click="buySelectedServices"
-      >
-        Buy OTP
-      </button>
+      <div class="buy-section" v-if="selectedServices.length > 0">
+        <button class="buy-button" @click="buySelectedServices">Buy OTP</button>
+        <p class="total-amount">Total Amount: {{ totalAmount }} USDT</p>
+      </div>
     </div>
 
     <!-- Search Bar for Services -->
-    <div class="search-container">
+    <div class="search-container" v-if="filteredServices.length > 0">
       <input
         type="text"
         v-model="searchQuery"
@@ -200,6 +197,13 @@ const filteredServices = computed(() => {
   );
 });
 
+const totalAmount = computed(() => {
+  return selectedServices.value.reduce(
+    (sum, service) => sum + service.price,
+    0
+  );
+});
+
 onMounted(() => {
   fetchCountries();
 });
@@ -211,10 +215,12 @@ onMounted(() => {
 }
 
 .search-input {
-  width: 100%;
+  width: 250px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  display: flex;
+  margin-left: auto;
 }
 
 .flex-container {
