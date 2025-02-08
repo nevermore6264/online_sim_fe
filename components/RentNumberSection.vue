@@ -154,6 +154,23 @@ const rentalUnitOptions = ref([
 const selectedRentalQuantity = ref(null);
 const selectedRentalUnit = ref(null);
 
+// Tính toán giá dựa vào selection
+const selectedPrice = computed(() => {
+  if (!selectedRentalQuantity.value || !selectedRentalUnit.value) return 0;
+
+  const totalDays =
+    selectedRentalUnit.value === "days"
+      ? selectedRentalQuantity.value
+      : selectedRentalUnit.value === "weeks"
+      ? selectedRentalQuantity.value * 7
+      : selectedRentalQuantity.value * 30; // Nếu là "months"
+
+  const priceEntry = rentDurationPrices.value.find(
+    (item) => item.days === totalDays
+  );
+  return priceEntry ? priceEntry.price : "N/A";
+});
+
 const fetchCountries = async () => {
   try {
     const response = await GetAllCountries();
@@ -209,7 +226,7 @@ const buySelectedServices = async () => {
 
   try {
     for (const data of servicesData) {
-      const response = await orderService.BuyOTP(token, data);
+      const response = await orderService.RentOTP(token, data);
       if (response.success) {
         successCount++;
       } else {
