@@ -210,17 +210,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.search-container {
-  margin-bottom: 10px;
-}
-
 .search-input {
   width: 250px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  display: flex;
-  margin-left: auto;
 }
 
 .flex-container {
