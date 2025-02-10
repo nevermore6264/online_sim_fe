@@ -95,9 +95,9 @@
         </div>
       </div>
 
-      <!-- Buy Button -->
-      <div class="buy-section" v-if="selectedServices.length > 0">
-        <button class="buy-button" @click="buySelectedServices">
+      <!-- Rent Button -->
+      <div class="rent-section" v-if="selectedServices.length > 0">
+        <button class="rent-button" @click="rentSelectedServices">
           Rent Service
         </button>
         <p class="total-amount">Total Amount: {{ totalAmount }} USDT</p>
@@ -208,7 +208,7 @@ const toggleServiceSelection = (service) => {
     : selectedServices.value.splice(index, 1);
 };
 
-const buySelectedServices = async () => {
+const rentSelectedServices = async () => {
   const token = localStorage.getItem("token");
   if (selectedServices.value.length === 0) return;
 
@@ -233,14 +233,14 @@ const buySelectedServices = async () => {
     }
 
     if (successCount > 0) {
-      push.success(`Successfully bought ${successCount} OTP(s)!`);
+      push.success(`Successfully rent ${successCount} service(s)!`);
       window.location.reload();
     }
     if (failedServices.length > 0) {
-      push.warning(`Failed to buy OTP for: ${failedServices.join(", ")}`);
+      push.warning(`Failed to rent Service for: ${failedServices.join(", ")}`);
     }
   } catch (err) {
-    push.error("Error during service purchase!");
+    push.error("Error during rent service!");
   }
 };
 
@@ -425,8 +425,8 @@ li {
   margin-bottom: 8px;
 }
 
-/* Buy button */
-.buy-button {
+/* Rent button */
+.rent-button {
   background-color: #007bff;
   color: #fff;
   padding: 10px 20px;
@@ -438,7 +438,7 @@ li {
   min-width: 200px;
 }
 
-.buy-button:disabled {
+.rent-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
