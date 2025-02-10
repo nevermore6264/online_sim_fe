@@ -41,8 +41,9 @@
         <!-- Hiển thị tên người dùng -->
         <span class="user-name clickable" @click="goToProfile">
           {{ $t("landing.hello") }}, {{ userInfo.data.firstName }}
-          {{ userInfo.data.lastName }} ({{ userInfo.data.balanceAmount }} USDT)
+          {{ userInfo.data.lastName }}
         </span>
+        <span class="balance"> ({{ userInfo.data.balanceAmount }} USDT)</span>
 
         <!-- Logout Button -->
         <Button
@@ -156,13 +157,29 @@ onMounted(async () => {
     rgba(0, 0, 0, 0.2) -2px -3px 10px inset;
 }
 
-.user-name.clickable {
+.user-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
   cursor: pointer;
-  color: #007bff;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
 .user-name.clickable:hover {
   color: #0056b3;
+  text-decoration: underline;
+}
+
+.balance {
+  font-size: 14px; /* Kích thước nhỏ hơn */
+  font-weight: normal; /* Không in đậm */
+  color: #666; /* Màu khác, ví dụ: màu xám nhạt */
+  margin-left: 5px; /* Khoảng cách bên trái */
+}
+
+.user-name.clickable {
+  cursor: pointer;
+  color: #007bff;
 }
 
 .layout-topbar .p-menubar-start {
@@ -351,13 +368,6 @@ onMounted(async () => {
   width: 100%;
   display: block;
   text-align: center;
-}
-
-.user-name {
-  margin-right: 10px;
-  font-weight: bold;
-  color: #333;
-  padding: 1rem 0;
 }
 
 .additional-functions {
