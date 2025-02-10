@@ -209,6 +209,26 @@ const toggleServiceSelection = (service) => {
 };
 
 const rentSelectedServices = async () => {
+  // Kiểm tra rằng các dropdown rental period có dữ liệu
+  if (!selectedRentalQuantity.value || !selectedRentalUnit.value) {
+    push.error("Please select rental period (quantity and unit).");
+    return;
+  }
+  // Tính toán tổng số ngày thuê
+  let rentDays = 0;
+  if (selectedRentalUnit.value === "days") {
+    rentDays = selectedRentalQuantity.value;
+  } else if (selectedRentalUnit.value === "weeks") {
+    rentDays = selectedRentalQuantity.value * 7;
+  } else if (selectedRentalUnit.value === "months") {
+    rentDays = selectedRentalQuantity.value * 30;
+  }
+  // Kiểm tra rentDays nằm trong khoảng [7, 180]
+  // if (rentDays < 7 || rentDays > 180) {
+  //   push.error("Rental period must be between 7 and 180 days.");
+  //   return;
+  // }
+
   const token = localStorage.getItem("token");
   if (selectedServices.value.length === 0) return;
 
@@ -217,6 +237,7 @@ const rentSelectedServices = async () => {
 
   const servicesData = selectedServices.value.map((service) => ({
     serviceCode: service.code.toUpperCase(),
+    rentDays: rentDays,
   }));
 
   let successCount = 0;
@@ -231,16 +252,15 @@ const rentSelectedServices = async () => {
         failedServices.push(data.serviceCode);
       }
     }
-
     if (successCount > 0) {
-      push.success(`Successfully rent ${successCount} service(s)!`);
+      push.success(`Successfully rented ${successCount} service(s)!`);
       window.location.reload();
     }
     if (failedServices.length > 0) {
-      push.warning(`Failed to rent Service for: ${failedServices.join(", ")}`);
+      push.warning(`Failed to rent service for: ${failedServices.join(", ")}`);
     }
   } catch (err) {
-    push.error("Error during rent service!");
+    push.error("Error during service rental!");
   }
 };
 
