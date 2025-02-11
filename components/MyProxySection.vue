@@ -2,15 +2,15 @@
   <div>
     <!-- Dropdown filter -->
     <div class="filter-container">
-      <label for="status-filter">Filter by Status:</label>
+      <label for="status-filter">{{ $t("order.filter_status") }}</label>
       <select
         id="status-filter"
         v-model="selectedStatus"
         @change="filterOrderList"
       >
-        <option value="all">All</option>
-        <option value="active">Active</option>
-        <option value="expired">Expired</option>
+        <option value="all">{{ $t("order.all") }}</option>
+        <option value="active">{{ $t("order.active") }}</option>
+        <option value="expired">{{ $t("order.expired") }}</option>
       </select>
     </div>
 
@@ -22,21 +22,44 @@
         dataKey="id"
         :loading="loading"
       >
-        <template #empty> No data not found. </template>
-        <template #loading> Loading SIM data. Please wait. </template>
+        <template #empty>{{ $t("order.empty") }}</template>
+        <template #loading>{{ $t("order.loading") }}</template>
 
-        <Column header="ID" field="id" style="min-width: 12rem" />
-        <Column header="Country" field="countryCode" style="min-width: 12rem" />
-        <Column header="Phone" field="stock.phone" style="min-width: 12rem" />
         <Column
-          header="Service"
+          :header="$t('order.column.id')"
+          field="id"
+          style="min-width: 12rem"
+        />
+        <Column
+          :header="$t('order.column.country')"
+          field="countryCode"
+          style="min-width: 12rem"
+        />
+        <Column
+          :header="$t('order.column.phone')"
+          field="stock.phone"
+          style="min-width: 12rem"
+        />
+        <Column
+          :header="$t('order.column.service')"
           field="stock.serviceCode"
           style="min-width: 12rem"
         />
-        <Column header="Status" field="statusCode" style="min-width: 12rem" />
-        <Column header="Price" field="cost" style="min-width: 8rem" />
+        <Column
+          :header="$t('order.column.status')"
+          field="statusCode"
+          style="min-width: 12rem"
+        />
+        <Column
+          :header="$t('order.column.price')"
+          field="cost"
+          style="min-width: 8rem"
+        />
 
-        <Column header="Expire Time" style="min-width: 14rem">
+        <Column
+          :header="$t('order.column.expire_time')"
+          style="min-width: 14rem"
+        >
           <template #body="{ data }">
             <span>{{ trackingExpiredTime(data.stock.expiredAt) }}</span>
           </template>
@@ -86,7 +109,7 @@ const trackingExpiredTime = (dateString) => {
   }).format(date);
 };
 
-// 🛠 Hàm lấy danh sách từ API
+// Hàm lấy danh sách từ API
 const fetchOrderList = async (page = 1) => {
   loading.value = true;
   const token = localStorage.getItem("token");
@@ -119,7 +142,7 @@ const fetchOrderList = async (page = 1) => {
   }
 };
 
-// 🛠 Lọc danh sách theo trạng thái
+// Hàm lọc danh sách theo trạng thái
 const filterOrderList = () => {
   let filteredData = [...orderList.value];
 
@@ -136,7 +159,7 @@ const filterOrderList = () => {
   filteredOrderList.value = filteredData;
 };
 
-// 🛠 Xử lý khi chuyển trang
+// Hàm xử lý khi chuyển trang
 const onPageChange = (event) => {
   const newPage = event.page + 1; // PrimeVue sử dụng index từ 0
   currentPage.value = newPage;
@@ -144,7 +167,6 @@ const onPageChange = (event) => {
   fetchOrderList(newPage);
 };
 
-// 🛠 Gọi API khi component được mount
 onMounted(() => {
   fetchOrderList();
 });
