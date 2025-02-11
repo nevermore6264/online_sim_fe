@@ -192,4 +192,21 @@ export default {
     order: "Order",
     my_otp: "My OTP",
   },
+  order: {
+    filter_status: "Filter by Status:",
+    all: "All",
+    active: "Active",
+    expired: "Expired",
+    empty: "No data not found.",
+    loading: "Loading SIM data. Please wait.",
+    column: {
+      id: "ID",
+      country: "Country",
+      phone: "Phone",
+      service: "Service",
+      status: "Status",
+      price: "Price",
+      expire_time: "Expire Time",
+    },
+  },
 };

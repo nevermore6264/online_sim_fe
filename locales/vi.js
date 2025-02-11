@@ -190,4 +190,21 @@ export default {
     order: "Đặt hàng",
     my_otp: "OTP của tôi",
   },
+  order: {
+    filter_status: "Lọc theo Trạng thái:",
+    all: "Tất cả",
+    active: "Đang hoạt động",
+    expired: "Đã hết hạn",
+    empty: "Không tìm thấy dữ liệu nào",
+    loading: "Đang tải dữ liệu SIM. Vui lòng đợi",
+    column: {
+      id: "ID",
+      country: "Quốc gia",
+      phone: "Điện thoại",
+      service: "Dịch vụ",
+      status: "Trạng thái",
+      price: "Giá",
+      expire_time: "Thời gian hết hạn",
+    },
+  },
 };
