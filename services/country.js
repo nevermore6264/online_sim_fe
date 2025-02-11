@@ -38,6 +38,7 @@ const getDialCode = (code) => {
     SGP: "SG",
     KOR: "KR",
     USA: "US",
+    TUR: "TR",
   };
 
   return dialCodes[code] || "N/A"; // Default to "N/A" if not found
