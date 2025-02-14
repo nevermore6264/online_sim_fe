@@ -27,6 +27,9 @@
                   v-for="country in data"
                   :key="country.code"
                   class="country-item"
+                  :class="{
+                    'selected-country': country.code === selectedCustomer?.code,
+                  }"
                   @click="onCountryClick(country)"
                 >
                   <img
@@ -152,6 +155,17 @@ const onCountryClick = (country) => {
       });
   }
 };
+
+selectedCustomer.value = {
+  name: "Japan",
+  code: "JPN",
+  icon: "🇯🇵",
+  flagImage: "https://flagsapi.com/JP/flat/64.png",
+  services: [],
+};
+
+// Gọi để load dịch vụ của Japan
+onCountryClick(selectedCustomer.value);
 
 const initializeData = async () => {
   loading.value = true;
@@ -332,5 +346,11 @@ onMounted(() => {
   .country-row {
     grid-template-columns: 1fr; /* 1 cột trên mobile */
   }
+}
+
+.selected-country {
+  background-color: rgb(0, 174, 255) !important;
+  color: white;
+  font-weight: bold;
 }
 </style>
