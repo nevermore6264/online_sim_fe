@@ -1,10 +1,10 @@
 <template>
   <div class="search-container">
-    <h4>1. Select proxy country</h4>
+    <h4>{{ $t("proxy.select_country") }}</h4>
     <input
       type="text"
       v-model="searchQuery"
-      placeholder="Search for a country..."
+      :placeholder="$t('proxy.search_country')"
       class="search-input"
     />
   </div>
@@ -45,7 +45,7 @@
     </DataTable>
 
     <div class="slider-container rental-period-slider">
-      <h4>2. Select rental period days</h4>
+      <h4>{{ $t("proxy.select_rental_days") }}</h4>
       <Slider
         v-model="rentalDays"
         :min="0"
@@ -63,12 +63,14 @@
           {{ label }}
         </span>
       </div>
-      <p class="selected-days">Selected Days: {{ rentalDays }}</p>
+      <p class="selected-days">
+        {{ $t("proxy.selected_days") }}: {{ rentalDays }}
+      </p>
     </div>
 
     <div class="row quantity-slider">
       <div class="col-xs-30">
-        <h4>3. Select quantity</h4>
+        <h4>{{ $t("proxy.select_quantity") }}</h4>
         <Slider
           v-model="quantity"
           :min="1"
@@ -87,16 +89,22 @@
             {{ label }}
           </span>
         </div>
-        <p class="quantity-display">Selected Quantity: {{ quantity }}</p>
+        <p class="quantity-display">
+          {{ $t("proxy.selected_quantity") }}: {{ quantity }}
+        </p>
       </div>
     </div>
 
     <div class="row">
       <!-- Total Price Section -->
       <div class="col-xs-30">
-        <h4>Total</h4>
-        <p>Price: {{ totalPrice }} USDT</p>
-        <Button label="Buy" class="p-button-success btn-buy" @click="onBuy" />
+        <h4>{{ $t("proxy.total") }}</h4>
+        <p>{{ $t("proxy.price") }}: {{ totalPrice }} USDT</p>
+        <Button
+          :label="$t('proxy.buy')"
+          class="p-button-success btn-buy"
+          @click="onBuy"
+        />
       </div>
     </div>
   </div>
