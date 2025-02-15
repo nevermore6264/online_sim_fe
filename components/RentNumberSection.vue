@@ -142,10 +142,7 @@ import { GetAllCountries } from "@/services/country.js";
 import { push } from "notivue";
 
 const dropdownOptions = ref([]);
-const selectedCustomer = ref({
-  value: null,
-  services: [],
-});
+const selectedCustomer = ref(null);
 const selectedServices = ref([]);
 const rentalQuantityOptions = ref([
   { label: "1", value: 1 },
@@ -159,8 +156,8 @@ const rentalUnitOptions = ref([
   { label: "Months", value: "months" },
 ]);
 
-const selectedRentalQuantity = ref(null);
-const selectedRentalUnit = ref(null);
+const selectedRentalQuantity = ref(1);
+const selectedRentalUnit = ref("days");
 
 const selectedRentalPeriod = ref("1 days"); // Giá trị mặc định
 
@@ -198,6 +195,13 @@ const onCountrySelect = async () => {
     }
   }
 };
+
+selectedCustomer.value = {
+  value: "JPN",
+  services: [],
+};
+
+onCountrySelect(selectedCustomer.value);
 
 const toggleServiceSelection = (service) => {
   const index = selectedServices.value.findIndex(

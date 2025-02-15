@@ -103,10 +103,7 @@ import { GetAllCountries } from "@/services/country.js";
 import { push } from "notivue";
 
 const dropdownOptions = ref([]);
-const selectedCustomer = ref({
-  value: null,
-  services: [],
-});
+const selectedCustomer = ref(null);
 const selectedServices = ref([]);
 
 const fetchCountries = async () => {
@@ -138,6 +135,13 @@ const onCountrySelect = async () => {
     }
   }
 };
+
+selectedCustomer.value = {
+  value: "JPN",
+  services: [],
+};
+
+onCountrySelect(selectedCustomer.value);
 
 const toggleServiceSelection = (service) => {
   const index = selectedServices.value.findIndex(
