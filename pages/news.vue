@@ -72,7 +72,6 @@ export default {
       try {
         const data = await NewsService.News();
         this.products = data?.data;
-        console.log(products);
       } catch (error) {
         console.error("Error fetching news:", error);
       }
