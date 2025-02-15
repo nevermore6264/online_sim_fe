@@ -115,6 +115,9 @@ const rentalDays = ref(1); // Default rental days
 const quantity = ref(1); // Default quantity
 const pricePerDay = 10; // Example price per day
 const searchQuery = ref("");
+const labels = ref([1, 10, 20, 30, 50, 100]); // Các mốc thời gian thuê
+const quantityLabels = ref([1, 100, 250, 500, 750, 1000]); // Các mốc số lượng
+const maxDays = 100; // Example price per day
 
 const { width } = useWindowSize();
 
