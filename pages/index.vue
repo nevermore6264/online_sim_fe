@@ -242,10 +242,6 @@ onMounted(() => {
   font-weight: normal;
 }
 
-.table-services {
-  margin-top: 20px;
-}
-
 .table-services .p-datatable-header {
   margin-bottom: -15px !important;
   min-width: 135px !important;

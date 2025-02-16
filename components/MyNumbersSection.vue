@@ -14,16 +14,16 @@
       </select>
     </div>
 
-    <!-- Table for purchased SIMs -->
-    <div class="purchased-sim-container">
+    <!-- 🖥 Hiển thị dạng bảng trên màn hình lớn -->
+    <div class="purchased-sim-container desktop-view">
       <DataTable
         :value="filteredOrderList"
         scrollable
         dataKey="id"
         :loading="loading"
       >
-        <template #empty> {{ $t("order.empty") }} </template>
-        <template #loading> {{ $t("order.loading") }} </template>
+        <template #empty>{{ $t("order.empty") }}</template>
+        <template #loading>{{ $t("order.loading") }}</template>
 
         <Column
           :header="$t('order.column.id')"
@@ -67,7 +67,44 @@
       </DataTable>
     </div>
 
-    <!-- 🛠 Dùng Paginator riêng -->
+    <!-- 📱 Hiển thị dạng card trên mobile -->
+    <div class="mobile-view">
+      <div
+        v-for="order in filteredOrderList"
+        :key="order.id"
+        class="order-card"
+      >
+        <div class="order-header">
+          <span class="order-id">#{{ order.id }}</span>
+          <span class="order-status" :class="order.statusCode">
+            {{ order.statusCode }}
+          </span>
+        </div>
+        <div class="order-body">
+          <p>
+            <strong>{{ $t("order.column.country") }}:</strong>
+            {{ order.countryCode }}
+          </p>
+          <p>
+            <strong>{{ $t("order.column.phone") }}:</strong>
+            {{ order.stock.phone }}
+          </p>
+          <p>
+            <strong>{{ $t("order.column.service") }}:</strong>
+            {{ order.stock.serviceCode }}
+          </p>
+          <p>
+            <strong>{{ $t("order.column.price") }}:</strong> {{ order.cost }}
+          </p>
+          <p>
+            <strong>{{ $t("order.column.expire_time") }}:</strong>
+            {{ trackingExpiredTime(order.stock.expiredAt) }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🛠 Paginator -->
     <Paginator
       :rows="rowsPerPage"
       :totalRecords="totalDocs"
@@ -144,19 +181,17 @@ const fetchOrderList = async (page = 1) => {
 
 // Hàm lọc danh sách theo trạng thái
 const filterOrderList = () => {
-  let filteredData = [...orderList.value];
-
-  if (selectedStatus.value === "active") {
-    filteredData = filteredData.filter(
-      (item) => new Date(item.stock.expiredAt) > currentTime.value
-    );
-  } else if (selectedStatus.value === "expired") {
-    filteredData = filteredData.filter(
-      (item) => new Date(item.stock.expiredAt) <= currentTime.value
-    );
+  if (selectedStatus.value === "all") {
+    filteredOrderList.value = orderList.value;
+    return;
   }
 
-  filteredOrderList.value = filteredData;
+  const isExpired = (date) => new Date(date) <= new Date();
+  filteredOrderList.value = orderList.value.filter((item) =>
+    selectedStatus.value === "expired"
+      ? isExpired(item.stock.expiredAt)
+      : !isExpired(item.stock.expiredAt)
+  );
 };
 
 // Hàm xử lý khi chuyển trang
@@ -174,7 +209,8 @@ onMounted(() => {
 
 <style>
 .filter-container {
-  margin: 1rem 0;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -184,5 +220,86 @@ onMounted(() => {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+/* Xử lý layout trên mobile */
+@media (max-width: 768px) {
+  .filter-container {
+    flex-direction: column; /* Chuyển filter thành cột */
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  #status-filter {
+    width: 100%; /* Để dropdown full width */
+  }
+
+  .purchased-sim-container {
+    overflow-x: auto; /* Cho phép cuộn ngang nếu bảng quá lớn */
+  }
+
+  table {
+    font-size: 14px; /* Giảm kích thước chữ */
+  }
+
+  th,
+  td {
+    padding: 8px; /* Giảm padding để bảng nhỏ gọn hơn */
+    white-space: nowrap; /* Tránh bị xuống dòng */
+  }
+
+  .desktop-view {
+    display: none;
+  }
+  .mobile-view {
+    display: block;
+  }
+}
+
+/* Hiển thị bảng trên desktop */
+@media (min-width: 769px) {
+  .desktop-view {
+    display: block;
+  }
+  .mobile-view {
+    display: none;
+  }
+}
+
+/* Style cho order card */
+.order-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.order-status {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.order-status.active {
+  color: #2ecc71;
+}
+
+.order-status.expired {
+  color: #e74c3c;
+}
+
+.order-body p {
+  margin: 0.3rem 0;
 }
 </style>

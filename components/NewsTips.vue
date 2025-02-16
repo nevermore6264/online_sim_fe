@@ -73,6 +73,7 @@
   border: 1px solid #ddd;
   border-radius: 15px;
   padding: 1rem;
+  margin-top: 20px;
   background: rgb(255, 255, 255);
   box-shadow: 0 0 8px rgb(227, 227, 227);
 }
