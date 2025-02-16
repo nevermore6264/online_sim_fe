@@ -186,4 +186,31 @@ onMounted(() => {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+/* Xử lý layout trên mobile */
+@media (max-width: 768px) {
+  .filter-container {
+    flex-direction: column; /* Chuyển filter thành cột */
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  #status-filter {
+    width: 100%; /* Để dropdown full width */
+  }
+
+  .purchased-sim-container {
+    overflow-x: auto; /* Cho phép cuộn ngang nếu bảng quá lớn */
+  }
+
+  table {
+    font-size: 14px; /* Giảm kích thước chữ */
+  }
+
+  th,
+  td {
+    padding: 8px; /* Giảm padding để bảng nhỏ gọn hơn */
+    white-space: nowrap; /* Tránh bị xuống dòng */
+  }
+}
 </style>

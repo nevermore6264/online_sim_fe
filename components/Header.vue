@@ -476,8 +476,9 @@ onMounted(async () => {
   }
 
   .layout-topbar .p-menubar-end {
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
+    justify-content: end;
   }
 
   .auth-dialog {

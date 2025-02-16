@@ -59,6 +59,12 @@ export default {
   margin-top: 10px;
 }
 
+@media (max-width: 480px) {
+  .card {
+    margin-right: 0px !important;
+  }
+}
+
 .card i {
   color: rgb(0, 174, 255);
   font-size: 2rem;
