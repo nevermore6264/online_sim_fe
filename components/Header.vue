@@ -6,8 +6,10 @@
         <img src="/layout/images/logo.png" alt="logo" width="75px" />
       </a>
     </div>
+
+    <!-- Hiển thị chức năng cho Desktop -->
     <template v-if="userInfo?.data?.id">
-      <div class="additional-functions">
+      <div v-if="!isMobile" class="additional-functions d-none d-md-flex">
         <Button
           :label="$t('landing.headerActivations')"
           class="p-button-text"
@@ -34,31 +36,52 @@
         />
       </div>
     </template>
+
     <!-- Menu Section -->
     <div class="p-menubar-end d-flex align-items-center">
-      <!-- Kiểm tra nếu userInfo tồn tại -->
       <template v-if="userInfo?.data?.id">
-        <!-- Hiển thị tên người dùng -->
         <span class="user-name clickable" @click="goToProfile">
           {{ $t("landing.hello") }}, {{ userInfo.data.firstName }}
           {{ userInfo.data.lastName }}
         </span>
         <span class="balance"> ({{ userInfo.data.balanceAmount }} USDT)</span>
 
-        <!-- Logout Button -->
         <Button
           aria-label="Logout"
           class="p-button p-component p-button-text"
           @click="handleLogout"
+          v-if="!isMobile"
         >
           <span class="p-button-icon pi pi-sign-out"></span>
           <span>{{ $t("landing.logout") }}</span>
         </Button>
+        <!-- Hiển thị Menu Dropdown cho Mobile -->
+        <div v-if="isMobile" class="d-flex d-md-none">
+          <Button
+            icon="pi pi-bars"
+            class="p-button-text"
+            @click="toggleMenu"
+            aria-haspopup="true"
+            aria-controls="mobileMenu"
+          />
+          <OverlayPanel ref="mobileMenu" id="mobileMenu">
+            <ul class="mobile-menu">
+              <li @click="handleActivations">
+                {{ $t("landing.headerActivations") }}
+              </li>
+              <li @click="handleRentOTP">{{ $t("landing.headerBuyOTP") }}</li>
+              <li @click="handleProxy">
+                <b style="color: red; font-size: 15px">HQ</b>
+                <span>{{ $t("landing.headerProxy") }}</span>
+              </li>
+              <li @click="handleNews">{{ $t("landing.headerNews") }}</li>
+              <li @click="handleAPI">{{ $t("landing.headerAPI") }}</li>
+              <li @click="handleLogout">{{ $t("landing.logout") }}</li>
+            </ul>
+          </OverlayPanel>
+        </div>
       </template>
-
-      <!-- Hiển thị Login và Sign Up nếu không có userInfo -->
       <template v-else>
-        <!-- Login Button -->
         <Button
           aria-label="Login"
           class="p-button p-component p-button-text"
@@ -82,12 +105,27 @@
 </template>
 
 <script setup>
+import { ref, onMounted, reactive, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { push } from "notivue";
-import UserService from "@/services/user"; // Import từ user.js
+import UserService from "@/services/user";
+import OverlayPanel from "primevue/overlaypanel";
+
+const isMobile = ref(false);
+
+const updateScreenSize = () => {
+  if (typeof window !== "undefined") {
+    isMobile.value = window.innerWidth < 768;
+  }
+};
 
 const router = useRouter();
-const userInfo = reactive({}); // Lưu trữ thông tin người dùng
+const userInfo = reactive({});
+const mobileMenu = ref(null); // Ref cho OverlayPanel
+
+const toggleMenu = (event) => {
+  mobileMenu.value.toggle(event);
+};
 
 const handleLogout = () => {
   localStorage.clear();
@@ -97,31 +135,16 @@ const handleLogout = () => {
   window.location.reload();
 };
 
-const handleActivations = () => {
-  router.push("/activations"); // Điều hướng tới trang "Rent Number"
-};
+const handleActivations = () => router.push("/activations");
+const handleRentOTP = () => router.push("/buy-otp");
+const handleProxy = () => router.push("/proxy");
+const handleNews = () => router.push("/news");
+const handleAPI = () => (window.location.href = "https://japansim.net/");
 
-const handleRentOTP = () => {
-  router.push("/buy-otp"); // Điều hướng tới trang "Rent OTP"
-};
-
-const handleProxy = () => {
-  router.push("/proxy"); // Điều hướng tới trang "Proxy"
-};
-
-const handleNews = () => {
-  router.push("/news"); // Điều hướng tới trang "News"
-};
-
-const handleAPI = () => {
-  window.location.href = "https://japansim.net/";
-};
-
-// Sử dụng UserService để lấy thông tin người dùng
 const fetchUserInfo = async (token) => {
   try {
     const response = await UserService.GetCurrentAccount(token);
-    Object.assign(userInfo, response); // Lưu thông tin vào `userInfo`
+    Object.assign(userInfo, response);
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
   } catch (error) {
     console.error("Error fetching user info:", error);
@@ -142,6 +165,11 @@ onMounted(async () => {
   if (token) {
     await fetchUserInfo(token);
   }
+  window.addEventListener("resize", updateScreenSize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateScreenSize);
 });
 </script>
 
@@ -399,16 +427,14 @@ onMounted(async () => {
 /* Responsive Layout for Mobile and Tablet */
 @media (max-width: 768px) {
   .layout-topbar {
-    flex-direction: column;
     align-items: flex-start;
+    justify-content: center;
     padding: 10px;
   }
 
   .layout-topbar .p-menubar-start,
   .p-menubar-end {
-    width: 100%;
     justify-content: center;
-    margin-top: 1rem;
   }
 
   .layout-topbar .p-menubar-end {
@@ -511,6 +537,33 @@ onMounted(async () => {
 
   .forgot-password {
     font-size: 0.9rem;
+  }
+}
+
+.mobile-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-menu li {
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.mobile-menu li:last-child {
+  border-bottom: none;
+}
+
+.mobile-menu li:hover {
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .additional-functions {
+    display: none !important;
   }
 }
 </style>
