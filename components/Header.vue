@@ -161,6 +161,7 @@ const goToProfile = () => {
 };
 
 onMounted(async () => {
+  updateScreenSize();
   const token = localStorage.getItem("token");
   if (token) {
     await fetchUserInfo(token);
