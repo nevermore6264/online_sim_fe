@@ -7,6 +7,48 @@
   <div class="main-container">
     <!-- Country Selection & Selected Services -->
     <div class="top-section">
+      <div class="table-container table-services">
+        <input
+          v-model="searchCountry"
+          :placeholder="$t('landing.search_country')"
+          class="search-input"
+        />
+        <DataTable
+          :value="filteredCountries"
+          scrollable
+          scrollHeight="400px"
+          dataKey="code"
+          :loading="loading"
+        >
+          <template #header>
+            <div class="lbl_services">{{ $t("landing.select_country") }}</div>
+          </template>
+          <template #empty>{{ $t("landing.no_countries_found") }}</template>
+          <template #loading>{{ $t("landing.loading_countries") }}</template>
+          <Column style="min-width: 12rem">
+            <template #body="{ data }">
+              <div class="country-row">
+                <div
+                  v-for="country in data"
+                  :key="country.code"
+                  class="country-item"
+                  :class="{
+                    'selected-country': country.code === selectedCustomer?.code,
+                  }"
+                  @click="onCountryClick(country)"
+                >
+                  <img
+                    :src="country.flagImage"
+                    :alt="country.name"
+                    class="flag-image"
+                  />
+                  <span class="country-name">{{ country.name }}</span>
+                </div>
+              </div>
+            </template>
+          </Column>
+        </DataTable>
+      </div>
       <div class="dropdown-item">
         <label for="country-select">Select Country:</label>
         <Dropdown
@@ -140,6 +182,11 @@ import orderService from "../services/order";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 import { push } from "notivue";
+import { useWindowSize } from "@vueuse/core";
+import axios from "axios";
+
+const customers = ref([]);
+const loading = ref(false);
 
 const dropdownOptions = ref([]);
 const selectedCustomer = ref(null);
@@ -160,6 +207,72 @@ const selectedRentalQuantity = ref(1);
 const selectedRentalUnit = ref("days");
 
 const selectedRentalPeriod = ref("1 days"); // Giá trị mặc định
+
+// Theo dõi kích thước màn hình
+const { width } = useWindowSize();
+
+// Tìm kiếm
+const searchCountry = ref("");
+const searchService = ref("");
+
+// Phân nhóm dựa trên kích thước màn hình
+const groupedCustomers = computed(() => {
+  const itemsPerRow = width.value < 600 ? 1 : 2;
+  const groups = [];
+  for (let i = 0; i < customers.value.length; i += itemsPerRow) {
+    groups.push(customers.value.slice(i, i + itemsPerRow));
+  }
+  return groups;
+});
+
+// Lọc danh sách quốc gia theo tìm kiếm
+const filteredCountries = computed(() => {
+  if (!searchCountry.value.trim()) return groupedCustomers.value;
+  return groupedCustomers.value.map((group) =>
+    group.filter((country) =>
+      country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
+    )
+  );
+});
+
+// Lọc danh sách dịch vụ theo tìm kiếm
+const filteredServices = computed(() => {
+  if (!searchService.value.trim())
+    return selectedCustomer.value?.services || [];
+  return selectedCustomer.value?.services.filter((service) =>
+    service.text.toLowerCase().includes(searchService.value.toLowerCase())
+  );
+});
+
+const onCountryClick = (country) => {
+  selectedCustomer.value = country;
+
+  if (country?.code) {
+    axios
+      .get(
+        `https://verifysms.org/api/services?platform=web&countryCode=${country.code}`
+      )
+      .then((response) => {
+        if (response?.data?.success) {
+          selectedCustomer.value.services = response?.data?.data;
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching services:", error);
+      });
+  }
+};
+
+selectedCustomer.value = {
+  name: "Japan",
+  code: "JPN",
+  icon: "🇯🇵",
+  flagImage: "https://flagsapi.com/JP/flat/64.png",
+  services: [],
+};
+
+// Gọi để load dịch vụ của Japan
+onCountryClick(selectedCustomer.value);
 
 const getPriceByLabel = (rentDurationPrices, label) => {
   const found = rentDurationPrices.find((item) => item.label === label);
@@ -271,22 +384,22 @@ const rentSelectedServices = async () => {
 // State của ô tìm kiếm
 const searchQuery = ref("");
 
-const filteredServices = computed(() => {
-  if (!searchQuery.value) {
-    return selectedCustomer.value.services;
-  }
-  return selectedCustomer.value.services
-    .map((service) => ({
-      ...service,
-      price: getPriceByLabel(
-        selectedCustomer.rentDurationPrices,
-        selectedRentalPeriod.value
-      ), // Gán giá từ danh sách
-    }))
-    .filter((service) =>
-      service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
-    );
-});
+// const filteredServices = computed(() => {
+//   if (!searchQuery.value) {
+//     return selectedCustomer.value.services;
+//   }
+//   return selectedCustomer.value.services
+//     .map((service) => ({
+//       ...service,
+//       price: getPriceByLabel(
+//         selectedCustomer.rentDurationPrices,
+//         selectedRentalPeriod.value
+//       ), // Gán giá từ danh sách
+//     }))
+//     .filter((service) =>
+//       service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
+//     );
+// });
 
 const totalAmount = computed(() => {
   return selectedServices.value.reduce((sum, service) => {
@@ -298,7 +411,15 @@ const totalAmount = computed(() => {
   }, 0);
 });
 
+const initializeData = async () => {
+  loading.value = true;
+  const countries = await GetAllCountries();
+  customers.value = countries;
+  loading.value = false;
+};
+
 onMounted(() => {
+  initializeData();
   fetchCountries();
 });
 </script>
