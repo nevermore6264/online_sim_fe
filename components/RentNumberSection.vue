@@ -7,51 +7,9 @@
   <div class="main-container">
     <!-- Country Selection & Selected Services -->
     <div class="top-section">
-      <div class="table-container table-services">
-        <input
-          v-model="searchCountry"
-          :placeholder="$t('landing.search_country')"
-          class="search-input"
-        />
-        <DataTable
-          :value="filteredCountries"
-          scrollable
-          scrollHeight="400px"
-          dataKey="code"
-          :loading="loading"
-        >
-          <template #header>
-            <div class="lbl_services">{{ $t("landing.select_country") }}</div>
-          </template>
-          <template #empty>{{ $t("landing.no_countries_found") }}</template>
-          <template #loading>{{ $t("landing.loading_countries") }}</template>
-          <Column style="min-width: 3px">
-            <template #body="{ data }">
-              <div class="country-row">
-                <div
-                  v-for="country in data"
-                  :key="country.code"
-                  class="country-item"
-                  :class="{
-                    'selected-country': country.code === selectedCustomer?.code,
-                  }"
-                  @click="onCountryClick(country)"
-                >
-                  <img
-                    :src="country.flagImage"
-                    :alt="country.name"
-                    class="flag-image"
-                  />
-                  <span class="country-name">{{ country.name }}</span>
-                </div>
-              </div>
-            </template>
-          </Column>
-        </DataTable>
-      </div>
       <div class="dropdown-item">
         <label for="country-select">Select Country:</label>
-        <Dropdown
+        <!-- <Dropdown
           id="country-select"
           :options="dropdownOptions"
           optionLabel="name"
@@ -72,7 +30,50 @@
               <div>{{ slotProps.option?.name }}</div>
             </div>
           </template>
-        </Dropdown>
+        </Dropdown> -->
+        <div class="table-container table-services">
+          <input
+            v-model="searchCountry"
+            :placeholder="$t('landing.search_country')"
+            class="search-input"
+          />
+          <DataTable
+            :value="filteredCountries"
+            scrollable
+            scrollHeight="400px"
+            dataKey="code"
+            :loading="loading"
+          >
+            <template #header>
+              <div class="lbl_services">{{ $t("landing.select_country") }}</div>
+            </template>
+            <template #empty>{{ $t("landing.no_countries_found") }}</template>
+            <template #loading>{{ $t("landing.loading_countries") }}</template>
+            <Column style="min-width: 3px">
+              <template #body="{ data }">
+                <div class="country-row">
+                  <div
+                    v-for="country in data"
+                    :key="country.code"
+                    class="country-item"
+                    :class="{
+                      'selected-country':
+                        country.code === selectedCustomer?.code,
+                    }"
+                    @click="onCountryClick(country)"
+                  >
+                    <img
+                      :src="country.flagImage"
+                      :alt="country.name"
+                      class="flag-image"
+                    />
+                    <span class="country-name">{{ country.name }}</span>
+                  </div>
+                </div>
+              </template>
+            </Column>
+          </DataTable>
+        </div>
       </div>
 
       <div class="dropdown-item">
