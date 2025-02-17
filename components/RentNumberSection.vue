@@ -403,7 +403,7 @@ li {
 /* Services Grid */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   margin-top: 1rem;
 }
@@ -420,10 +420,16 @@ li {
   }
 }
 
+@media (max-width: 480px) {
+  .services-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
 .service-card {
   background-color: #fff;
   border-radius: 8px;
-  padding: 16px;
+  padding: 5px 15px;
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -441,12 +447,22 @@ li {
   box-shadow: 0 0 10px rgba(47, 128, 237, 0.5);
 }
 
+.service-content {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Khoảng cách giữa ảnh và chữ */
+}
+
 /* Image inside service card */
 .service-image {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
-  margin-bottom: 8px;
+}
+
+.service-details {
+  flex: 1; /* Giúp chữ mở rộng hết phần còn lại */
+  text-align: left; /* Căn chữ về bên trái */
 }
 
 /* Rent button */
