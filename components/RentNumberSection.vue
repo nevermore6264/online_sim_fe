@@ -25,7 +25,7 @@
           </template>
           <template #empty>{{ $t("landing.no_countries_found") }}</template>
           <template #loading>{{ $t("landing.loading_countries") }}</template>
-          <Column style="min-width: 12rem">
+          <Column style="min-width: 3px">
             <template #body="{ data }">
               <div class="country-row">
                 <div
@@ -182,7 +182,6 @@ import orderService from "../services/order";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 import { push } from "notivue";
-import { useWindowSize } from "@vueuse/core";
 import axios from "axios";
 
 const customers = ref([]);
@@ -208,16 +207,13 @@ const selectedRentalUnit = ref("days");
 
 const selectedRentalPeriod = ref("1 days"); // Giá trị mặc định
 
-// Theo dõi kích thước màn hình
-const { width } = useWindowSize();
-
 // Tìm kiếm
 const searchCountry = ref("");
 const searchService = ref("");
 
 // Phân nhóm dựa trên kích thước màn hình
 const groupedCustomers = computed(() => {
-  const itemsPerRow = width.value < 600 ? 1 : 2;
+  const itemsPerRow = 1;
   const groups = [];
   for (let i = 0; i < customers.value.length; i += itemsPerRow) {
     groups.push(customers.value.slice(i, i + itemsPerRow));
@@ -438,8 +434,8 @@ onMounted(() => {
 }
 
 .table-container {
-  flex: 1;
-  min-width: 300px;
+  min-width: 30%;
+  flex: 0;
 }
 
 .dropdown-item {
@@ -639,5 +635,120 @@ li {
   height: 24px;
   border-radius: 4px;
   object-fit: cover;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: auto;
+  color: #333;
+  margin-bottom: 60px;
+}
+
+.landing-page .p-datatable .p-datatable-tbody > tr > td {
+  border: none;
+  padding: 5px 5px;
+}
+
+.title {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.5em;
+  margin: 20px 0;
+}
+
+.row-content {
+  display: flex;
+  align-items: center;
+  margin: auto 0;
+}
+
+.row-content .country {
+  margin-left: 15px;
+}
+
+.row-content .dialCode {
+  margin-left: 15px;
+  color: #859398;
+}
+
+.lbl_services {
+  text-align: left;
+  font-size: 14px;
+  margin-bottom: 14px;
+  font-weight: normal;
+}
+
+.table-services .p-datatable-header {
+  margin-bottom: -15px !important;
+  min-width: 135px !important;
+  width: max-content !important;
+  max-width: 60% !important;
+  padding: 0px 15px !important;
+  height: 45px !important;
+  border-radius: 15px 15px 0 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: rgb(0, 174, 255);
+  color: #ffffff;
+}
+
+.country-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between; /* Tạo khoảng cách giữa tên và giá */
+  cursor: pointer;
+  padding: 8px;
+  transition: background-color 0.3s;
+  width: 100%;
+  background-color: rgb(245, 245, 245);
+  border-radius: 5px;
+}
+
+.country-item:hover {
+  background-color: rgb(201, 200, 200);
+}
+
+.flag-image {
+  width: 24px;
+  height: auto;
+}
+
+.flag-image {
+  width: 24px;
+  height: auto;
+  margin-right: 8px;
+}
+
+.country-name {
+  font-size: 14px;
+}
+
+.landing-page .p-datatable-thead {
+  display: none;
+}
+
+.country-row {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* Chia mỗi row thành 2 cột */
+  gap: 10px; /* Khoảng cách giữa các ô */
+  grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
 }
 </style>
