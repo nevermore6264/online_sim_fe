@@ -67,7 +67,6 @@ h1 {
 }
 
 input {
-  margin: 10px 0;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;

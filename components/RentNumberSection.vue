@@ -60,7 +60,7 @@
                       'selected-country':
                         country.code === selectedCustomer?.code,
                     }"
-                    @click="onCountryClick(country)"
+                    @click="onCountrySelect(country)"
                   >
                     <img
                       :src="country.flagImage"
@@ -241,36 +241,6 @@ const filteredServices = computed(() => {
   );
 });
 
-const onCountryClick = (country) => {
-  selectedCustomer.value = country;
-
-  if (country?.code) {
-    axios
-      .get(
-        `https://verifysms.org/api/services?platform=web&countryCode=${country.code}`
-      )
-      .then((response) => {
-        if (response?.data?.success) {
-          selectedCustomer.value.services = response?.data?.data;
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching services:", error);
-      });
-  }
-};
-
-selectedCustomer.value = {
-  name: "Japan",
-  code: "JPN",
-  icon: "🇯🇵",
-  flagImage: "https://flagsapi.com/JP/flat/64.png",
-  services: [],
-};
-
-// Gọi để load dịch vụ của Japan
-onCountryClick(selectedCustomer.value);
-
 const getPriceByLabel = (rentDurationPrices, label) => {
   const found = rentDurationPrices.find((item) => item.label === label);
   return found ? found.price : "N/A"; // Nếu không tìm thấy, trả về 0
@@ -289,13 +259,13 @@ const fetchCountries = async () => {
   }
 };
 
-const onCountrySelect = async () => {
-  selectedServices.value = [];
-  if (selectedCustomer.value) {
+const onCountrySelect = async (country) => {
+  selectedCustomer.value = country;
+  if (country?.code) {
     try {
-      const countryCode = selectedCustomer.value;
+      const countryCode = country.code;
       const response = await serviceService.GetServicesByCountryCode(
-        countryCode?.value
+        countryCode
       );
 
       selectedCustomer.value.services = response?.success ? response.data : [];
@@ -307,10 +277,14 @@ const onCountrySelect = async () => {
 };
 
 selectedCustomer.value = {
-  value: "JPN",
+  name: "Japan",
+  code: "JPN",
+  icon: "🇯🇵",
+  flagImage: "https://flagsapi.com/JP/flat/64.png",
   services: [],
 };
 
+// Gọi để load dịch vụ của Japan
 onCountrySelect(selectedCustomer.value);
 
 const toggleServiceSelection = (service) => {
