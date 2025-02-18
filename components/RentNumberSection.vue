@@ -28,7 +28,7 @@
             <template #loading>{{ $t("landing.loading_countries") }}</template>
             <Column style="min-width: 3px">
               <template #body="{ data }">
-                <div class="country-row">
+                <div class="country-item-row">
                   <div
                     v-for="country in data"
                     :key="country.code"
@@ -714,10 +714,7 @@ li {
   display: none;
 }
 
-.country-row {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr); /* Chia mỗi row thành 2 cột */
+.country-item-row {
   gap: 10px; /* Khoảng cách giữa các ô */
-  grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
 }
 </style>
