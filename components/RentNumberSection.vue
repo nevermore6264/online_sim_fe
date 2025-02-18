@@ -213,7 +213,6 @@ const filteredCountries = computed(() => {
 });
 
 const getPriceByLabel = (rentDurationPrices, label) => {
-  console.log(rentDurationPrices);
   const found = rentDurationPrices.find((item) => item.label === label);
   return found ? found.price : "N/A"; // Nếu không tìm thấy, trả về 0
 };
