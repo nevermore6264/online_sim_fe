@@ -314,22 +314,14 @@ const rentSelectedServices = async () => {
 // State của ô tìm kiếm
 const searchQuery = ref("");
 
+// Lọc danh sách dịch vụ hiển thị
 const filteredServices = computed(() => {
   if (!searchQuery.value) {
     return selectedCustomer.value.services;
   }
-  console.log(selectedCustomer.value);
-  return selectedCustomer.value.services
-    .map((service) => ({
-      ...service,
-      price: getPriceByLabel(
-        selectedCustomer.value.rentDurationPrices,
-        selectedRentalPeriod.value
-      ), // Gán giá từ danh sách
-    }))
-    .filter((service) =>
-      service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
-    );
+  return selectedCustomer.value.services.filter((service) =>
+    service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
 });
 
 const totalAmount = computed(() => {
