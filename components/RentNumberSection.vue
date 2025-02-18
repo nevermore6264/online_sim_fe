@@ -52,7 +52,9 @@
       </div>
 
       <div class="dropdown-item">
-        <label for="rental-quantity-select">Select Rental Period:</label>
+        <label class="rental-quantity-label" for="rental-quantity-select"
+          >Select Rental Period:</label
+        >
         <div class="rental-selection">
           <Dropdown
             id="rental-quantity-select"
@@ -92,9 +94,6 @@
                 width="24px"
               />
               <span class="service-name">{{ service.text }}</span>
-              <span class="service-name">
-                Country: {{ selectedCustomer.value }}
-              </span>
               <span class="service-name"
                 >For: {{ selectedRentalQuantity }} {{ selectedRentalUnit }}
               </span>
@@ -108,6 +107,15 @@
                 }}
                 USDT
               </span>
+              <!-- Xóa dịch vụ -->
+              <Button
+                icon="pi pi-times"
+                severity="danger"
+                variant="text"
+                rounded
+                plain
+                @click="removeService(index)"
+              />
             </div>
           </div>
         </div>
@@ -158,12 +166,10 @@ import orderService from "../services/order";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 import { push } from "notivue";
-import axios from "axios";
 
 const customers = ref([]);
 const loading = ref(false);
 
-const dropdownOptions = ref([]);
 const selectedCustomer = ref(null);
 const selectedServices = ref([]);
 const rentalQuantityOptions = ref([
@@ -336,6 +342,10 @@ const totalAmount = computed(() => {
   }, 0);
 });
 
+const removeService = (index) => {
+  selectedServices.value.splice(index, 1);
+};
+
 const initializeData = async () => {
   loading.value = true;
   const countries = await GetAllCountries();
@@ -354,6 +364,8 @@ onMounted(() => {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
 }
 
 .flex-container {
@@ -427,6 +439,50 @@ li {
   display: flex;
   align-items: flex-start;
   gap: 20px;
+}
+
+@media (max-width: 1366px) {
+  .top-section {
+    flex-direction: column !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .rental-quantity-label {
+    margin-top: 20px !important;
+  }
+
+  .rental-selection {
+    margin-bottom: 20px !important;
+  }
+
+  .service-info {
+    flex-direction: column !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-section {
+    flex-direction: column !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .rental-quantity-label {
+    margin-top: 20px !important;
+  }
+
+  .search-input {
+    width: 100% !important;
+  }
+
+  .rental-selection {
+    margin-bottom: 20px !important;
+  }
+
+  .service-info {
+    flex-direction: column !important;
+  }
 }
 
 .selected-services {
@@ -563,15 +619,6 @@ li {
   height: 24px;
   border-radius: 4px;
   object-fit: cover;
-}
-
-.search-input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
 }
 
 .landing-page {
