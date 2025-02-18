@@ -123,7 +123,7 @@
     </div>
 
     <!-- Search Bar for Services -->
-    <div class="search-container" v-if="filteredServices.length > 0">
+    <div class="search-container">
       <input
         type="text"
         v-model="searchQuery"
@@ -185,7 +185,6 @@ const selectedRentalPeriod = ref("1 days"); // Giá trị mặc định
 
 // Tìm kiếm
 const searchCountry = ref("");
-const searchService = ref("");
 
 // Phân nhóm dựa trên kích thước màn hình
 const groupedCustomers = computed(() => {
@@ -207,31 +206,10 @@ const filteredCountries = computed(() => {
   );
 });
 
-// Lọc danh sách dịch vụ theo tìm kiếm
-const filteredServices = computed(() => {
-  if (!searchService.value.trim())
-    return selectedCustomer.value?.services || [];
-  return selectedCustomer.value?.services.filter((service) =>
-    service.text.toLowerCase().includes(searchService.value.toLowerCase())
-  );
-});
-
 const getPriceByLabel = (rentDurationPrices, label) => {
+  console.log(rentDurationPrices);
   const found = rentDurationPrices.find((item) => item.label === label);
   return found ? found.price : "N/A"; // Nếu không tìm thấy, trả về 0
-};
-
-const fetchCountries = async () => {
-  try {
-    const response = await GetAllCountries();
-    dropdownOptions.value = response.map((customer) => ({
-      name: `${customer?.name} (${customer?.code})`,
-      value: customer?.code,
-      flagImage: customer?.flagImage,
-    }));
-  } catch (error) {
-    console.error("Error fetching countries:", error);
-  }
 };
 
 const onCountrySelect = async (country) => {
@@ -330,22 +308,23 @@ const rentSelectedServices = async () => {
 // State của ô tìm kiếm
 const searchQuery = ref("");
 
-// const filteredServices = computed(() => {
-//   if (!searchQuery.value) {
-//     return selectedCustomer.value.services;
-//   }
-//   return selectedCustomer.value.services
-//     .map((service) => ({
-//       ...service,
-//       price: getPriceByLabel(
-//         selectedCustomer.rentDurationPrices,
-//         selectedRentalPeriod.value
-//       ), // Gán giá từ danh sách
-//     }))
-//     .filter((service) =>
-//       service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
-//     );
-// });
+const filteredServices = computed(() => {
+  if (!searchQuery.value) {
+    return selectedCustomer.value.services;
+  }
+  console.log(selectedCustomer.value);
+  return selectedCustomer.value.services
+    .map((service) => ({
+      ...service,
+      price: getPriceByLabel(
+        selectedCustomer.value.rentDurationPrices,
+        selectedRentalPeriod.value
+      ), // Gán giá từ danh sách
+    }))
+    .filter((service) =>
+      service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
+    );
+});
 
 const totalAmount = computed(() => {
   return selectedServices.value.reduce((sum, service) => {
@@ -366,7 +345,6 @@ const initializeData = async () => {
 
 onMounted(() => {
   initializeData();
-  fetchCountries();
 });
 </script>
 
