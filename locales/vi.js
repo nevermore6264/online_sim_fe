@@ -133,6 +133,19 @@ export default {
     api: {
       general: "Tổng quan",
     },
+    always_active: "Luôn hoạt động",
+    activation_by_order: "Kích hoạt theo đơn đặt hàng",
+    priority_numbers: "Số ưu tiên",
+    select_country: "Chọn quốc gia",
+    select_rental_period: "Chọn thời hạn thuê",
+    choose_number: "Chọn số",
+    choose_period: "Chọn một thời hạn",
+    service: "Dịch vụ",
+    for: "Cho",
+    total_amount: "Tổng số tiền",
+    rent_service: "Dịch vụ thuê",
+    search_services: "Tìm kiếm dịch vụ...",
+    service_image: "Hình ảnh dịch vụ",
   },
   proxy: {
     api: {

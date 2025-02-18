@@ -8,7 +8,9 @@
     <!-- Country Selection & Selected Services -->
     <div class="top-section">
       <div class="dropdown-item">
-        <label for="country-select">Select Country:</label>
+        <label for="country-select">{{
+          $t("rent_number.select_country")
+        }}</label>
         <div class="table-container table-services">
           <input
             v-model="searchCountry"
@@ -52,9 +54,9 @@
       </div>
 
       <div class="dropdown-item">
-        <label class="rental-quantity-label" for="rental-quantity-select"
-          >Select Rental Period:</label
-        >
+        <label class="rental-quantity-label" for="rental-quantity-select">
+          {{ $t("rent_number.select_rental_period") }}
+        </label>
         <div class="rental-selection">
           <Dropdown
             id="rental-quantity-select"
@@ -62,7 +64,7 @@
             optionLabel="label"
             optionValue="value"
             v-model="selectedRentalQuantity"
-            placeholder="Choose number"
+            :placeholder="$t('rent_number.choose_number')"
             class="w-full"
           />
           <Dropdown
@@ -71,7 +73,7 @@
             optionLabel="label"
             optionValue="value"
             v-model="selectedRentalUnit"
-            placeholder="Choose a period"
+            :placeholder="$t('rent_number.choose_period')"
             class="w-full"
           />
         </div>
@@ -86,19 +88,22 @@
             class="selected-item"
           >
             <div class="service-info">
-              <span class="service-name">Service: </span>
+              <span class="service-name"
+                >{{ $t("rent_number.service") }}:
+              </span>
               <img
                 :src="service?.image"
-                alt="Service Image"
+                :alt="$t('rent_number.service_image')"
                 class="w-24 rounded"
                 width="24px"
               />
               <span class="service-name">{{ service.text }}</span>
-              <span class="service-name"
-                >For: {{ selectedRentalQuantity }} {{ selectedRentalUnit }}
+              <span class="service-name">
+                {{ $t("rent_number.for") }}: {{ selectedRentalQuantity }}
+                {{ selectedRentalUnit }}
               </span>
               <span class="service-price">
-                Total amount:
+                {{ $t("rent_number.total_amount") }}:
                 {{
                   getPriceByLabel(
                     service?.rentDurationPrices,
@@ -107,7 +112,6 @@
                 }}
                 USDT
               </span>
-              <!-- Xóa dịch vụ -->
               <Button
                 icon="pi pi-times"
                 severity="danger"
@@ -124,9 +128,11 @@
       <!-- Rent Button -->
       <div class="rent-section" v-if="selectedServices.length > 0">
         <button class="rent-button" @click="rentSelectedServices">
-          Rent Service
+          {{ $t("rent_number.rent_service") }}
         </button>
-        <p class="total-amount">Total Amount: {{ totalAmount }} USDT</p>
+        <p class="total-amount">
+          {{ $t("rent_number.total_amount") }}: {{ totalAmount }} USDT
+        </p>
       </div>
     </div>
 
@@ -135,7 +141,7 @@
       <input
         type="text"
         v-model="searchQuery"
-        placeholder="Search services..."
+        :placeholder="$t('rent_number.search_services')"
         class="search-input"
       />
     </div>
@@ -150,7 +156,11 @@
         @click="toggleServiceSelection(item)"
       >
         <div class="service-content">
-          <img :src="item?.image" alt="Service Image" class="service-image" />
+          <img
+            :src="item?.image"
+            :alt="$t('rent_number.service_image')"
+            class="service-image"
+          />
           <div class="service-details">
             <h3>{{ item?.text }}</h3>
           </div>

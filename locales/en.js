@@ -134,6 +134,19 @@ export default {
     api: {
       general: "General",
     },
+    always_active: "Always active",
+    activation_by_order: "Activation by order",
+    priority_numbers: "Priority numbers",
+    select_country: "Select Country",
+    select_rental_period: "Select Rental Period",
+    choose_number: "Choose number",
+    choose_period: "Choose a period",
+    service: "Service",
+    for: "For",
+    total_amount: "Total amount",
+    rent_service: "Rent Service",
+    search_services: "Search services...",
+    service_image: "Service Image",
   },
   proxy: {
     api: {
