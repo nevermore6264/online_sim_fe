@@ -9,28 +9,6 @@
     <div class="top-section">
       <div class="dropdown-item">
         <label for="country-select">Select Country:</label>
-        <!-- <Dropdown
-          id="country-select"
-          :options="dropdownOptions"
-          optionLabel="name"
-          optionValue="value"
-          v-model="selectedCustomer.value"
-          placeholder="Choose a country"
-          class="w-full"
-          @change="onCountrySelect"
-        >
-          <template #option="slotProps">
-            <div class="flex align-items-center">
-              <img
-                :alt="slotProps.option?.name"
-                :src="slotProps.option?.flagImage"
-                class="mr-2 flag"
-                style="width: 18px"
-              />
-              <div>{{ slotProps.option?.name }}</div>
-            </div>
-          </template>
-        </Dropdown> -->
         <div class="table-container table-services">
           <input
             v-model="searchCountry"
@@ -44,9 +22,6 @@
             dataKey="code"
             :loading="loading"
           >
-            <template #header>
-              <div class="lbl_services">{{ $t("landing.select_country") }}</div>
-            </template>
             <template #empty>{{ $t("landing.no_countries_found") }}</template>
             <template #loading>{{ $t("landing.loading_countries") }}</template>
             <Column style="min-width: 3px">
@@ -670,18 +645,11 @@ li {
 }
 
 .table-services .p-datatable-header {
-  margin-bottom: -15px !important;
-  min-width: 135px !important;
-  width: max-content !important;
-  max-width: 60% !important;
-  padding: 0px 15px !important;
-  height: 45px !important;
-  border-radius: 15px 15px 0 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background-color: rgb(0, 174, 255);
-  color: #ffffff;
+  display: none !important;
+}
+
+.table-services table th {
+  display: none !important;
 }
 
 .country-item {
