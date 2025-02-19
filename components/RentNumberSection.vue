@@ -12,18 +12,38 @@
           $t("rent_number.select_country")
         }}</label>
         <div class="table-container table-services">
-          <input v-model="searchCountry" :placeholder="$t('landing.search_country')" class="search-input" />
-          <DataTable :value="filteredCountries" scrollable scrollHeight="400px" dataKey="code" :loading="loading">
+          <input
+            v-model="searchCountry"
+            :placeholder="$t('landing.search_country')"
+            class="search-input"
+          />
+          <DataTable
+            :value="filteredCountries"
+            scrollable
+            scrollHeight="400px"
+            dataKey="code"
+            :loading="loading"
+          >
             <template #empty>{{ $t("landing.no_countries_found") }}</template>
             <template #loading>{{ $t("landing.loading_countries") }}</template>
             <Column style="min-width: 3px">
               <template #body="{ data }">
                 <div class="country-item-row">
-                  <div v-for="country in data" :key="country.code" class="country-item" :class="{
-                    'selected-country':
-                      country.code === selectedCustomer?.code,
-                  }" @click="onCountrySelect(country)">
-                    <img :src="country.flagImage" :alt="country.name" class="flag-image" />
+                  <div
+                    v-for="country in data"
+                    :key="country.code"
+                    class="country-item"
+                    :class="{
+                      'selected-country':
+                        country.code === selectedCustomer?.code,
+                    }"
+                    @click="onCountrySelect(country)"
+                  >
+                    <img
+                      :src="country.flagImage"
+                      :alt="country.name"
+                      class="flag-image"
+                    />
                     <span class="country-name">{{ country.name }}</span>
                   </div>
                 </div>
@@ -38,23 +58,47 @@
           {{ $t("rent_number.select_rental_period") }}
         </label>
         <div class="rental-selection">
-          <Dropdown id="rental-quantity-select" size="small" :options="rentalQuantityOptions" optionLabel="label"
-            optionValue="value" v-model="selectedRentalQuantity" :placeholder="$t('rent_number.choose_number')"
-            class="w-full" />
-          <Dropdown id="rental-unit-select" size="small" :options="rentalUnitOptions" optionLabel="label"
-            optionValue="value" v-model="selectedRentalUnit" :placeholder="$t('rent_number.choose_period')"
-            class="w-full" />
+          <Dropdown
+            id="rental-quantity-select"
+            size="small"
+            :options="rentalQuantityOptions"
+            optionLabel="label"
+            optionValue="value"
+            v-model="selectedRentalQuantity"
+            :placeholder="$t('rent_number.choose_number')"
+            class="w-full"
+          />
+          <Dropdown
+            id="rental-unit-select"
+            size="small"
+            :options="rentalUnitOptions"
+            optionLabel="label"
+            optionValue="value"
+            v-model="selectedRentalUnit"
+            :placeholder="$t('rent_number.choose_period')"
+            class="w-full"
+          />
         </div>
       </div>
 
       <!-- Selected Services List -->
       <div class="selected-services" v-if="selectedServices.length > 0">
         <div class="selected-services-list">
-          <div v-for="(service, index) in selectedServices" :key="index" class="selected-item">
+          <div
+            v-for="(service, index) in selectedServices"
+            :key="index"
+            class="selected-item"
+          >
             <div class="service-info">
-              <span class="service-name">{{ $t("rent_number.service") }}:
+              <span class="service-name"
+                >{{ $t("rent_number.service") }}:
               </span>
-              <img :src="service?.image" :alt="$t('rent_number.service_image')" class="w-24 rounded" width="12px" />
+              <img
+                :src="service?.image"
+                :alt="$t('rent_number.service_image')"
+                class="w-24 rounded"
+                width="12px"
+              />
               <span class="service-name">{{ service.text }}</span>
               <span class="service-name">
                 {{ $t("rent_number.for") }}: {{ selectedRentalQuantity }}
@@ -70,8 +114,15 @@
                 }}
                 USDT
               </span>
-              <Button class="remove-icon" icon="pi pi-times" severity="danger" variant="text" rounded plain
-                @click="removeService(index)" />
+              <Button
+                class="remove-icon"
+                icon="pi pi-times"
+                severity="danger"
+                variant="text"
+                rounded
+                plain
+                @click="removeService(index)"
+              />
             </div>
           </div>
         </div>
@@ -90,15 +141,29 @@
 
     <!-- Search Bar for Services -->
     <div class="search-container">
-      <input type="text" v-model="searchQuery" :placeholder="$t('rent_number.search_services')" class="search-input" />
+      <input
+        type="text"
+        v-model="searchQuery"
+        :placeholder="$t('rent_number.search_services')"
+        class="search-input"
+      />
     </div>
 
     <!-- Services Grid -->
     <div class="services-grid">
-      <div v-for="(item, index) in filteredServices" :key="index" class="service-card"
-        :class="{ selected: selectedServices.includes(item) }" @click="toggleServiceSelection(item)">
+      <div
+        v-for="(item, index) in filteredServices"
+        :key="index"
+        class="service-card"
+        :class="{ selected: selectedServices.includes(item) }"
+        @click="toggleServiceSelection(item)"
+      >
         <div class="service-content">
-          <img :src="item?.image" :alt="$t('rent_number.service_image')" class="service-image" />
+          <img
+            :src="item?.image"
+            :alt="$t('rent_number.service_image')"
+            class="service-image"
+          />
           <div class="service-details">
             <h5>{{ item?.text }}</h5>
           </div>
@@ -583,7 +648,7 @@ li {
   margin-bottom: 60px;
 }
 
-.landing-page .p-datatable .p-datatable-tbody>tr>td {
+.landing-page .p-datatable .p-datatable-tbody > tr > td {
   border: none;
   padding: 5px 5px;
 }
