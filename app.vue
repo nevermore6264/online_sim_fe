@@ -46,20 +46,20 @@ label {
 }
 
 ::-webkit-scrollbar-track {
-  background: linear-gradient(90deg,
-      rgba(0, 0, 0, 0),
-      rgba(0, 0, 0, 0) 48%,
-      rgba(174, 195, 249, 0.25) 0,
-      rgba(174, 195, 249, 0.25) 52%,
-      rgba(0, 0, 0, 0) 0,
-      rgba(0, 0, 0, 0));
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0) 48%,
+    rgba(174, 195, 249, 0.25) 0,
+    rgba(174, 195, 249, 0.25) 52%,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0)
+  );
   border-radius: 0;
 }
 
 .main {
-  background: linear-gradient(to right,
-      #d7f2fe,
-      #ffffff);
+  background: linear-gradient(to right, #d7f2fe, #ffffff);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
@@ -156,6 +156,12 @@ ul {
   width: 100%;
 }
 
+.p-dropdown-sm {
+  font-size: 0.875rem; /* Cỡ chữ nhỏ hơn */
+  padding: 0.25rem 0.5rem; /* Giảm padding */
+  height: 32px; /* Giảm chiều cao */
+}
+
 ol,
 ul {
   padding-left: 15px;
@@ -171,7 +177,7 @@ ul {
     padding-inline-start: 0px !important;
   }
 
-  .p-datatable .p-datatable-tbody>tr {
+  .p-datatable .p-datatable-tbody > tr {
     width: 50% !important;
   }
 
@@ -255,7 +261,7 @@ ul {
     width: auto !important;
   }
 
-  .p-datatable .p-datatable-tbody>tr {
+  .p-datatable .p-datatable-tbody > tr {
     width: 100% !important;
   }
 }

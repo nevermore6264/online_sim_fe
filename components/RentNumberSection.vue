@@ -213,13 +213,13 @@ const getPriceByLabel = (rentDurationPrices, label) => {
   return found ? found.price : "N/A"; // Nếu không tìm thấy, trả về 0
 };
 
-const onCountrySelect = async (country) => {
-  selectedCustomer.value = country;
-  if (country?.code) {
+const onCountrySelect = async () => {
+  selectedServices.value = [];
+  if (selectedCustomer.value) {
     try {
-      const countryCode = country.code;
+      const countryCode = selectedCustomer.value;
       const response = await serviceService.GetServicesByCountryCode(
-        countryCode
+        countryCode?.value
       );
 
       selectedCustomer.value.services = response?.success ? response.data : [];
@@ -231,10 +231,7 @@ const onCountrySelect = async (country) => {
 };
 
 selectedCustomer.value = {
-  name: "Japan",
-  code: "JPN",
-  icon: "🇯🇵",
-  flagImage: "https://flagsapi.com/JP/flat/64.png",
+  value: "JPN",
   services: [],
 };
 
