@@ -38,10 +38,12 @@
           {{ $t("rent_number.select_rental_period") }}
         </label>
         <div class="rental-selection">
-          <Dropdown id="rental-quantity-select" :options="rentalQuantityOptions" optionLabel="label" optionValue="value"
-            v-model="selectedRentalQuantity" :placeholder="$t('rent_number.choose_number')" class="w-full" />
-          <Dropdown id="rental-unit-select" :options="rentalUnitOptions" optionLabel="label" optionValue="value"
-            v-model="selectedRentalUnit" :placeholder="$t('rent_number.choose_period')" class="w-full" />
+          <Dropdown id="rental-quantity-select" size="small" :options="rentalQuantityOptions" optionLabel="label"
+            optionValue="value" v-model="selectedRentalQuantity" :placeholder="$t('rent_number.choose_number')"
+            class="w-full" />
+          <Dropdown id="rental-unit-select" size="small" :options="rentalUnitOptions" optionLabel="label"
+            optionValue="value" v-model="selectedRentalUnit" :placeholder="$t('rent_number.choose_period')"
+            class="w-full" />
         </div>
       </div>
 
@@ -98,7 +100,7 @@
         <div class="service-content">
           <img :src="item?.image" :alt="$t('rent_number.service_image')" class="service-image" />
           <div class="service-details">
-            <h3>{{ item?.text }}</h3>
+            <h5>{{ item?.text }}</h5>
           </div>
         </div>
       </div>
@@ -464,14 +466,20 @@ li {
   }
 }
 
+.service-card h5 {
+  margin-block-start: 10px;
+  margin-block-end: 10px;
+}
+
 .service-card {
   background-color: #fff;
   border-radius: 8px;
-  padding: 5px 15px;
+  padding: 0px 10px;
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   border: 2px solid transparent;
+  height: fit-content;
 }
 
 .service-card:hover {
@@ -494,8 +502,8 @@ li {
 
 /* Image inside service card */
 .service-image {
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
 }
 
@@ -665,5 +673,7 @@ li {
   background: none;
   border: none;
   color: red;
+  width: 12px;
+  height: 12px;
 }
 </style>

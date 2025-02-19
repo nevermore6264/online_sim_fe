@@ -1,15 +1,10 @@
 <template>
   <div class="proxy-containter">
-    <Breadcrumb :home="home" :model="items" />
 
     <h4 class="grey-doc-text-red-bg">⚠ {{ t("rent_number.notify") }}</h4>
     <div class="tab-container">
-      <TabMenu
-        :model="computedTabs"
-        v-model="activeTab"
-        class="custom-tab-menu"
-        @update:activeIndex="activeTab = $event"
-      />
+      <TabMenu :model="computedTabs" v-model="activeTab" class="custom-tab-menu"
+        @update:activeIndex="activeTab = $event" />
 
       <div class="tab-content">
         <div v-if="activeTab === 0">
@@ -34,10 +29,6 @@ import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-const home = ref({
-  icon: "pi pi-home",
-});
-const items = ref([{ label: t("tabs.rent_number") }]); // Sử dụng i18n cho label
 
 const activeTab = ref(0);
 

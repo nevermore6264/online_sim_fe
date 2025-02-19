@@ -1,17 +1,10 @@
 <template>
   <div class="proxy-containter">
-    <Breadcrumb :home="home" :model="breadcrumbItems" />
 
     <h4 class="grey-doc-text-red-bg">⚠ {{ $t("proxy.notify") }}</h4>
     <div class="tab-container">
-      <TabMenu
-        :model="
-          tabs.map((tab) => ({ label: $t(tab.labelKey), icon: tab.icon }))
-        "
-        v-model="activeTab"
-        class="custom-tab-menu"
-        @update:activeIndex="activeTab = $event"
-      />
+      <TabMenu :model="tabs.map((tab) => ({ label: $t(tab.labelKey), icon: tab.icon }))
+        " v-model="activeTab" class="custom-tab-menu" @update:activeIndex="activeTab = $event" />
 
       <div class="tab-content">
         <div v-if="activeTab === 0">
@@ -33,13 +26,6 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n"; // Import useI18n
 
 const { t } = useI18n();
-
-const home = ref({
-  icon: "pi pi-home",
-});
-const breadcrumbItems = computed(() => [
-  { label: t("proxy.breadcrumb_label") },
-]);
 
 const tabs = [
   { labelKey: "proxy.tab_order", icon: "pi pi-shopping-cart" },
