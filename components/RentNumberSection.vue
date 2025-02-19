@@ -21,6 +21,7 @@
           class="w-full"
           @change="onCountrySelect"
         >
+          <!-- Hiển thị trong danh sách dropdown -->
           <template #option="slotProps">
             <div class="flex align-items-center">
               <img
@@ -31,6 +32,21 @@
               />
               <div>{{ slotProps.option?.name }}</div>
             </div>
+          </template>
+
+          <!-- Hiển thị khi đã chọn -->
+          <template #value="slotProps">
+            {{ slotProps.value }}
+            <div v-if="slotProps.value" class="flex align-items-center">
+              <img
+                :alt="slotProps.value?.name"
+                :src="slotProps.value?.flagImage"
+                class="mr-2 flag"
+                style="width: 18px"
+              />
+              <div>{{ slotProps.value?.name }}</div>
+            </div>
+            <span v-else>{{ placeholder }}</span>
           </template>
         </Dropdown>
       </div>
@@ -341,7 +357,7 @@ const fetchCountries = async () => {
   try {
     const response = await GetAllCountries();
     dropdownOptions.value = response.map((customer) => ({
-      name: `${customer?.name} (${customer?.code})`,
+      name: `${customer?.name}`,
       value: customer?.code,
       flagImage: customer?.flagImage,
     }));
