@@ -57,7 +57,7 @@ onUnmounted(() => {
 }
 
 .main-content {
-  padding: 20px;
+  padding: 0 20px;
   width: 560px;
 }
 

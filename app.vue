@@ -251,7 +251,7 @@ ul {
     gap: 10px !important;
   }
 
-  .main-content[data-v-fe8b218c] {
+  .main-content {
     width: auto !important;
   }
 

@@ -11,46 +11,28 @@
         <label for="country-select">{{
           $t("rent_number.select_country")
         }}</label>
-        <div class="table-container table-services">
-          <input
-            v-model="searchCountry"
-            :placeholder="$t('landing.search_country')"
-            class="search-input"
-          />
-          <DataTable
-            :value="filteredCountries"
-            scrollable
-            scrollHeight="400px"
-            dataKey="code"
-            :loading="loading"
-          >
-            <template #empty>{{ $t("landing.no_countries_found") }}</template>
-            <template #loading>{{ $t("landing.loading_countries") }}</template>
-            <Column style="min-width: 3px">
-              <template #body="{ data }">
-                <div class="country-item-row">
-                  <div
-                    v-for="country in data"
-                    :key="country.code"
-                    class="country-item"
-                    :class="{
-                      'selected-country':
-                        country.code === selectedCustomer?.code,
-                    }"
-                    @click="onCountrySelect(country)"
-                  >
-                    <img
-                      :src="country.flagImage"
-                      :alt="country.name"
-                      class="flag-image"
-                    />
-                    <span class="country-name">{{ country.name }}</span>
-                  </div>
-                </div>
-              </template>
-            </Column>
-          </DataTable>
-        </div>
+        <Dropdown
+          id="country-select"
+          :options="dropdownOptions"
+          optionLabel="name"
+          optionValue="value"
+          v-model="selectedCustomer.value"
+          placeholder="Choose a country"
+          class="w-full"
+          @change="onCountrySelect"
+        >
+          <template #option="slotProps">
+            <div class="flex align-items-center">
+              <img
+                :alt="slotProps.option?.name"
+                :src="slotProps.option?.flagImage"
+                class="mr-2 flag"
+                style="width: 18px"
+              />
+              <div>{{ slotProps.option?.name }}</div>
+            </div>
+          </template>
+        </Dropdown>
       </div>
 
       <div class="dropdown-item">
@@ -199,6 +181,7 @@ const rentalUnitOptions = ref([
 
 const selectedRentalQuantity = ref(1);
 const selectedRentalUnit = ref("days");
+const dropdownOptions = ref([]);
 
 const selectedRentalPeriod = ref("1 days"); // Giá trị mặc định
 
@@ -357,8 +340,22 @@ const initializeData = async () => {
   loading.value = false;
 };
 
+const fetchCountries = async () => {
+  try {
+    const response = await GetAllCountries();
+    dropdownOptions.value = response.map((customer) => ({
+      name: `${customer?.name} (${customer?.code})`,
+      value: customer?.code,
+      flagImage: customer?.flagImage,
+    }));
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+  }
+};
+
 onMounted(() => {
   initializeData();
+  fetchCountries();
 });
 </script>
 
