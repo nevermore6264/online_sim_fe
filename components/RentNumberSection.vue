@@ -197,19 +197,6 @@ const selectedRentalQuantity = ref(1);
 const selectedRentalUnit = ref("days");
 const dropdownOptions = ref([]);
 
-// Tìm kiếm
-const searchCountry = ref("");
-
-// Phân nhóm dựa trên kích thước màn hình
-const groupedCustomers = computed(() => {
-  const itemsPerRow = 1;
-  const groups = [];
-  for (let i = 0; i < customers.value.length; i += itemsPerRow) {
-    groups.push(customers.value.slice(i, i + itemsPerRow));
-  }
-  return groups;
-});
-
 const getPriceByLabel = (rentDurationPrices, label) => {
   const found = rentDurationPrices.find((item) => item.label === label);
   return found ? found.price : "N/A"; // Nếu không tìm thấy, trả về 0
@@ -230,10 +217,7 @@ const onCountrySelect = async () => {
   }
 };
 
-selectedCustomer.value = {
-  value: "JPN",
-  services: [],
-};
+selectedCustomer.value = ;
 
 // Gọi để load dịch vụ của Japan
 onCountrySelect();
