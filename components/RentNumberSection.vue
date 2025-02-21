@@ -217,7 +217,10 @@ const onCountrySelect = async () => {
   }
 };
 
-selectedCustomer.value = ;
+selectedCustomer.value = {
+  value: "JPN",
+  services: [],
+};
 
 // Gọi để load dịch vụ của Japan
 onCountrySelect();
