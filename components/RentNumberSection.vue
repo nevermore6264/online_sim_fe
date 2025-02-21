@@ -208,7 +208,9 @@ const onCountrySelect = async () => {
       const response = await serviceService.GetServicesByCountryCode(
         selectedCustomer.value.value
       );
-      selectedCustomer.value.services = response.success ? response.data : [];
+      if (selectedCustomer.value) {
+        selectedCustomer.value.services = response.success ? response.data : [];
+      }
     } catch (error) {
       console.error("Error fetching services:", error);
       selectedCustomer.value.services = [];
@@ -286,10 +288,13 @@ const searchQuery = ref("");
 
 // Lọc danh sách dịch vụ hiển thị
 const filteredServices = computed(() => {
-  if (!searchQuery.value) {
-    return selectedCustomer?.value?.value?.services;
+  if (!selectedCustomer.value || !selectedCustomer.value.services) {
+    return [];
   }
-  return selectedCustomer?.value?.value?.services.filter((service) =>
+  if (!searchQuery.value) {
+    return selectedCustomer.value.services;
+  }
+  return selectedCustomer.value.services.filter((service) =>
     service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
@@ -329,12 +334,15 @@ const fetchCountries = async () => {
 };
 
 onMounted(async () => {
-  await fetchCountries(); // Fetch danh sách quốc gia trước
-  selectedCustomer.value =
-    dropdownOptions.value.find((country) => country.value === "JPN") || null; // Gán Japan làm mặc định nếu có
+  await fetchCountries();
 
-  if (selectedCustomer.value) {
-    await onCountrySelect(); // Gọi API để lấy danh sách dịch vụ của Japan
+  // Chờ đến khi danh sách quốc gia được load xong rồi mới gán selectedCustomer
+  if (dropdownOptions.value.length > 0) {
+    selectedCustomer.value =
+      dropdownOptions.value.find((country) => country.value === "JPN") ||
+      dropdownOptions.value[0]; // Nếu không có Japan, chọn quốc gia đầu tiên
+
+    await onCountrySelect();
   }
 });
 </script>
