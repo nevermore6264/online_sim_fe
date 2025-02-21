@@ -44,7 +44,6 @@
               />
               <div>{{ slotProps.value.name }}</div>
             </div>
-            <span v-else>{{ placeholder }}</span>
           </template>
         </Dropdown>
       </div>
@@ -203,27 +202,19 @@ const getPriceByLabel = (rentDurationPrices, label) => {
 };
 
 const onCountrySelect = async () => {
-  selectedServices.value = [];
-  if (selectedCustomer) {
+  selectedServices.value = []; // Reset danh sách dịch vụ đã chọn
+  if (selectedCustomer.value?.value) {
     try {
       const response = await serviceService.GetServicesByCountryCode(
-        selectedCustomer?.value?.value
+        selectedCustomer.value.value
       );
-      selectedCustomer.services = response.success ? response.data : [];
+      selectedCustomer.value.services = response.success ? response.data : [];
     } catch (error) {
       console.error("Error fetching services:", error);
-      selectedCustomer.services = [];
+      selectedCustomer.value.services = [];
     }
   }
 };
-
-selectedCustomer.value = {
-  value: "JPN",
-  services: [],
-};
-
-// Gọi để load dịch vụ của Japan
-onCountrySelect();
 
 const toggleServiceSelection = (service) => {
   const index = selectedServices.value.findIndex(
@@ -296,9 +287,9 @@ const searchQuery = ref("");
 // Lọc danh sách dịch vụ hiển thị
 const filteredServices = computed(() => {
   if (!searchQuery.value) {
-    return selectedCustomer.value.services;
+    return selectedCustomer?.value?.value?.services;
   }
-  return selectedCustomer.value.services.filter((service) =>
+  return selectedCustomer?.value?.value?.services.filter((service) =>
     service.text.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
@@ -337,9 +328,14 @@ const fetchCountries = async () => {
   }
 };
 
-onMounted(() => {
-  initializeData();
-  fetchCountries();
+onMounted(async () => {
+  await fetchCountries(); // Fetch danh sách quốc gia trước
+  selectedCustomer.value =
+    dropdownOptions.value.find((country) => country.value === "JPN") || null; // Gán Japan làm mặc định nếu có
+
+  if (selectedCustomer.value) {
+    await onCountrySelect(); // Gọi API để lấy danh sách dịch vụ của Japan
+  }
 });
 </script>
 
