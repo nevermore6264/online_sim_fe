@@ -15,8 +15,7 @@
           id="country-select"
           :options="dropdownOptions"
           optionLabel="name"
-          optionValue="value"
-          v-model="selectedCustomer.value"
+          v-model="selectedCustomer"
           placeholder="Choose a country"
           class="w-full"
           @change="onCountrySelect"
@@ -25,26 +24,25 @@
           <template #option="slotProps">
             <div class="flex align-items-center">
               <img
-                :alt="slotProps.option?.name"
-                :src="slotProps.option?.flagImage"
+                :alt="slotProps.option.name"
+                :src="slotProps.option.flagImage"
                 class="mr-2 flag"
                 style="width: 18px"
               />
-              <div>{{ slotProps.option?.name }}</div>
+              <div>{{ slotProps.option.name }}</div>
             </div>
           </template>
 
           <!-- Hiển thị khi đã chọn -->
           <template #value="slotProps">
-            {{ slotProps.value }}
             <div v-if="slotProps.value" class="flex align-items-center">
               <img
-                :alt="slotProps.value?.name"
-                :src="slotProps.value?.flagImage"
+                :alt="slotProps.value.name"
+                :src="slotProps.value.flagImage"
                 class="mr-2 flag"
                 style="width: 18px"
               />
-              <div>{{ slotProps.value?.name }}</div>
+              <div>{{ slotProps.value.name }}</div>
             </div>
             <span v-else>{{ placeholder }}</span>
           </template>
@@ -199,8 +197,6 @@ const selectedRentalQuantity = ref(1);
 const selectedRentalUnit = ref("days");
 const dropdownOptions = ref([]);
 
-const selectedRentalPeriod = ref("1 days"); // Giá trị mặc định
-
 // Tìm kiếm
 const searchCountry = ref("");
 
@@ -214,16 +210,6 @@ const groupedCustomers = computed(() => {
   return groups;
 });
 
-// Lọc danh sách quốc gia theo tìm kiếm
-const filteredCountries = computed(() => {
-  if (!searchCountry.value.trim()) return groupedCustomers.value;
-  return groupedCustomers.value.map((group) =>
-    group.filter((country) =>
-      country.name.toLowerCase().includes(searchCountry.value.toLowerCase())
-    )
-  );
-});
-
 const getPriceByLabel = (rentDurationPrices, label) => {
   const found = rentDurationPrices.find((item) => item.label === label);
   return found ? found.price : "N/A"; // Nếu không tìm thấy, trả về 0
@@ -231,17 +217,15 @@ const getPriceByLabel = (rentDurationPrices, label) => {
 
 const onCountrySelect = async () => {
   selectedServices.value = [];
-  if (selectedCustomer.value) {
+  if (selectedCustomer) {
     try {
-      const countryCode = selectedCustomer.value;
       const response = await serviceService.GetServicesByCountryCode(
-        countryCode?.value
+        selectedCustomer?.value?.value
       );
-
-      selectedCustomer.value.services = response?.success ? response.data : [];
+      selectedCustomer.services = response.success ? response.data : [];
     } catch (error) {
       console.error("Error fetching services:", error);
-      selectedCustomer.value.services = [];
+      selectedCustomer.services = [];
     }
   }
 };
@@ -252,7 +236,7 @@ selectedCustomer.value = {
 };
 
 // Gọi để load dịch vụ của Japan
-onCountrySelect(selectedCustomer.value);
+onCountrySelect();
 
 const toggleServiceSelection = (service) => {
   const index = selectedServices.value.findIndex(
