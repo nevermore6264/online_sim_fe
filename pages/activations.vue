@@ -16,12 +16,12 @@
         <div v-if="activeTab === 1">
           <MyNumbersSection />
         </div>
-        <!-- <div v-if="activeTab === 2">
+        <div v-if="activeTab === 2">
           <FAQRentNumber />
-        </div> -->
-        <!-- <div v-if="activeTab === 3">
+        </div>
+        <div v-if="activeTab === 3">
           <API />
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
