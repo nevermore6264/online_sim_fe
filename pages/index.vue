@@ -95,7 +95,7 @@ definePageMeta({
 
 import { ref, onMounted, computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
-import axios from "axios";
+import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 
 const customers = ref([]);
@@ -137,22 +137,21 @@ const filteredServices = computed(() => {
   );
 });
 
-const onCountryClick = (country) => {
+const onCountryClick = async (country) => {
   selectedCustomer.value = country;
 
   if (country?.code) {
-    axios
-      .get(
-        `https://verifysms.org/api/services?platform=web&countryCode=${country.code}`
-      )
-      .then((response) => {
-        if (response?.data?.success) {
-          selectedCustomer.value.services = response?.data?.data;
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching services:", error);
-      });
+    try {
+      const response = await serviceService.GetServicesByCountryCode(
+        country.code
+      );
+      if (response?.success) {
+        selectedCustomer.value.services = response?.data;
+      }
+    } catch (error) {
+      console.error("Error fetching services:", error);
+      selectedCustomer.value.services = [];
+    }
   }
 };
 
