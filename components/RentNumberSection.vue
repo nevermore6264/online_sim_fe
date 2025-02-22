@@ -20,7 +20,6 @@
           class="w-full"
           @change="onCountrySelect"
         >
-          <!-- Hiển thị trong danh sách dropdown -->
           <template #option="slotProps">
             <div class="flex align-items-center">
               <img
@@ -32,8 +31,6 @@
               <div>{{ slotProps.option.name }}</div>
             </div>
           </template>
-
-          <!-- Hiển thị khi đã chọn -->
           <template #value="slotProps">
             <div v-if="slotProps.value" class="flex align-items-center">
               <img
@@ -46,34 +43,6 @@
             </div>
           </template>
         </Dropdown>
-      </div>
-
-      <div class="dropdown-item">
-        <label class="rental-quantity-label" for="rental-quantity-select">
-          {{ $t("rent_number.select_rental_period") }}
-        </label>
-        <div class="rental-selection">
-          <Dropdown
-            id="rental-quantity-select"
-            size="small"
-            :options="rentalQuantityOptions"
-            optionLabel="label"
-            optionValue="value"
-            v-model="selectedRentalQuantity"
-            :placeholder="$t('rent_number.choose_number')"
-            class="w-full"
-          />
-          <Dropdown
-            id="rental-unit-select"
-            size="small"
-            :options="rentalUnitOptions"
-            optionLabel="label"
-            optionValue="value"
-            v-model="selectedRentalUnit"
-            :placeholder="$t('rent_number.choose_period')"
-            class="w-full"
-          />
-        </div>
       </div>
 
       <!-- Selected Services List -->
@@ -95,16 +64,32 @@
                 width="12px"
               />
               <span class="service-name">{{ service.text }}</span>
-              <span class="service-name">
-                {{ $t("rent_number.for") }}: {{ selectedRentalQuantity }}
-                {{ selectedRentalUnit }}
-              </span>
+              <div class="rental-selection">
+                <Dropdown
+                  size="small"
+                  :options="rentalQuantityOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  v-model="service.rentalQuantity"
+                  :placeholder="$t('rent_number.choose_number')"
+                  class="w-full"
+                />
+                <Dropdown
+                  size="small"
+                  :options="rentalUnitOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  v-model="service.rentalUnit"
+                  :placeholder="$t('rent_number.choose_period')"
+                  class="w-full"
+                />
+              </div>
               <span class="service-price">
                 {{ $t("rent_number.total_amount") }}:
                 {{
                   getPriceByLabel(
                     service?.rentDurationPrices,
-                    selectedRentalQuantity + " " + selectedRentalUnit
+                    service.rentalQuantity + " " + service.rentalUnit
                   )
                 }}
                 USDT
@@ -192,13 +177,11 @@ const rentalUnitOptions = ref([
   { label: "Months", value: "months" },
 ]);
 
-const selectedRentalQuantity = ref(1);
-const selectedRentalUnit = ref("days");
 const dropdownOptions = ref([]);
 
 const getPriceByLabel = (rentDurationPrices, label) => {
   const found = rentDurationPrices.find((item) => item.label === label);
-  return found ? found.price : "N/A"; // Nếu không tìm thấy, trả về 0
+  return found ? found.price : "N/A";
 };
 
 const onCountrySelect = async () => {
@@ -222,48 +205,38 @@ const toggleServiceSelection = (service) => {
   const index = selectedServices.value.findIndex(
     (s) => s.code === service.code
   );
-  index === -1
-    ? selectedServices.value.push(service)
-    : selectedServices.value.splice(index, 1);
+  if (index === -1) {
+    // Thêm dịch vụ với thời gian thuê mặc định
+    selectedServices.value.push({
+      ...service,
+      rentalQuantity: 1,
+      rentalUnit: "days",
+    });
+  } else {
+    selectedServices.value.splice(index, 1);
+  }
 };
 
 const rentSelectedServices = async () => {
-  // Kiểm tra rằng các dropdown rental period có dữ liệu
-  if (!selectedRentalQuantity.value || !selectedRentalUnit.value) {
-    push.error("Please select rental period (quantity and unit).");
-    return;
-  }
-  // Tính toán tổng số ngày thuê
-  let rentDays = 0;
-  if (selectedRentalUnit.value === "days") {
-    rentDays = selectedRentalQuantity.value;
-  } else if (selectedRentalUnit.value === "weeks") {
-    rentDays = selectedRentalQuantity.value * 7;
-  } else if (selectedRentalUnit.value === "months") {
-    rentDays = selectedRentalQuantity.value * 30;
-  }
-  // Kiểm tra rentDays nằm trong khoảng [7, 180]
-  // if (rentDays < 7 || rentDays > 180) {
-  //   push.error("Rental period must be between 7 and 180 days.");
-  //   return;
-  // }
-
   const token = localStorage.getItem("token");
   if (selectedServices.value.length === 0) return;
 
   const customer = toRaw(selectedCustomer.value);
   if (!customer || !customer.value) return;
 
-  const servicesData = selectedServices.value.map((service) => ({
-    serviceCode: service.code.toUpperCase(),
-    rentDays: rentDays,
-  }));
-
   let successCount = 0;
   let failedServices = [];
 
   try {
-    for (const data of servicesData) {
+    for (const service of selectedServices.value) {
+      const rentDays = calculateRentDays(
+        service.rentalQuantity,
+        service.rentalUnit
+      );
+      const data = {
+        serviceCode: service.code.toUpperCase(),
+        rentDays: rentDays,
+      };
       const response = await orderService.RentOTP(token, data);
       if (response.success) {
         successCount++;
@@ -283,10 +256,19 @@ const rentSelectedServices = async () => {
   }
 };
 
-// State của ô tìm kiếm
+const calculateRentDays = (quantity, unit) => {
+  if (unit === "days") {
+    return quantity;
+  } else if (unit === "weeks") {
+    return quantity * 7;
+  } else if (unit === "months") {
+    return quantity * 30;
+  }
+  return 0;
+};
+
 const searchQuery = ref("");
 
-// Lọc danh sách dịch vụ hiển thị
 const filteredServices = computed(() => {
   if (!selectedCustomer.value || !selectedCustomer.value.services) {
     return [];
@@ -303,7 +285,7 @@ const totalAmount = computed(() => {
   return selectedServices.value.reduce((sum, service) => {
     const price = getPriceByLabel(
       service?.rentDurationPrices,
-      selectedRentalQuantity.value + " " + selectedRentalUnit.value
+      service.rentalQuantity + " " + service.rentalUnit
     );
     return sum + (price === "N/A" ? 0 : Number(price));
   }, 0);
@@ -336,11 +318,10 @@ const fetchCountries = async () => {
 onMounted(async () => {
   await fetchCountries();
 
-  // Chờ đến khi danh sách quốc gia được load xong rồi mới gán selectedCustomer
   if (dropdownOptions.value.length > 0) {
     selectedCustomer.value =
       dropdownOptions.value.find((country) => country.value === "JPN") ||
-      dropdownOptions.value[0]; // Nếu không có Japan, chọn quốc gia đầu tiên
+      dropdownOptions.value[0];
 
     await onCountrySelect();
   }
@@ -435,6 +416,11 @@ li {
     flex-direction: column !important;
     width: 100% !important;
     display: block !important;
+  }
+
+  .dropdown-item {
+    margin-right: 0 !important;
+    margin-bottom: 20px !important;
   }
 
   .rental-quantity-label {
