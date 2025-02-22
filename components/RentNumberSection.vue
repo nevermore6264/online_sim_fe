@@ -394,7 +394,6 @@ li {
   margin-bottom: 10px;
 }
 
-/* Dropdown */
 .dropdown-container {
   margin-bottom: 1rem;
 }
@@ -487,7 +486,14 @@ li {
   }
 
   .service-info {
+    display: flex !important;
     flex-direction: column !important;
+    align-items: center !important;
+    gap: 5px !important;
+  }
+
+  .rent-button {
+    margin-top: 20px;
   }
 }
 
