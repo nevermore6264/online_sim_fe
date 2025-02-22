@@ -130,7 +130,7 @@ const maxDays = 100; // Example price per day
 const { width } = useWindowSize();
 
 const groupedCustomers = computed(() => {
-  const itemsPerRow = width.value < 600 ? 1 : width.value < 1024 ? 2 : 3;
+  const itemsPerRow = width.value < 600 ? 1 : width.value < 1024 ? 3 : 5;
   const groups = [];
   for (let i = 0; i < customers.value.length; i += itemsPerRow) {
     groups.push(customers.value.slice(i, i + itemsPerRow));
@@ -303,7 +303,7 @@ const onBuy = () => {
 
 .country-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Chia mỗi row thành 2 cột */
+  grid-template-columns: repeat(5, 1fr); /* Chia mỗi row thành 2 cột */
   gap: 10px; /* Khoảng cách giữa các ô */
   grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
 }
@@ -363,7 +363,7 @@ const onBuy = () => {
 
 @media (max-width: 1024px) {
   .country-row {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
