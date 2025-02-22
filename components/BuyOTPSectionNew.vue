@@ -1,7 +1,7 @@
 <template>
   <div class="landing-page">
     <div class="flex-container landing-page-container">
-      <!-- Main DataTable -->
+      <!-- Bên trái: Danh sách quốc gia -->
       <div class="table-container table-services">
         <input
           v-model="searchCountry"
@@ -45,7 +45,7 @@
         </DataTable>
       </div>
 
-      <!-- Sub DataTable for services -->
+      <!-- Bên phải: Danh sách dịch vụ -->
       <div class="table-container table-services">
         <input
           v-model="searchService"
@@ -64,7 +64,6 @@
           </template>
           <template #empty>{{ $t("landing.no_services_found") }}</template>
           <template #loading>{{ $t("landing.loading_services") }}</template>
-
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="service-row">
@@ -179,6 +178,41 @@ onMounted(() => {
 </script>
 
 <style>
+.landing-page-container {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.table-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Bên trái (30%) */
+.table-container:first-child {
+  flex: 3;
+}
+
+/* Bên phải (70%) */
+.table-container:last-child {
+  flex: 7;
+}
+
+@media (max-width: 768px) {
+  .landing-page-container {
+    flex-direction: column;
+  }
+
+  .table-container:first-child,
+  .table-container:last-child {
+    flex: 1;
+  }
+}
+
 .search-input {
   width: 100%;
   padding: 8px;
@@ -190,14 +224,7 @@ onMounted(() => {
 }
 
 .landing-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  height: auto;
-  color: #333;
-  margin-bottom: 60px;
+  margin-bottom: 0 !important;
 }
 
 .landing-page .p-datatable .p-datatable-tbody > tr > td {
@@ -213,11 +240,6 @@ onMounted(() => {
 .subtitle {
   font-size: 1.5em;
   margin: 20px 0;
-}
-
-.table-container {
-  flex: 1;
-  min-width: 300px;
 }
 
 .row-content {
@@ -261,7 +283,7 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; /* Tạo khoảng cách giữa tên và giá */
+  justify-content: space-between;
   cursor: pointer;
   padding: 8px;
   transition: background-color 0.3s;
@@ -295,23 +317,23 @@ onMounted(() => {
 
 .country-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Chia mỗi row thành 2 cột */
-  gap: 10px; /* Khoảng cách giữa các ô */
-  grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  grid-auto-flow: dense;
 }
 
 .service-row {
   display: grid;
-  grid-template-columns: repeat(1, 1fr); /* Chia mỗi row thành 2 cột */
+  grid-template-columns: repeat(1, 1fr);
   gap: 10px;
-  grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
+  grid-auto-flow: dense;
 }
 
 .service-item {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; /* Tạo khoảng cách giữa tên và giá */
+  justify-content: space-between;
   cursor: pointer;
   padding: 8px;
   transition: background-color 0.3s;
@@ -327,20 +349,20 @@ onMounted(() => {
 .service-name {
   font-size: 14px;
   font-weight: bold;
-  flex: 1; /* Chiếm tối đa không gian còn lại */
-  text-align: left; /* Đảm bảo căn trái */
+  flex: 1;
+  text-align: left;
 }
 
 .service-price {
   font-size: 12px;
   color: gray;
-  text-align: right; /* Căn phải */
-  white-space: nowrap; /* Tránh xuống dòng */
+  text-align: right;
+  white-space: nowrap;
 }
 
 @media (max-width: 599px) {
   .country-row {
-    grid-template-columns: 1fr; /* 1 cột trên mobile */
+    grid-template-columns: 1fr;
   }
 }
 
