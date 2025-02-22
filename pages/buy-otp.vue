@@ -1,14 +1,19 @@
 <template>
   <div class="proxy-containter">
-
     <h4 class="grey-doc-text-red-bg">⚠ {{ $t("proxy.notify") }}</h4>
     <div class="tab-container">
-      <TabMenu :model="tabs.map((tab) => ({ label: $t(tab.labelKey), icon: tab.icon }))
-        " v-model="activeTab" class="custom-tab-menu" @update:activeIndex="activeTab = $event" />
+      <TabMenu
+        :model="
+          tabs.map((tab) => ({ label: $t(tab.labelKey), icon: tab.icon }))
+        "
+        v-model="activeTab"
+        class="custom-tab-menu"
+        @update:activeIndex="activeTab = $event"
+      />
 
       <div class="tab-content">
         <div v-if="activeTab === 0">
-          <BuyOTPSection />
+          <BuyOTPSectionNew />
         </div>
         <div v-if="activeTab === 1">
           <MyOTPSection />
