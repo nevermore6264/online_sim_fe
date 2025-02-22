@@ -125,10 +125,6 @@ a:link {
   color: #2aabee;
 }
 
-ul {
-  padding-inline-start: 20px !important;
-}
-
 .p-dataview .p-dataview-content {
   background: linear-gradient(to right, #d7f2fe, #ffffff) !important;
 }
@@ -156,11 +152,6 @@ ul {
   font-size: 0.875rem; /* Cỡ chữ nhỏ hơn */
   padding: 0.25rem 0.5rem; /* Giảm padding */
   height: 32px; /* Giảm chiều cao */
-}
-
-ol,
-ul {
-  padding-left: 15px;
 }
 
 .p-dropdown.small-dropdown {
