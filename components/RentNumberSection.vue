@@ -584,23 +584,15 @@ li {
 }
 
 .service-info {
-  display: flex;
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr 2fr 1.5fr 2fr auto;
+  gap: 10px;
   align-items: center;
-  gap: 12px;
-  /* Tạo khoảng cách giữa các phần tử */
-  background: #f0f8ff;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  flex-wrap: wrap;
-  /* Đảm bảo hiển thị đẹp nếu không đủ không gian */
 }
 
 .service-info span {
   margin-right: 10px;
-  /* Khoảng cách giữa các span */
   white-space: nowrap;
-  /* Giữ nội dung không bị xuống dòng */
 }
 
 .service-info img {
