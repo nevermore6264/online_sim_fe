@@ -167,6 +167,19 @@ ul {
   padding-left: 15px;
 }
 
+.p-dropdown.small-dropdown {
+  width: 100px;
+  font-size: 12px;
+}
+
+.p-dropdown.small-dropdown .p-dropdown-label {
+  padding: 0.25rem 0.5rem;
+}
+
+.p-dropdown.small-dropdown .p-dropdown-trigger {
+  width: 1.5rem;
+}
+
 @media (max-width: 1366px) {
   .auth-container {
     width: 75% !important;

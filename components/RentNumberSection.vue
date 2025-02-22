@@ -17,7 +17,7 @@
           optionLabel="name"
           v-model="selectedCustomer"
           placeholder="Choose a country"
-          class="w-full"
+          class="w-full small-dropdown"
           @change="onCountrySelect"
         >
           <template #option="slotProps">
@@ -66,22 +66,20 @@
               <span class="service-name">{{ service.text }}</span>
               <div class="rental-selection">
                 <Dropdown
-                  size="small"
                   :options="rentalQuantityOptions"
                   optionLabel="label"
                   optionValue="value"
                   v-model="service.rentalQuantity"
                   :placeholder="$t('rent_number.choose_number')"
-                  class="w-full"
+                  class="w-full small-dropdown"
                 />
                 <Dropdown
-                  size="small"
                   :options="rentalUnitOptions"
                   optionLabel="label"
                   optionValue="value"
                   v-model="service.rentalUnit"
                   :placeholder="$t('rent_number.choose_period')"
-                  class="w-full"
+                  class="w-full small-dropdown"
                 />
               </div>
               <span class="service-price">
@@ -110,9 +108,9 @@
 
       <!-- Rent Button -->
       <div class="rent-section" v-if="selectedServices.length > 0">
-        <button class="rent-button" @click="rentSelectedServices">
+        <Button class="rent-button" @click="rentSelectedServices">
           {{ $t("rent_number.rent_service") }}
-        </button>
+        </Button>
         <p class="total-amount">
           {{ $t("rent_number.total_amount") }}: {{ totalAmount }} USDT
         </p>
