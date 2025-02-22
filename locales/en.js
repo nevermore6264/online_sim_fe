@@ -134,9 +134,6 @@ export default {
     api: {
       general: "General",
     },
-    always_active: "Always active",
-    activation_by_order: "Activation by order",
-    priority_numbers: "Priority numbers",
     select_country: "Select Country",
     select_rental_period: "Select Rental Period",
     choose_number: "Choose number",

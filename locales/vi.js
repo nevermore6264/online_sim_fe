@@ -133,9 +133,6 @@ export default {
     api: {
       general: "Tổng quan",
     },
-    always_active: "Luôn hoạt động",
-    activation_by_order: "Kích hoạt theo đơn đặt hàng",
-    priority_numbers: "Số ưu tiên",
     select_country: "Chọn quốc gia",
     select_rental_period: "Chọn thời hạn thuê",
     choose_number: "Chọn số",

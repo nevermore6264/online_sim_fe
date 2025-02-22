@@ -135,7 +135,9 @@
         v-for="(item, index) in filteredServices"
         :key="index"
         class="service-card"
-        :class="{ selected: selectedServices.includes(item) }"
+        :class="{
+          selected: selectedServices.map((e) => e.code).includes(item.code),
+        }"
         @click="toggleServiceSelection(item)"
       >
         <div class="service-content">
