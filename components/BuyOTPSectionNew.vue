@@ -66,16 +66,21 @@
           <template #loading>{{ $t("landing.loading_services") }}</template>
           <Column style="min-width: 12rem">
             <template #body="{ data }">
-              <div class="service-row">
+              <div class="b-service-row">
                 <div
-                  :key="data.id"
+                  v-for="service in data"
+                  :key="service.id"
                   class="service-item"
-                  @click="onServiceClick(data)"
+                  @click="onServiceClick(service)"
                 >
-                  <img :src="data.image" :alt="data.text" class="flag-image" />
-                  <span class="service-name">{{ data.text }}</span>
+                  <img
+                    :src="service.image"
+                    :alt="service.text"
+                    class="flag-image"
+                  />
+                  <span class="service-name">{{ service.text }}</span>
                   <span class="service-price">
-                    {{ $t("landing.service_price", { price: data.price }) }}
+                    {{ $t("landing.service_price", { price: service.price }) }}
                   </span>
                 </div>
               </div>
@@ -127,13 +132,27 @@ const filteredCountries = computed(() => {
     )
   );
 });
+
 // Lọc danh sách dịch vụ theo tìm kiếm
 const filteredServices = computed(() => {
-  if (!searchService.value.trim())
-    return selectedCustomer.value?.services || [];
-  return selectedCustomer.value?.services.filter((service) =>
+  if (!searchService.value.trim()) return groupedServices?.value || [];
+  return groupedServices?.value.filter((service) =>
     service.text.toLowerCase().includes(searchService.value.toLowerCase())
   );
+});
+
+// Nhóm các dịch vụ thành các nhóm 3 services mỗi nhóm
+const groupedServices = computed(() => {
+  const itemsPerRow = width.value < 480 ? 1 : width.value < 768 ? 2 : 3;
+  const groups = [];
+  for (
+    let i = 0;
+    i < selectedCustomer.value?.services.length;
+    i += itemsPerRow
+  ) {
+    groups.push(selectedCustomer.value?.services.slice(i, i + itemsPerRow));
+  }
+  return groups;
 });
 
 const onCountryClick = async (country) => {
@@ -322,24 +341,24 @@ onMounted(() => {
   grid-auto-flow: dense;
 }
 
-.service-row {
+.b-service-row {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   grid-auto-flow: dense;
 }
 
 .service-item {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
   transition: background-color 0.3s;
-  width: 100%;
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
+  text-align: center;
 }
 
 .service-item:hover {
@@ -349,19 +368,23 @@ onMounted(() => {
 .service-name {
   font-size: 14px;
   font-weight: bold;
-  flex: 1;
-  text-align: left;
+  margin-top: 8px;
 }
 
 .service-price {
   font-size: 12px;
   color: gray;
-  text-align: right;
-  white-space: nowrap;
+  margin-top: 4px;
 }
 
-@media (max-width: 599px) {
-  .country-row {
+@media (max-width: 768px) {
+  .b-service-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .b-service-row {
     grid-template-columns: 1fr;
   }
 }
@@ -370,5 +393,58 @@ onMounted(() => {
   background-color: rgb(0, 174, 255) !important;
   color: white;
   font-weight: bold;
+}
+
+.service-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.service-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s;
+  background-color: rgb(245, 245, 245);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.service-item:hover {
+  background-color: rgb(201, 200, 200);
+}
+
+.service-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.service-price {
+  font-size: 12px;
+  color: gray;
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .service-group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .service-group {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
