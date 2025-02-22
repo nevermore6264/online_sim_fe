@@ -21,10 +21,6 @@ body {
   width: 100% !important;
 }
 
-.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
-  padding: 0.5rem 1rem;
-}
-
 label {
   display: block;
   margin-bottom: 0.5rem;
@@ -243,6 +239,10 @@ ul {
 
   .social-icons a {
     padding: 0px !important;
+  }
+
+  .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+    font-size: 12px !important;
   }
 }
 
