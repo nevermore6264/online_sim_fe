@@ -411,7 +411,34 @@ li {
   gap: 20px;
 }
 
+.selected-services {
+  border: 1px solid rgb(0, 174, 255);
+  border-radius: 8px;
+  background: #f9f9f9;
+  min-width: 50%;
+}
+
+.selected-item {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.selected-item:last-child {
+  border-bottom: none;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 1rem;
+}
+
 @media (max-width: 1366px) {
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .top-section {
     flex-direction: column !important;
     width: 100% !important;
@@ -437,6 +464,10 @@ li {
 }
 
 @media (max-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .top-section {
     flex-direction: column !important;
     width: 100% !important;
@@ -457,42 +488,6 @@ li {
 
   .service-info {
     flex-direction: column !important;
-  }
-}
-
-.selected-services {
-  border: 1px solid rgb(0, 174, 255);
-  border-radius: 8px;
-  background: #f9f9f9;
-  min-width: 50%;
-}
-
-.selected-item {
-  padding: 5px;
-  border-bottom: 1px solid #ddd;
-}
-
-.selected-item:last-child {
-  border-bottom: none;
-}
-
-/* Services Grid */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  margin-top: 1rem;
-}
-
-@media (max-width: 1366px) {
-  .services-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -661,7 +656,6 @@ li {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  /* Tạo khoảng cách giữa tên và giá */
   cursor: pointer;
   padding: 8px;
   transition: background-color 0.3s;
