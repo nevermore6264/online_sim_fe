@@ -295,13 +295,6 @@ const removeService = (index) => {
   selectedServices.value.splice(index, 1);
 };
 
-const initializeData = async () => {
-  loading.value = true;
-  const countries = await GetAllCountries();
-  customers.value = countries;
-  loading.value = false;
-};
-
 const fetchCountries = async () => {
   try {
     const response = await GetAllCountries();

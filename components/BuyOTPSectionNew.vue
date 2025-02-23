@@ -41,7 +41,7 @@
 
       <!-- Buy Button -->
       <div class="buy-section" v-if="selectedServices.length > 0">
-        <button class="buy-button" @click="buySelectedServices">Buy OTP</button>
+        <Button class="buy-button" @click="buySelectedServices">Buy OTP</Button>
         <p class="total-amount">Total Amount: {{ totalAmount }} USDT</p>
       </div>
     </div>
@@ -156,6 +156,7 @@ import { ref, onMounted, computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
+import orderService from "../services/order";
 
 const customers = ref([]);
 const loading = ref(false);
@@ -215,11 +216,16 @@ const groupedServices = computed(() => {
 });
 
 const onCountryClick = async (country) => {
+  // Xóa danh sách dịch vụ đã chọn
+  selectedServices.value = [];
+
+  // Cập nhật quốc gia được chọn
   selectedCustomer.value = {
     ...country,
-    services: [], // Initialize services to an empty array
+    services: [], // Khởi tạo danh sách dịch vụ trống
   };
 
+  // Nếu quốc gia có mã code, tải danh sách dịch vụ
   if (country?.code) {
     try {
       const response = await serviceService.GetServicesByCountryCode(
@@ -287,11 +293,41 @@ const totalAmount = computed(() => {
   );
 });
 
-const buySelectedServices = () => {
-  // Xử lý logic mua dịch vụ ở đây
-  console.log("Buying services:", selectedServices.value);
-  // Sau khi mua, bạn có thể xóa danh sách dịch vụ đã chọn
-  selectedServices.value = [];
+const buySelectedServices = async () => {
+  const token = localStorage.getItem("token");
+  if (selectedServices.value.length === 0) return;
+
+  const customer = toRaw(selectedCustomer.value);
+  console.log(customer.value);
+  if (!customer) return;
+  const servicesData = selectedServices.value.map((service) => ({
+    serviceCode: service.code.toUpperCase(),
+  }));
+  console.log(servicesData);
+
+  let successCount = 0;
+  let failedServices = [];
+
+  try {
+    for (const data of servicesData) {
+      const response = await orderService.BuyOTP(token, data);
+      if (response.success) {
+        successCount++;
+      } else {
+        failedServices.push(data.serviceCode);
+      }
+    }
+
+    if (successCount > 0) {
+      push.success(`Successfully bought ${successCount} OTP(s)!`);
+      window.location.reload();
+    }
+    if (failedServices.length > 0) {
+      push.warning(`Failed to buy OTP for: ${failedServices.join(", ")}`);
+    }
+  } catch (err) {
+    push.error("Error during service purchase!");
+  }
 };
 
 onMounted(() => {
@@ -444,7 +480,6 @@ onMounted(() => {
 .service-price {
   font-size: 12px;
   color: gray;
-  margin-top: 4px;
 }
 
 @media (max-width: 768px) {
