@@ -97,8 +97,8 @@
                 icon="pi pi-times"
                 severity="danger"
                 variant="text"
-                rounded
-                plain
+                size="small"
+                label=""
                 @click="removeService(index)"
               />
             </div>
@@ -589,11 +589,6 @@ li {
   align-items: center;
 }
 
-.service-info span {
-  margin-right: 10px;
-  white-space: nowrap;
-}
-
 .service-info img {
   width: 16px;
   height: 16px;
@@ -701,7 +696,12 @@ li {
   background: none;
   border: none;
   color: red;
-  width: 12px;
-  height: 12px;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-width: auto !important; /* Đảm bảo nút không có chiều rộng tối thiểu */
+}
+
+.remove-icon .p-button-label {
+  display: none;
 }
 </style>

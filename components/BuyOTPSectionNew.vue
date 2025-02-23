@@ -25,6 +25,15 @@
               <span class="service-price">
                 Total amount: {{ service.price }} USDT
               </span>
+              <Button
+                class="remove-icon"
+                icon="pi pi-times"
+                severity="danger"
+                variant="text"
+                size="small"
+                label=""
+                @click="removeService(index)"
+              />
             </div>
           </div>
         </div>
@@ -189,6 +198,10 @@ const filteredServices = computed(() => {
     )
   );
 });
+
+const removeService = (index) => {
+  selectedServices.value.splice(index, 1);
+};
 
 // Nhóm các dịch vụ thành các nhóm 3 services mỗi nhóm
 const groupedServices = computed(() => {
@@ -561,14 +574,9 @@ onMounted(() => {
 
 .service-info {
   display: grid;
-  grid-template-columns: 0.5fr 0.5fr 2fr 1.5fr 2fr auto;
+  grid-template-columns: 0.5fr 0.5fr 2fr 1.5fr 2fr 1fr auto;
   gap: 10px;
   align-items: center;
-}
-
-.service-info span {
-  margin-right: 10px;
-  white-space: nowrap;
 }
 
 .service-info img {
@@ -616,6 +624,19 @@ onMounted(() => {
 .buy-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.remove-icon {
+  background: none;
+  border: none;
+  color: red;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-width: auto !important; /* Đảm bảo nút không có chiều rộng tối thiểu */
+}
+
+.remove-icon .p-button-label {
+  display: none;
 }
 
 @media (max-width: 768px) {

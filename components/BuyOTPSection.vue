@@ -397,11 +397,6 @@ li {
   flex-wrap: wrap; /* Đảm bảo hiển thị đẹp nếu không đủ không gian */
 }
 
-.service-info span {
-  margin-right: 10px; /* Khoảng cách giữa các span */
-  white-space: nowrap; /* Giữ nội dung không bị xuống dòng */
-}
-
 .service-info img {
   width: 24px;
   height: 24px;
