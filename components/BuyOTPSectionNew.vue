@@ -145,8 +145,10 @@ const filteredCountries = computed(() => {
 // Lọc danh sách dịch vụ theo tìm kiếm
 const filteredServices = computed(() => {
   if (!searchService.value.trim()) return groupedServices?.value || [];
-  return groupedServices?.value.filter((service) =>
-    service.text.toLowerCase().includes(searchService.value.toLowerCase())
+  return groupedServices.value.map((group) =>
+    group.filter((service) =>
+      service.text.toLowerCase().includes(searchService.value.toLowerCase())
+    )
   );
 });
 
