@@ -153,19 +153,19 @@ const filteredServices = computed(() => {
 // Nhóm các dịch vụ thành các nhóm 3 services mỗi nhóm
 const groupedServices = computed(() => {
   const itemsPerRow = width.value < 480 ? 1 : width.value < 768 ? 2 : 3;
+  const services = selectedCustomer.value?.services || []; // Fallback to empty array
   const groups = [];
-  for (
-    let i = 0;
-    i < selectedCustomer.value?.services.length;
-    i += itemsPerRow
-  ) {
-    groups.push(selectedCustomer.value?.services.slice(i, i + itemsPerRow));
+  for (let i = 0; i < services.length; i += itemsPerRow) {
+    groups.push(services.slice(i, i + itemsPerRow));
   }
   return groups;
 });
 
 const onCountryClick = async (country) => {
-  selectedCustomer.value = country;
+  selectedCustomer.value = {
+    ...country,
+    services: [], // Initialize services to an empty array
+  };
 
   if (country?.code) {
     try {
