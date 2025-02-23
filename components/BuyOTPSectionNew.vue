@@ -22,7 +22,7 @@
           <template #loading>{{ $t("landing.loading_countries") }}</template>
           <Column style="min-width: 12rem">
             <template #body="{ data }">
-              <div class="country-row">
+              <div class="b-country-row">
                 <div
                   v-for="country in data"
                   :key="country.code"
@@ -115,7 +115,7 @@ const searchService = ref("");
 
 // Phân nhóm dựa trên kích thước màn hình
 const groupedCustomers = computed(() => {
-  const itemsPerRow = width.value < 600 ? 1 : 2;
+  const itemsPerRow = 1;
   const groups = [];
   for (let i = 0; i < customers.value.length; i += itemsPerRow) {
     groups.push(customers.value.slice(i, i + itemsPerRow));
@@ -334,9 +334,9 @@ onMounted(() => {
   display: none;
 }
 
-.country-row {
+.b-country-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 10px;
   grid-auto-flow: dense;
 }
