@@ -19,7 +19,7 @@
               />
               <span class="service-name">{{ service.text }}</span>
               <span class="service-name">
-                Country: {{ selectedCustomer.value }}
+                Country: {{ selectedCustomer.name }}
               </span>
               <span class="service-name">For: 10 minutes </span>
               <span class="service-price">
