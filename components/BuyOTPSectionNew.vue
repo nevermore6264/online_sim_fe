@@ -30,7 +30,6 @@
                   :class="{
                     'selected-country': country.code === selectedCustomer?.code,
                   }"
-                  @click="onCountryClick(country)"
                 >
                   <img
                     :src="country.flagImage"
@@ -38,6 +37,12 @@
                     class="flag-image"
                   />
                   <span class="country-name">{{ country.name }}</span>
+                  <button
+                    class="select-button"
+                    @click="onCountryClick(country)"
+                  >
+                    {{ $t("landing.select") }}
+                  </button>
                 </div>
               </div>
             </template>
@@ -221,17 +226,6 @@ onMounted(() => {
   flex: 7;
 }
 
-@media (max-width: 768px) {
-  .landing-page-container {
-    flex-direction: column;
-  }
-
-  .table-container:first-child,
-  .table-container:last-child {
-    flex: 1;
-  }
-}
-
 .search-input {
   width: 100%;
   padding: 8px;
@@ -358,10 +352,27 @@ onMounted(() => {
   .b-service-row {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .landing-page-container {
+    flex-direction: column;
+  }
+
+  .table-container:first-child,
+  .table-container:last-child {
+    flex: 1;
+  }
+
+  .service-group {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 480px) {
   .b-service-row {
+    grid-template-columns: 1fr;
+  }
+
+  .service-group {
     grid-template-columns: 1fr;
   }
 }
@@ -413,15 +424,35 @@ onMounted(() => {
   margin-top: 4px;
 }
 
-@media (max-width: 768px) {
-  .service-group {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.select-button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: auto; /* Đẩy nút về phía bên phải */
 }
 
-@media (max-width: 480px) {
-  .service-group {
-    grid-template-columns: 1fr;
-  }
+.select-button:hover {
+  background-color: #0056b3;
+}
+
+.country-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 8px;
+  transition: background-color 0.3s;
+  width: 100%;
+  background-color: rgb(245, 245, 245);
+  border-radius: 5px;
+}
+
+.country-item:hover {
+  background-color: rgb(201, 200, 200);
 }
 </style>
