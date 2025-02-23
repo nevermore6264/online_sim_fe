@@ -122,6 +122,13 @@ export default {
     loading_services: "Loading services data. Please wait.",
     service_price: "from {price} USDT",
     read_more: "Read more",
+    service_price: "Price: {price} USDT",
+    service: "Service",
+    country: "Country",
+    duration: "Duration",
+    total_amount: "Total amount",
+    buy_otp: "Buy OTP",
+    minutes: "minutes"
   },
   notify: {
     no_rights: "You do not have the right!",

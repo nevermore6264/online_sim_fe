@@ -122,6 +122,13 @@ export default {
     loading_services: "Đang tải dữ liệu dịch vụ. Vui lòng đợi.",
     service_price: "từ {price} USDT",
     read_more: "Xem thêm",
+    service_price: "Giá: {price} USDT",
+    service: "Dịch vụ",
+    country: "Quốc gia",
+    duration: "Thời gian",
+    total_amount: "Tổng số tiền",
+    buy_otp: "Mua OTP",
+    minutes: "phút",
   },
   notify: {
     no_rights: "Bạn không có quyền!",

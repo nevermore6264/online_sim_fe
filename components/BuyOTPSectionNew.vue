@@ -10,7 +10,7 @@
             class="selected-item"
           >
             <div class="service-info">
-              <span class="service-name">Service: </span>
+              <span class="service-name">{{ $t("landing.service") }}: </span>
               <img
                 :src="service?.image"
                 alt="Service Image"
@@ -19,11 +19,13 @@
               />
               <span class="service-name">{{ service.text }}</span>
               <span class="service-name">
-                Country: {{ selectedCustomer.name }}
+                {{ $t("landing.country") }}: {{ selectedCustomer.name }}
               </span>
-              <span class="service-name">For: 10 minutes </span>
+              <span class="service-name"
+                >{{ $t("landing.duration") }}: 10 {{ $t("landing.minutes") }}
+              </span>
               <span class="service-price">
-                Total amount: {{ service.price }} USDT
+                {{ $t("landing.total_amount") }}: {{ service.price }} USDT
               </span>
               <Button
                 class="remove-icon"
@@ -41,8 +43,12 @@
 
       <!-- Buy Button -->
       <div class="buy-section" v-if="selectedServices.length > 0">
-        <Button class="buy-button" @click="buySelectedServices">Buy OTP</Button>
-        <p class="total-amount">Total Amount: {{ totalAmount }} USDT</p>
+        <Button class="buy-button" @click="buySelectedServices">
+          {{ $t("landing.buy_otp") }}
+        </Button>
+        <p class="total-amount">
+          {{ $t("landing.total_amount") }}: {{ totalAmount }} USDT
+        </p>
       </div>
     </div>
 
@@ -146,7 +152,6 @@
     </div>
   </div>
 </template>
-
 <script setup>
 definePageMeta({
   layout: "landing",
