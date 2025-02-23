@@ -41,7 +41,11 @@
                     class="select-button"
                     @click="onCountryClick(country)"
                   >
-                    {{ $t("landing.select") }}
+                    {{
+                      country.code === selectedCustomer?.code
+                        ? $t("landing.selected")
+                        : $t("landing.select")
+                    }}
                   </button>
                 </div>
               </div>
@@ -424,19 +428,15 @@ onMounted(() => {
   margin-top: 4px;
 }
 
-.select-button {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: auto; /* Đẩy nút về phía bên phải */
+.selected-country {
+  background-color: #007bff !important; /* Màu nền khi được chọn */
+  color: white !important; /* Màu chữ khi được chọn */
+  font-weight: bold;
 }
 
-.select-button:hover {
-  background-color: #0056b3;
+.selected-country .select-button {
+  background-color: #0056b3; /* Màu nền nút khi được chọn */
+  color: white;
 }
 
 .country-item {
@@ -454,5 +454,20 @@ onMounted(() => {
 
 .country-item:hover {
   background-color: rgb(201, 200, 200);
+}
+
+.select-button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: auto; /* Đẩy nút về phía bên phải */
+}
+
+.select-button:hover {
+  background-color: #0056b3;
 }
 </style>
