@@ -39,7 +39,7 @@
                   <span class="country-name">{{ country.name }}</span>
                   <button
                     class="select-button"
-                    @click="onCountryClick(country)"
+                    @click.stop="onCountryClick(country)"
                   >
                     {{
                       country.code === selectedCustomer?.code
@@ -182,16 +182,32 @@ const onCountryClick = async (country) => {
   }
 };
 
-selectedCustomer.value = {
-  name: "Japan",
-  code: "JPN",
-  icon: "🇯🇵",
-  flagImage: "https://flagsapi.com/JP/flat/64.png",
-  services: [],
-};
+const loadJapanServices = async () => {
+  const japan = {
+    name: "Japan",
+    code: "JPN",
+    icon: "🇯🇵",
+    flagImage: "https://flagsapi.com/JP/flat/64.png",
+    services: [],
+  };
 
-// Gọi để load dịch vụ của Japan
-onCountryClick(selectedCustomer.value);
+  if (japan.code) {
+    try {
+      const response = await serviceService.GetServicesByCountryCode(
+        japan.code
+      );
+      if (response?.success) {
+        japan.services = response?.data;
+      }
+    } catch (error) {
+      console.error("Error fetching services:", error);
+      japan.services = [];
+    }
+  }
+
+  // Gán dịch vụ của Japan vào selectedCustomer.value
+  selectedCustomer.value = japan;
+};
 
 const initializeData = async () => {
   loading.value = true;
@@ -202,6 +218,7 @@ const initializeData = async () => {
 
 onMounted(() => {
   initializeData();
+  loadJapanServices(); // Load dịch vụ của Japan khi component được mount
 });
 </script>
 
