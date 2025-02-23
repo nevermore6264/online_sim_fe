@@ -1,5 +1,42 @@
 <template>
   <div class="landing-page">
+    <div class="top-section">
+      <!-- Selected Services List -->
+      <div class="selected-services" v-if="selectedServices.length > 0">
+        <div class="selected-services-list">
+          <div
+            v-for="(service, index) in selectedServices"
+            :key="index"
+            class="selected-item"
+          >
+            <div class="service-info">
+              <span class="service-name">Service: </span>
+              <img
+                :src="service?.image"
+                alt="Service Image"
+                class="w-24 rounded"
+                width="24px"
+              />
+              <span class="service-name">{{ service.text }}</span>
+              <span class="service-name">
+                Country: {{ selectedCustomer.value }}
+              </span>
+              <span class="service-name">For: 10 minutes </span>
+              <span class="service-price">
+                Total amount: {{ service.price }} USDT
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buy Button -->
+      <div class="buy-section" v-if="selectedServices.length > 0">
+        <button class="buy-button" @click="buySelectedServices">Buy OTP</button>
+        <p class="total-amount">Total Amount: {{ totalAmount }} USDT</p>
+      </div>
+    </div>
+
     <div class="flex-container landing-page-container">
       <!-- Bên trái: Danh sách quốc gia -->
       <div class="table-container table-services">
@@ -114,6 +151,7 @@ import { GetAllCountries } from "@/services/country.js";
 const customers = ref([]);
 const loading = ref(false);
 const selectedCustomer = ref(null);
+const selectedServices = ref([]);
 
 // Theo dõi kích thước màn hình
 const { width } = useWindowSize();
@@ -216,6 +254,31 @@ const initializeData = async () => {
   const countries = await GetAllCountries();
   customers.value = countries;
   loading.value = false;
+};
+
+const onServiceClick = (service) => {
+  const index = selectedServices.value.findIndex((s) => s.id === service.id);
+  if (index === -1) {
+    // Nếu dịch vụ chưa có trong danh sách, thêm vào
+    selectedServices.value.push(service);
+  } else {
+    // Nếu dịch vụ đã có trong danh sách, loại bỏ
+    selectedServices.value.splice(index, 1);
+  }
+};
+
+const totalAmount = computed(() => {
+  return selectedServices.value.reduce(
+    (total, service) => total + service.price,
+    0
+  );
+});
+
+const buySelectedServices = () => {
+  // Xử lý logic mua dịch vụ ở đây
+  console.log("Buying services:", selectedServices.value);
+  // Sau khi mua, bạn có thể xóa danh sách dịch vụ đã chọn
+  selectedServices.value = [];
 };
 
 onMounted(() => {
@@ -486,5 +549,25 @@ onMounted(() => {
 
 .select-button:hover {
   background-color: #0056b3;
+}
+
+.selected-services {
+  border: 1px solid rgb(0, 174, 255);
+  border-radius: 8px;
+  background: #f9f9f9;
+  min-width: 70%;
+}
+
+.selected-item {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.selected-item:last-child {
+  border-bottom: none;
+}
+
+.selected-item:hover {
+  background-color: #e0e0e0;
 }
 </style>
