@@ -436,13 +436,11 @@ onMounted(() => {
 .service-name {
   font-size: 14px;
   font-weight: bold;
-  margin-top: 8px;
 }
 
 .service-price {
   font-size: 12px;
   color: gray;
-  margin-top: 4px;
 }
 
 .selected-country {
