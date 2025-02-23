@@ -348,29 +348,6 @@ onMounted(() => {
   grid-auto-flow: dense;
 }
 
-.service-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 10px;
-  transition: background-color 0.3s;
-  background-color: rgb(245, 245, 245);
-  border-radius: 5px;
-  text-align: center;
-}
-
-.service-item:hover {
-  background-color: rgb(201, 200, 200);
-}
-
-.service-name {
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 8px;
-}
-
 .service-price {
   font-size: 12px;
   color: gray;
