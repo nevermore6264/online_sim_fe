@@ -551,7 +551,35 @@ onMounted(() => {
   background-color: #0056b3;
 }
 
+.top-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.service-info {
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr 2fr 1.5fr 2fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.service-info span {
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.service-info img {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
 .selected-services {
+  flex: 7; /* Chiếm 70% */
   border: 1px solid rgb(0, 174, 255);
   border-radius: 8px;
   background: #f9f9f9;
@@ -569,5 +597,50 @@ onMounted(() => {
 
 .selected-item:hover {
   background-color: #e0e0e0;
+}
+
+/* Rent button */
+.buy-button {
+  flex: 3; /* Chiếm 30% */
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  min-width: 200px;
+}
+
+.buy-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .top-section {
+    flex-direction: column;
+  }
+
+  .selected-services,
+  .buy-section {
+    flex: 1; /* Chiếm toàn bộ chiều rộng trên mobile */
+  }
+
+  .buy-section {
+    align-items: center;
+  }
+
+  .buy-button {
+    max-width: 100%;
+  }
+
+  .service-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 5px !important;
+  }
 }
 </style>
