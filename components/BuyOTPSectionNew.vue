@@ -132,6 +132,9 @@
                   v-for="service in data"
                   :key="service.id"
                   class="service-item"
+                  :class="{
+                    selected: selectedServices.some((s) => s.id === service.id),
+                  }"
                   @click="onServiceClick(service)"
                 >
                   <img
@@ -664,6 +667,12 @@ onMounted(() => {
 .buy-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.service-item.selected {
+  border: 2px solid #007bff; /* Viền màu xanh */
+  background-color: #e6f3ff; /* Màu nền nhạt */
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); /* Đổ bóng */
 }
 
 .remove-icon {
