@@ -1,0 +1,49 @@
+<template>
+  <div class="proxy-containter">
+    <h4 class="grey-doc-text-red-bg">⚠ {{ t("rent_number.notify") }}</h4>
+    <div class="tab-container">
+      <TabMenu
+        :model="computedTabs"
+        v-model="activeTab"
+        class="custom-tab-menu"
+        @update:activeIndex="activeTab = $event"
+      />
+
+      <div class="tab-content">
+        <div v-if="activeTab === 0">
+          <RentSimSection />
+        </div>
+        <div v-if="activeTab === 1">
+          <MyNumbersSection />
+        </div>
+        <div v-if="activeTab === 2">
+          <FAQRentNumber />
+        </div>
+        <div v-if="activeTab === 3">
+          <API />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
+const activeTab = ref(0);
+
+// Tạo computed property cho các tab
+const computedTabs = computed(() => [
+  { label: t("tabs.rent_number"), icon: "pi pi-shopping-cart" },
+  { label: t("tabs.my_number"), icon: "pi pi-phone" },
+  { label: t("tabs.faq"), icon: "pi pi-info-circle" },
+  { label: t("tabs.api"), icon: "pi pi-code" },
+]);
+</script>
+
+<style scoped>
+/* Giữ nguyên phần style */
+</style>

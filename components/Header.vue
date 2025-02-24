@@ -11,14 +11,14 @@
     <template v-if="userInfo?.data?.id">
       <div v-if="!isMobile" class="additional-functions d-none d-md-flex">
         <Button
-          :label="$t('landing.headerActivations')"
-          class="p-button-text"
-          @click="handleActivations"
-        />
-        <Button
           :label="$t('landing.headerBuyOTP')"
           class="p-button-text"
           @click="handleRentOTP"
+        />
+        <Button
+          :label="$t('landing.headerRentSim')"
+          class="p-button-text"
+          @click="handleActivations"
         />
         <Button class="p-button-text" @click="handleProxy">
           <b style="color: red; font-size: 15px">HQ</b>
@@ -67,7 +67,7 @@
           <OverlayPanel ref="mobileMenu" id="mobileMenu">
             <ul class="mobile-menu">
               <li @click="handleActivations">
-                {{ $t("landing.headerActivations") }}
+                {{ $t("landing.headerRentSim") }}
               </li>
               <li @click="handleRentOTP">{{ $t("landing.headerBuyOTP") }}</li>
               <li @click="handleProxy">
@@ -135,8 +135,8 @@ const handleLogout = () => {
   window.location.reload();
 };
 
-const handleActivations = () => router.push("/activations");
-const handleRentOTP = () => router.push("/buy-otp");
+const handleActivations = () => router.push("/rent-sim");
+const handleRentOTP = () => router.push("/activations");
 const handleProxy = () => router.push("/proxy");
 const handleNews = () => router.push("/news");
 const handleAPI = () => (window.location.href = "https://japansim.net/");

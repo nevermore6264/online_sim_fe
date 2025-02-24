@@ -10,8 +10,8 @@ export default {
     footerDesc:
       "Receive SMS online to temporary numbers from all over the world",
     footerCopyRight: "Copyright © 2024 ❤ Japan Sim. All rights reserved.",
-    headerActivations: "Activations",
-    headerBuyOTP: "Buy OTP",
+    headerRentSim: "Rent Sim",
+    headerBuyOTP: "Activations",
     headerProxy: "Proxy",
     headerNews: "News",
     headerAPI: "API",
@@ -127,7 +127,7 @@ export default {
     country: "Country",
     duration: "Duration",
     total_amount: "Total amount",
-    buy_otp: "Buy OTP",
+    buy_otp: "Activations",
     minutes: "minutes"
   },
   notify: {
@@ -216,7 +216,7 @@ export default {
     archie: "Archie",
   },
   buy_otp: {
-    breadcrumb_label: "Buy OTP",
+    breadcrumb_label: "Activations",
     order: "Order",
     my_otp: "My OTP",
   },

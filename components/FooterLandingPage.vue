@@ -6,27 +6,10 @@
         <!-- Thông tin công ty -->
         <div class="footer-text-box">
           <p class="footer-text">
-            Kinelija, UAB | Registration code: 303336386 |
+            Musashino, Tokyo | Registration code: 180-0006 |
             <nuxt-link to="/">Public Offer, Terms and Policy</nuxt-link>
           </p>
-          <p class="footer-address">
-            Vilniaus r. sav., Dūkštų sen., Vėlybniškių k., Dvaro g. 112,
-            LT-14223
-          </p>
-        </div>
-
-        <!-- Logo thanh toán -->
-        <div class="footer-icons-box">
-          <img
-            src="/layout/images/visa-logo.png"
-            alt="Visa logo"
-            class="footer-icon"
-          />
-          <img
-            src="/layout/images/mastercard-logo.png"
-            alt="MasterCard logo"
-            class="footer-icon"
-          />
+          <p class="footer-address">3-chōme-15 Nakachō</p>
         </div>
       </div>
     </div>
@@ -56,10 +39,6 @@
   justify-content: space-between; /* Căn thông tin và logo ra hai bên */
 }
 
-.footer-text-box {
-  text-align: center; /* Đảm bảo thông tin được căn giữa */
-}
-
 .footer-text {
   color: rgb(99, 99, 99);
   margin: 5px 0;
@@ -72,15 +51,5 @@
   margin: 5px 0;
   font-size: 12px;
   line-height: 14px;
-}
-
-.footer-icons-box {
-  display: flex;
-  gap: 15px; /* Khoảng cách giữa các logo */
-}
-
-.footer-icon {
-  width: 70px;
-  height: 40px;
 }
 </style>

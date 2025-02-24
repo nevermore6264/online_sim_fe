@@ -59,7 +59,9 @@
 
       <!-- Buy Button -->
       <div class="buy-section" v-if="selectedServices.length > 0">
-        <button class="buy-button" @click="buySelectedServices">Buy OTP</button>
+        <button class="buy-button" @click="buySelectedServices">
+          Activations
+        </button>
         <p class="total-amount">Total Amount: {{ totalAmount }} USDT</p>
       </div>
     </div>
@@ -181,7 +183,7 @@ const buySelectedServices = async () => {
       window.location.reload();
     }
     if (failedServices.length > 0) {
-      push.warning(`Failed to buy OTP for: ${failedServices.join(", ")}`);
+      push.warning(`Failed to activations for: ${failedServices.join(", ")}`);
     }
   } catch (err) {
     push.error("Error during service purchase!");

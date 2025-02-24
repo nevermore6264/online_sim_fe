@@ -331,7 +331,7 @@ const buySelectedServices = async () => {
       window.location.reload();
     }
     if (failedServices.length > 0) {
-      push.warning(`Failed to buy OTP for: ${failedServices.join(", ")}`);
+      push.warning(`Failed to activations for: ${failedServices.join(", ")}`);
     }
   } catch (err) {
     push.error("Error during service purchase!");
