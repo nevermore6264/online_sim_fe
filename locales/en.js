@@ -232,12 +232,14 @@ export default {
     loading: "Loading SIM data. Please wait.",
     column: {
       id: "ID",
+      stt: "No.",
       country: "Country",
       phone: "Phone",
       service: "Service",
       status: "Status",
       price: "Price",
       expire_time: "Expire Time",
+      otp: "OTP Message"
     },
   },
   support: {

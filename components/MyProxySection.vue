@@ -25,43 +25,35 @@
         <template #empty>{{ $t("order.empty") }}</template>
         <template #loading>{{ $t("order.loading") }}</template>
 
-        <Column
-          :header="$t('order.column.id')"
-          field="id"
-          style="min-width: 12rem"
-        />
-        <Column
-          :header="$t('order.column.country')"
-          field="countryCode"
-          style="min-width: 12rem"
-        />
+        <!-- Cột STT -->
+        <Column :header="$t('order.column.stt')" style="min-width: 1rem">
+          <template #body="{ index }">
+            <span>{{ calculateSTT(index) }}</span>
+          </template>
+        </Column>
         <Column
           :header="$t('order.column.phone')"
           field="stock.phone"
-          style="min-width: 12rem"
+          style="min-width: 8rem"
         />
         <Column
           :header="$t('order.column.service')"
           field="stock.serviceCode"
-          style="min-width: 12rem"
+          style="min-width: 8rem"
         />
         <Column
           :header="$t('order.column.status')"
           field="statusCode"
-          style="min-width: 12rem"
+          style="min-width: 4rem"
         />
-        <Column
-          :header="$t('order.column.price')"
-          field="cost"
-          style="min-width: 8rem"
-        />
-
-        <Column
-          :header="$t('order.column.expire_time')"
-          style="min-width: 14rem"
-        >
+        <Column :header="$t('order.column.price')" style="min-width: 1rem">
           <template #body="{ data }">
-            <span>{{ trackingExpiredTime(data.stock.expiredAt) }}</span>
+            <span>{{ data.cost }} USDT</span>
+          </template>
+        </Column>
+        <Column :header="$t('order.column.otp')" style="min-width: 14rem">
+          <template #body="{ data }">
+            <span>{{ data }}</span>
           </template>
         </Column>
       </DataTable>
@@ -70,12 +62,12 @@
     <!-- 📱 Hiển thị dạng card trên mobile -->
     <div class="mobile-view">
       <div
-        v-for="order in filteredOrderList"
+        v-for="(order, index) in filteredOrderList"
         :key="order.id"
         class="order-card"
       >
         <div class="order-header">
-          <span class="order-id">#{{ order.id }}</span>
+          <span class="order-id">#{{ calculateSTT(index) }}</span>
           <span class="order-status" :class="order.statusCode">
             {{ order.statusCode }}
           </span>
@@ -129,7 +121,10 @@ const totalDocs = ref(0); // Tổng số đơn hàng từ API
 const totalPages = ref(1); // Tổng số trang
 const firstRowIndex = ref(0); // Chỉ mục của dòng đầu tiên trên trang hiện tại
 
-const currentTime = ref(new Date());
+// Hàm tính STT
+const calculateSTT = (index) => {
+  return (currentPage.value - 1) * rowsPerPage.value + index + 1;
+};
 
 // Hàm tính thời gian hết hạn
 const trackingExpiredTime = (dateString) => {

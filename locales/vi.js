@@ -230,12 +230,14 @@ export default {
     loading: "Đang tải dữ liệu SIM. Vui lòng đợi",
     column: {
       id: "ID",
+      stt: "STT",
       country: "Quốc gia",
       phone: "Điện thoại",
       service: "Dịch vụ",
       status: "Trạng thái",
       price: "Giá",
       expire_time: "Thời gian hết hạn",
+      otp: "Nội dung OTP",
     },
   },
   support: {
