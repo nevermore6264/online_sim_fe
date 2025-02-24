@@ -13,25 +13,33 @@
         <Button
           :label="$t('landing.headerBuyOTP')"
           class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'activations' }"
           @click="handleRentOTP"
         />
         <Button
           :label="$t('landing.headerRentSim')"
           class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'rent-sim' }"
           @click="handleActivations"
         />
-        <Button class="p-button-text" @click="handleProxy">
+        <Button
+          class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'proxy' }"
+          @click="handleProxy"
+        >
           <b style="color: red; font-size: 15px">HQ</b>
           <span>{{ $t("landing.headerProxy") }}</span>
         </Button>
         <Button
           :label="$t('landing.headerNews')"
           class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'news' }"
           @click="handleNews"
         />
         <Button
           :label="$t('landing.headerAPI')"
           class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'api' }"
           @click="handleAPI"
         />
       </div>
@@ -66,16 +74,37 @@
           />
           <OverlayPanel ref="mobileMenu" id="mobileMenu">
             <ul class="mobile-menu">
-              <li @click="handleActivations">
+              <li
+                @click="handleActivations"
+                :class="{ 'active-menu': activeMenu === 'rent-sim' }"
+              >
                 {{ $t("landing.headerRentSim") }}
               </li>
-              <li @click="handleRentOTP">{{ $t("landing.headerBuyOTP") }}</li>
-              <li @click="handleProxy">
+              <li
+                @click="handleRentOTP"
+                :class="{ 'active-menu': activeMenu === 'activations' }"
+              >
+                {{ $t("landing.headerBuyOTP") }}
+              </li>
+              <li
+                @click="handleProxy"
+                :class="{ 'active-menu': activeMenu === 'proxy' }"
+              >
                 <b style="color: red; font-size: 15px">HQ</b>
                 <span>{{ $t("landing.headerProxy") }}</span>
               </li>
-              <li @click="handleNews">{{ $t("landing.headerNews") }}</li>
-              <li @click="handleAPI">{{ $t("landing.headerAPI") }}</li>
+              <li
+                @click="handleNews"
+                :class="{ 'active-menu': activeMenu === 'news' }"
+              >
+                {{ $t("landing.headerNews") }}
+              </li>
+              <li
+                @click="handleAPI"
+                :class="{ 'active-menu': activeMenu === 'api' }"
+              >
+                {{ $t("landing.headerAPI") }}
+              </li>
               <li @click="handleLogout">{{ $t("landing.logout") }}</li>
             </ul>
           </OverlayPanel>
@@ -110,8 +139,10 @@ import { useRouter } from "vue-router";
 import { push } from "notivue";
 import UserService from "@/services/user";
 import OverlayPanel from "primevue/overlaypanel";
+import { useRoute } from "vue-router";
 
 const isMobile = ref(false);
+const activeMenu = ref(""); // Theo dõi menu hiện tại
 
 const updateScreenSize = () => {
   if (typeof window !== "undefined") {
@@ -120,6 +151,7 @@ const updateScreenSize = () => {
 };
 
 const router = useRouter();
+const route = useRoute();
 const userInfo = reactive({});
 const mobileMenu = ref(null); // Ref cho OverlayPanel
 
@@ -135,11 +167,30 @@ const handleLogout = () => {
   window.location.reload();
 };
 
-const handleActivations = () => router.push("/rent-sim");
-const handleRentOTP = () => router.push("/activations");
-const handleProxy = () => router.push("/proxy");
-const handleNews = () => router.push("/news");
-const handleAPI = () => (window.location.href = "https://japansim.net/");
+const handleActivations = () => {
+  activeMenu.value = "rent-sim";
+  router.push("/rent-sim");
+};
+
+const handleRentOTP = () => {
+  activeMenu.value = "activations";
+  router.push("/activations");
+};
+
+const handleProxy = () => {
+  activeMenu.value = "proxy";
+  router.push("/proxy");
+};
+
+const handleNews = () => {
+  activeMenu.value = "news";
+  router.push("/news");
+};
+
+const handleAPI = () => {
+  activeMenu.value = "api";
+  window.location.href = "https://japansim.net/";
+};
 
 const fetchUserInfo = async (token) => {
   try {
@@ -167,6 +218,23 @@ onMounted(async () => {
     await fetchUserInfo(token);
   }
   window.addEventListener("resize", updateScreenSize);
+
+  switch (route.path) {
+    case "/rent-sim":
+      activeMenu.value = "rent-sim";
+      break;
+    case "/activations":
+      activeMenu.value = "activations";
+      break;
+    case "/proxy":
+      activeMenu.value = "proxy";
+      break;
+    case "/news":
+      activeMenu.value = "news";
+      break;
+    default:
+      activeMenu.value = "";
+  }
 });
 
 onUnmounted(() => {
@@ -423,6 +491,17 @@ onUnmounted(() => {
 .social-login p {
   margin-bottom: 0.5rem;
   color: #666;
+}
+
+.active-menu {
+  color: #007bff !important; /* Màu chữ */
+  font-weight: bold; /* In đậm */
+  border-bottom: 2px solid #007bff; /* Gạch chân */
+}
+
+/* Nếu bạn muốn thay đổi màu nền */
+.active-menu {
+  background-color: #f0f8ff; /* Màu nền nhạt */
 }
 
 /* Responsive Layout for Mobile and Tablet */

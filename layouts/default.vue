@@ -9,6 +9,7 @@
       </main>
     </div>
   </div>
+  <Support />
   <FooterLandingPage />
 </template>
 
