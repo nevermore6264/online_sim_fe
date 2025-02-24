@@ -129,6 +129,9 @@ export default {
     total_amount: "Total amount",
     buy_otp: "Activations",
     minutes: "minutes",
+    select_network: "Select Network",
+    network_docomo: "Docomo",
+    network_any: "Any",
   },
   notify: {
     no_rights: "You do not have the right!",

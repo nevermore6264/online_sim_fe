@@ -129,6 +129,9 @@ export default {
     total_amount: "Tổng số tiền",
     buy_otp: "Mua OTP",
     minutes: "phút",
+    select_network: "Chọn nhà mạng",
+    network_docomo: "Docomo",
+    network_any: "Any",
   },
   notify: {
     no_rights: "Bạn không có quyền!",

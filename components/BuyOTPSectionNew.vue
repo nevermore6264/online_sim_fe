@@ -90,6 +90,22 @@
                     class="flag-image"
                   />
                   <span class="country-name">{{ country.name }}</span>
+                  <div
+                    class="network-selection"
+                    v-if="country.code === selectedCustomer?.code"
+                  >
+                    <label for="network"
+                      >{{ $t("landing.select_network") }}:</label
+                    >
+                    <Dropdown
+                      v-model="selectedNetwork"
+                      :options="networkOptions"
+                      optionLabel="label"
+                      optionValue="value"
+                      :placeholder="$t('landing.select_network')"
+                      class="w-full small-dropdown"
+                    />
+                  </div>
                   <button
                     class="select-button"
                     :class="{
@@ -168,11 +184,19 @@ import { useWindowSize } from "@vueuse/core";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 import orderService from "../services/order";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const customers = ref([]);
 const loading = ref(false);
 const selectedCustomer = ref(null);
 const selectedServices = ref([]);
+const selectedNetwork = ref("any"); // Mặc định chọn Any
+
+const networkOptions = ref([
+  { label: t("landing.network_docomo"), value: "docomo" },
+  { label: t("landing.network_any"), value: "any" },
+]);
 
 // Theo dõi kích thước màn hình
 const { width } = useWindowSize();
@@ -313,6 +337,7 @@ const buySelectedServices = async () => {
   if (!customer) return;
   const servicesData = selectedServices.value.map((service) => ({
     serviceCode: service.code.toUpperCase(),
+    network: selectedNetwork.value,
   }));
   console.log(servicesData);
 
@@ -656,6 +681,22 @@ onMounted(() => {
 
 .remove-icon .p-button-label {
   display: none;
+}
+
+.network-selection {
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.network-selection label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.network-selection select {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 @media (max-width: 768px) {
