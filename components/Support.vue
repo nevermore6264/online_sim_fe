@@ -1,46 +1,48 @@
 <template>
   <div class="fab-container">
-    <!-- Nút chính -->
     <button class="fab-main" @click="toggleMenu">
       <i class="pi pi-question"></i>
-      <!-- Icon hỗ trợ -->
     </button>
 
-    <!-- Các nút phụ -->
     <div v-if="isMenuOpen" class="fab-menu">
       <button class="fab-item" @click="openEmail">
         <i class="pi pi-envelope"></i>
-        <!-- Icon Email -->
       </button>
       <button class="fab-item" @click="openTelegram">
         <i class="pi pi-telegram"></i>
-        <!-- Icon Telegram -->
       </button>
     </div>
 
-    <!-- Overlay cho Email -->
     <div v-if="isEmailOpen" class="overlay">
       <div class="overlay-content">
-        <h3>Gửi Email Hỗ Trợ</h3>
+        <h3>{{ $t("support.title") }}</h3>
         <div class="form-group">
-          <label for="name">Tên</label>
-          <input id="name" v-model="name" placeholder="Nhập tên của bạn" />
+          <label for="name">{{ $t("support.name") }}</label>
+          <input id="name" v-model="name" :placeholder="$t('support.name')" />
         </div>
         <div class="form-group">
-          <label for="email">Email</label>
-          <input id="email" v-model="email" placeholder="Nhập email của bạn" />
+          <label for="email">{{ $t("support.email") }}</label>
+          <input
+            id="email"
+            v-model="email"
+            :placeholder="$t('support.email')"
+          />
         </div>
         <div class="form-group">
-          <label for="message">Nội dung</label>
+          <label for="message">{{ $t("support.message") }}</label>
           <textarea
             id="message"
             v-model="message"
             rows="5"
-            placeholder="Nhập nội dung tin nhắn"
+            :placeholder="$t('support.message')"
           ></textarea>
         </div>
-        <button class="submit-button" @click="sendEmail">Gửi</button>
-        <button class="close-button" @click="closeEmail">Đóng</button>
+        <button class="submit-button" @click="sendEmail">
+          {{ $t("support.send") }}
+        </button>
+        <button class="close-button" @click="closeEmail">
+          {{ $t("support.close") }}
+        </button>
       </div>
     </div>
   </div>

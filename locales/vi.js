@@ -235,4 +235,12 @@ export default {
       expire_time: "Thời gian hết hạn",
     },
   },
+  support: {
+    title: "Gửi Email Hỗ Trợ",
+    name: "Tên",
+    email: "Email",
+    message: "Nội dung",
+    send: "Gửi",
+    close: "Đóng",
+  },
 };

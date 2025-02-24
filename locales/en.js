@@ -128,7 +128,7 @@ export default {
     duration: "Duration",
     total_amount: "Total amount",
     buy_otp: "Activations",
-    minutes: "minutes"
+    minutes: "minutes",
   },
   notify: {
     no_rights: "You do not have the right!",
@@ -236,5 +236,13 @@ export default {
       price: "Price",
       expire_time: "Expire Time",
     },
+  },
+  support: {
+    title: "Support Email",
+    name: "Name",
+    email: "Email",
+    message: "Message",
+    send: "Send",
+    close: "Close",
   },
 };
