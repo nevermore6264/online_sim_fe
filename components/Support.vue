@@ -1,77 +1,83 @@
 <template>
-  <div>
-    <!-- Speed Dial Component -->
-    <SpeedDial
-      :model="items"
-      :radius="80"
-      type="quarter-circle"
-      direction="up"
-      :style="{ position: 'fixed', bottom: '20px', right: '20px' }"
-      class="custom-speed-dial"
-    />
+  <div class="fab-container">
+    <!-- Nút chính -->
+    <button class="fab-main" @click="toggleMenu">
+      <i class="pi pi-question"></i>
+      <!-- Icon hỗ trợ -->
+    </button>
 
-    <!-- OverlayPanel for Email -->
-    <OverlayPanel ref="op" class="custom-overlay-panel">
-      <div class="p-fluid">
-        <div class="p-field">
+    <!-- Các nút phụ -->
+    <div v-if="isMenuOpen" class="fab-menu">
+      <button class="fab-item" @click="openEmail">
+        <i class="pi pi-envelope"></i>
+        <!-- Icon Email -->
+      </button>
+      <button class="fab-item" @click="openTelegram">
+        <i class="pi pi-telegram"></i>
+        <!-- Icon Telegram -->
+      </button>
+    </div>
+
+    <!-- Overlay cho Email -->
+    <div v-if="isEmailOpen" class="overlay">
+      <div class="overlay-content">
+        <h3>Gửi Email Hỗ Trợ</h3>
+        <div class="form-group">
           <label for="name">Tên</label>
-          <InputText id="name" v-model="name" placeholder="Nhập tên của bạn" />
+          <input id="name" v-model="name" placeholder="Nhập tên của bạn" />
         </div>
-        <div class="p-field">
+        <div class="form-group">
           <label for="email">Email</label>
-          <InputText
-            id="email"
-            v-model="email"
-            placeholder="Nhập email của bạn"
-          />
+          <input id="email" v-model="email" placeholder="Nhập email của bạn" />
         </div>
-        <div class="p-field">
+        <div class="form-group">
           <label for="message">Nội dung</label>
-          <Textarea
+          <textarea
             id="message"
             v-model="message"
             rows="5"
             placeholder="Nhập nội dung tin nhắn"
-          />
+          ></textarea>
         </div>
-        <Button label="Gửi" @click="sendEmail" class="p-button-primary" />
+        <button class="submit-button" @click="sendEmail">Gửi</button>
+        <button class="close-button" @click="closeEmail">Đóng</button>
       </div>
-    </OverlayPanel>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import SpeedDial from "primevue/speeddial";
-import OverlayPanel from "primevue/overlaypanel";
-import InputText from "primevue/inputtext";
-import Textarea from "primevue/textarea";
-import Button from "primevue/button";
 
-const op = ref(null);
+const isMenuOpen = ref(false); // Trạng thái mở/đóng menu
+const isEmailOpen = ref(false); // Trạng thái mở/đóng form email
 const name = ref("");
 const email = ref("");
 const message = ref("");
 
-const items = ref([
-  {
-    label: "Email",
-    icon: "pi pi-envelope",
-    command: () => {
-      op.value.toggle(event);
-    },
-  },
-  {
-    label: "Telegram",
-    icon: "pi pi-telegram",
-    command: () => {
-      window.open("https://t.me/your_telegram_link", "_blank");
-    },
-  },
-]);
+// Mở/đóng menu
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
 
+// Mở form email
+const openEmail = () => {
+  isEmailOpen.value = true;
+  isMenuOpen.value = false; // Đóng menu khi mở form email
+};
+
+// Đóng form email
+const closeEmail = () => {
+  isEmailOpen.value = false;
+};
+
+// Mở Telegram
+const openTelegram = () => {
+  window.open("https://t.me/your_telegram_link", "_blank");
+};
+
+// Gửi email (logic giả lập)
 const sendEmail = () => {
-  // Logic để gửi email
   console.log("Gửi email:", {
     name: name.value,
     email: email.value,
@@ -81,77 +87,145 @@ const sendEmail = () => {
   name.value = "";
   email.value = "";
   message.value = "";
-  op.value.hide();
+  closeEmail();
 };
 </script>
 
 <style scoped>
-/* Custom SpeedDial */
-.custom-speed-dial {
+/* Container chính */
+.fab-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 1000;
 }
 
-.custom-speed-dial .p-speeddial-button {
-  width: 56px;
-  height: 56px;
-  background-color: #007bff;
+/* Nút chính */
+.fab-main {
+  width: 48px;
+  height: 48px;
   border: none;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
 }
 
-.custom-speed-dial .p-speeddial-button:hover {
+.fab-main:hover {
   background-color: #0056b3;
 }
 
-.custom-speed-dial .p-speeddial-action {
+/* Menu các nút phụ */
+.fab-menu {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Nút phụ */
+.fab-item {
   width: 40px;
   height: 40px;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 50%;
+  background-color: white;
+  color: #007bff;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
 }
 
-.custom-speed-dial .p-speeddial-action:hover {
-  background-color: #f8f9fa;
+.fab-item:hover {
+  background-color: #f0f0f0;
 }
 
-/* Custom OverlayPanel */
-.custom-overlay-panel {
+/* Overlay cho form email */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.overlay-content {
+  background-color: white;
   padding: 20px;
   border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.custom-overlay-panel .p-fluid .p-field {
-  margin-bottom: 1rem;
+.overlay-content h3 {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #333;
 }
 
-.custom-overlay-panel .p-field label {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
   display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.custom-overlay-panel .p-inputtext,
-.custom-overlay-panel .p-textarea {
+.form-group input,
+.form-group textarea {
   width: 100%;
-  padding: 0.5rem;
+  padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  font-size: 14px;
 }
 
-.custom-overlay-panel .p-button {
+.submit-button,
+.close-button {
   width: 100%;
-  padding: 0.5rem;
-  background-color: #007bff;
+  padding: 10px;
   border: none;
   border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.submit-button {
+  background-color: #007bff;
   color: white;
 }
 
-.custom-overlay-panel .p-button:hover {
+.submit-button:hover {
   background-color: #0056b3;
+}
+
+.close-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.close-button:hover {
+  background-color: #ddd;
 }
 </style>
