@@ -283,12 +283,7 @@ const onBuy = () => {
 }
 
 .flag-image {
-  width: 24px;
-  height: auto;
-}
-
-.flag-image {
-  width: 24px;
+  width: 32px;
   height: auto;
   margin-right: 8px;
 }
@@ -349,12 +344,6 @@ const onBuy = () => {
 
 .country-item:hover {
   background-color: #f1f1f1;
-}
-
-.flag-image {
-  width: 30px;
-  height: auto;
-  margin-right: 10px;
 }
 
 .country-name {

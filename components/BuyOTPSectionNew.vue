@@ -453,12 +453,7 @@ onMounted(() => {
 }
 
 .flag-image {
-  width: 24px;
-  height: auto;
-}
-
-.flag-image {
-  width: 24px;
+  width: 32px;
   height: auto;
   margin-right: 8px;
 }
@@ -622,10 +617,10 @@ onMounted(() => {
 }
 
 .service-info img {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border-radius: 4px;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .selected-services {
