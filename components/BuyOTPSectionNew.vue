@@ -90,7 +90,12 @@
                     class="flag-image"
                   />
                   <span class="country-name">{{ country.name }}</span>
-                  <button class="select-button">
+                  <button
+                    class="select-button"
+                    :class="{
+                      selected: country.code === selectedCustomer?.code,
+                    }"
+                  >
                     {{
                       country.code === selectedCustomer?.code
                         ? $t("landing.selected")
@@ -551,39 +556,6 @@ onMounted(() => {
   font-weight: bold;
 }
 
-.service-price {
-  font-size: 12px;
-  color: gray;
-}
-
-.selected-country {
-  background-color: #007bff !important; /* Màu nền khi được chọn */
-  color: white !important; /* Màu chữ khi được chọn */
-  font-weight: bold;
-}
-
-.selected-country .select-button {
-  background-color: #0056b3; /* Màu nền nút khi được chọn */
-  color: white;
-}
-
-.country-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  padding: 8px;
-  transition: background-color 0.3s;
-  width: 100%;
-  background-color: rgb(245, 245, 245);
-  border-radius: 5px;
-}
-
-.country-item:hover {
-  background-color: rgb(201, 200, 200);
-}
-
 .select-button {
   padding: 5px 10px;
   background-color: #007bff;
@@ -597,6 +569,12 @@ onMounted(() => {
 
 .select-button:hover {
   background-color: #0056b3;
+}
+
+.select-button.selected {
+  background-color: #ffc107; /* Màu vàng */
+  color: #000; /* Màu chữ đen để dễ đọc */
+  border: 1px solid #ffc107; /* Viền màu vàng */
 }
 
 .top-section {
