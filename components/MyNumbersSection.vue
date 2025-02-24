@@ -89,8 +89,8 @@
             <strong>{{ $t("order.column.price") }}:</strong> {{ order.cost }}
           </p>
           <p>
-            <strong>{{ $t("order.column.expire_time") }}:</strong>
-            {{ trackingExpiredTime(order.stock.expiredAt) }}
+            <strong>{{ $t("order.column.otp") }}:</strong>
+            {{ order }}
           </p>
         </div>
       </div>
