@@ -18,6 +18,8 @@
         <TipsBlock />
       </div>
     </div>
+    <!-- Thêm component Support vào đây -->
+    <Support />
     <FooterLandingPage />
   </div>
 </template>
