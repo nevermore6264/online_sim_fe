@@ -2,7 +2,7 @@
   <div class="auth-container">
     <div class="auth-form">
       <div class="logo">
-        <img src="/layout/images/logo.png" alt="Logo" class="logo-image" />
+        <img src="/layout/images/logo.jpg" alt="Logo" class="logo-image" />
       </div>
       <h2>{{ $t("landing.login") }}</h2>
       <form @submit.prevent="handleLogin">

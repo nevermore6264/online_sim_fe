@@ -3,7 +3,7 @@
     <!-- Logo Section -->
     <div class="p-menubar-start">
       <a class="layout-topbar-logo" href="/">
-        <img src="/layout/images/logo.png" alt="logo" width="75px" />
+        <img src="/layout/images/logo.jpg" alt="logo" width="75px" />
       </a>
     </div>
 

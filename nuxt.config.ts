@@ -45,7 +45,7 @@ export default defineNuxtConfig({
         { name: 'format-detection', content: 'telephone=no' },
       ],
       link: [
-        { rel: 'icon', type: 'image/gif', href: 'layout/images/onlinesim-logo.png' },
+        { rel: 'icon', type: 'image/gif', href: 'layout/images/logo.jpg' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap' }
       ]
     }
