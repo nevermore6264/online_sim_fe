@@ -1,6 +1,5 @@
 <template>
   <div class="proxy-containter">
-    <h4 class="grey-doc-text-red-bg">⚠ {{ t("rent_number.notify") }}</h4>
     <div class="tab-container">
       <TabMenu
         :model="computedTabs"
@@ -45,5 +44,7 @@ const computedTabs = computed(() => [
 </script>
 
 <style scoped>
-/* Giữ nguyên phần style */
+.proxy-containter {
+  margin-top: 10px;
+}
 </style>

@@ -25,9 +25,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { useI18n } from "vue-i18n"; // Import useI18n
-
-const { t } = useI18n();
 
 const tabs = [
   { labelKey: "buy_otp.order", icon: "pi pi-shopping-cart" },
