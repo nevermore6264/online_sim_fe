@@ -344,7 +344,7 @@ onMounted(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .landing-page-container {
   display: flex;
   gap: 20px;

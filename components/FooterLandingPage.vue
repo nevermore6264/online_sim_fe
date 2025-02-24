@@ -36,7 +36,6 @@
 <style scoped>
 .main-footer {
   position: relative;
-  padding: 20px 0;
   background: linear-gradient(to right, #d7f2fe, #ffffff);
 }
 
