@@ -82,6 +82,7 @@
                   :class="{
                     'selected-country': country.code === selectedCustomer?.code,
                   }"
+                  @click.stop="onCountryClick(country)"
                 >
                   <img
                     :src="country.flagImage"
@@ -89,10 +90,7 @@
                     class="flag-image"
                   />
                   <span class="country-name">{{ country.name }}</span>
-                  <button
-                    class="select-button"
-                    @click.stop="onCountryClick(country)"
-                  >
+                  <button class="select-button">
                     {{
                       country.code === selectedCustomer?.code
                         ? $t("landing.selected")
