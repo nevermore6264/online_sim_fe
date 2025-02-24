@@ -10,7 +10,9 @@
             class="selected-item"
           >
             <div class="service-info">
-              <span class="service-name">{{ $t("landing.service") }}: </span>
+              <span class="service-name mobile-hidden"
+                >{{ $t("landing.service") }}:
+              </span>
               <img
                 :src="service?.image"
                 alt="Service Image"
@@ -19,13 +21,18 @@
               />
               <span class="service-name">{{ service.text }}</span>
               <span class="service-name">
-                {{ $t("landing.country") }}: {{ selectedCustomer.name }}
+                <span class="mobile-hidden">{{ $t("landing.country") }}:</span>
+                {{ selectedCustomer.name }}
               </span>
-              <span class="service-name"
-                >{{ $t("landing.duration") }}: 10 {{ $t("landing.minutes") }}
+              <span class="service-name">
+                <span class="mobile-hidden">{{ $t("landing.duration") }}:</span>
+                10 {{ $t("landing.minutes") }}
               </span>
               <span class="service-price">
-                {{ $t("landing.total_amount") }}: {{ service.price }} USDT
+                <span class="mobile-hidden">
+                  {{ $t("landing.total_amount") }}:</span
+                >
+                {{ service.price }} USDT
               </span>
               <Button
                 class="remove-icon"
@@ -723,11 +730,26 @@ onMounted(() => {
     max-width: 100%;
   }
 
+  .service-info img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .service-name,
+  .service-price {
+    font-size: 12px;
+  }
+
+  .remove-icon {
+    font-size: 12px;
+  }
+
   .service-info {
     display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 5px !important;
+  }
+
+  .mobile-hidden {
+    display: none; /* Ẩn phần tử trên mobile */
   }
 }
 </style>
