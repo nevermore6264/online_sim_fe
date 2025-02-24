@@ -104,6 +104,7 @@
                       optionValue="value"
                       :placeholder="$t('landing.select_network')"
                       class="w-full small-dropdown"
+                      @click="handleDropdownClick"
                     />
                   </div>
                   <button
@@ -274,6 +275,11 @@ const onCountryClick = async (country) => {
       selectedCustomer.value.services = [];
     }
   }
+};
+
+const handleDropdownClick = (event) => {
+  event.stopPropagation(); // Ngăn chặn sự kiện lan truyền
+  // Xử lý logic khác nếu cần
 };
 
 const loadJapanServices = async () => {
