@@ -432,13 +432,6 @@ li {
   margin-top: 1rem;
 }
 
-.service-details h5 {
-  white-space: nowrap; /* Ngăn văn bản xuống dòng */
-  overflow: hidden; /* Ẩn phần văn bản vượt quá kích thước */
-  text-overflow: ellipsis; /* Hiển thị dấu "..." khi văn bản bị cắt */
-  max-width: 150px; /* Giới hạn chiều rộng tối đa (điều chỉnh theo nhu cầu) */
-}
-
 @media (max-width: 1366px) {
   .services-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -523,6 +516,19 @@ li {
   transition: transform 0.2s, box-shadow 0.2s;
   border: 2px solid transparent;
   height: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.service-details {
+  overflow: hidden; /* Ẩn phần văn bản vượt quá kích thước */
+}
+
+.service-details h5 {
+  overflow: hidden; /* Ẩn phần văn bản vượt quá kích thước */
+  text-overflow: ellipsis; /* Hiển thị dấu "..." khi văn bản bị cắt */
 }
 
 .service-card:hover {
