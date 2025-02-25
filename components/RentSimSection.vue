@@ -160,9 +160,6 @@ import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 import { push } from "notivue";
 
-const customers = ref([]);
-const loading = ref(false);
-
 const selectedCustomer = ref(null);
 const selectedServices = ref([]);
 const rentalQuantityOptions = ref([
