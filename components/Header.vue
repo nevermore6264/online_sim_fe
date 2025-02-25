@@ -499,6 +499,11 @@ onUnmounted(() => {
   border-bottom: 2px solid #007bff; /* Gạch chân */
 }
 
+.layout-topbar-logo img {
+  width: 50px;
+  height: 50px;
+}
+
 /* Nếu bạn muốn thay đổi màu nền */
 .active-menu {
   background-color: #f0f8ff; /* Màu nền nhạt */
@@ -518,7 +523,7 @@ onUnmounted(() => {
   }
 
   .layout-topbar .p-menubar-end {
-    margin-top: 10px;
+    margin-top: 5px;
     justify-content: center;
   }
 
