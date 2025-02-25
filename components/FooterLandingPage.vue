@@ -36,7 +36,6 @@
 <style scoped>
 .main-footer {
   position: relative;
-  background: linear-gradient(to right, #d7f2fe, #ffffff);
 }
 
 .container {

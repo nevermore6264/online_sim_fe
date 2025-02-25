@@ -128,7 +128,7 @@
     </div>
 
     <!-- Services Grid -->
-    <div class="services-grid">
+    <div class="services-grid scrollable-container">
       <div
         v-for="(item, index) in filteredServices"
         :key="index"
@@ -331,6 +331,12 @@ onMounted(async () => {
   font-size: 14px;
 }
 
+.scrollable-container {
+  max-height: 355px; /* Chiều cao cố định */
+  overflow-y: auto; /* Cho phép cuộn bên trong container */
+  padding-right: 10px; /* Để tránh bị che bởi thanh cuộn */
+}
+
 .flex-container {
   display: flex;
   gap: 2rem;
@@ -426,6 +432,13 @@ li {
   margin-top: 1rem;
 }
 
+.service-details h5 {
+  white-space: nowrap; /* Ngăn văn bản xuống dòng */
+  overflow: hidden; /* Ẩn phần văn bản vượt quá kích thước */
+  text-overflow: ellipsis; /* Hiển thị dấu "..." khi văn bản bị cắt */
+  max-width: 150px; /* Giới hạn chiều rộng tối đa (điều chỉnh theo nhu cầu) */
+}
+
 @media (max-width: 1366px) {
   .services-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -457,7 +470,7 @@ li {
 
 @media (max-width: 768px) {
   .services-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .top-section {
@@ -492,7 +505,7 @@ li {
 
 @media (max-width: 480px) {
   .services-grid {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

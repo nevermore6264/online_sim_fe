@@ -15,6 +15,7 @@
 body {
   margin: 0;
   font-family: "Lato", sans-serif !important;
+  background: linear-gradient(to right, #d7f2fe, #ffffff);
 }
 
 .p-datatable-emptymessage {
@@ -52,11 +53,6 @@ label {
     rgba(0, 0, 0, 0)
   );
   border-radius: 0;
-}
-
-.main {
-  background: linear-gradient(to right, #d7f2fe, #ffffff);
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 h1 {

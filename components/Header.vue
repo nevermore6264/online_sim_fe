@@ -247,8 +247,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* box-shadow: 0 3px 5px rgba(0, 0, 0, 0.02), 0 0 2px rgba(0, 0, 0, 0.05),
-    0 1px 4px rgba(0, 0, 0, 0.08); */
+  background: ghostwhite;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
     rgba(0, 0, 0, 0.2) -2px -3px 10px inset;
@@ -500,8 +499,8 @@ onUnmounted(() => {
 }
 
 .layout-topbar-logo img {
-  width: 50px;
-  height: 50px;
+  width: 50px !important;
+  height: 50px !important;
 }
 
 /* Nếu bạn muốn thay đổi màu nền */
