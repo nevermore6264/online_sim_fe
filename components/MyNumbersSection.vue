@@ -90,7 +90,7 @@
           </p>
           <p>
             <strong>{{ $t("order.column.otp") }}:</strong>
-            {{ order }}
+            {{ smsList.find((e) => e.orderId == order.id)?.messageText }}
           </p>
         </div>
       </div>
@@ -109,11 +109,13 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import UserService from "@/services/user";
+import SmsService from "@/services/sms";
 
 const orderList = ref([]); // Danh sách từ API
 const filteredOrderList = ref([]); // Danh sách sau khi lọc
 const selectedStatus = ref("all"); // Trạng thái lọc
 const loading = ref(false);
+const smsList = ref([]); // Danh sách sau khi lọc
 
 const rowsPerPage = ref(10); // Số dòng trên mỗi trang
 const currentPage = ref(1); // Trang hiện tại
@@ -126,19 +128,29 @@ const calculateSTT = (index) => {
   return (currentPage.value - 1) * rowsPerPage.value + index + 1;
 };
 
-// Hàm tính thời gian hết hạn
-const trackingExpiredTime = (dateString) => {
-  if (!dateString) return "N/A";
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  }).format(date);
+const fetchSmsList = async () => {
+  loading.value = true;
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    console.error("Token is not found in localStorage");
+    loading.value = false;
+    return;
+  }
+
+  try {
+    const response = await SmsService.GetAllSmsList(token);
+
+    if (response?.success) {
+      smsList.value = response.data.docs;
+    } else {
+      console.error("No data received from API");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    loading.value = false;
+  }
 };
 
 // Hàm lấy danh sách từ API
@@ -199,6 +211,7 @@ const onPageChange = (event) => {
 
 onMounted(() => {
   fetchOrderList();
+  fetchSmsList();
 });
 </script>
 
