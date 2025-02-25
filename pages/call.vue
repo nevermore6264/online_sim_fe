@@ -1,64 +1,5 @@
 <template>
   <div class="landing-page">
-    <div class="top-section">
-      <!-- Selected Services List -->
-      <div class="selected-services" v-if="selectedServices.length > 0">
-        <div class="selected-services-list">
-          <div
-            v-for="(service, index) in selectedServices"
-            :key="index"
-            class="selected-item"
-          >
-            <div class="service-info">
-              <span class="service-name mobile-hidden"
-                >{{ $t("landing.service") }}:
-              </span>
-              <img
-                :src="service?.image"
-                alt="Service Image"
-                class="w-24 rounded"
-                width="24px"
-              />
-              <span class="service-name">{{ service.text }}</span>
-              <span class="service-name">
-                <span class="mobile-hidden">{{ $t("landing.country") }}:</span>
-                {{ selectedCustomer.name }}
-              </span>
-              <span class="service-name">
-                <span class="mobile-hidden">{{ $t("landing.duration") }}:</span>
-                10 {{ $t("landing.minutes") }}
-              </span>
-              <span class="service-price">
-                <span class="mobile-hidden">
-                  {{ $t("landing.total_amount") }}:</span
-                >
-                {{ service.price }} USDT
-              </span>
-              <Button
-                class="remove-icon"
-                icon="pi pi-times"
-                severity="danger"
-                variant="text"
-                size="small"
-                label=""
-                @click="removeService(index)"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Buy Button -->
-      <div class="buy-section" v-if="selectedServices.length > 0">
-        <Button class="buy-button" @click="buySelectedServices">
-          {{ $t("landing.buy_otp") }}
-        </Button>
-        <p class="total-amount">
-          {{ $t("landing.total_amount") }}: {{ totalAmount }} USDT
-        </p>
-      </div>
-    </div>
-
     <div class="flex-container landing-page-container">
       <!-- Bên trái: Danh sách quốc gia -->
       <div class="table-container table-services">
@@ -132,28 +73,96 @@
           </Column>
         </DataTable>
       </div>
+
+      <!-- Phần giữa: Chọn gói dịch vụ -->
+      <div class="middle-section">
+        <div class="package-section">
+          <h3>{{ $t("landing.select_package") }}</h3>
+          <!-- Input số lượng -->
+          <div class="quantity-input">
+            <label for="quantity">{{ $t("landing.quantity") }}:</label>
+            <InputNumber
+              v-model="quantity"
+              inputId="quantity"
+              :min="1"
+              :max="10"
+              showButtons
+            />
+          </div>
+          <!-- Các gói dịch vụ -->
+          <div class="package-buttons">
+            <Button
+              v-for="(pkg, index) in packages"
+              :key="index"
+              :label="pkg.label"
+              :class="{ selected: selectedPackage === pkg.value }"
+              @click="selectPackage(pkg.value)"
+              class="package-button"
+            />
+          </div>
+          <!-- Nút mua -->
+          <Button class="buy-button" @click="buyPackage">
+            {{ $t("landing.buy_package") }}
+          </Button>
+        </div>
+      </div>
+
+      <!-- Bên phải: 2 bảng -->
+      <div class="right-section">
+        <!-- Bảng số muốn gọi đến -->
+        <div class="table-section">
+          <h3>{{ $t("landing.numbers_to_call") }}</h3>
+          <DataTable :value="numbersToCall" scrollable scrollHeight="200px">
+            <Column field="number" header="Số điện thoại"></Column>
+            <Column field="status" header="Trạng thái"></Column>
+          </DataTable>
+        </div>
+
+        <!-- Bảng danh sách số đã mua -->
+        <div class="table-section">
+          <h3>{{ $t("landing.purchased_numbers") }}</h3>
+          <DataTable :value="purchasedNumbers" scrollable scrollHeight="200px">
+            <Column field="number" header="Số điện thoại"></Column>
+            <Column field="purchaseDate" header="Ngày mua"></Column>
+          </DataTable>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "landing",
-});
-
 import { ref, onMounted, computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
-import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
-import orderService from "../services/order";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const customers = ref([]);
 const loading = ref(false);
 const selectedCustomer = ref(null);
-const selectedServices = ref([]);
 const selectedNetwork = ref("any"); // Mặc định chọn Any
+const selectedPackage = ref(null); // Gói dịch vụ được chọn
+const quantity = ref(1); // Số lượng mặc định
+
+// Danh sách các gói dịch vụ
+const packages = ref([
+  { label: t("landing.package1"), value: "package1" },
+  { label: t("landing.package2"), value: "package2" },
+  { label: t("landing.package3"), value: "package3" },
+]);
+
+// Danh sách số muốn gọi đến
+const numbersToCall = ref([
+  { number: "0123456789", status: t("landing.not_called") },
+  { number: "0987654321", status: t("landing.called") },
+]);
+
+// Danh sách số đã mua
+const purchasedNumbers = ref([
+  { number: "0123456789", purchaseDate: "2023-10-01" },
+  { number: "0987654321", purchaseDate: "2023-10-02" },
+]);
 
 const networkOptions = ref([
   { label: t("landing.network_docomo"), value: "docomo" },
@@ -186,39 +195,16 @@ const filteredCountries = computed(() => {
   );
 });
 
-const removeService = (index) => {
-  selectedServices.value.splice(index, 1);
-};
-
 const onCountryClick = async (country) => {
-  // Xóa danh sách dịch vụ đã chọn
-  selectedServices.value = [];
-
   // Cập nhật quốc gia được chọn
   selectedCustomer.value = {
     ...country,
     services: [], // Khởi tạo danh sách dịch vụ trống
   };
-
-  // Nếu quốc gia có mã code, tải danh sách dịch vụ
-  if (country?.code) {
-    try {
-      const response = await serviceService.GetServicesByCountryCode(
-        country.code
-      );
-      if (response?.success) {
-        selectedCustomer.value.services = response?.data;
-      }
-    } catch (error) {
-      console.error("Error fetching services:", error);
-      selectedCustomer.value.services = [];
-    }
-  }
 };
 
 const handleDropdownClick = (event) => {
   event.stopPropagation(); // Ngăn chặn sự kiện lan truyền
-  // Xử lý logic khác nếu cần
 };
 
 const loadJapanServices = async () => {
@@ -229,20 +215,6 @@ const loadJapanServices = async () => {
     flagImage: "https://flagsapi.com/JP/flat/64.png",
     services: [],
   };
-
-  if (japan.code) {
-    try {
-      const response = await serviceService.GetServicesByCountryCode(
-        japan.code
-      );
-      if (response?.success) {
-        japan.services = response?.data;
-      }
-    } catch (error) {
-      console.error("Error fetching services:", error);
-      japan.services = [];
-    }
-  }
 
   // Gán dịch vụ của Japan vào selectedCustomer.value
   selectedCustomer.value = japan;
@@ -255,49 +227,21 @@ const initializeData = async () => {
   loading.value = false;
 };
 
-const totalAmount = computed(() => {
-  return selectedServices.value.reduce(
-    (total, service) => total + service.price,
-    0
-  );
-});
+const selectPackage = (pkg) => {
+  selectedPackage.value = pkg;
+};
 
-const buySelectedServices = async () => {
-  const token = localStorage.getItem("token");
-  if (selectedServices.value.length === 0) return;
-
-  const customer = toRaw(selectedCustomer.value);
-  console.log(customer.value);
-  if (!customer) return;
-  const servicesData = selectedServices.value.map((service) => ({
-    serviceCode: service.code.toUpperCase(),
-    network: selectedNetwork.value,
-  }));
-  console.log(servicesData);
-
-  let successCount = 0;
-  let failedServices = [];
-
-  try {
-    for (const data of servicesData) {
-      const response = await orderService.BuyOTP(token, data);
-      if (response.success) {
-        successCount++;
-      } else {
-        failedServices.push(data.serviceCode);
-      }
-    }
-
-    if (successCount > 0) {
-      push.success(`Successfully bought ${successCount} OTP(s)!`);
-      window.location.reload();
-    }
-    if (failedServices.length > 0) {
-      push.warning(`Failed to activations for: ${failedServices.join(", ")}`);
-    }
-  } catch (err) {
-    push.error("Error during service purchase!");
+const buyPackage = () => {
+  if (!selectedPackage.value) {
+    alert(t("landing.please_select_package"));
+    return;
   }
+  alert(
+    t("landing.purchase_success", {
+      package: selectedPackage.value,
+      quantity: quantity.value,
+    })
+  );
 };
 
 onMounted(() => {
@@ -311,7 +255,7 @@ onMounted(() => {
   display: flex;
   gap: 20px;
   width: 100%;
-  margin: 0 auto;
+  margin: 20px auto 0 auto;
 }
 
 .table-container {
@@ -319,11 +263,75 @@ onMounted(() => {
   border-radius: 8px;
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  flex: 3; /* Chiếm 30% */
 }
 
-/* Bên trái (30%) */
-.table-container:first-child {
-  flex: 3;
+.middle-section {
+  flex: 4; /* Chiếm 40% */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.right-section {
+  flex: 3; /* Chiếm 30% */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.package-section {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.quantity-input {
+  margin-bottom: 20px;
+}
+
+.quantity-input label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.package-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.package-button {
+  width: 100%;
+  text-align: left;
+}
+
+.package-button.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.buy-button {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.buy-button:hover {
+  background-color: #0056b3;
+}
+
+.table-section {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .search-input {
@@ -457,81 +465,6 @@ onMounted(() => {
   border: 1px solid #ffc107; /* Viền màu vàng */
 }
 
-.top-section {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.service-info {
-  display: grid;
-  grid-template-columns: 0.5fr 0.5fr 2fr 1.5fr 2fr 1fr auto;
-  gap: 10px;
-  align-items: center;
-}
-
-.service-info img {
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  object-fit: fill;
-}
-
-.selected-services {
-  flex: 7; /* Chiếm 70% */
-  border: 1px solid rgb(0, 174, 255);
-  border-radius: 8px;
-  background: #f9f9f9;
-  min-width: 70%;
-}
-
-.selected-item {
-  padding: 5px;
-  border-bottom: 1px solid #ddd;
-}
-
-.selected-item:last-child {
-  border-bottom: none;
-}
-
-.selected-item:hover {
-  background-color: #e0e0e0;
-}
-
-/* Rent button */
-.buy-button {
-  flex: 3; /* Chiếm 30% */
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  display: block;
-  width: 100%;
-  min-width: 200px;
-}
-
-.buy-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.remove-icon {
-  background: none;
-  border: none;
-  color: red;
-  padding: 0 !important;
-  margin: 0 !important;
-  min-width: auto !important; /* Đảm bảo nút không có chiều rộng tối thiểu */
-}
-
-.remove-icon .p-button-label {
-  display: none;
-}
-
 .network-selection {
   margin-top: 10px;
   padding: 10px;
@@ -549,47 +482,14 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .top-section {
+  .landing-page-container {
     flex-direction: column;
   }
 
-  .service-item {
-    padding: 5px !important;
-  }
-
-  .selected-services,
-  .buy-section {
-    flex: 1; /* Chiếm toàn bộ chiều rộng trên mobile */
-  }
-
-  .buy-section {
-    align-items: center;
-  }
-
-  .buy-button {
-    max-width: 100%;
-  }
-
-  .service-info img {
-    width: 16px;
-    height: 16px;
-  }
-
-  .service-name,
-  .service-price {
-    font-size: 12px;
-  }
-
-  .remove-icon {
-    font-size: 12px;
-  }
-
-  .service-info {
-    display: flex !important;
-  }
-
-  .mobile-hidden {
-    display: none; /* Ẩn phần tử trên mobile */
+  .table-container,
+  .middle-section,
+  .right-section {
+    flex: 1;
   }
 }
 </style>
