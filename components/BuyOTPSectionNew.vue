@@ -170,7 +170,7 @@
                     class="flag-image"
                   />
                   <span class="service-name">{{ service.text }}</span>
-                  <span class="service-price">
+                  <span class="service-price mobile-hidden">
                     {{ $t("landing.service_price", { price: service.price }) }}
                   </span>
                 </div>
@@ -249,7 +249,7 @@ const removeService = (index) => {
 
 // Nhóm các dịch vụ thành các nhóm 3 services mỗi nhóm
 const groupedServices = computed(() => {
-  const itemsPerRow = width.value < 480 ? 1 : width.value < 768 ? 2 : 3;
+  const itemsPerRow = 3;
   const services = selectedCustomer.value?.services || []; // Fallback to empty array
   const groups = [];
   for (let i = 0; i < services.length; i += itemsPerRow) {
@@ -528,7 +528,7 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .b-service-row {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .landing-page-container {
@@ -547,7 +547,7 @@ onMounted(() => {
 
 @media (max-width: 480px) {
   .b-service-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .service-group {
@@ -583,6 +583,17 @@ onMounted(() => {
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
   text-align: center;
+  overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
+  white-space: nowrap; /* Ngăn văn bản xuống dòng */
+  text-overflow: ellipsis; /* Hiển thị dấu ... khi văn bản tràn */
+}
+
+.service-name,
+.service-price {
+  max-width: 100%; /* Giới hạn chiều rộng tối đa */
+  overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
+  white-space: nowrap; /* Ngăn văn bản xuống dòng */
+  text-overflow: ellipsis; /* Hiển thị dấu ... khi văn bản tràn */
 }
 
 .service-item:hover {
@@ -715,6 +726,10 @@ onMounted(() => {
 @media (max-width: 768px) {
   .top-section {
     flex-direction: column;
+  }
+
+  .service-item {
+    padding: 5px !important;
   }
 
   .selected-services,
