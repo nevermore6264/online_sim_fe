@@ -15,6 +15,8 @@ export default {
     headerProxy: "Proxy",
     headerNews: "News",
     headerAPI: "API",
+    headerCall: "Calling",
+    headerSms: "Send SMS",
     login: "Login",
     signup: "Sign Up",
     logout: "Logout",
@@ -239,7 +241,7 @@ export default {
       status: "Status",
       price: "Price",
       expire_time: "Expire Time",
-      otp: "OTP Message"
+      otp: "OTP Message",
     },
   },
   support: {

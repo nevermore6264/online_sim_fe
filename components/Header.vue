@@ -42,6 +42,18 @@
           :class="{ 'active-menu': activeMenu === 'api' }"
           @click="handleAPI"
         />
+        <Button
+          :label="$t('landing.headerCall')"
+          class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'call' }"
+          @click="handleCall"
+        />
+        <Button
+          :label="$t('landing.headerSms')"
+          class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'sms' }"
+          @click="handleSms"
+        />
       </div>
     </template>
 
@@ -104,6 +116,18 @@
                 :class="{ 'active-menu': activeMenu === 'api' }"
               >
                 {{ $t("landing.headerAPI") }}
+              </li>
+              <li
+                @click="handleCall"
+                :class="{ 'active-menu': activeMenu === 'call' }"
+              >
+                {{ $t("landing.headerCall") }}
+              </li>
+              <li
+                @click="handleSms"
+                :class="{ 'active-menu': activeMenu === 'sms' }"
+              >
+                {{ $t("landing.headerSms") }}
               </li>
               <li @click="handleLogout">{{ $t("landing.logout") }}</li>
             </ul>
@@ -190,6 +214,16 @@ const handleNews = () => {
 const handleAPI = () => {
   activeMenu.value = "api";
   window.location.href = "https://japansim.net/";
+};
+
+const handleCall = () => {
+  activeMenu.value = "call";
+  router.push("/call");
+};
+
+const handleSms = () => {
+  activeMenu.value = "sms";
+  router.push("/sms");
 };
 
 const fetchUserInfo = async (token) => {

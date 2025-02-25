@@ -1,7 +1,7 @@
 <template>
   <div class="fab-container">
     <button class="fab-main" @click="toggleMenu">
-      <i class="pi pi-question"></i>
+      <i class="pi pi-comments"></i>
     </button>
 
     <div v-if="isMenuOpen" class="fab-menu">
