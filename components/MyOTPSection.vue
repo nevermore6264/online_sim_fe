@@ -53,7 +53,7 @@
         </Column>
         <Column :header="$t('order.column.otp')" style="min-width: 14rem">
           <template #body="{ data }">
-            <span>{{ data }}</span>
+            {{ smsList.find((e) => e.orderId == data.id)?.messageText }}
           </template>
         </Column>
       </DataTable>
