@@ -146,6 +146,7 @@
           />
           <div class="service-details">
             <h5>{{ item?.text }}</h5>
+            <b>{{ $t("landing.availability", { count: 416, price: 1.5 }) }}</b>
           </div>
         </div>
       </div>
@@ -500,8 +501,12 @@ li {
 }
 
 .service-card h5 {
-  margin-block-start: 10px;
-  margin-block-end: 10px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+}
+
+.service-card b {
+  font-size: 11px;
 }
 
 .service-card {

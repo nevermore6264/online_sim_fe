@@ -156,6 +156,7 @@ export default {
     select_network: "Chọn nhà mạng",
     network_docomo: "Docomo",
     network_any: "Any",
+    availability: "Có sẵn {count} cái. Giá {price} USD mỗi ngày",
   },
   notify: {
     no_rights: "Bạn không có quyền!",
