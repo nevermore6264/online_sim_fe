@@ -23,6 +23,18 @@
           @click="handleActivations"
         />
         <Button
+          :label="$t('landing.headerCall')"
+          class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'call' }"
+          @click="handleCall"
+        />
+        <Button
+          :label="$t('landing.headerSms')"
+          class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'sms' }"
+          @click="handleSms"
+        />
+        <Button
           class="p-button-text"
           :class="{ 'active-menu': activeMenu === 'proxy' }"
           @click="handleProxy"
@@ -41,18 +53,6 @@
           class="p-button-text"
           :class="{ 'active-menu': activeMenu === 'api' }"
           @click="handleAPI"
-        />
-        <Button
-          :label="$t('landing.headerCall')"
-          class="p-button-text"
-          :class="{ 'active-menu': activeMenu === 'call' }"
-          @click="handleCall"
-        />
-        <Button
-          :label="$t('landing.headerSms')"
-          class="p-button-text"
-          :class="{ 'active-menu': activeMenu === 'sms' }"
-          @click="handleSms"
         />
       </div>
     </template>
@@ -87,10 +87,22 @@
           <OverlayPanel ref="mobileMenu" id="mobileMenu">
             <ul class="mobile-menu">
               <li
+                @click="handleCall"
+                :class="{ 'active-menu': activeMenu === 'call' }"
+              >
+                {{ $t("landing.headerCall") }}
+              </li>
+              <li
                 @click="handleActivations"
                 :class="{ 'active-menu': activeMenu === 'rent-sim' }"
               >
                 {{ $t("landing.headerRentSim") }}
+              </li>
+              <li
+                @click="handleSms"
+                :class="{ 'active-menu': activeMenu === 'sms' }"
+              >
+                {{ $t("landing.headerSms") }}
               </li>
               <li
                 @click="handleRentOTP"
@@ -116,18 +128,6 @@
                 :class="{ 'active-menu': activeMenu === 'api' }"
               >
                 {{ $t("landing.headerAPI") }}
-              </li>
-              <li
-                @click="handleCall"
-                :class="{ 'active-menu': activeMenu === 'call' }"
-              >
-                {{ $t("landing.headerCall") }}
-              </li>
-              <li
-                @click="handleSms"
-                :class="{ 'active-menu': activeMenu === 'sms' }"
-              >
-                {{ $t("landing.headerSms") }}
               </li>
               <li @click="handleLogout">{{ $t("landing.logout") }}</li>
             </ul>

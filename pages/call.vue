@@ -128,6 +128,7 @@
                 <Button
                   icon="pi pi-phone"
                   class="p-button-sm"
+                  :label="$t('landing.call')"
                   @click="callNumber(data.number)"
                 />
               </template>
@@ -301,6 +302,8 @@ onMounted(() => {
 
 .quantity-input {
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .quantity-input label {
@@ -321,12 +324,12 @@ onMounted(() => {
 }
 
 .package-button.selected {
-  background-color: #007bff;
+  background-color: #ffc107;
   color: white;
+  border: 1px solid #ffc107;
 }
 
 .buy-button {
-  width: 100%;
   background-color: #007bff;
   color: white;
   border: none;

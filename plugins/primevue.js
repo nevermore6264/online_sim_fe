@@ -5,6 +5,8 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
+
 import Dialog from "primevue/dialog";
 import Dropdown from "primevue/dropdown";
 import Checkbox from "primevue/checkbox";
@@ -26,6 +28,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("Column", Column);
   nuxtApp.vueApp.component("Button", Button);
   nuxtApp.vueApp.component("InputText", InputText);
+  nuxtApp.vueApp.component("InputNumber", InputNumber);
   nuxtApp.vueApp.component("Dialog", Dialog);
   nuxtApp.vueApp.component("Dropdown", Dropdown);
   nuxtApp.vueApp.component("Checkbox", Checkbox);
