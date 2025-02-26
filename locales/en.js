@@ -75,7 +75,7 @@ export default {
     package4: "0.5 U / 1 SMS",
     buy_package: "Buy Package",
     numbers_to_call: "Numbers to Call",
-    numbers_to_call: "Numbers to send SMS",
+    numbers_to_sms: "Numbers to send SMS",
     purchased_numbers: "Purchased Numbers",
     not_called: "Not Called",
     called: "Called",
