@@ -123,7 +123,15 @@
           <h3>{{ $t("landing.purchased_numbers") }}</h3>
           <DataTable :value="purchasedNumbers" scrollable scrollHeight="200px">
             <Column field="number" header="Số điện thoại"></Column>
-            <Column field="purchaseDate" header="Ngày mua"></Column>
+            <Column header="Hành động">
+              <template #body="{ data }">
+                <Button
+                  icon="pi pi-phone"
+                  class="p-button-sm"
+                  @click="callNumber(data.number)"
+                />
+              </template>
+            </Column>
           </DataTable>
         </div>
       </div>
@@ -160,8 +168,8 @@ const numbersToCall = ref([
 
 // Danh sách số đã mua
 const purchasedNumbers = ref([
-  { number: "0123456789", purchaseDate: "2023-10-01" },
-  { number: "0987654321", purchaseDate: "2023-10-02" },
+  { number: "0123456789" },
+  { number: "0987654321" },
 ]);
 
 const networkOptions = ref([
@@ -244,6 +252,10 @@ const buyPackage = () => {
   );
 };
 
+const callNumber = (number) => {
+  alert(`Gọi số: ${number}`);
+};
+
 onMounted(() => {
   initializeData();
   loadJapanServices(); // Load dịch vụ của Japan khi component được mount
@@ -319,8 +331,9 @@ onMounted(() => {
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 10px;
+  padding: 8px 12px; /* Làm bé lại */
   cursor: pointer;
+  font-size: 14px; /* Giảm kích thước font */
 }
 
 .buy-button:hover {
