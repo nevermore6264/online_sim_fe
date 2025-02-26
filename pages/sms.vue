@@ -147,7 +147,6 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { useWindowSize } from "@vueuse/core";
 import { GetAllCountries } from "@/services/country.js";
 import { useI18n } from "vue-i18n";
 
@@ -161,9 +160,7 @@ const quantity = ref(1); // Số lượng mặc định
 
 // Danh sách các gói dịch vụ
 const packages = ref([
-  { label: t("landing.package1"), value: "package1", price: 10 },
-  { label: t("landing.package2"), value: "package2", price: 20 },
-  { label: t("landing.package3"), value: "package3", price: 30 },
+  { label: t("landing.package4"), value: "package4", price: 0.5 },
 ]);
 
 // Danh sách số muốn gọi đến
@@ -191,9 +188,6 @@ const totalPrice = computed(() => {
   );
   return selectedPkg ? selectedPkg.price * quantity.value : 0;
 });
-
-// Theo dõi kích thước màn hình
-const { width } = useWindowSize();
 
 // Tìm kiếm
 const searchCountry = ref("");
