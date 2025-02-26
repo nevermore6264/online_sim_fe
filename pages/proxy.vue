@@ -1,10 +1,14 @@
 <template>
   <div class="proxy-containter">
-
-    <h4 class="grey-doc-text-red-bg">⚠ {{ $t("proxy.notify") }}</h4>
     <div class="tab-container">
-      <TabMenu :model="tabs.map((tab) => ({ label: $t(tab.labelKey), icon: tab.icon }))
-        " v-model="activeTab" class="custom-tab-menu" @update:activeIndex="activeTab = $event" />
+      <TabMenu
+        :model="
+          tabs.map((tab) => ({ label: $t(tab.labelKey), icon: tab.icon }))
+        "
+        v-model="activeTab"
+        class="custom-tab-menu"
+        @update:activeIndex="activeTab = $event"
+      />
 
       <div class="tab-content">
         <div v-if="activeTab === 0">
@@ -23,9 +27,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { useI18n } from "vue-i18n"; // Import useI18n
-
-const { t } = useI18n();
 
 const tabs = [
   { labelKey: "proxy.tab_order", icon: "pi pi-shopping-cart" },
@@ -37,9 +38,8 @@ const activeTab = ref(0);
 </script>
 
 <style scoped>
-.flex-container {
-  display: flex;
-  gap: 2rem;
+.proxy-containter {
+  margin-top: 20px;
 }
 
 .tab-container {
@@ -75,16 +75,6 @@ const activeTab = ref(0);
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-}
-
-.grey-doc-text-red-bg {
-  background: rgb(255, 68, 0);
-  color: #ffffff;
-  font-weight: normal;
-  margin: 10px 0;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 14px;
 }
 
 .custom-tab-menu {

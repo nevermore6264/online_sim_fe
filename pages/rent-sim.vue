@@ -45,6 +45,6 @@ const computedTabs = computed(() => [
 
 <style scoped>
 .proxy-containter {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 </style>
