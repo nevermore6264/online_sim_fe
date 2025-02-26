@@ -44,7 +44,7 @@
           type="text"
           id="balanceAmount"
           class="form-control"
-          :value="`${userInfo?.balanceAmount} USDT`"
+          :value="`${userInfo?.balanceAmount} USD`"
           disabled
         />
       </div>

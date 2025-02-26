@@ -103,7 +103,7 @@
           </div>
           <!-- Tổng tiền -->
           <div class="total-price">
-            {{ $t("landing.total_amount") }}: {{ totalPrice }} USDT
+            {{ $t("landing.total_amount") }}: {{ totalPrice }} USD
           </div>
           <!-- Nút mua -->
           <Button class="buy-button" @click="buyPackage">

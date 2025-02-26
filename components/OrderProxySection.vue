@@ -99,7 +99,7 @@
       <!-- Total Price Section -->
       <div class="col-xs-30">
         <h4>{{ $t("proxy.total") }}</h4>
-        <p>{{ $t("proxy.price") }}: {{ totalPrice }} USDT</p>
+        <p>{{ $t("proxy.price") }}: {{ totalPrice }} USD</p>
         <Button
           :label="$t('proxy.buy')"
           class="p-button-success btn-buy"
@@ -171,7 +171,7 @@ const onCountryClick = (country) => {
 };
 
 const onBuy = () => {
-  push.success(`You have bought items for ${totalPrice.value} USDT!`);
+  push.success(`You have bought items for ${totalPrice.value} USD!`);
 };
 </script>
 

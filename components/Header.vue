@@ -64,7 +64,7 @@
           {{ $t("landing.hello") }}, {{ userInfo.data.firstName }}
           {{ userInfo.data.lastName }}
         </span>
-        <span class="balance"> ({{ userInfo.data.balanceAmount }} USDT)</span>
+        <span class="balance"> ({{ userInfo.data.balanceAmount }} USD)</span>
 
         <Button
           aria-label="Logout"

@@ -32,7 +32,7 @@
                 <span class="mobile-hidden">
                   {{ $t("landing.total_amount") }}:</span
                 >
-                {{ service.price }} USDT
+                {{ service.price }} USD
               </span>
               <Button
                 class="remove-icon"
@@ -54,7 +54,7 @@
           {{ $t("landing.buy_otp") }}
         </Button>
         <p class="total-amount">
-          {{ $t("landing.total_amount") }}: {{ totalAmount }} USDT
+          {{ $t("landing.total_amount") }}: {{ totalAmount }} USD
         </p>
       </div>
     </div>

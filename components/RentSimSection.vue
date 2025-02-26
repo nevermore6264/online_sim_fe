@@ -90,7 +90,7 @@
                     service.rentalQuantity + " " + service.rentalUnit
                   )
                 }}
-                USDT
+                USD
               </span>
               <Button
                 class="remove-icon"
@@ -112,7 +112,7 @@
           {{ $t("rent_number.rent_service") }}
         </Button>
         <p class="total-amount">
-          {{ $t("rent_number.total_amount") }}: {{ totalAmount }} USDT
+          {{ $t("rent_number.total_amount") }}: {{ totalAmount }} USD
         </p>
       </div>
     </div>

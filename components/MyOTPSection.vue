@@ -48,7 +48,7 @@
         />
         <Column :header="$t('order.column.price')" style="min-width: 1rem">
           <template #body="{ data }">
-            <span>{{ data.cost }} USDT</span>
+            <span>{{ data.cost }} USD</span>
           </template>
         </Column>
         <Column :header="$t('order.column.otp')" style="min-width: 14rem">
