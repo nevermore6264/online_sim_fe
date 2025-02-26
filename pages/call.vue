@@ -87,6 +87,7 @@
               :min="1"
               :max="10"
               showButtons
+              class="small-input-number"
             />
           </div>
           <!-- Các gói dịch vụ -->
@@ -99,6 +100,10 @@
               @click="selectPackage(pkg.value)"
               class="package-button"
             />
+          </div>
+          <!-- Tổng tiền -->
+          <div class="total-price">
+            {{ $t("landing.total_amount") }}: {{ totalPrice }} USDT
           </div>
           <!-- Nút mua -->
           <Button class="buy-button" @click="buyPackage">
@@ -156,9 +161,9 @@ const quantity = ref(1); // Số lượng mặc định
 
 // Danh sách các gói dịch vụ
 const packages = ref([
-  { label: t("landing.package1"), value: "package1" },
-  { label: t("landing.package2"), value: "package2" },
-  { label: t("landing.package3"), value: "package3" },
+  { label: t("landing.package1"), value: "package1", price: 10 },
+  { label: t("landing.package2"), value: "package2", price: 20 },
+  { label: t("landing.package3"), value: "package3", price: 30 },
 ]);
 
 // Danh sách số muốn gọi đến
@@ -177,6 +182,15 @@ const networkOptions = ref([
   { label: t("landing.network_docomo"), value: "docomo" },
   { label: t("landing.network_any"), value: "any" },
 ]);
+
+// Tính tổng tiền
+const totalPrice = computed(() => {
+  if (!selectedPackage.value) return 0;
+  const selectedPkg = packages.value.find(
+    (pkg) => pkg.value === selectedPackage.value
+  );
+  return selectedPkg ? selectedPkg.price * quantity.value : 0;
+});
 
 // Theo dõi kích thước màn hình
 const { width } = useWindowSize();
@@ -327,6 +341,13 @@ onMounted(() => {
   background-color: #ffc107;
   color: white;
   border: 1px solid #ffc107;
+}
+
+.total-price {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 .buy-button {
