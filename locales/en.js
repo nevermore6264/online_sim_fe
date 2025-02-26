@@ -242,6 +242,7 @@ export default {
     faq: "F.A.Q.",
     api: "API",
     archie: "Archie",
+    help: "Help",
   },
   buy_otp: {
     breadcrumb_label: "Activations",

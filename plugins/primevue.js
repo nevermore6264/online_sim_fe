@@ -19,6 +19,7 @@ import DataView from "primevue/dataview";
 import TabMenu from "primevue/tabmenu";
 import Slider from "primevue/slider";
 import Paginator from "primevue/paginator";
+import Carousel from "primevue/carousel";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -41,4 +42,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("TabMenu", TabMenu);
   nuxtApp.vueApp.component("Slider", Slider);
   nuxtApp.vueApp.component("Paginator", Paginator);
+  nuxtApp.vueApp.component("Carousel", Carousel);
 });

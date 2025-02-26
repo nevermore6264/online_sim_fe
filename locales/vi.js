@@ -240,6 +240,7 @@ export default {
     faq: "Câu hỏi thường gặp",
     api: "API",
     archie: "Lưu trữ",
+    help: "Trợ giúp",
   },
   buy_otp: {
     breadcrumb_label: "Mua OTP",
