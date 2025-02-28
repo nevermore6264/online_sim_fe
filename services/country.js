@@ -39,6 +39,7 @@ const getDialCode = (code) => {
     KOR: "KR",
     USA: "US",
     TUR: "TR",
+    MYS: "MY",
   };
 
   return dialCodes[code] || "N/A"; // Default to "N/A" if not found
