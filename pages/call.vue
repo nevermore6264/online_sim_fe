@@ -150,6 +150,7 @@ import { ref, onMounted, computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import { GetAllCountries } from "@/services/country.js";
 import { useI18n } from "vue-i18n";
+import DurationService from "@/services/duration"; // Import service
 
 const { t } = useI18n();
 const customers = ref([]);
@@ -160,11 +161,7 @@ const selectedPackage = ref(null); // Gói dịch vụ được chọn
 const quantity = ref(1); // Số lượng mặc định
 
 // Danh sách các gói dịch vụ
-const packages = ref([
-  { label: t("landing.package1"), value: "package1", price: 10 },
-  { label: t("landing.package2"), value: "package2", price: 20 },
-  { label: t("landing.package3"), value: "package3", price: 30 },
-]);
+const packages = ref([]);
 
 // Danh sách số muốn gọi đến
 const numbersToCall = ref([
@@ -271,9 +268,24 @@ const callNumber = (number) => {
   alert(`Gọi số: ${number}`);
 };
 
-onMounted(() => {
-  initializeData();
-  loadJapanServices(); // Load dịch vụ của Japan khi component được mount
+onMounted(async () => {
+  await initializeData();
+  await loadJapanServices(); // Load dịch vụ của Japan khi component được mount
+
+  // Lấy các gói dịch vụ từ API
+  try {
+    const durations = await DurationService.GetDurations();
+    packages.value = durations?.data.map((duration) => ({
+      label: t("landing.package1", {
+        second: duration.seconds,
+        price: duration.price,
+      }), // Giả sử API trả về trường `name`
+      value: duration.id, // Giả sử API trả về trường `id`
+      price: duration.price, // Giả sử API trả về trường `price`
+    }));
+  } catch (error) {
+    console.error("Failed to fetch durations:", error);
+  }
 });
 </script>
 
