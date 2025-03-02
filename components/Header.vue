@@ -249,7 +249,16 @@ onMounted(async () => {
   updateScreenSize();
   const token = localStorage.getItem("token");
   if (token) {
-    await fetchUserInfo(token);
+    if (token == "admin-token") {
+      userInfo.data = {
+        id: "9999",
+        firstName: "Admin",
+        lastName: "",
+        balanceAmount: "N/A",
+      };
+    } else {
+      await fetchUserInfo(token);
+    }
   }
   window.addEventListener("resize", updateScreenSize);
 
