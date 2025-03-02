@@ -1,84 +1,68 @@
 <template>
   <div class="news-management">
-    <h1>Quản lý tin tức</h1>
-    <DataTable :value="news" :paginator="true" :rows="10">
-      <Column field="title" header="Tiêu đề"></Column>
-      <Column field="content" header="Nội dung"></Column>
-      <Column field="actions" header="Hành động">
-        <template #body="slotProps">
-          <Button icon="pi pi-pencil" @click="editNews(slotProps.data)" />
-          <Button icon="pi pi-trash" @click="deleteNews(slotProps.data)" />
-        </template>
-      </Column>
-    </DataTable>
-    <Button label="Thêm tin tức" @click="openAddDialog" />
-    <Dialog
-      v-model:visible="displayDialog"
-      :header="dialogHeader"
-      :modal="true"
-    >
-      <div class="p-fluid">
-        <div class="p-field">
-          <label for="title">Tiêu đề</label>
-          <InputText id="title" v-model="currentNews.title" />
-        </div>
-        <div class="p-field">
-          <label for="content">Nội dung</label>
-          <Textarea id="content" v-model="currentNews.content" rows="5" />
-        </div>
-      </div>
-      <template #footer>
-        <Button
-          label="Hủy"
-          icon="pi pi-times"
-          @click="closeDialog"
-          class="p-button-text"
-        />
-        <Button label="Lưu" icon="pi pi-check" @click="saveNews" />
-      </template>
-    </Dialog>
-  </div>
-</template>
-<template>
-  <div class="news-management">
     <h1>{{ $t("newsManagement.title") }}</h1>
-    <DataTable :value="news" :paginator="true" :rows="10">
-      <Column :header="$t('newsManagement.newsTitle')" field="title"></Column>
-      <Column
-        :header="$t('newsManagement.newsContent')"
-        field="content"
-      ></Column>
+    <DataTable
+      :value="news"
+      :paginator="true"
+      :rows="10"
+      class="custom-datatable"
+    >
+      <Column :header="$t('newsManagement.newsTitle')" field="code"></Column>
+      <Column :header="$t('newsManagement.newsContent')" field="text"></Column>
       <Column :header="$t('newsManagement.actions')">
         <template #body="slotProps">
-          <Button icon="pi pi-pencil" @click="editNews(slotProps.data)" />
-          <Button icon="pi pi-trash" @click="deleteNews(slotProps.data)" />
+          <Button
+            class="custom-button"
+            icon="pi pi-pencil"
+            @click="editNews(slotProps.data)"
+          />
+          <Button
+            class="custom-button"
+            icon="pi pi-trash"
+            @click="deleteNews(slotProps.data)"
+          />
         </template>
       </Column>
     </DataTable>
-    <Button :label="$t('newsManagement.addNews')" @click="openAddDialog" />
+    <Button
+      class="custom-button"
+      :label="$t('newsManagement.addNews')"
+      @click="openAddDialog"
+    />
     <Dialog
       v-model:visible="displayDialog"
       :header="dialogHeader"
       :modal="true"
+      class="custom-dialog"
     >
       <div class="p-fluid">
         <div class="p-field">
           <label for="title">{{ $t("newsManagement.newsTitle") }}</label>
-          <InputText id="title" v-model="currentNews.title" />
+          <InputText
+            id="title"
+            v-model="currentNews.code"
+            class="custom-input"
+          />
         </div>
         <div class="p-field">
           <label for="content">{{ $t("newsManagement.newsContent") }}</label>
-          <Textarea id="content" v-model="currentNews.content" rows="5" />
+          <Textarea
+            id="content"
+            v-model="currentNews.text"
+            rows="5"
+            class="custom-textarea"
+          />
         </div>
       </div>
       <template #footer>
         <Button
+          class="custom-button"
           :label="$t('newsManagement.cancel')"
           icon="pi pi-times"
           @click="closeDialog"
-          class="p-button-text"
         />
         <Button
+          class="custom-button"
           :label="$t('newsManagement.save')"
           icon="pi pi-check"
           @click="saveNews"
@@ -108,8 +92,8 @@ onMounted(async () => {
 
 // Lấy danh sách tin tức từ API
 const fetchNews = async () => {
-  const response = await NewsService.getNews();
-  news.value = response;
+  const response = await NewsService.News();
+  news.value = response?.data;
 };
 
 // Mở dialog để thêm tin tức
