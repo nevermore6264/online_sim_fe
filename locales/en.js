@@ -276,4 +276,16 @@ export default {
     send: "Send",
     close: "Close",
   },
+  newsManagement: {
+    title: "News Management",
+    addNews: "Add News",
+    editNews: "Edit News",
+    deleteNews: "Delete News",
+    confirmDelete: "Are you sure you want to delete this news?",
+    newsTitle: "Title",
+    newsContent: "Content",
+    actions: "Actions",
+    cancel: "Cancel",
+    save: "Save",
+  },
 };

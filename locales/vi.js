@@ -274,4 +274,16 @@ export default {
     send: "Gửi",
     close: "Đóng",
   },
+  newsManagement: {
+    title: "Quản lý tin tức",
+    addNews: "Thêm tin tức",
+    editNews: "Chỉnh sửa tin tức",
+    deleteNews: "Xóa tin tức",
+    confirmDelete: "Bạn có chắc chắn muốn xóa tin tức này không?",
+    newsTitle: "Tiêu đề",
+    newsContent: "Nội dung",
+    actions: "Hành động",
+    cancel: "Hủy",
+    save: "Lưu",
+  },
 };

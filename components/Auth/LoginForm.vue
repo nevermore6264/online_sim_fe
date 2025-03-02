@@ -67,6 +67,17 @@ const handleLogin = async () => {
     return;
   }
 
+  // Hardcode login for admin
+  if (
+    loginData.value.username === "admin" &&
+    loginData.value.password === "admin"
+  ) {
+    localStorage.setItem("token", "admin-token");
+    push.success("Admin login successful!");
+    window.location.href = "/admin/news";
+    return;
+  }
+
   loading.value = true;
   try {
     const response = await UserService.Login(loginData.value);
