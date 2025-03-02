@@ -45,12 +45,34 @@
           />
         </div>
         <div class="p-field">
+          <label for="image">{{ $t("newsManagement.newsImage") }}</label>
+          <input
+            type="file"
+            id="image"
+            accept="image/*"
+            @change="handleImageUpload"
+          />
+          <img
+            v-if="currentNews.imagePreview"
+            :src="currentNews.imagePreview"
+            alt="Preview"
+            class="image-preview"
+          />
+        </div>
+        <div class="p-field">
           <label for="content">{{ $t("newsManagement.newsContent") }}</label>
-          <Textarea
-            id="content"
+          <!-- Thay thế QuillEditor bằng TinyMCE -->
+          <Editor
             v-model="currentNews.text"
-            rows="5"
-            class="custom-textarea"
+            api-key="your-api-key"
+            :init="{
+              height: 300,
+              menubar: true,
+              plugins:
+                'advlist autolink lists link image charmap print preview anchor',
+              toolbar:
+                'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+            }"
           />
         </div>
       </div>
@@ -76,12 +98,19 @@
 import { ref, onMounted } from "vue";
 import NewsService from "@/services/new";
 import { useI18n } from "vue-i18n";
+import Editor from "@tinymce/tinymce-vue"; // Import TinyMCE Editor
 
-const { t } = useI18n(); // Sử dụng i18n
+const { t } = useI18n();
 
 const news = ref([]);
 const displayDialog = ref(false);
-const currentNews = ref({ id: null, title: "", content: "" });
+const currentNews = ref({
+  id: null,
+  code: "",
+  text: "",
+  image: null,
+  imagePreview: "",
+});
 const isEditMode = ref(false);
 const dialogHeader = ref(t("newsManagement.addNews"));
 
@@ -98,7 +127,13 @@ const fetchNews = async () => {
 
 // Mở dialog để thêm tin tức
 const openAddDialog = () => {
-  currentNews.value = { id: null, title: "", content: "" };
+  currentNews.value = {
+    id: null,
+    code: "",
+    text: "",
+    image: null,
+    imagePreview: "",
+  };
   isEditMode.value = false;
   dialogHeader.value = t("newsManagement.addNews");
   displayDialog.value = true;
@@ -106,7 +141,7 @@ const openAddDialog = () => {
 
 // Mở dialog để chỉnh sửa tin tức
 const editNews = (newsItem) => {
-  currentNews.value = { ...newsItem };
+  currentNews.value = { ...newsItem, imagePreview: newsItem.image };
   isEditMode.value = true;
   dialogHeader.value = t("newsManagement.editNews");
   displayDialog.value = true;
@@ -117,14 +152,34 @@ const closeDialog = () => {
   displayDialog.value = false;
 };
 
+// Xử lý upload ảnh
+const handleImageUpload = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      currentNews.value.imagePreview = e.target.result;
+      currentNews.value.image = file;
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
 // Lưu tin tức (thêm hoặc cập nhật)
 const saveNews = async () => {
+  const formData = new FormData();
+  formData.append("code", currentNews.value.code);
+  formData.append("text", currentNews.value.text);
+  if (currentNews.value.image) {
+    formData.append("image", currentNews.value.image);
+  }
+
   if (isEditMode.value) {
     // Cập nhật tin tức
-    await NewsService.updateNews(currentNews.value.id, currentNews.value);
+    await NewsService.updateNews(currentNews.value.id, formData);
   } else {
     // Thêm tin tức mới
-    await NewsService.addNews(currentNews.value);
+    await NewsService.addNews(formData);
   }
   await fetchNews(); // Lấy lại danh sách tin tức sau khi thêm/cập nhật
   closeDialog();
@@ -142,5 +197,30 @@ const deleteNews = async (newsItem) => {
 <style scoped>
 .news-management {
   padding: 2rem;
+}
+
+.custom-datatable {
+  margin-bottom: 1.5rem;
+}
+
+.custom-button {
+  margin-right: 0.5rem;
+}
+
+.custom-dialog .p-dialog-content {
+  padding: 1.5rem;
+}
+
+.image-preview {
+  max-width: 100%;
+  height: auto;
+  margin-top: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.custom-quill {
+  height: 300px;
+  margin-bottom: 1.5rem;
 }
 </style>
