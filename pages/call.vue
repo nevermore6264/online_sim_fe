@@ -85,6 +85,7 @@
               v-model="quantity"
               inputId="quantity"
               :min="1"
+              disabled="true"
               :max="10"
               showButtons
               class="small-input-number"
@@ -280,7 +281,7 @@ onMounted(async () => {
         second: duration.seconds,
         price: duration.price,
       }), // Giả sử API trả về trường `name`
-      value: duration.id, // Giả sử API trả về trường `id`
+      value: duration.seconds, // Giả sử API trả về trường `id`
       price: duration.price, // Giả sử API trả về trường `price`
     }));
   } catch (error) {

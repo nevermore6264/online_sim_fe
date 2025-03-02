@@ -188,7 +188,6 @@ definePageMeta({
 });
 
 import { ref, onMounted, computed } from "vue";
-import { useWindowSize } from "@vueuse/core";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 import orderService from "../services/order";
@@ -205,9 +204,6 @@ const networkOptions = ref([
   { label: t("landing.network_docomo"), value: "docomo" },
   { label: t("landing.network_any"), value: "any" },
 ]);
-
-// Theo dõi kích thước màn hình
-const { width } = useWindowSize();
 
 // Tìm kiếm
 const searchCountry = ref("");
