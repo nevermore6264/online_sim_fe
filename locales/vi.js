@@ -285,5 +285,6 @@ export default {
     actions: "Hành động",
     cancel: "Hủy",
     save: "Lưu",
+    newsImage: "Ảnh bìa",
   },
 };

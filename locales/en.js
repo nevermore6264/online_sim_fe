@@ -287,5 +287,6 @@ export default {
     actions: "Actions",
     cancel: "Cancel",
     save: "Save",
+    newsImage: "Image"
   },
 };
