@@ -80,6 +80,8 @@ export default {
     not_called: "Chưa Gọi",
     called: "Đã Gọi",
     call: "Gọi",
+    select_number: "Chọn",
+    selected_number: "Số đã chọn",
     please_select_package: "Vui lòng chọn gói!",
     purchase_success: "Bạn đã mua {package} với số lượng {quantity}.",
     steps: [

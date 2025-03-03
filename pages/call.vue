@@ -120,8 +120,25 @@
           <h3>{{ $t("landing.numbers_to_call") }}</h3>
           <DataTable :value="numbersToCall" scrollable scrollHeight="200px">
             <Column field="number" header="Số điện thoại"></Column>
-            <Column field="status" header="Trạng thái"></Column>
+            <Column header="Chọn số">
+              <template #body="{ data, index }">
+                <Button
+                  icon="pi pi-check"
+                  class="p-button-sm"
+                  :label="
+                    selectedNumberIndex === index
+                      ? $t('landing.selected')
+                      : $t('landing.select_number')
+                  "
+                  :class="{ 'selected-button': selectedNumberIndex === index }"
+                  @click="selectNumber(data.number, index)"
+                />
+              </template>
+            </Column>
           </DataTable>
+          <div v-if="selectedNumber" class="selected-number">
+            {{ $t("landing.selected_number") }}: {{ selectedNumber }}
+          </div>
         </div>
 
         <!-- Bảng danh sách số đã mua -->
@@ -148,7 +165,6 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { useWindowSize } from "@vueuse/core";
 import { GetAllCountries } from "@/services/country.js";
 import { useI18n } from "vue-i18n";
 import DurationService from "@/services/duration"; // Import service
@@ -181,6 +197,20 @@ const networkOptions = ref([
   { label: t("landing.network_any"), value: "any" },
 ]);
 
+const selectedNumber = ref(null); // Lưu số điện thoại được chọn
+const selectedNumberIndex = ref(null); // Lưu chỉ số của số điện thoại được chọn
+
+const selectNumber = (number, index) => {
+  if (selectedNumberIndex.value === index) {
+    // Nếu số đã được chọn, hủy chọn
+    selectedNumber.value = null;
+    selectedNumberIndex.value = null;
+  } else {
+    // Chọn số mới
+    selectedNumber.value = number;
+    selectedNumberIndex.value = index;
+  }
+};
 // Tính tổng tiền
 const totalPrice = computed(() => {
   if (!selectedPackage.value) return 0;
@@ -189,9 +219,6 @@ const totalPrice = computed(() => {
   );
   return selectedPkg ? selectedPkg.price * quantity.value : 0;
 });
-
-// Theo dõi kích thước màn hình
-const { width } = useWindowSize();
 
 // Tìm kiếm
 const searchCountry = ref("");
@@ -257,12 +284,43 @@ const buyPackage = () => {
     alert(t("landing.please_select_package"));
     return;
   }
+
+  if (!selectedNumber.value) {
+    alert(t("landing.please_select_number"));
+    return;
+  }
+
+  const selectedPkg = packages.value.find(
+    (pkg) => pkg.value === selectedPackage.value
+  );
+
+  if (!selectedPkg) {
+    alert(t("landing.invalid_package"));
+    return;
+  }
+
+  const seconds = selectedPkg.value; // Số giây của gói
+  const phoneNumber = selectedNumber.value; // Số điện thoại được chọn
+
   alert(
     t("landing.purchase_success", {
-      package: selectedPackage.value,
+      package: selectedPkg.label,
       quantity: quantity.value,
+      seconds: seconds,
+      phoneNumber: phoneNumber,
     })
   );
+
+  // Thêm số đã mua vào danh sách purchasedNumbers
+  purchasedNumbers.value.push({ number: phoneNumber });
+
+  // Xóa số đã mua khỏi danh sách numbersToCall
+  numbersToCall.value = numbersToCall.value.filter(
+    (num) => num.number !== phoneNumber
+  );
+
+  // Reset selectedNumber
+  selectedNumber.value = null;
 };
 
 const callNumber = (number) => {
@@ -529,6 +587,20 @@ onMounted(async () => {
   padding: 5px;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+
+.selected-number {
+  font-size: 16px;
+  font-weight: bold;
+  color: #007bff;
+  text-align: left;
+  padding: 5px;
+}
+
+.selected-button {
+  background-color: #ffc107 !important; /* Màu vàng */
+  color: #000 !important; /* Màu chữ đen */
+  border: 1px solid #ffc107 !important; /* Viền màu vàng */
 }
 
 @media (max-width: 768px) {

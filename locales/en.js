@@ -80,6 +80,8 @@ export default {
     not_called: "Not Called",
     called: "Called",
     call: "Call",
+    select_number: "Choose",
+    selected_number: "Selected Number",
     please_select_package: "Please select a package!",
     purchase_success: "You have purchased {package} with quantity {quantity}.",
     steps: [
@@ -287,6 +289,6 @@ export default {
     actions: "Actions",
     cancel: "Cancel",
     save: "Save",
-    newsImage: "Image"
+    newsImage: "Image",
   },
 };
