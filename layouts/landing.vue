@@ -15,6 +15,7 @@
         <FeaturesBlock v-if="!isLoggedIn" />
         <ContinueBlock v-if="!isLoggedIn" />
         <NewsTips />
+        <NewsContent />
         <TipsBlock />
       </div>
     </div>
@@ -26,6 +27,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import NewsContent from "@/components/Home/NewsContent.vue";
 
 const isLoggedIn = ref(false);
 
@@ -60,7 +62,7 @@ onUnmounted(() => {
 
 .main-content {
   padding: 0 20px;
-  width: 560px;
+  width: 440px;
 }
 
 .side-content {
