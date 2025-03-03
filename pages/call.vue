@@ -168,6 +168,7 @@ import { ref, onMounted, computed } from "vue";
 import { GetAllCountries } from "@/services/country.js";
 import { useI18n } from "vue-i18n";
 import DurationService from "@/services/duration"; // Import service
+import orderService from "../services/order";
 
 const { t } = useI18n();
 const customers = ref([]);
@@ -279,7 +280,7 @@ const selectPackage = (pkg) => {
   selectedPackage.value = pkg;
 };
 
-const buyPackage = () => {
+const buyPackage = async () => {
   if (!selectedPackage.value) {
     alert(t("landing.please_select_package"));
     return;
@@ -301,15 +302,24 @@ const buyPackage = () => {
 
   const seconds = selectedPkg.value; // Số giây của gói
   const phoneNumber = selectedNumber.value; // Số điện thoại được chọn
+  const data = {
+    phone: phoneNumber,
+    duration: seconds,
+  };
+  const token = localStorage.getItem("token");
 
-  alert(
-    t("landing.purchase_success", {
+  const response = await orderService.BuyCall(token, toRaw(data));
+  if (response.success) {
+    const msg = t("landing.purchase_success", {
       package: selectedPkg.label,
       quantity: quantity.value,
       seconds: seconds,
       phoneNumber: phoneNumber,
-    })
-  );
+    });
+    push.success(msg);
+  } else {
+    push.warning(`Failed to buy call`);
+  }
 
   // Thêm số đã mua vào danh sách purchasedNumbers
   purchasedNumbers.value.push({ number: phoneNumber });

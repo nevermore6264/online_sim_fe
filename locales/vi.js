@@ -84,6 +84,7 @@ export default {
     selected_number: "Số đã chọn",
     please_select_package: "Vui lòng chọn gói!",
     purchase_success: "Bạn đã mua {package} với số lượng {quantity}.",
+    invalid_package: "Gói không hợp lệ",
     steps: [
       {
         title: "Nhận số tạm thời",

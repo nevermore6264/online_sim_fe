@@ -18,4 +18,13 @@ export default {
     });
     return response.data;
   },
+
+  async BuyCall(token, data) {
+    const response = await api.post(`/api/sim-service/buy-call`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
 };

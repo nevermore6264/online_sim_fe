@@ -84,6 +84,7 @@ export default {
     selected_number: "Selected Number",
     please_select_package: "Please select a package!",
     purchase_success: "You have purchased {package} with quantity {quantity}.",
+    invalid_package: "Invalid Package",
     steps: [
       {
         title: "Get the temp number",
