@@ -1,27 +1,44 @@
 import { api } from "../utils/axios";
 
 export default {
-  async News() {
-    // TODO: Sửa sang API News
-    const response = await api.get(`/api/services`);
+  async News(token) {
+    token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjkzMjMyMDYwNSwiaWF0IjoxNzQxMDgzMjk4fQ.HUF0TnWfCjv2L_xoeE3rBC0ucG6pmu-qlK03wLfuw4w";
+    const response = await api.get(`/api/manage-service/posts`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   },
 
   // Thêm tin tức mới
-  async Add(newsData) {
-    const response = await api.post("/api/news", newsData);
+  async Add(newsData, token) {
+    const response = await api.post(`/api/manage-service/posts`, newsData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   },
 
   // Cập nhật tin tức
-  async Update(id, newsData) {
-    const response = await api.put(`/api/news/${id}`, newsData);
+  async Update(id, newsData, token) {
+    const response = await api.put(`/api/manage-service/posts${id}`, newsData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   },
 
   // Xóa tin tức
-  async Delete(id) {
-    const response = await api.delete(`/api/news/${id}`);
+  async Delete(id, token) {
+    const response = await api.delete(`/api/manage-service/posts${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   },
 };

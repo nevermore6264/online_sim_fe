@@ -7,8 +7,11 @@
       :rows="10"
       class="custom-datatable"
     >
-      <Column :header="$t('newsManagement.newsTitle')" field="code"></Column>
-      <Column :header="$t('newsManagement.newsContent')" field="text"></Column>
+      <Column :header="$t('newsManagement.newsTitle')" field="title "></Column>
+      <Column
+        :header="$t('newsManagement.newsContent')"
+        field="content"
+      ></Column>
       <Column :header="$t('newsManagement.actions')">
         <template #body="slotProps">
           <Button
@@ -40,7 +43,7 @@
           <label for="title">{{ $t("newsManagement.newsTitle") }}</label>
           <InputText
             id="title"
-            v-model="currentNews.code"
+            v-model="currentNews.title"
             class="custom-input"
           />
         </div>
@@ -64,7 +67,7 @@
           <!-- Thay thế QuillEditor bằng TinyMCE -->
           <Editor
             v-model="currentNews.text"
-            api-key="your-api-key"
+            api-key="ralnw41ykjyj9duuyicqbgsidqiiycmaofumkp19xrbty8hi"
             :init="{
               height: 300,
               menubar: true,
@@ -106,8 +109,8 @@ const news = ref([]);
 const displayDialog = ref(false);
 const currentNews = ref({
   id: null,
-  code: "",
-  text: "",
+  title: "",
+  content: "",
   image: null,
   imagePreview: "",
 });
@@ -129,8 +132,8 @@ const fetchNews = async () => {
 const openAddDialog = () => {
   currentNews.value = {
     id: null,
-    code: "",
-    text: "",
+    title: "",
+    content: "",
     image: null,
     imagePreview: "",
   };
@@ -168,18 +171,19 @@ const handleImageUpload = (event) => {
 // Lưu tin tức (thêm hoặc cập nhật)
 const saveNews = async () => {
   const formData = new FormData();
-  formData.append("code", currentNews.value.code);
-  formData.append("text", currentNews.value.text);
+  formData.append("title", currentNews.value.title);
+  formData.append("content", currentNews.value.content);
   if (currentNews.value.image) {
     formData.append("image", currentNews.value.image);
   }
-
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjkzMjMyMDYwNSwiaWF0IjoxNzQxMDgzMjk4fQ.HUF0TnWfCjv2L_xoeE3rBC0ucG6pmu-qlK03wLfuw4w";
   if (isEditMode.value) {
     // Cập nhật tin tức
-    await NewsService.updateNews(currentNews.value.id, formData);
+    await NewsService.Update(currentNews.value.id, formData, token);
   } else {
     // Thêm tin tức mới
-    await NewsService.addNews(formData);
+    await NewsService.Add(formData, token);
   }
   await fetchNews(); // Lấy lại danh sách tin tức sau khi thêm/cập nhật
   closeDialog();
@@ -187,8 +191,10 @@ const saveNews = async () => {
 
 // Xóa tin tức
 const deleteNews = async (newsItem) => {
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjkzMjMyMDYwNSwiaWF0IjoxNzQxMDgzMjk4fQ.HUF0TnWfCjv2L_xoeE3rBC0ucG6pmu-qlK03wLfuw4w";
   if (confirm(t("newsManagement.confirmDelete"))) {
-    await NewsService.deleteNews(newsItem.id);
+    await NewsService.Delete(newsItem.id, token);
     await fetchNews(); // Lấy lại danh sách tin tức sau khi xóa
   }
 };
@@ -216,7 +222,6 @@ const deleteNews = async (newsItem) => {
   height: auto;
   margin-top: 1rem;
   border-radius: 8px;
-  border: 1px solid #ddd;
 }
 
 .custom-quill {
