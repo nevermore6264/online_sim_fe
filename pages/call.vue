@@ -269,27 +269,37 @@ const buyPackage = async () => {
 
   const seconds = selectedPkg.value; // Số giây của gói
   const phoneNumber = userInputNumber.value; // Số điện thoại người dùng nhập
-  const data = {
-    phone: phoneNumber,
-    duration: seconds,
-  };
   const token = localStorage.getItem("token");
 
-  const response = await orderService.BuyCall(token, toRaw(data));
-  if (response.success) {
-    const msg = t("landing.purchase_success", {
+  let successCount = 0; // Đếm số lần mua thành công
+
+  // Thực hiện mua gói nhiều lần dựa trên quantity
+  for (let i = 0; i < quantity.value; i++) {
+    const data = {
+      phone: phoneNumber,
+      duration: seconds,
+    };
+
+    const response = await orderService.BuyCall(token, toRaw(data));
+    if (response.success) {
+      successCount++;
+      // Thêm số đã mua vào danh sách purchasedNumbers
+      purchasedNumbers.value.push({ number: phoneNumber });
+    } else {
+      push.warning(`Failed to buy call for attempt ${i + 1}`);
+    }
+  }
+
+  // Hiển thị thông báo tổng hợp
+  if (successCount > 0) {
+    const msg = t("landing.purchase_success_multiple", {
       package: selectedPkg.label,
-      quantity: quantity.value,
+      quantity: successCount,
       seconds: seconds,
       phoneNumber: phoneNumber,
     });
     push.success(msg);
-  } else {
-    push.warning(`Failed to buy call`);
   }
-
-  // Thêm số đã mua vào danh sách purchasedNumbers
-  purchasedNumbers.value.push({ number: phoneNumber });
 
   // Reset input
   userInputNumber.value = null;
@@ -401,7 +411,6 @@ onMounted(async () => {
   padding: 15px 30px; /* Tăng kích thước padding */
   cursor: pointer;
   font-size: 18px; /* Tăng kích thước font */
-  width: 100%; /* Làm nút rộng hơn */
   margin-top: 20px; /* Thêm khoảng cách phía trên */
 }
 

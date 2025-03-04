@@ -84,6 +84,10 @@ export default {
     please_select_package: "Please select a package!",
     purchase_success: "You have purchased {package} with quantity {quantity}.",
     invalid_package: "Invalid Package",
+    purchase_success_multiple:
+      "Successfully purchased {quantity} packages of {package} for {seconds} seconds each for number {phoneNumber}.",
+    enter_phone_number: "Enter Phone Number",
+
     steps: [
       {
         title: "Get the temp number",
