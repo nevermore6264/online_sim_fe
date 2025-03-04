@@ -16,7 +16,6 @@ export default {
     headerNews: "Tin tức",
     headerAPI: "API",
     headerCall: "Gọi điện",
-    headerSms: "Gửi SMS",
     login: "Đăng nhập",
     signup: "Đăng ký",
     logout: "Đăng xuất",

@@ -28,12 +28,7 @@
           :class="{ 'active-menu': activeMenu === 'call' }"
           @click="handleCall"
         />
-        <Button
-          :label="$t('landing.headerSms')"
-          class="p-button-text"
-          :class="{ 'active-menu': activeMenu === 'sms' }"
-          @click="handleSms"
-        />
+        
         <Button
           class="p-button-text"
           :class="{ 'active-menu': activeMenu === 'proxy' }"
@@ -97,12 +92,6 @@
                 :class="{ 'active-menu': activeMenu === 'rent-sim' }"
               >
                 {{ $t("landing.headerRentSim") }}
-              </li>
-              <li
-                @click="handleSms"
-                :class="{ 'active-menu': activeMenu === 'sms' }"
-              >
-                {{ $t("landing.headerSms") }}
               </li>
               <li
                 @click="handleRentOTP"
@@ -219,11 +208,6 @@ const handleAPI = () => {
 const handleCall = () => {
   activeMenu.value = "call";
   router.push("/call");
-};
-
-const handleSms = () => {
-  activeMenu.value = "sms";
-  router.push("/sms");
 };
 
 const fetchUserInfo = async (token) => {

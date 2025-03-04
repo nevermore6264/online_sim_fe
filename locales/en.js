@@ -16,7 +16,6 @@ export default {
     headerNews: "News",
     headerAPI: "API",
     headerCall: "Calling",
-    headerSms: "Send SMS",
     login: "Login",
     signup: "Sign Up",
     logout: "Logout",
