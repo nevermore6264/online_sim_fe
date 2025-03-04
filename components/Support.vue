@@ -104,8 +104,8 @@ const sendEmail = () => {
 
 /* Nút chính */
 .fab-main {
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   border: none;
   border-radius: 50%;
   background-color: #007bff;
@@ -119,6 +119,22 @@ const sendEmail = () => {
   transition: background-color 0.3s;
 }
 
+@media (max-width: 1366px) {
+  .fab-main {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .fab-item {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .fab-menu {
+    right: 0px !important;
+  }
+}
+
 .fab-main:hover {
   background-color: #0056b3;
 }
@@ -127,7 +143,7 @@ const sendEmail = () => {
 .fab-menu {
   position: absolute;
   bottom: 70px;
-  right: 0;
+  right: 8px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -135,8 +151,8 @@ const sendEmail = () => {
 
 /* Nút phụ */
 .fab-item {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border: none;
   border-radius: 50%;
   background-color: white;
