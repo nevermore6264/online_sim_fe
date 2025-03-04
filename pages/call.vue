@@ -85,7 +85,6 @@
               v-model="quantity"
               inputId="quantity"
               :min="1"
-              disabled="true"
               :max="10"
               showButtons
               class="small-input-number"
@@ -118,26 +117,13 @@
         <!-- Bảng số muốn gọi đến -->
         <div class="table-section">
           <h3>{{ $t("landing.numbers_to_call") }}</h3>
-          <DataTable :value="numbersToCall" scrollable scrollHeight="200px">
-            <Column field="number" header="Số điện thoại"></Column>
-            <Column header="Chọn số">
-              <template #body="{ data, index }">
-                <Button
-                  icon="pi pi-check"
-                  class="p-button-sm"
-                  :label="
-                    selectedNumberIndex === index
-                      ? $t('landing.selected')
-                      : $t('landing.select_number')
-                  "
-                  :class="{ 'selected-button': selectedNumberIndex === index }"
-                  @click="selectNumber(data.number, index)"
-                />
-              </template>
-            </Column>
-          </DataTable>
-          <div v-if="selectedNumber" class="selected-number">
-            {{ $t("landing.selected_number") }}: {{ selectedNumber }}
+          <input
+            v-model="userInputNumber"
+            :placeholder="$t('landing.enter_phone_number')"
+            class="phone-input"
+          />
+          <div v-if="userInputNumber" class="selected-number">
+            {{ $t("landing.selected_number") }}: {{ userInputNumber }}
           </div>
         </div>
 
@@ -177,15 +163,10 @@ const selectedCustomer = ref(null);
 const selectedNetwork = ref("any"); // Mặc định chọn Any
 const selectedPackage = ref(null); // Gói dịch vụ được chọn
 const quantity = ref(1); // Số lượng mặc định
+const userInputNumber = ref(null); // Số điện thoại người dùng nhập
 
 // Danh sách các gói dịch vụ
 const packages = ref([]);
-
-// Danh sách số muốn gọi đến
-const numbersToCall = ref([
-  { number: "0123456789", status: t("landing.not_called") },
-  { number: "0987654321", status: t("landing.called") },
-]);
 
 // Danh sách số đã mua
 const purchasedNumbers = ref([
@@ -198,20 +179,6 @@ const networkOptions = ref([
   { label: t("landing.network_any"), value: "any" },
 ]);
 
-const selectedNumber = ref(null); // Lưu số điện thoại được chọn
-const selectedNumberIndex = ref(null); // Lưu chỉ số của số điện thoại được chọn
-
-const selectNumber = (number, index) => {
-  if (selectedNumberIndex.value === index) {
-    // Nếu số đã được chọn, hủy chọn
-    selectedNumber.value = null;
-    selectedNumberIndex.value = null;
-  } else {
-    // Chọn số mới
-    selectedNumber.value = number;
-    selectedNumberIndex.value = index;
-  }
-};
 // Tính tổng tiền
 const totalPrice = computed(() => {
   if (!selectedPackage.value) return 0;
@@ -286,8 +253,8 @@ const buyPackage = async () => {
     return;
   }
 
-  if (!selectedNumber.value) {
-    alert(t("landing.please_select_number"));
+  if (!userInputNumber.value) {
+    alert(t("landing.please_enter_number"));
     return;
   }
 
@@ -301,7 +268,7 @@ const buyPackage = async () => {
   }
 
   const seconds = selectedPkg.value; // Số giây của gói
-  const phoneNumber = selectedNumber.value; // Số điện thoại được chọn
+  const phoneNumber = userInputNumber.value; // Số điện thoại người dùng nhập
   const data = {
     phone: phoneNumber,
     duration: seconds,
@@ -324,13 +291,8 @@ const buyPackage = async () => {
   // Thêm số đã mua vào danh sách purchasedNumbers
   purchasedNumbers.value.push({ number: phoneNumber });
 
-  // Xóa số đã mua khỏi danh sách numbersToCall
-  numbersToCall.value = numbersToCall.value.filter(
-    (num) => num.number !== phoneNumber
-  );
-
-  // Reset selectedNumber
-  selectedNumber.value = null;
+  // Reset input
+  userInputNumber.value = null;
 };
 
 const callNumber = (number) => {
@@ -436,9 +398,11 @@ onMounted(async () => {
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 8px 12px; /* Làm bé lại */
+  padding: 15px 30px; /* Tăng kích thước padding */
   cursor: pointer;
-  font-size: 14px; /* Giảm kích thước font */
+  font-size: 18px; /* Tăng kích thước font */
+  width: 100%; /* Làm nút rộng hơn */
+  margin-top: 20px; /* Thêm khoảng cách phía trên */
 }
 
 .buy-button:hover {
@@ -460,6 +424,15 @@ onMounted(async () => {
   border-radius: 4px;
   font-size: 14px;
   margin-top: 20px;
+}
+
+.phone-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .landing-page {
