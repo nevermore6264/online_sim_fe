@@ -285,15 +285,13 @@ const buyPackage = async () => {
     const response = await orderService.BuyCall(token, toRaw(data));
     if (response.success) {
       successCount++;
-      // Thêm số đã mua vào danh sách purchasedNumbers
-      purchasedNumbers.value.push({ number: phoneNumber });
     } else {
       push.warning(`Failed to buy call for attempt ${i + 1}`);
     }
   }
 
   // Hiển thị thông báo tổng hợp
-  if (successCount > 0) {
+  if (successCount == quantity.value) {
     const msg = t("landing.purchase_success_multiple", {
       package: selectedPkg.label,
       quantity: successCount,

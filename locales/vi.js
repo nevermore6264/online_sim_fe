@@ -82,6 +82,7 @@ export default {
     select_number: "Chọn",
     selected_number: "Số đã chọn",
     please_select_package: "Vui lòng chọn gói!",
+    please_enter_number: "Vui lòng nhập số điện thoại!",
     purchase_success: "Bạn đã mua {package} với số lượng {quantity}.",
     invalid_package: "Gói không hợp lệ",
     purchase_success_multiple:

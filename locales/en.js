@@ -82,6 +82,7 @@ export default {
     select_number: "Choose",
     selected_number: "Selected Number",
     please_select_package: "Please select a package!",
+    please_enter_number: "Please Enter Number!",
     purchase_success: "You have purchased {package} with quantity {quantity}.",
     invalid_package: "Invalid Package",
     purchase_success_multiple:
