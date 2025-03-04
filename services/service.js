@@ -7,4 +7,9 @@ export default {
     );
     return response.data;
   },
+
+  async GetServicesAvailable() {
+    const response = await api.get(`/api/services/available`);
+    return response.data;
+  },
 };

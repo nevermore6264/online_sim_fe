@@ -146,7 +146,21 @@
           />
           <div class="service-details">
             <h5>{{ item?.text }}</h5>
-            <b>{{ $t("landing.availability", { count: 416, price: 1.5 }) }}</b>
+            <template
+              v-if="
+                servicesAvaiable.data.find((e) => e.service == item.code) !=
+                null
+              "
+            >
+              <b>{{
+                $t("landing.availability", {
+                  count: servicesAvaiable.data.find(
+                    (e) => e.service == item.code
+                  )?.count,
+                  price: 1.5,
+                })
+              }}</b>
+            </template>
           </div>
         </div>
       </div>
@@ -163,6 +177,7 @@ import { push } from "notivue";
 
 const selectedCustomer = ref(null);
 const selectedServices = ref([]);
+const servicesAvaiable = ref([]);
 const rentalQuantityOptions = ref([
   { label: "1", value: 1 },
   { label: "2", value: 2 },
@@ -306,8 +321,18 @@ const fetchCountries = async () => {
   }
 };
 
+const getAllServicesAvaiable = async () => {
+  try {
+    const response = await serviceService.GetServicesAvailable();
+    servicesAvaiable.value = response;
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+  }
+};
+
 onMounted(async () => {
   await fetchCountries();
+  await getAllServicesAvaiable();
 
   if (dropdownOptions.value.length > 0) {
     selectedCustomer.value =
