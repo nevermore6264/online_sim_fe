@@ -130,15 +130,21 @@
         <!-- Bảng danh sách số đã mua -->
         <div class="table-section">
           <h3>{{ $t("landing.purchased_numbers") }}</h3>
-          <DataTable :value="purchasedNumbers" scrollable scrollHeight="200px">
+          <DataTable
+            :value="purchasedNumbers"
+            scrollable
+            scrollHeight="200px"
+            :loading="purchasedNumbersLoading"
+          >
             <Column field="number" header="Số điện thoại"></Column>
+            <Column field="extendedData" header="Thông tin mở rộng"></Column>
             <Column header="Hành động">
               <template #body="{ data }">
                 <Button
                   icon="pi pi-phone"
                   class="p-button-sm"
                   :label="$t('landing.call')"
-                  @click="callNumber(data.number)"
+                  @click="callNumber(data.id)"
                 />
               </template>
             </Column>
@@ -301,18 +307,10 @@ const buyPackage = async () => {
   userInputNumber.value = null;
 };
 
-const callNumber = async (number) => {
+const callNumber = async (id) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await api.post(
-      "https://japansim.net/sim-service/create-call/order-id",
-      { number },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await orderService.CreateCall(token, id);
 
     if (response.data.status === "SUCCESS") {
       alert(`Gọi số ${number} thành công!`);
@@ -334,7 +332,7 @@ const fetchPurchasedNumbers = async () => {
       limit: 10,
       type: "buy.call.service",
     });
-    purchasedNumbers.value = response.data.map((order) => ({
+    purchasedNumbers.value = response.docs.map((order) => ({
       number: order.phone,
       extendedData: order.extendedData, // Thêm extendedData nếu có
     }));
