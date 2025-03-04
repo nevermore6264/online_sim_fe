@@ -164,15 +164,11 @@ const selectedNetwork = ref("any"); // Mặc định chọn Any
 const selectedPackage = ref(null); // Gói dịch vụ được chọn
 const quantity = ref(1); // Số lượng mặc định
 const userInputNumber = ref(null); // Số điện thoại người dùng nhập
+const purchasedNumbers = ref([]); // Danh sách số đã mua
+const purchasedNumbersLoading = ref(false); // Trạng thái loading cho purchasedNumbers
 
 // Danh sách các gói dịch vụ
 const packages = ref([]);
-
-// Danh sách số đã mua
-const purchasedNumbers = ref([
-  { number: "0123456789" },
-  { number: "0987654321" },
-]);
 
 const networkOptions = ref([
   { label: t("landing.network_docomo"), value: "docomo" },
@@ -305,13 +301,54 @@ const buyPackage = async () => {
   userInputNumber.value = null;
 };
 
-const callNumber = (number) => {
-  alert(`Gọi số: ${number}`);
+const callNumber = async (number) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await api.post(
+      "https://japansim.net/sim-service/create-call/order-id",
+      { number },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.data.status === "SUCCESS") {
+      alert(`Gọi số ${number} thành công!`);
+    } else {
+      alert(`Gọi số ${number} thất bại!`);
+    }
+  } catch (error) {
+    console.error("Error calling number:", error);
+    alert(`Gọi số ${number} thất bại!`);
+  }
+};
+
+const fetchPurchasedNumbers = async () => {
+  purchasedNumbersLoading.value = true;
+  const token = localStorage.getItem("token");
+  try {
+    const response = await orderService.OrderList(token, {
+      page: 1,
+      limit: 10,
+      type: "buy.call.service",
+    });
+    purchasedNumbers.value = response.data.map((order) => ({
+      number: order.phone,
+      extendedData: order.extendedData, // Thêm extendedData nếu có
+    }));
+  } catch (error) {
+    console.error("Failed to fetch purchased numbers:", error);
+  } finally {
+    purchasedNumbersLoading.value = false;
+  }
 };
 
 onMounted(async () => {
   await initializeData();
   await loadJapanServices(); // Load dịch vụ của Japan khi component được mount
+  await fetchPurchasedNumbers(); // Load danh sách số đã mua
 
   // Lấy các gói dịch vụ từ API
   try {

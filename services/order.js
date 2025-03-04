@@ -27,4 +27,23 @@ export default {
     });
     return response.data;
   },
+
+  async OrderList(token, { page, limit, type }) {
+    const response = await api.get(`/api/account/order-list`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { page, limit, type },
+    });
+    return response.data;
+  },
+
+  async CreateCall(token, id) {
+    const response = await api.get(`/api/sim-service/create-call/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
 };

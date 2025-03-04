@@ -24,7 +24,7 @@ export default {
 
   // Cập nhật tin tức
   async Update(id, newsData, token) {
-    const response = await api.put(`/api/manage-service/posts${id}`, newsData, {
+    const response = await api.put(`/api/manage-service/posts/${id}`, newsData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,7 +34,7 @@ export default {
 
   // Xóa tin tức
   async Delete(id, token) {
-    const response = await api.delete(`/api/manage-service/posts${id}`, {
+    const response = await api.delete(`/api/manage-service/posts/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
