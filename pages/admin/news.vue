@@ -176,8 +176,6 @@ const saveNews = async () => {
   if (currentNews.value.image) {
     formData.append("image", currentNews.value.image);
   }
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjkzMjMyMDYwNSwiaWF0IjoxNzQxMDgzMjk4fQ.HUF0TnWfCjv2L_xoeE3rBC0ucG6pmu-qlK03wLfuw4w";
   if (isEditMode.value) {
     // Cập nhật tin tức
     await NewsService.Update(currentNews.value.id, formData, token);
@@ -191,8 +189,6 @@ const saveNews = async () => {
 
 // Xóa tin tức
 const deleteNews = async (newsItem) => {
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjkzMjMyMDYwNSwiaWF0IjoxNzQxMDgzMjk4fQ.HUF0TnWfCjv2L_xoeE3rBC0ucG6pmu-qlK03wLfuw4w";
   if (confirm(t("newsManagement.confirmDelete"))) {
     await NewsService.Delete(newsItem.id, token);
     await fetchNews(); // Lấy lại danh sách tin tức sau khi xóa
