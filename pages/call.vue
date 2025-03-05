@@ -255,11 +255,6 @@ const buyPackage = async () => {
     return;
   }
 
-  if (!userInputNumber.value) {
-    alert(t("landing.please_enter_number"));
-    return;
-  }
-
   const selectedPkg = packages.value.find(
     (pkg) => pkg.value === selectedPackage.value
   );
@@ -278,7 +273,6 @@ const buyPackage = async () => {
   // Thực hiện mua gói nhiều lần dựa trên quantity
   for (let i = 0; i < quantity.value; i++) {
     const data = {
-      phone: phoneNumber,
       duration: seconds,
     };
 
