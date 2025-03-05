@@ -2,8 +2,6 @@ import { api } from "../utils/axios";
 
 export default {
   async News(token) {
-    token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjkzMjMyMDYwNSwiaWF0IjoxNzQxMDgzMjk4fQ.HUF0TnWfCjv2L_xoeE3rBC0ucG6pmu-qlK03wLfuw4w";
     const response = await api.get(`/api/manage-service/posts`, {
       headers: {
         Authorization: `Bearer ${token}`,
