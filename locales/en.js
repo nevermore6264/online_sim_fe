@@ -163,7 +163,7 @@ export default {
     select_network: "Select Network",
     network_docomo: "Docomo",
     network_any: "Any",
-    availability: "Avail. {count} PCS. for {price} USD per day",
+    availability: "Avail. {count} PCS.",
   },
   notify: {
     no_rights: "You do not have the right!",

@@ -157,7 +157,6 @@
                   count: servicesAvaiable.data.find(
                     (e) => e.service == item.code
                   )?.count,
-                  price: 1.5,
                 })
               }}</b>
             </template>
