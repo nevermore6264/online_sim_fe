@@ -137,7 +137,7 @@
             :loading="purchasedNumbersLoading"
           >
             <Column field="number" header="Số điện thoại"></Column>
-            <Column field="extendedData" header="Thông tin mở rộng"></Column>
+            <!--  <Column field="extendedData" header="Thông tin mở rộng"></Column> -->
             <Column header="Hành động">
               <template #body="{ data }">
                 <Button
@@ -324,8 +324,8 @@ const fetchPurchasedNumbers = async () => {
       limit: 10,
       type: "buy.call.service",
     });
-    purchasedNumbers.value = response.docs.map((order) => ({
-      number: order.phone,
+    purchasedNumbers.value = response.data.docs.map((order) => ({
+      number: order?.stock?.phone,
       extendedData: order.extendedData, // Thêm extendedData nếu có
     }));
   } catch (error) {
