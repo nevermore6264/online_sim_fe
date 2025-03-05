@@ -142,6 +142,14 @@
             <Column header="Hành động">
               <template #body="{ data }">
                 <Button
+                  v-if="callStatus[data.id]?.isCalling"
+                  icon="pi pi-phone"
+                  class="p-button-sm"
+                  :label="`Calling... (${callStatus[data.id].remainingTime}s)`"
+                  disabled
+                />
+                <Button
+                  v-else
                   icon="pi pi-phone"
                   class="p-button-sm"
                   :label="$t('landing.call')"
@@ -157,11 +165,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watchEffect } from "vue";
+import { ref, onMounted, onUnmounted, watchEffect } from "vue";
 import { GetAllCountries } from "@/services/country.js";
 import { useI18n } from "vue-i18n";
 import DurationService from "@/services/duration"; // Import service
 import orderService from "../services/order";
+import { push } from "notivue";
 
 const { t } = useI18n();
 const customers = ref([]);
@@ -177,6 +186,8 @@ const currentPage = ref(1);
 const totalPages = ref(1);
 const hasNextPage = ref(false);
 const purchasedNumbersTable = ref(null); // Ref để truy cập DataTable
+const callStatus = ref({}); // Lưu trữ trạng thái của các cuộc gọi
+const countdownTimers = ref({}); // Lưu trữ các bộ đếm ngược
 
 // Danh sách các gói dịch vụ
 const packages = ref([]);
@@ -304,15 +315,32 @@ const buyPackage = async () => {
   userInputNumber.value = null;
 };
 
+const startCountdown = (id, duration) => {
+  callStatus.value[id] = { remainingTime: duration, isCalling: true };
+
+  countdownTimers.value[id] = setInterval(() => {
+    callStatus.value[id].remainingTime -= 1;
+
+    if (callStatus.value[id].remainingTime <= 0) {
+      clearInterval(countdownTimers.value[id]);
+      callStatus.value[id].isCalling = false;
+    }
+  }, 1000);
+};
+
 const callNumber = async (id) => {
   const token = localStorage.getItem("token");
   try {
     const response = await orderService.CreateCall(token, id);
 
     if (response.data.status === "SUCCESS") {
-      alert(`Gọi số ${number} thành công!`);
+      const number = response.data.number; // Giả sử API trả về số điện thoại
+      const duration = response.data.extendedData.duration; // Giả sử API trả về duration trong extendedData
+
+      push.success(`Gọi số ${number} thành công!`);
+      startCountdown(id, duration); // Bắt đầu đếm ngược
     } else {
-      alert(`Gọi số ${number} thất bại!`);
+      push.error(`Gọi số ${number} thất bại!`);
     }
   } catch (error) {
     console.error("Error calling number:", error);
@@ -381,6 +409,10 @@ onMounted(async () => {
   } catch (error) {
     console.error("Failed to fetch durations:", error);
   }
+});
+
+onUnmounted(() => {
+  Object.values(countdownTimers.value).forEach((timer) => clearInterval(timer));
 });
 
 // Sử dụng watchEffect để gắn sự kiện scroll
