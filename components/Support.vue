@@ -75,7 +75,7 @@ const closeEmail = () => {
 
 // Mở Telegram
 const openTelegram = () => {
-  window.open("https://t.me/your_telegram_link", "_blank");
+  window.open("https://t.me/JPSimFATHER", "_blank");
 };
 
 // Gửi email (logic giả lập)
