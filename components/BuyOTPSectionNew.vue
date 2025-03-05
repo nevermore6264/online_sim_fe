@@ -4,21 +4,11 @@
       <!-- Selected Services List -->
       <div class="selected-services" v-if="selectedServices.length > 0">
         <div class="selected-services-list">
-          <div
-            v-for="(service, index) in selectedServices"
-            :key="index"
-            class="selected-item"
-          >
+          <div v-for="(service, index) in selectedServices" :key="index" class="selected-item">
             <div class="service-info">
-              <span class="service-name mobile-hidden"
-                >{{ $t("landing.service") }}:
+              <span class="service-name mobile-hidden">{{ $t("landing.service") }}:
               </span>
-              <img
-                :src="service?.image"
-                alt="Service Image"
-                class="w-24 rounded"
-                width="24px"
-              />
+              <img :src="service?.image" alt="Service Image" class="w-24 rounded" width="24px" />
               <span class="service-name">{{ service.text }}</span>
               <span class="service-name">
                 <span class="mobile-hidden">{{ $t("landing.country") }}:</span>
@@ -30,19 +20,11 @@
               </span>
               <span class="service-price">
                 <span class="mobile-hidden">
-                  {{ $t("landing.total_amount") }}:</span
-                >
+                  {{ $t("landing.total_amount") }}:</span>
                 {{ service.price }} USD
               </span>
-              <Button
-                class="remove-icon"
-                icon="pi pi-times"
-                severity="danger"
-                variant="text"
-                size="small"
-                label=""
-                @click="removeService(index)"
-              />
+              <Button class="remove-icon" icon="pi pi-times" severity="danger" variant="text" size="small" label=""
+                @click="removeService(index)" />
             </div>
           </div>
         </div>
@@ -62,18 +44,8 @@
     <div class="flex-container landing-page-container">
       <!-- Bên trái: Danh sách quốc gia -->
       <div class="table-container table-services">
-        <input
-          v-model="searchCountry"
-          :placeholder="$t('landing.search_country')"
-          class="search-input"
-        />
-        <DataTable
-          :value="filteredCountries"
-          scrollable
-          scrollHeight="400px"
-          dataKey="code"
-          :loading="loading"
-        >
+        <input v-model="searchCountry" :placeholder="$t('landing.search_country')" class="search-input" />
+        <DataTable :value="filteredCountries" scrollable scrollHeight="400px" dataKey="code" :loading="loading">
           <template #header>
             <div class="lbl_services">{{ $t("landing.select_country") }}</div>
           </template>
@@ -82,44 +54,20 @@
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="b-country-row">
-                <div
-                  v-for="country in data"
-                  :key="country.code"
-                  class="country-item"
-                  :class="{
-                    'selected-country': country.code === selectedCustomer?.code,
-                  }"
-                  @click.stop="onCountryClick(country)"
-                >
-                  <img
-                    :src="country.flagImage"
-                    :alt="country.name"
-                    class="flag-image"
-                  />
+                <div v-for="country in data" :key="country.code" class="country-item" :class="{
+                  'selected-country': country.code === selectedCustomer?.code,
+                }" @click.stop="onCountryClick(country)">
+                  <img :src="country.flagImage" :alt="country.name" class="flag-image" />
                   <span class="country-name">{{ country.name }}</span>
-                  <div
-                    class="network-selection"
-                    v-if="country.code === selectedCustomer?.code"
-                  >
-                    <label for="network"
-                      >{{ $t("landing.select_network") }}:</label
-                    >
-                    <Dropdown
-                      v-model="selectedNetwork"
-                      :options="networkOptions"
-                      optionLabel="label"
-                      optionValue="value"
-                      :placeholder="$t('landing.select_network')"
-                      class="w-full small-dropdown"
-                      @click="handleDropdownClick"
-                    />
+                  <div class="network-selection" v-if="country.code === selectedCustomer?.code">
+                    <label for="network">{{ $t("landing.select_network") }}:</label>
+                    <Dropdown v-model="selectedNetwork" :options="networkOptions" optionLabel="label"
+                      optionValue="value" :placeholder="$t('landing.select_network')" class="w-full small-dropdown"
+                      @click="handleDropdownClick" />
                   </div>
-                  <button
-                    class="select-button"
-                    :class="{
-                      selected: country.code === selectedCustomer?.code,
-                    }"
-                  >
+                  <button class="select-button" :class="{
+                    selected: country.code === selectedCustomer?.code,
+                  }">
                     {{
                       country.code === selectedCustomer?.code
                         ? $t("landing.selected")
@@ -135,18 +83,8 @@
 
       <!-- Bên phải: Danh sách dịch vụ -->
       <div class="table-container table-services">
-        <input
-          v-model="searchService"
-          :placeholder="$t('landing.search_service')"
-          class="search-input"
-        />
-        <DataTable
-          :value="filteredServices"
-          scrollable
-          scrollHeight="400px"
-          dataKey="id"
-          :loading="loading"
-        >
+        <input v-model="searchService" :placeholder="$t('landing.search_service')" class="search-input" />
+        <DataTable :value="filteredServices" scrollable scrollHeight="400px" dataKey="id" :loading="loading">
           <template #header>
             <div class="lbl_services">{{ $t("landing.select_service") }}</div>
           </template>
@@ -155,24 +93,27 @@
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="b-service-row">
-                <div
-                  v-for="service in data"
-                  :key="service.id"
-                  class="service-item"
-                  :class="{
-                    selected: selectedServices.some((s) => s.id === service.id),
-                  }"
-                  @click="onServiceClick(service)"
-                >
-                  <img
-                    :src="service.image"
-                    :alt="service.text"
-                    class="flag-image"
-                  />
+                <div v-for="service in data" :key="service.id" class="service-item" :class="{
+                  selected: selectedServices.some((s) => s.id === service.id),
+                }" @click="onServiceClick(service)">
+                  <img :src="service.image" :alt="service.text" class="flag-image" />
                   <span class="service-name">{{ service.text }}</span>
                   <span class="service-price mobile-hidden">
                     {{ $t("landing.service_price", { price: service.price }) }}
                   </span>
+                  <template v-if="
+                    servicesAvaiable?.data?.find((e) => e?.service == service?.code) !=
+                    null
+                  ">
+                    <b>{{
+                      $t("landing.availability", {
+                        count: servicesAvaiable?.data?.find(
+                          (e) => e?.service == service?.code
+                        )?.count,
+                        price: 1.5,
+                      })
+                    }}</b>
+                  </template>
                 </div>
               </div>
             </template>
@@ -199,6 +140,7 @@ const loading = ref(false);
 const selectedCustomer = ref(null);
 const selectedServices = ref([]);
 const selectedNetwork = ref("any"); // Mặc định chọn Any
+const servicesAvaiable = ref([]);
 
 const networkOptions = ref([
   { label: t("landing.network_docomo"), value: "docomo" },
@@ -218,6 +160,15 @@ const groupedCustomers = computed(() => {
   }
   return groups;
 });
+
+const getAllServicesAvaiable = async () => {
+  try {
+    const response = await serviceService.GetServicesAvailable();
+    servicesAvaiable.value = response;
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+  }
+};
 
 // Lọc danh sách quốc gia theo tìm kiếm
 const filteredCountries = computed(() => {
@@ -375,9 +326,10 @@ const buySelectedServices = async () => {
   }
 };
 
-onMounted(() => {
-  initializeData();
-  loadJapanServices(); // Load dịch vụ của Japan khi component được mount
+onMounted(async () => {
+  await initializeData();
+  await loadJapanServices(); // Load dịch vụ của Japan khi component được mount
+  await getAllServicesAvaiable();
 });
 </script>
 
@@ -420,7 +372,7 @@ onMounted(() => {
   margin-bottom: 0 !important;
 }
 
-.landing-page .p-datatable .p-datatable-tbody > tr > td {
+.landing-page .p-datatable .p-datatable-tbody>tr>td {
   border: none;
   padding: 5px 5px;
 }
@@ -579,17 +531,21 @@ onMounted(() => {
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
   text-align: center;
-  overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
-  white-space: nowrap; /* Ngăn văn bản xuống dòng */
-  text-overflow: ellipsis; /* Hiển thị dấu ... khi văn bản tràn */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .service-name,
 .service-price {
-  max-width: 100%; /* Giới hạn chiều rộng tối đa */
-  overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
-  white-space: nowrap; /* Ngăn văn bản xuống dòng */
-  text-overflow: ellipsis; /* Hiển thị dấu ... khi văn bản tràn */
+  max-width: 100%;
+  /* Giới hạn chiều rộng tối đa */
+  overflow: hidden;
+  /* Ẩn nội dung tràn ra ngoài */
+  white-space: nowrap;
+  /* Ngăn văn bản xuống dòng */
+  text-overflow: ellipsis;
+  /* Hiển thị dấu ... khi văn bản tràn */
 }
 
 .service-item:hover {
@@ -609,7 +565,8 @@ onMounted(() => {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  margin-left: auto; /* Đẩy nút về phía bên phải */
+  margin-left: auto;
+  /* Đẩy nút về phía bên phải */
 }
 
 .select-button:hover {
@@ -617,9 +574,12 @@ onMounted(() => {
 }
 
 .select-button.selected {
-  background-color: #ffc107; /* Màu vàng */
-  color: #000; /* Màu chữ đen để dễ đọc */
-  border: 1px solid #ffc107; /* Viền màu vàng */
+  background-color: #ffc107;
+  /* Màu vàng */
+  color: #000;
+  /* Màu chữ đen để dễ đọc */
+  border: 1px solid #ffc107;
+  /* Viền màu vàng */
 }
 
 .top-section {
@@ -645,7 +605,8 @@ onMounted(() => {
 }
 
 .selected-services {
-  flex: 7; /* Chiếm 70% */
+  flex: 7;
+  /* Chiếm 70% */
   border: 1px solid rgb(0, 174, 255);
   border-radius: 8px;
   background: #f9f9f9;
@@ -667,7 +628,8 @@ onMounted(() => {
 
 /* Rent button */
 .buy-button {
-  flex: 3; /* Chiếm 30% */
+  flex: 3;
+  /* Chiếm 30% */
   background-color: #007bff;
   color: #fff;
   padding: 10px 20px;
@@ -685,9 +647,9 @@ onMounted(() => {
 }
 
 .service-item.selected {
-  border: 2px solid #007bff; /* Viền màu xanh */
-  background-color: #e6f3ff; /* Màu nền nhạt */
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); /* Đổ bóng */
+  border: 2px solid #007bff;
+  background-color: #e6f3ff;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
 .remove-icon {
@@ -696,7 +658,8 @@ onMounted(() => {
   color: red;
   padding: 0 !important;
   margin: 0 !important;
-  min-width: auto !important; /* Đảm bảo nút không có chiều rộng tối thiểu */
+  min-width: auto !important;
+  /* Đảm bảo nút không có chiều rộng tối thiểu */
 }
 
 .remove-icon .p-button-label {
@@ -730,7 +693,8 @@ onMounted(() => {
 
   .selected-services,
   .buy-section {
-    flex: 1; /* Chiếm toàn bộ chiều rộng trên mobile */
+    flex: 1;
+    /* Chiếm toàn bộ chiều rộng trên mobile */
   }
 
   .buy-section {
@@ -760,7 +724,8 @@ onMounted(() => {
   }
 
   .mobile-hidden {
-    display: none; /* Ẩn phần tử trên mobile */
+    display: none;
+    /* Ẩn phần tử trên mobile */
   }
 }
 </style>
