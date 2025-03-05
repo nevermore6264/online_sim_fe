@@ -437,7 +437,7 @@ onMounted(async () => {
 }
 
 .buy-button {
-  background-color: #007bff;
+  background-color: #ffc107;
   color: white;
   border: none;
   border-radius: 5px;
@@ -448,7 +448,7 @@ onMounted(async () => {
 }
 
 .buy-button:hover {
-  background-color: #0056b3;
+  background-color: #eccd6e;
 }
 
 .table-section {
