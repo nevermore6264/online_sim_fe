@@ -97,23 +97,27 @@
                   selected: selectedServices.some((s) => s.id === service.id),
                 }" @click="onServiceClick(service)">
                   <img :src="service.image" :alt="service.text" class="flag-image" />
-                  <span class="service-name">{{ service.text }}</span>
-                  <span class="service-price mobile-hidden">
-                    {{ $t("landing.service_price", { price: service.price }) }}
-                  </span>
-                  <template v-if="
-                    servicesAvaiable?.data?.find((e) => e?.service == service?.code) !=
-                    null
-                  ">
-                    <b>{{
-                      $t("landing.availability", {
-                        count: servicesAvaiable?.data?.find(
-                          (e) => e?.service == service?.code
-                        )?.count,
-                        price: 1.5,
-                      })
-                    }}</b>
-                  </template>
+                  <div class="service-info">
+                    <div class="service-details">
+                      <span class="service-name">{{ service.text }}</span>
+                      <span class="service-price mobile-hidden">
+                        {{ $t("landing.service_price", { price: service.price }) }}
+                      </span>
+                    </div>
+                    <template v-if="
+                      servicesAvaiable?.data?.find((e) => e?.service == service?.code) !=
+                      null
+                    ">
+                      <b>{{
+                        $t("landing.availability", {
+                          count: servicesAvaiable?.data?.find(
+                            (e) => e?.service == service?.code
+                          )?.count,
+                          price: 1.5,
+                        })
+                      }}</b>
+                    </template>
+                  </div>
                 </div>
               </div>
             </template>
@@ -341,6 +345,28 @@ onMounted(async () => {
   margin: 0 auto;
 }
 
+.service-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.service-details {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.service-info b {
+  text-align: left;
+  font-size: 11px;
+}
+
+.service-availability {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
 .table-container {
   background-color: #fff;
   border-radius: 8px;
@@ -523,8 +549,7 @@ onMounted(async () => {
 
 .service-item {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: normal;
   cursor: pointer;
   padding: 10px;
   transition: background-color 0.3s;
@@ -588,13 +613,6 @@ onMounted(async () => {
   gap: 20px;
   margin-bottom: 20px;
   width: 100%;
-}
-
-.service-info {
-  display: grid;
-  grid-template-columns: 0.5fr 0.5fr 2fr 1.5fr 2fr 1fr auto;
-  gap: 10px;
-  align-items: center;
 }
 
 .service-info img {
