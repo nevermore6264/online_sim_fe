@@ -135,9 +135,10 @@
             scrollable
             scrollHeight="200px"
             :loading="purchasedNumbersLoading"
+            ref="purchasedNumbersTable"
           >
             <Column field="number" header="Số điện thoại"></Column>
-            <!--  <Column field="extendedData" header="Thông tin mở rộng"></Column> -->
+            <!-- <Column field="extendedData" header="Thông tin mở rộng"></Column> -->
             <Column header="Hành động">
               <template #body="{ data }">
                 <Button
@@ -156,7 +157,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import { GetAllCountries } from "@/services/country.js";
 import { useI18n } from "vue-i18n";
 import DurationService from "@/services/duration"; // Import service
@@ -172,6 +173,10 @@ const quantity = ref(1); // Số lượng mặc định
 const userInputNumber = ref(null); // Số điện thoại người dùng nhập
 const purchasedNumbers = ref([]); // Danh sách số đã mua
 const purchasedNumbersLoading = ref(false); // Trạng thái loading cho purchasedNumbers
+const currentPage = ref(1);
+const totalPages = ref(1);
+const hasNextPage = ref(false);
+const purchasedNumbersTable = ref(null); // Ref để truy cập DataTable
 
 // Danh sách các gói dịch vụ
 const packages = ref([]);
@@ -315,23 +320,45 @@ const callNumber = async (id) => {
   }
 };
 
-const fetchPurchasedNumbers = async () => {
+const fetchPurchasedNumbers = async (page = 1) => {
   purchasedNumbersLoading.value = true;
   const token = localStorage.getItem("token");
   try {
     const response = await orderService.OrderList(token, {
-      page: 1,
+      page: page,
       limit: 10,
       type: "buy.call.service",
     });
-    purchasedNumbers.value = response.data.docs.map((order) => ({
-      number: order?.stock?.phone,
-      extendedData: order.extendedData, // Thêm extendedData nếu có
-    }));
+    if (page === 1) {
+      purchasedNumbers.value = response.data.docs.map((order) => ({
+        id: order?.id,
+        number: order?.stock?.phone,
+        extendedData: order.extendedData,
+      }));
+    } else {
+      purchasedNumbers.value = [
+        ...purchasedNumbers.value,
+        ...response.data.docs.map((order) => ({
+          id: order?.id,
+          number: order?.stock?.phone,
+          extendedData: order.extendedData,
+        })),
+      ];
+    }
+    currentPage.value = response.data.page;
+    totalPages.value = response.data.totalPages;
+    hasNextPage.value = response.data.hasNextPage;
   } catch (error) {
     console.error("Failed to fetch purchased numbers:", error);
   } finally {
     purchasedNumbersLoading.value = false;
+  }
+};
+
+const onScroll = (event) => {
+  const { scrollTop, scrollHeight, clientHeight } = event.target;
+  if (scrollHeight - (scrollTop + clientHeight) < 50 && hasNextPage.value) {
+    fetchPurchasedNumbers(currentPage.value + 1);
   }
 };
 
@@ -355,8 +382,19 @@ onMounted(async () => {
     console.error("Failed to fetch durations:", error);
   }
 });
-</script>
 
+// Sử dụng watchEffect để gắn sự kiện scroll
+watchEffect(() => {
+  if (purchasedNumbersTable.value) {
+    const tableWrapper = purchasedNumbersTable.value.$el.querySelector(
+      ".p-datatable-wrapper"
+    );
+    if (tableWrapper) {
+      tableWrapper.addEventListener("scroll", onScroll);
+    }
+  }
+});
+</script>
 <style scoped>
 .landing-page-container {
   display: flex;
