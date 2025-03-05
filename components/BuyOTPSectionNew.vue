@@ -4,11 +4,21 @@
       <!-- Selected Services List -->
       <div class="selected-services" v-if="selectedServices.length > 0">
         <div class="selected-services-list">
-          <div v-for="(service, index) in selectedServices" :key="index" class="selected-item">
+          <div
+            v-for="(service, index) in selectedServices"
+            :key="index"
+            class="selected-item"
+          >
             <div class="service-info">
-              <span class="service-name mobile-hidden">{{ $t("landing.service") }}:
+              <span class="service-name mobile-hidden"
+                >{{ $t("landing.service") }}:
               </span>
-              <img :src="service?.image" alt="Service Image" class="w-24 rounded" width="24px" />
+              <img
+                :src="service?.image"
+                alt="Service Image"
+                class="w-24 rounded"
+                width="24px"
+              />
               <span class="service-name">{{ service.text }}</span>
               <span class="service-name">
                 <span class="mobile-hidden">{{ $t("landing.country") }}:</span>
@@ -20,11 +30,19 @@
               </span>
               <span class="service-price">
                 <span class="mobile-hidden">
-                  {{ $t("landing.total_amount") }}:</span>
+                  {{ $t("landing.total_amount") }}:</span
+                >
                 {{ service.price }} USD
               </span>
-              <Button class="remove-icon" icon="pi pi-times" severity="danger" variant="text" size="small" label=""
-                @click="removeService(index)" />
+              <Button
+                class="remove-icon"
+                icon="pi pi-times"
+                severity="danger"
+                variant="text"
+                size="small"
+                label=""
+                @click="removeService(index)"
+              />
             </div>
           </div>
         </div>
@@ -44,8 +62,18 @@
     <div class="flex-container landing-page-container">
       <!-- Bên trái: Danh sách quốc gia -->
       <div class="table-container table-services">
-        <input v-model="searchCountry" :placeholder="$t('landing.search_country')" class="search-input" />
-        <DataTable :value="filteredCountries" scrollable scrollHeight="400px" dataKey="code" :loading="loading">
+        <input
+          v-model="searchCountry"
+          :placeholder="$t('landing.search_country')"
+          class="search-input"
+        />
+        <DataTable
+          :value="filteredCountries"
+          scrollable
+          scrollHeight="400px"
+          dataKey="code"
+          :loading="loading"
+        >
           <template #header>
             <div class="lbl_services">{{ $t("landing.select_country") }}</div>
           </template>
@@ -54,20 +82,44 @@
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="b-country-row">
-                <div v-for="country in data" :key="country.code" class="country-item" :class="{
-                  'selected-country': country.code === selectedCustomer?.code,
-                }" @click.stop="onCountryClick(country)">
-                  <img :src="country.flagImage" :alt="country.name" class="flag-image" />
+                <div
+                  v-for="country in data"
+                  :key="country.code"
+                  class="country-item"
+                  :class="{
+                    'selected-country': country.code === selectedCustomer?.code,
+                  }"
+                  @click.stop="onCountryClick(country)"
+                >
+                  <img
+                    :src="country.flagImage"
+                    :alt="country.name"
+                    class="flag-image"
+                  />
                   <span class="country-name">{{ country.name }}</span>
-                  <div class="network-selection" v-if="country.code === selectedCustomer?.code">
-                    <label for="network">{{ $t("landing.select_network") }}:</label>
-                    <Dropdown v-model="selectedNetwork" :options="networkOptions" optionLabel="label"
-                      optionValue="value" :placeholder="$t('landing.select_network')" class="w-full small-dropdown"
-                      @click="handleDropdownClick" />
+                  <div
+                    class="network-selection"
+                    v-if="country.code === selectedCustomer?.code"
+                  >
+                    <label for="network"
+                      >{{ $t("landing.select_network") }}:</label
+                    >
+                    <Dropdown
+                      v-model="selectedNetwork"
+                      :options="networkOptions"
+                      optionLabel="label"
+                      optionValue="value"
+                      :placeholder="$t('landing.select_network')"
+                      class="w-full small-dropdown"
+                      @click="handleDropdownClick"
+                    />
                   </div>
-                  <button class="select-button" :class="{
-                    selected: country.code === selectedCustomer?.code,
-                  }">
+                  <button
+                    class="select-button"
+                    :class="{
+                      selected: country.code === selectedCustomer?.code,
+                    }"
+                  >
                     {{
                       country.code === selectedCustomer?.code
                         ? $t("landing.selected")
@@ -83,8 +135,18 @@
 
       <!-- Bên phải: Danh sách dịch vụ -->
       <div class="table-container table-services">
-        <input v-model="searchService" :placeholder="$t('landing.search_service')" class="search-input" />
-        <DataTable :value="filteredServices" scrollable scrollHeight="400px" dataKey="id" :loading="loading">
+        <input
+          v-model="searchService"
+          :placeholder="$t('landing.search_service')"
+          class="search-input"
+        />
+        <DataTable
+          :value="filteredServices"
+          scrollable
+          scrollHeight="400px"
+          dataKey="id"
+          :loading="loading"
+        >
           <template #header>
             <div class="lbl_services">{{ $t("landing.select_service") }}</div>
           </template>
@@ -93,21 +155,36 @@
           <Column style="min-width: 12rem">
             <template #body="{ data }">
               <div class="b-service-row">
-                <div v-for="service in data" :key="service.id" class="service-item" :class="{
-                  selected: selectedServices.some((s) => s.id === service.id),
-                }" @click="onServiceClick(service)">
-                  <img :src="service.image" :alt="service.text" class="flag-image" />
+                <div
+                  v-for="service in data"
+                  :key="service.id"
+                  class="service-item"
+                  :class="{
+                    selected: selectedServices.some((s) => s.id === service.id),
+                  }"
+                  @click="onServiceClick(service)"
+                >
+                  <img
+                    :src="service.image"
+                    :alt="service.text"
+                    class="flag-image"
+                  />
                   <div class="service-info">
                     <div class="service-details">
                       <span class="service-name">{{ service.text }}</span>
                       <span class="service-price mobile-hidden">
-                        {{ $t("landing.service_price", { price: service.price }) }}
+                        {{
+                          $t("landing.service_price", { price: service.price })
+                        }}
                       </span>
                     </div>
-                    <template v-if="
-                      servicesAvaiable?.data?.find((e) => e?.service == service?.code) !=
-                      null
-                    ">
+                    <template
+                      v-if="
+                        servicesAvaiable?.data?.find(
+                          (e) => e?.service == service?.code
+                        ) != null
+                      "
+                    >
                       <b>{{
                         $t("landing.availability", {
                           count: servicesAvaiable?.data?.find(
@@ -398,7 +475,7 @@ onMounted(async () => {
   margin-bottom: 0 !important;
 }
 
-.landing-page .p-datatable .p-datatable-tbody>tr>td {
+.landing-page .p-datatable .p-datatable-tbody > tr > td {
   border: none;
   padding: 5px 5px;
 }
