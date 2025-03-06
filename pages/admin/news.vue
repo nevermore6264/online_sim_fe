@@ -7,6 +7,7 @@
       :rows="10"
       class="custom-datatable"
     >
+      <Column field="_id" header="ID" style="width: 10%"></Column>
       <Column
         :header="$t('newsManagement.newsTitle')"
         field="title"
@@ -26,12 +27,12 @@
           <Button
             class="custom-button"
             icon="pi pi-pencil"
-            @click="editNews(slotProps.data)"
+            @click="editNews(slotProps.data._id)"
           />
           <Button
             class="custom-button"
             icon="pi pi-trash"
-            @click="deleteNews(slotProps.data)"
+            @click="deleteNews(slotProps.data._id)"
           />
         </template>
       </Column>
@@ -191,11 +192,31 @@ const openAddDialog = () => {
 };
 
 // Mở dialog để chỉnh sửa tin tức
-const editNews = (newsItem) => {
-  currentNews.value = { ...newsItem, imagePreview: newsItem.thumbnail };
-  isEditMode.value = true;
-  dialogHeader.value = t("newsManagement.editNews");
-  displayDialog.value = true;
+const editNews = async (id) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    console.error("Token is not found in localStorage");
+    return;
+  }
+
+  // Lấy thông tin chi tiết của bản ghi dựa trên id
+  const response = await NewsService.Get(id, token);
+  if (response && response.data) {
+    currentNews.value = {
+      id: response.data.id,
+      title: response.data.title,
+      slug: response.data.slug,
+      content: response.data.content,
+      thumbnail: response.data.thumbnail,
+      imagePreview: response.data.thumbnail, // Hiển thị ảnh preview nếu có
+    };
+    isEditMode.value = true;
+    dialogHeader.value = t("newsManagement.editNews");
+    displayDialog.value = true;
+  } else {
+    console.error("Failed to fetch news details");
+  }
 };
 
 // Đóng dialog
@@ -222,9 +243,9 @@ const saveNews = async () => {
 
   if (!token) {
     console.error("Token is not found in localStorage");
-    loading.value = false;
     return;
   }
+
   const formData = new FormData();
   formData.append("slug", currentNews.value.slug);
   formData.append("title", currentNews.value.title);
@@ -232,22 +253,50 @@ const saveNews = async () => {
   if (currentNews.value.thumbnail) {
     formData.append("thumbnail", currentNews.value.thumbnail);
   }
-  if (isEditMode.value) {
-    // Cập nhật tin tức
-    await NewsService.Update(currentNews.value.id, formData, token);
+
+  if (isEditMode.value && currentNews.value.id) {
+    // Cập nhật tin tức nếu có id
+    const response = await NewsService.Update(
+      currentNews.value.id,
+      formData,
+      token
+    );
+    if (response && response.success) {
+      push.success(t("newsManagement.updateSuccess"));
+    } else {
+      push.error(t("newsManagement.updateFailed"));
+    }
   } else {
-    // Thêm tin tức mới
-    await NewsService.Add(formData, token);
+    // Thêm tin tức mới nếu không có id
+    const response = await NewsService.Add(formData, token);
+    if (response && response.success) {
+      push.success(t("newsManagement.addSuccess"));
+    } else {
+      push.error(t("newsManagement.addFailed"));
+    }
   }
+
   await fetchNews(); // Lấy lại danh sách tin tức sau khi thêm/cập nhật
   closeDialog();
 };
 
 // Xóa tin tức
-const deleteNews = async (newsItem) => {
+const deleteNews = async (id) => {
   if (confirm(t("newsManagement.confirmDelete"))) {
-    await NewsService.Delete(newsItem.id, token);
-    await fetchNews(); // Lấy lại danh sách tin tức sau khi xóa
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("Token is not found in localStorage");
+      return;
+    }
+
+    const response = await NewsService.Delete(id, token);
+    if (response && response.success) {
+      await fetchNews(); // Lấy lại danh sách tin tức sau khi xóa
+      push.success(t("newsManagement.deleteSuccess"));
+    } else {
+      push.error(t("newsManagement.deleteFailed"));
+    }
   }
 };
 </script>

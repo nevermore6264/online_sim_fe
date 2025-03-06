@@ -20,6 +20,16 @@ export default {
     return response.data;
   },
 
+  // Get tin tức
+  async Get(id, token) {
+    const response = await api.get(`/api/manage-service/posts/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
+
   // Cập nhật tin tức
   async Update(id, newsData, token) {
     const response = await api.put(
