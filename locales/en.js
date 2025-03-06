@@ -76,6 +76,7 @@ export default {
     numbers_to_call: "Numbers to Call",
     numbers_to_sms: "Numbers to send SMS",
     purchased_numbers: "Purchased Numbers",
+    called_numbers: "Called Numbers",
     not_called: "Not Called",
     called: "Called",
     call: "Call",

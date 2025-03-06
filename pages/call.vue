@@ -159,6 +159,38 @@
             </Column>
           </DataTable>
         </div>
+        <!-- Bảng danh sách số đã mua -->
+        <div class="table-section">
+          <h3>{{ $t("landing.called_numbers") }}</h3>
+          <DataTable
+            :value="purchasedNumbers"
+            scrollable
+            scrollHeight="200px"
+            :loading="purchasedNumbersLoading"
+            ref="purchasedNumbersTable"
+          >
+            <Column field="number" header="Số điện thoại"></Column>
+            <!-- <Column field="extendedData" header="Thông tin mở rộng"></Column> -->
+            <Column header="Hành động">
+              <template #body="{ data }">
+                <Button
+                  v-if="callStatus[data.id]?.isCalling"
+                  icon="pi pi-phone"
+                  class="p-button-sm w-100"
+                  :label="`Calling... (${callStatus[data.id].remainingTime}s)`"
+                  disabled
+                />
+                <Button
+                  v-else
+                  icon="pi pi-phone"
+                  class="p-button-sm w-100"
+                  :label="$t('landing.call')"
+                  @click="callNumber(data.id)"
+                />
+              </template>
+            </Column>
+          </DataTable>
+        </div>
       </div>
     </div>
   </div>
