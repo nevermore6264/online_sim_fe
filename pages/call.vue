@@ -553,6 +553,10 @@ watchEffect(() => {
   gap: 20px;
 }
 
+.right-section .table-section {
+  height: 300px;
+}
+
 .package-section {
   background-color: #fff;
   border-radius: 8px;
