@@ -28,7 +28,7 @@
           :class="{ 'active-menu': activeMenu === 'call' }"
           @click="handleCall"
         />
-        
+
         <Button
           class="p-button-text"
           :class="{ 'active-menu': activeMenu === 'proxy' }"
@@ -233,7 +233,10 @@ onMounted(async () => {
   updateScreenSize();
   const token = localStorage.getItem("token");
   if (token) {
-    if (token == "admin-token") {
+    if (
+      token ==
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjkzMjMyMDYwNSwiaWF0IjoxNzQxMDgzMjk4fQ.HUF0TnWfCjv2L_xoeE3rBC0ucG6pmu-qlK03wLfuw4w"
+    ) {
       userInfo.data = {
         id: "9999",
         firstName: "Admin",

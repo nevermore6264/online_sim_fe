@@ -22,11 +22,15 @@ export default {
 
   // Cập nhật tin tức
   async Update(id, newsData, token) {
-    const response = await api.put(`/api/manage-service/posts/${id}`, newsData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await api.put(
+      `/api/manage-service/posts/${id}`,
+      newsData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   },
 

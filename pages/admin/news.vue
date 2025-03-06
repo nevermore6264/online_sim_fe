@@ -124,7 +124,15 @@ onMounted(async () => {
 
 // Lấy danh sách tin tức từ API
 const fetchNews = async () => {
-  const response = await NewsService.News();
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    console.error("Token is not found in localStorage");
+    loading.value = false;
+    return;
+  }
+
+  const response = await NewsService.News(token);
   news.value = response?.data;
 };
 

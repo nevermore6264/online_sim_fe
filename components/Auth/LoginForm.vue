@@ -72,7 +72,10 @@ const handleLogin = async () => {
     loginData.value.username === "admin" &&
     loginData.value.password === "admin"
   ) {
-    localStorage.setItem("token", "admin-token");
+    localStorage.setItem(
+      "token",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjkzMjMyMDYwNSwiaWF0IjoxNzQxMDgzMjk4fQ.HUF0TnWfCjv2L_xoeE3rBC0ucG6pmu-qlK03wLfuw4w"
+    );
     push.success("Admin login successful!");
     window.location.href = "/admin/news";
     return;
