@@ -111,7 +111,7 @@ const currentNews = ref({
   id: null,
   title: "",
   content: "",
-  image: null,
+  thumbnail: null,
   imagePreview: "",
 });
 const isEditMode = ref(false);
@@ -142,7 +142,7 @@ const openAddDialog = () => {
     id: null,
     title: "",
     content: "",
-    image: null,
+    thumbnail: null,
     imagePreview: "",
   };
   isEditMode.value = false;
@@ -152,7 +152,7 @@ const openAddDialog = () => {
 
 // Mở dialog để chỉnh sửa tin tức
 const editNews = (newsItem) => {
-  currentNews.value = { ...newsItem, imagePreview: newsItem.image };
+  currentNews.value = { ...newsItem, imagePreview: newsItem.thumbnail };
   isEditMode.value = true;
   dialogHeader.value = t("newsManagement.editNews");
   displayDialog.value = true;
@@ -170,7 +170,7 @@ const handleImageUpload = (event) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       currentNews.value.imagePreview = e.target.result;
-      currentNews.value.image = file;
+      currentNews.value.thumbnail = file;
     };
     reader.readAsDataURL(file);
   }
@@ -178,11 +178,19 @@ const handleImageUpload = (event) => {
 
 // Lưu tin tức (thêm hoặc cập nhật)
 const saveNews = async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    console.error("Token is not found in localStorage");
+    loading.value = false;
+    return;
+  }
   const formData = new FormData();
+  formData.append("slug", currentNews.value.slug);
   formData.append("title", currentNews.value.title);
   formData.append("content", currentNews.value.content);
-  if (currentNews.value.image) {
-    formData.append("image", currentNews.value.image);
+  if (currentNews.value.thumbnail) {
+    formData.append("thumbnail", currentNews.value.thumbnail);
   }
   if (isEditMode.value) {
     // Cập nhật tin tức
