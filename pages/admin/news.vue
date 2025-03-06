@@ -1,46 +1,11 @@
 <template>
   <div class="news-management">
     <h1>{{ $t("newsManagement.title") }}</h1>
-    <DataTable
-      :value="news"
-      :paginator="true"
-      :rows="10"
-      class="custom-datatable"
-    >
-      <Column field="_id" header="ID" style="width: 10%"></Column>
-      <Column
-        :header="$t('newsManagement.newsTitle')"
-        field="title"
-        style="width: 20%"
-      ></Column>
-      <Column
-        :header="$t('newsManagement.newsSlug')"
-        field="slug"
-        style="width: 20%"
-      ></Column>
-      <Column
-        :header="$t('newsManagement.newsContent')"
-        field="content"
-      ></Column>
-      <Column :header="$t('newsManagement.actions')" style="width: 15%">
-        <template #body="slotProps">
-          <Button
-            class="custom-button"
-            icon="pi pi-pencil"
-            @click="editNews(slotProps.data._id)"
-          />
-          <Button
-            class="custom-button"
-            icon="pi pi-trash"
-            @click="deleteNews(slotProps.data._id)"
-          />
-        </template>
-      </Column>
-    </DataTable>
     <Button
       class="custom-button"
       :label="$t('newsManagement.addNews')"
       @click="openAddDialog"
+      style="margin-bottom: 20px"
     />
     <Dialog
       v-model:visible="displayDialog"
@@ -113,6 +78,43 @@
         />
       </template>
     </Dialog>
+
+    <DataTable
+      :value="news"
+      :paginator="true"
+      :rows="10"
+      class="custom-datatable"
+    >
+      <Column field="_id" header="ID" style="width: 10%"></Column>
+      <Column
+        :header="$t('newsManagement.newsTitle')"
+        field="title"
+        style="width: 20%"
+      ></Column>
+      <Column
+        :header="$t('newsManagement.newsSlug')"
+        field="slug"
+        style="width: 20%"
+      ></Column>
+      <Column
+        :header="$t('newsManagement.newsContent')"
+        field="content"
+      ></Column>
+      <Column :header="$t('newsManagement.actions')" style="width: 15%">
+        <template #body="slotProps">
+          <Button
+            class="custom-button"
+            icon="pi pi-pencil"
+            @click="editNews(slotProps.data._id)"
+          />
+          <Button
+            class="custom-button"
+            icon="pi pi-trash"
+            @click="deleteNews(slotProps.data._id)"
+          />
+        </template>
+      </Column>
+    </DataTable>
   </div>
 </template>
 
