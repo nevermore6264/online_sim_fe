@@ -325,7 +325,10 @@ const buyPackage = async () => {
       duration: seconds,
     };
 
-    const response = await orderService.BuyCall(token, toRaw(data));
+    // Ensure data is a plain object without reactive properties
+    const plainData = JSON.parse(JSON.stringify(data));
+
+    const response = await orderService.BuyCall(token, plainData);
     if (response.success) {
       successCount++;
     } else {
@@ -366,11 +369,13 @@ const callNumber = async (id) => {
   }
 
   const data = {
-    phone: userInputNumber,
+    phone: userInputNumber.value,
   };
+  const plainData = JSON.parse(JSON.stringify(data));
+
   const responseOfSetCallee = await orderService.SetCallee(
     token,
-    toRaw(data),
+    plainData,
     id
   );
   if (responseOfSetCallee) {
