@@ -360,25 +360,31 @@ const startCountdown = (id, duration) => {
 
 const callNumber = async (id) => {
   const token = localStorage.getItem("token");
-  try {
-    if (!userInputNumber.value) {
-      push.warning(t("landing.please_enter_number"));
-      return;
-    }
+  if (!userInputNumber.value) {
+    push.warning(t("landing.please_enter_number"));
+    return;
+  }
+
+  const data = {
+    phone: userInputNumber,
+  };
+  const responseOfSetCallee = await orderService.SetCallee(token, data, id);
+  if (responseOfSetCallee) {
     const response = await orderService.CreateCall(token, id);
+    try {
+      if (response.data.status === "SUCCESS") {
+        const number = response.data.number; // Giả sử API trả về số điện thoại
+        const duration = response.data.extendedData.duration; // Giả sử API trả về duration trong extendedData
 
-    if (response.data.status === "SUCCESS") {
-      const number = response.data.number; // Giả sử API trả về số điện thoại
-      const duration = response.data.extendedData.duration; // Giả sử API trả về duration trong extendedData
-
-      push.success(`Gọi số ${number} thành công!`);
-      startCountdown(id, duration); // Bắt đầu đếm ngược
-    } else {
-      push.error(`Gọi số ${number} thất bại!`);
+        push.success(`Gọi số ${number} thành công!`);
+        startCountdown(id, duration); // Bắt đầu đếm ngược
+      } else {
+        push.error(`Gọi số ${number} thất bại!`);
+      }
+    } catch (error) {
+      console.error("Error calling number:", error);
+      push.warning(`Gọi số ${number} thất bại!`);
     }
-  } catch (error) {
-    console.error("Error calling number:", error);
-    push.warning(`Gọi số ${number} thất bại!`);
   }
 };
 

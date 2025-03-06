@@ -46,4 +46,13 @@ export default {
     });
     return response.data;
   },
+
+  async SetCallee(token, data, id) {
+    const response = await api.post(`/api/sim-service/set-callee/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
 };
