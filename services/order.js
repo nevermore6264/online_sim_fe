@@ -39,7 +39,7 @@ export default {
   },
 
   async CreateCall(token, id) {
-    const response = await api.get(`/api/sim-service/create-call/${id}`, {
+    const response = await api.post(`/api/sim-service/create-call/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
