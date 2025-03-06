@@ -267,7 +267,7 @@ const selectPackage = (pkg) => {
 
 const buyPackage = async () => {
   if (!selectedPackage.value) {
-    alert(t("landing.please_select_package"));
+    push.warning(t("landing.please_select_package"));
     return;
   }
 
@@ -276,7 +276,7 @@ const buyPackage = async () => {
   );
 
   if (!selectedPkg) {
-    alert(t("landing.invalid_package"));
+    push.warning(t("landing.invalid_package"));
     return;
   }
 
@@ -310,9 +310,6 @@ const buyPackage = async () => {
     });
     push.success(msg);
   }
-
-  // Reset input
-  userInputNumber.value = null;
 };
 
 const startCountdown = (id, duration) => {
@@ -331,6 +328,10 @@ const startCountdown = (id, duration) => {
 const callNumber = async (id) => {
   const token = localStorage.getItem("token");
   try {
+    if (!userInputNumber.value) {
+      push.warning(t("landing.please_enter_number"));
+      return;
+    }
     const response = await orderService.CreateCall(token, id);
 
     if (response.data.status === "SUCCESS") {
@@ -344,7 +345,7 @@ const callNumber = async (id) => {
     }
   } catch (error) {
     console.error("Error calling number:", error);
-    alert(`Gọi số ${number} thất bại!`);
+    push.warning(`Gọi số ${number} thất bại!`);
   }
 };
 
