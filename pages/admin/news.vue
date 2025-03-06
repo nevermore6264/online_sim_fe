@@ -7,12 +7,21 @@
       :rows="10"
       class="custom-datatable"
     >
-      <Column :header="$t('newsManagement.newsTitle')" field="title "></Column>
+      <Column
+        :header="$t('newsManagement.newsTitle')"
+        field="title"
+        style="width: 20%"
+      ></Column>
+      <Column
+        :header="$t('newsManagement.newsSlug')"
+        field="slug"
+        style="width: 20%"
+      ></Column>
       <Column
         :header="$t('newsManagement.newsContent')"
         field="content"
       ></Column>
-      <Column :header="$t('newsManagement.actions')">
+      <Column :header="$t('newsManagement.actions')" style="width: 15%">
         <template #body="slotProps">
           <Button
             class="custom-button"
@@ -48,6 +57,15 @@
           />
         </div>
         <div class="p-field">
+          <label for="slug">{{ $t("newsManagement.newsSlug") }}</label>
+          <InputText
+            id="slug"
+            v-model="currentNews.slug"
+            class="custom-input"
+            :disabled="isEditMode"
+          />
+        </div>
+        <div class="p-field">
           <label for="image">{{ $t("newsManagement.newsImage") }}</label>
           <input
             type="file"
@@ -66,7 +84,7 @@
           <label for="content">{{ $t("newsManagement.newsContent") }}</label>
           <!-- Thay thế QuillEditor bằng TinyMCE -->
           <Editor
-            v-model="currentNews.text"
+            v-model="currentNews.content"
             api-key="ralnw41ykjyj9duuyicqbgsidqiiycmaofumkp19xrbty8hi"
             :init="{
               height: 300,
@@ -98,24 +116,45 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import NewsService from "@/services/new";
 import { useI18n } from "vue-i18n";
 import Editor from "@tinymce/tinymce-vue"; // Import TinyMCE Editor
 
 const { t } = useI18n();
 
+const slugify = (text) => {
+  return text
+    .toString() // Ensure it's a string
+    .toLowerCase() // Convert to lowercase
+    .trim() // Remove leading and trailing whitespace
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/[^\w\-]+/g, "") // Remove all non-word characters (e.g., special symbols)
+    .replace(/\-\-+/g, "-"); // Replace multiple hyphens with a single hyphen
+};
+
 const news = ref([]);
 const displayDialog = ref(false);
 const currentNews = ref({
   id: null,
   title: "",
+  slug: "",
   content: "",
   thumbnail: null,
   imagePreview: "",
 });
 const isEditMode = ref(false);
 const dialogHeader = ref(t("newsManagement.addNews"));
+
+// Watch for changes in the title and generate the slug
+watch(
+  () => currentNews.value.title,
+  (newTitle) => {
+    if (newTitle && !isEditMode.value) {
+      currentNews.value.slug = slugify(newTitle);
+    }
+  }
+);
 
 // Lấy danh sách tin tức khi component được tạo
 onMounted(async () => {
@@ -141,6 +180,7 @@ const openAddDialog = () => {
   currentNews.value = {
     id: null,
     title: "",
+    slug: "",
     content: "",
     thumbnail: null,
     imagePreview: "",

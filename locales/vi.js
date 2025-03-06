@@ -293,5 +293,6 @@ export default {
     cancel: "Hủy",
     save: "Lưu",
     newsImage: "Ảnh bìa",
+    newsSlug: "Đường dẫn",
   },
 };

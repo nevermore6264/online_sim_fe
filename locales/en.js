@@ -296,5 +296,6 @@ export default {
     cancel: "Cancel",
     save: "Save",
     newsImage: "Image",
+    newsSlug: "Slug",
   },
 };
