@@ -11,7 +11,7 @@
         <DataTable
           :value="filteredCountries"
           scrollable
-          scrollHeight="400px"
+          scrollHeight="500px"
           dataKey="code"
           :loading="loading"
         >
