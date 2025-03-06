@@ -144,14 +144,14 @@
                 <Button
                   v-if="callStatus[data.id]?.isCalling"
                   icon="pi pi-phone"
-                  class="p-button-sm"
+                  class="p-button-sm w-100"
                   :label="`Calling... (${callStatus[data.id].remainingTime}s)`"
                   disabled
                 />
                 <Button
                   v-else
                   icon="pi pi-phone"
-                  class="p-button-sm"
+                  class="p-button-sm w-100"
                   :label="$t('landing.call')"
                   @click="callNumber(data.id)"
                 />
@@ -613,6 +613,10 @@ watchEffect(() => {
 
 .country-item:hover {
   background-color: rgb(201, 200, 200);
+}
+
+.w-100 {
+  width: 100%;
 }
 
 .flag-image {
