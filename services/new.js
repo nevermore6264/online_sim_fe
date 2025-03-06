@@ -10,6 +10,11 @@ export default {
     return response.data;
   },
 
+  async NewsForUser() {
+    const response = await api.get(`/api/posts`, {});
+    return response.data;
+  },
+
   // Thêm tin tức mới
   async Add(newsData, token) {
     const response = await api.post(`/api/manage-service/posts`, newsData, {

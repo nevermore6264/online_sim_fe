@@ -70,7 +70,7 @@ export default {
   methods: {
     async fetchNews() {
       try {
-        const data = await NewsService.News();
+        const data = await NewsService.NewsForUser();
         this.products = data?.data;
       } catch (error) {
         console.error("Error fetching news:", error);
