@@ -110,10 +110,6 @@
             {{ $t("landing.buy_package") }}
           </Button>
         </div>
-      </div>
-
-      <!-- Bên phải: 2 bảng -->
-      <div class="right-section">
         <!-- Bảng số muốn gọi đến -->
         <div class="table-section">
           <h3>{{ $t("landing.numbers_to_call") }}</h3>
@@ -122,11 +118,14 @@
             :placeholder="$t('landing.enter_phone_number')"
             class="phone-input"
           />
-          <div v-if="userInputNumber" class="selected-number">
+          <div class="selected-number">
             {{ $t("landing.selected_number") }}: {{ userInputNumber }}
           </div>
         </div>
+      </div>
 
+      <!-- Bên phải: 2 bảng -->
+      <div class="right-section">
         <!-- Bảng danh sách số đã mua -->
         <div class="table-section">
           <h3>{{ $t("landing.purchased_numbers") }}</h3>
@@ -144,14 +143,14 @@
                 <Button
                   v-if="callStatus[data.id]?.isCalling"
                   icon="pi pi-phone"
-                  class="p-button-sm w-100"
+                  class="p-button-sm btn-call"
                   :label="`Calling... (${callStatus[data.id].remainingTime}s)`"
                   disabled
                 />
                 <Button
                   v-else
                   icon="pi pi-phone"
-                  class="p-button-sm w-100"
+                  class="p-button-sm btn-call"
                   :label="$t('landing.call')"
                   @click="callNumber(data.id)"
                 />
@@ -159,33 +158,25 @@
             </Column>
           </DataTable>
         </div>
-        <!-- Bảng danh sách số đã mua -->
+        <!-- Bảng danh sách số đã gọi -->
         <div class="table-section">
           <h3>{{ $t("landing.called_numbers") }}</h3>
           <DataTable
-            :value="purchasedNumbers"
+            :value="purchasedNumbersSuccess"
             scrollable
             scrollHeight="200px"
-            :loading="purchasedNumbersLoading"
-            ref="purchasedNumbersTable"
+            :loading="purchasedNumbersLoadingSuccess"
+            ref="purchasedNumbersTableSuccess"
           >
             <Column field="number" header="Số điện thoại"></Column>
             <!-- <Column field="extendedData" header="Thông tin mở rộng"></Column> -->
             <Column header="Hành động">
-              <template #body="{ data }">
+              <template #body="{}">
                 <Button
-                  v-if="callStatus[data.id]?.isCalling"
                   icon="pi pi-phone"
-                  class="p-button-sm w-100"
-                  :label="`Calling... (${callStatus[data.id].remainingTime}s)`"
+                  class="p-button-sm btn-call"
+                  label="Called"
                   disabled
-                />
-                <Button
-                  v-else
-                  icon="pi pi-phone"
-                  class="p-button-sm w-100"
-                  :label="$t('landing.call')"
-                  @click="callNumber(data.id)"
                 />
               </template>
             </Column>
@@ -212,12 +203,22 @@ const selectedNetwork = ref("any"); // Mặc định chọn Any
 const selectedPackage = ref(null); // Gói dịch vụ được chọn
 const quantity = ref(1); // Số lượng mặc định
 const userInputNumber = ref(null); // Số điện thoại người dùng nhập
+// Dành cho Pending
 const purchasedNumbers = ref([]); // Danh sách số đã mua
 const purchasedNumbersLoading = ref(false); // Trạng thái loading cho purchasedNumbers
 const currentPage = ref(1);
 const totalPages = ref(1);
 const hasNextPage = ref(false);
 const purchasedNumbersTable = ref(null); // Ref để truy cập DataTable
+
+// Dành cho Success
+const purchasedNumbersSuccess = ref([]); // Danh sách số đã mua
+const purchasedNumbersLoadingSuccess = ref(false); // Trạng thái loading cho purchasedNumbers
+const currentPageSuccess = ref(1);
+const totalPagesSuccess = ref(1);
+const hasNextPageSuccess = ref(false);
+const purchasedNumbersTableSuccess = ref(null); // Ref để truy cập DataTable
+
 const callStatus = ref({}); // Lưu trữ trạng thái của các cuộc gọi
 const countdownTimers = ref({}); // Lưu trữ các bộ đếm ngược
 
@@ -389,6 +390,7 @@ const fetchPurchasedNumbers = async (page = 1) => {
       page: page,
       limit: 10,
       type: "buy.call.service",
+      statusCode: "PENDING",
     });
     if (page === 1) {
       purchasedNumbers.value = response.data.docs.map((order) => ({
@@ -416,6 +418,42 @@ const fetchPurchasedNumbers = async (page = 1) => {
   }
 };
 
+const fetchPurchasedNumbersSuccess = async (page = 1) => {
+  purchasedNumbersLoading.value = true;
+  const token = localStorage.getItem("token");
+  try {
+    const response = await orderService.OrderList(token, {
+      page: page,
+      limit: 10,
+      type: "buy.call.service",
+      statusCode: "SUCCESS",
+    });
+    if (page === 1) {
+      purchasedNumbers.value = response.data.docs.map((order) => ({
+        id: order?.id,
+        number: order?.stock?.phone,
+        extendedData: order.extendedData,
+      }));
+    } else {
+      purchasedNumbersSuccess.value = [
+        ...purchasedNumbers.value,
+        ...response.data.docs.map((order) => ({
+          id: order?.id,
+          number: order?.stock?.phone,
+          extendedData: order.extendedData,
+        })),
+      ];
+    }
+    currentPageSuccess.value = response.data.page;
+    totalPagesSuccess.value = response.data.totalPages;
+    hasNextPageSuccess.value = response.data.hasNextPage;
+  } catch (error) {
+    console.error("Failed to fetch purchased numbers:", error);
+  } finally {
+    purchasedNumbersLoading.value = false;
+  }
+};
+
 const onScroll = (event) => {
   const { scrollTop, scrollHeight, clientHeight } = event.target;
   if (scrollHeight - (scrollTop + clientHeight) < 50 && hasNextPage.value) {
@@ -427,6 +465,7 @@ onMounted(async () => {
   await initializeData();
   await loadJapanServices(); // Load dịch vụ của Japan khi component được mount
   await fetchPurchasedNumbers(); // Load danh sách số đã mua
+  await fetchPurchasedNumbersSuccess();
 
   // Lấy các gói dịch vụ từ API
   try {
@@ -435,9 +474,9 @@ onMounted(async () => {
       label: t("landing.package1", {
         second: duration.seconds,
         price: duration.price,
-      }), // Giả sử API trả về trường `name`
-      value: duration.seconds, // Giả sử API trả về trường `id`
-      price: duration.price, // Giả sử API trả về trường `price`
+      }),
+      value: duration.seconds,
+      price: duration.price,
     }));
   } catch (error) {
     console.error("Failed to fetch durations:", error);
@@ -452,6 +491,15 @@ onUnmounted(() => {
 watchEffect(() => {
   if (purchasedNumbersTable.value) {
     const tableWrapper = purchasedNumbersTable.value.$el.querySelector(
+      ".p-datatable-wrapper"
+    );
+    if (tableWrapper) {
+      tableWrapper.addEventListener("scroll", onScroll);
+    }
+  }
+
+  if (purchasedNumbersTableSuccess.value) {
+    const tableWrapper = purchasedNumbersTableSuccess.value.$el.querySelector(
       ".p-datatable-wrapper"
     );
     if (tableWrapper) {
@@ -647,8 +695,10 @@ watchEffect(() => {
   background-color: rgb(201, 200, 200);
 }
 
-.w-100 {
-  width: 100%;
+.btn-call {
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .flag-image {
