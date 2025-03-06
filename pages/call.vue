@@ -368,7 +368,11 @@ const callNumber = async (id) => {
   const data = {
     phone: userInputNumber,
   };
-  const responseOfSetCallee = await orderService.SetCallee(token, data, id);
+  const responseOfSetCallee = await orderService.SetCallee(
+    token,
+    toRaw(data),
+    id
+  );
   if (responseOfSetCallee) {
     const response = await orderService.CreateCall(token, id);
     try {
