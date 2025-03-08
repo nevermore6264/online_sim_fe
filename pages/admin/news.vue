@@ -216,6 +216,14 @@
           {{ formatDate(slotProps.data.updatedAt) }}
         </template>
       </Column>
+      <Column :header="$t('newsManagement.isPublished')" style="width: 15%">
+        <template #body="slotProps">
+          <InputSwitch
+            v-model="slotProps.data.isPublished"
+            @change="updatePublishedStatus(slotProps.data)"
+          />
+        </template>
+      </Column>
       <Column :header="$t('newsManagement.actions')" style="width: 15%">
         <template #body="slotProps">
           <Button
@@ -452,6 +460,27 @@ const deleteNews = async (id) => {
     } else {
       console.error("Failed to delete news");
     }
+  }
+};
+
+const updatePublishedStatus = async (newsItem) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    console.error("Token is not found in localStorage");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("isPublished", newsItem.isPublished);
+
+  const response = await NewsService.Update(newsItem.id, formData, token);
+  if (response && response.success) {
+    push.success(t("newsManagement.updateSuccess"));
+  } else {
+    push.error(t("newsManagement.updateFailed"));
+    // Revert the change if the API call fails
+    newsItem.isPublished = !newsItem.isPublished;
   }
 };
 </script>

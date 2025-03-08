@@ -20,6 +20,7 @@ import TabMenu from "primevue/tabmenu";
 import Slider from "primevue/slider";
 import Paginator from "primevue/paginator";
 import Carousel from "primevue/carousel";
+import InputSwitch from "primevue/inputswitch";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -43,4 +44,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("Slider", Slider);
   nuxtApp.vueApp.component("Paginator", Paginator);
   nuxtApp.vueApp.component("Carousel", Carousel);
+  nuxtApp.vueApp.component("InputSwitch", InputSwitch);
 });
