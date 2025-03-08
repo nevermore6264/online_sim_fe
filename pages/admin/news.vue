@@ -240,6 +240,7 @@ import NewsService from "@/services/new";
 import { useI18n } from "vue-i18n";
 import Editor from "@tinymce/tinymce-vue";
 import { format } from "date-fns";
+import { push } from "notivue";
 
 const { t } = useI18n();
 
@@ -355,7 +356,7 @@ const editNews = async (id) => {
   const response = await NewsService.Get(id, token);
   if (response && response.data) {
     currentNews.value = {
-      id: response.data.id,
+      id: response.data._id,
       title: response.data.title,
       slug: response.data.slug,
       content: response.data.content,
