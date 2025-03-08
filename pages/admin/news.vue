@@ -2,7 +2,6 @@
   <div class="news-management">
     <h1>{{ $t("newsManagement.title") }}</h1>
     <Button
-      class="custom-button"
       :label="$t('newsManagement.addNews')"
       @click="openAddDialog"
       style="margin-bottom: 20px"
@@ -75,15 +74,17 @@
       </div>
       <template #footer>
         <Button
-          class="custom-button"
+          class="custom-button-f"
           :label="$t('newsManagement.cancel')"
           icon="pi pi-times"
+          severity="danger"
           @click="closeAddDialog"
         />
         <Button
-          class="custom-button"
+          class="custom-button-f"
           :label="$t('newsManagement.save')"
           icon="pi pi-check"
+          severity="success"
           @click="saveNews"
         />
       </template>
@@ -157,15 +158,17 @@
       </div>
       <template #footer>
         <Button
-          class="custom-button"
+          class="custom-button-f"
           :label="$t('newsManagement.cancel')"
           icon="pi pi-times"
+          severity="danger"
           @click="closeEditDialog"
         />
         <Button
-          class="custom-button"
+          class="custom-button-f"
           :label="$t('newsManagement.save')"
           icon="pi pi-check"
+          severity="success"
           @click="saveNews"
         />
       </template>
@@ -224,16 +227,22 @@
           />
         </template>
       </Column>
-      <Column :header="$t('newsManagement.actions')" style="width: 15%">
+      <Column :header="$t('newsManagement.actions')">
         <template #body="slotProps">
           <Button
             class="custom-button"
             icon="pi pi-pencil"
+            severity="warning"
+            text
+            rounded
             @click="editNews(slotProps.data.id)"
           />
           <Button
             class="custom-button"
             icon="pi pi-trash"
+            severity="danger"
+            text
+            rounded
             @click="deleteNews(slotProps.data.id)"
           />
         </template>
@@ -495,7 +504,11 @@ const updatePublishedStatus = async (newsItem) => {
 }
 
 .custom-button {
-  margin-right: 0.5rem;
+  width: 30px;
+}
+
+.custom-button-f {
+  margin-right: 10px;
 }
 
 .custom-dialog .p-dialog-content {

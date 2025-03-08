@@ -297,7 +297,7 @@ export default {
     save: "Save",
     newsImage: "Thumbnail",
     newsSlug: "Slug",
-    isPublished: "IsPublished",
+    isPublished: "Is Published",
     updatedAt: "Updated At",
     createdAt: "Created At",
     updateSuccess: "Update successfully",
