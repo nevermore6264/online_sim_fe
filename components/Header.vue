@@ -49,6 +49,12 @@
           :class="{ 'active-menu': activeMenu === 'api' }"
           @click="handleAPI"
         />
+        <Button
+          :label="$t('landing.headerHelp')"
+          class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'help' }"
+          @click="handleHelp"
+        />
       </div>
     </template>
 
@@ -117,6 +123,12 @@
                 :class="{ 'active-menu': activeMenu === 'api' }"
               >
                 {{ $t("landing.headerAPI") }}
+              </li>
+              <li
+                @click="handleHelp"
+                :class="{ 'active-menu': activeMenu === 'help' }"
+              >
+                {{ $t("landing.headerHelp") }}
               </li>
               <li @click="handleLogout">{{ $t("landing.logout") }}</li>
             </ul>
@@ -208,6 +220,11 @@ const handleAPI = () => {
 const handleCall = () => {
   activeMenu.value = "call";
   router.push("/call");
+};
+
+const handleHelp = () => {
+  activeMenu.value = "help";
+  router.push("/help");
 };
 
 const fetchUserInfo = async (token) => {

@@ -16,6 +16,7 @@ export default {
     headerNews: "News",
     headerAPI: "API",
     headerCall: "Calling",
+    headerHelp: "Help",
     login: "Login",
     signup: "Sign Up",
     logout: "Logout",
