@@ -295,5 +295,7 @@ export default {
     newsImage: "Ảnh bìa",
     newsSlug: "Đường dẫn",
     isPublished: "Có hiện hay không?",
+    updatedAt: "Ngày cập nhật",
+    createdAt: "Ngày tạo",
   },
 };

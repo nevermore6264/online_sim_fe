@@ -295,8 +295,10 @@ export default {
     actions: "Actions",
     cancel: "Cancel",
     save: "Save",
-    newsImage: "Image",
+    newsImage: "Thumbnail",
     newsSlug: "Slug",
     isPublished: "IsPublished",
+    updatedAt: "Updated At",
+    createdAt: "Created At",
   },
 };

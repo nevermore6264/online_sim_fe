@@ -178,7 +178,7 @@
       :rows="10"
       class="custom-datatable"
     >
-      <Column field="_id" header="ID" style="width: 10%"></Column>
+      <Column field="id" header="ID" style="width: 10%"></Column>
       <Column
         :header="$t('newsManagement.newsTitle')"
         field="title"
@@ -189,21 +189,41 @@
         field="slug"
         style="width: 20%"
       ></Column>
-      <Column
-        :header="$t('newsManagement.newsContent')"
-        field="content"
-      ></Column>
+      <Column :header="$t('newsManagement.newsContent')" style="width: 25%">
+        <template #body="slotProps">
+          <span :title="slotProps.data.content">
+            {{ truncateText(slotProps.data.content, 100) }}
+          </span>
+        </template>
+      </Column>
+      <Column :header="$t('newsManagement.newsImage')" style="width: 25%">
+        <template #body="slotProps">
+          <span :title="slotProps.data.content">
+            {{ truncateText(slotProps.data?.thumbnail, 100) }}
+          </span>
+        </template>
+      </Column>
+      <Column :header="$t('newsManagement.createdAt')">
+        <template #body="slotProps">
+          {{ formatDate(slotProps.data.createdAt) }}
+        </template>
+      </Column>
+      <Column :header="$t('newsManagement.updatedAt')">
+        <template #body="slotProps">
+          {{ formatDate(slotProps.data.updatedAt) }}
+        </template>
+      </Column>
       <Column :header="$t('newsManagement.actions')" style="width: 15%">
         <template #body="slotProps">
           <Button
             class="custom-button"
             icon="pi pi-pencil"
-            @click="editNews(slotProps.data._id)"
+            @click="editNews(slotProps.data.id)"
           />
           <Button
             class="custom-button"
             icon="pi pi-trash"
-            @click="deleteNews(slotProps.data._id)"
+            @click="deleteNews(slotProps.data.id)"
           />
         </template>
       </Column>
@@ -216,6 +236,7 @@ import { ref, onMounted, watch } from "vue";
 import NewsService from "@/services/new";
 import { useI18n } from "vue-i18n";
 import Editor from "@tinymce/tinymce-vue";
+import { format } from "date-fns";
 
 const { t } = useI18n();
 
@@ -227,6 +248,18 @@ const slugify = (text) => {
     .replace(/\s+/g, "-")
     .replace(/[^\w\-]+/g, "")
     .replace(/\-\-+/g, "-");
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) {
+    return "-";
+  }
+  return format(new Date(dateString), "dd/MM/yyyy HH:mm");
+};
+
+const truncateText = (text, maxLength = 100) => {
+  if (!text) return "";
+  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 };
 
 const news = ref([]);
