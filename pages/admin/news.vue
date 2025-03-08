@@ -175,7 +175,10 @@
     <DataTable
       :value="news"
       :paginator="true"
-      :rows="10"
+      :rows="pagination.limit"
+      :totalRecords="pagination.totalDocs"
+      :first="pagination.first"
+      @page="onPageChange"
       class="custom-datatable"
     >
       <Column field="id" header="ID" style="width: 10%"></Column>
@@ -250,6 +253,14 @@ const slugify = (text) => {
     .replace(/\-\-+/g, "-");
 };
 
+const pagination = ref({
+  page: 1, // Trang hiện tại
+  limit: 10, // Số bản ghi mỗi trang
+  totalDocs: 0, // Tổng số bản ghi
+  totalPages: 0, // Tổng số trang
+  first: 0, // Vị trí bắt đầu của bản ghi hiện tại
+});
+
 const formatDate = (dateString) => {
   if (!dateString) {
     return "-";
@@ -290,7 +301,14 @@ onMounted(async () => {
   await fetchNews();
 });
 
-// Fetch news from API
+// Xử lý khi người dùng thay đổi trang
+const onPageChange = (event) => {
+  pagination.value.page = event.page + 1; // PrimeVue bắt đầu từ 0, API của bạn bắt đầu từ 1
+  pagination.value.first = event.first;
+  fetchNews();
+};
+
+// Cập nhật fetchNews để hỗ trợ phân trang
 const fetchNews = async () => {
   const token = localStorage.getItem("token");
 
@@ -299,8 +317,16 @@ const fetchNews = async () => {
     return;
   }
 
-  const response = await NewsService.News(token);
-  news.value = response?.data?.docs;
+  const response = await NewsService.News(
+    token,
+    pagination.value.page,
+    pagination.value.limit
+  );
+  if (response && response.data) {
+    news.value = response.data.docs;
+    pagination.value.totalDocs = response.data.totalDocs;
+    pagination.value.totalPages = response.data.totalPages;
+  }
 };
 
 // Open dialog to add news
@@ -395,7 +421,7 @@ const saveNews = async () => {
       await fetchNews();
       showEditDialog.value = false;
     } else {
-      console.error("Failed to update news");
+      push.error("Error: " + response.message);
     }
   } else {
     // Add news
@@ -404,7 +430,7 @@ const saveNews = async () => {
       await fetchNews();
       showAddDialog.value = false;
     } else {
-      console.error("Failed to add news");
+      push.error("Error: " + response.message);
     }
   }
 };

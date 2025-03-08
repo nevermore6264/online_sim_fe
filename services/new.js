@@ -1,11 +1,10 @@
 import { api } from "../utils/axios";
 
 export default {
-  async News(token) {
+  async News(token, page = 1, limit = 10) {
     const response = await api.get(`/api/manage-service/posts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
+      params: { page, limit },
     });
     return response.data;
   },
