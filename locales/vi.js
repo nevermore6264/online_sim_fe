@@ -297,5 +297,7 @@ export default {
     isPublished: "Có hiện hay không?",
     updatedAt: "Ngày cập nhật",
     createdAt: "Ngày tạo",
+    updateSuccess: "Cập nhật thành công",
+    updateFailed: "Cập nhật thất bại",
   },
 };

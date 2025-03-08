@@ -300,5 +300,7 @@ export default {
     isPublished: "IsPublished",
     updatedAt: "Updated At",
     createdAt: "Created At",
+    updateSuccess: "Update successfully",
+    updateFailed: "Update Failed"
   },
 };
