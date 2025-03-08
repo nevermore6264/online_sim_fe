@@ -297,5 +297,6 @@ export default {
     save: "Save",
     newsImage: "Image",
     newsSlug: "Slug",
+    isPublished: "IsPublished",
   },
 };

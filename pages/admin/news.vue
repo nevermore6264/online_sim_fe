@@ -7,9 +7,11 @@
       @click="openAddDialog"
       style="margin-bottom: 20px"
     />
+
+    <!-- Dialog thêm tin tức -->
     <Dialog
-      v-model:visible="displayDialog"
-      :header="dialogHeader"
+      v-model:visible="showAddDialog"
+      :header="$t('newsManagement.addNews')"
       :modal="true"
       class="custom-dialog"
     >
@@ -28,7 +30,6 @@
             id="slug"
             v-model="currentNews.slug"
             class="custom-input"
-            :disabled="isEditMode"
           />
         </div>
         <div class="p-field">
@@ -48,7 +49,6 @@
         </div>
         <div class="p-field">
           <label for="content">{{ $t("newsManagement.newsContent") }}</label>
-          <!-- Thay thế QuillEditor bằng TinyMCE -->
           <Editor
             v-model="currentNews.content"
             api-key="ralnw41ykjyj9duuyicqbgsidqiiycmaofumkp19xrbty8hi"
@@ -62,13 +62,23 @@
             }"
           />
         </div>
+        <div class="p-field">
+          <label for="isPublished">{{
+            $t("newsManagement.isPublished")
+          }}</label>
+          <Checkbox
+            id="isPublished"
+            v-model="currentNews.isPublished"
+            :binary="true"
+          />
+        </div>
       </div>
       <template #footer>
         <Button
           class="custom-button"
           :label="$t('newsManagement.cancel')"
           icon="pi pi-times"
-          @click="closeDialog"
+          @click="closeAddDialog"
         />
         <Button
           class="custom-button"
@@ -79,6 +89,89 @@
       </template>
     </Dialog>
 
+    <!-- Dialog chỉnh sửa tin tức -->
+    <Dialog
+      v-model:visible="showEditDialog"
+      :header="$t('newsManagement.editNews')"
+      :modal="true"
+      class="custom-dialog"
+    >
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="title">{{ $t("newsManagement.newsTitle") }}</label>
+          <InputText
+            id="title"
+            v-model="currentNews.title"
+            class="custom-input"
+          />
+        </div>
+        <div class="p-field">
+          <label for="slug">{{ $t("newsManagement.newsSlug") }}</label>
+          <InputText
+            id="slug"
+            v-model="currentNews.slug"
+            class="custom-input"
+            :disabled="true"
+          />
+        </div>
+        <div class="p-field">
+          <label for="image">{{ $t("newsManagement.newsImage") }}</label>
+          <input
+            type="file"
+            id="image"
+            accept="image/*"
+            @change="handleImageUpload"
+          />
+          <img
+            v-if="currentNews.imagePreview"
+            :src="currentNews.imagePreview"
+            alt="Preview"
+            class="image-preview"
+          />
+        </div>
+        <div class="p-field">
+          <label for="content">{{ $t("newsManagement.newsContent") }}</label>
+          <Editor
+            v-model="currentNews.content"
+            api-key="ralnw41ykjyj9duuyicqbgsidqiiycmaofumkp19xrbty8hi"
+            :init="{
+              height: 300,
+              menubar: true,
+              plugins:
+                'advlist autolink lists link image charmap print preview anchor',
+              toolbar:
+                'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+            }"
+          />
+        </div>
+        <div class="p-field">
+          <label for="isPublished">{{
+            $t("newsManagement.isPublished")
+          }}</label>
+          <Checkbox
+            id="isPublished"
+            v-model="currentNews.isPublished"
+            :binary="true"
+          />
+        </div>
+      </div>
+      <template #footer>
+        <Button
+          class="custom-button"
+          :label="$t('newsManagement.cancel')"
+          icon="pi pi-times"
+          @click="closeEditDialog"
+        />
+        <Button
+          class="custom-button"
+          :label="$t('newsManagement.save')"
+          icon="pi pi-check"
+          @click="saveNews"
+        />
+      </template>
+    </Dialog>
+
+    <!-- Bảng hiển thị danh sách tin tức -->
     <DataTable
       :value="news"
       :paginator="true"
@@ -122,22 +215,23 @@
 import { ref, onMounted, watch } from "vue";
 import NewsService from "@/services/new";
 import { useI18n } from "vue-i18n";
-import Editor from "@tinymce/tinymce-vue"; // Import TinyMCE Editor
+import Editor from "@tinymce/tinymce-vue";
 
 const { t } = useI18n();
 
 const slugify = (text) => {
   return text
-    .toString() // Ensure it's a string
-    .toLowerCase() // Convert to lowercase
-    .trim() // Remove leading and trailing whitespace
-    .replace(/\s+/g, "-") // Replace spaces with hyphens
-    .replace(/[^\w\-]+/g, "") // Remove all non-word characters (e.g., special symbols)
-    .replace(/\-\-+/g, "-"); // Replace multiple hyphens with a single hyphen
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-");
 };
 
 const news = ref([]);
-const displayDialog = ref(false);
+const showAddDialog = ref(false);
+const showEditDialog = ref(false);
 const currentNews = ref({
   id: null,
   title: "",
@@ -145,40 +239,38 @@ const currentNews = ref({
   content: "",
   thumbnail: null,
   imagePreview: "",
+  isPublished: false,
 });
-const isEditMode = ref(false);
-const dialogHeader = ref(t("newsManagement.addNews"));
 
 // Watch for changes in the title and generate the slug
 watch(
   () => currentNews.value.title,
   (newTitle) => {
-    if (newTitle && !isEditMode.value) {
+    if (newTitle && !showEditDialog.value) {
       currentNews.value.slug = slugify(newTitle);
     }
   }
 );
 
-// Lấy danh sách tin tức khi component được tạo
+// Fetch news when component is mounted
 onMounted(async () => {
   await fetchNews();
 });
 
-// Lấy danh sách tin tức từ API
+// Fetch news from API
 const fetchNews = async () => {
   const token = localStorage.getItem("token");
 
   if (!token) {
     console.error("Token is not found in localStorage");
-    loading.value = false;
     return;
   }
 
   const response = await NewsService.News(token);
-  news.value = response?.data;
+  news.value = response?.data?.docs;
 };
 
-// Mở dialog để thêm tin tức
+// Open dialog to add news
 const openAddDialog = () => {
   currentNews.value = {
     id: null,
@@ -187,13 +279,12 @@ const openAddDialog = () => {
     content: "",
     thumbnail: null,
     imagePreview: "",
+    isPublished: false,
   };
-  isEditMode.value = false;
-  dialogHeader.value = t("newsManagement.addNews");
-  displayDialog.value = true;
+  showAddDialog.value = true;
 };
 
-// Mở dialog để chỉnh sửa tin tức
+// Open dialog to edit news
 const editNews = async (id) => {
   const token = localStorage.getItem("token");
 
@@ -202,7 +293,6 @@ const editNews = async (id) => {
     return;
   }
 
-  // Lấy thông tin chi tiết của bản ghi dựa trên id
   const response = await NewsService.Get(id, token);
   if (response && response.data) {
     currentNews.value = {
@@ -211,22 +301,26 @@ const editNews = async (id) => {
       slug: response.data.slug,
       content: response.data.content,
       thumbnail: response.data.thumbnail,
-      imagePreview: response.data.thumbnail, // Hiển thị ảnh preview nếu có
+      imagePreview: response.data.thumbnail,
+      isPublished: response.data.isPublished,
     };
-    isEditMode.value = true;
-    dialogHeader.value = t("newsManagement.editNews");
-    displayDialog.value = true;
+    showEditDialog.value = true;
   } else {
     console.error("Failed to fetch news details");
   }
 };
 
-// Đóng dialog
-const closeDialog = () => {
-  displayDialog.value = false;
+// Close add dialog
+const closeAddDialog = () => {
+  showAddDialog.value = false;
 };
 
-// Xử lý upload ảnh
+// Close edit dialog
+const closeEditDialog = () => {
+  showEditDialog.value = false;
+};
+
+// Handle image upload
 const handleImageUpload = (event) => {
   const file = event.target.files[0];
   if (file) {
@@ -239,7 +333,7 @@ const handleImageUpload = (event) => {
   }
 };
 
-// Lưu tin tức (thêm hoặc cập nhật)
+// Save news (add or update)
 const saveNews = async () => {
   const token = localStorage.getItem("token");
 
@@ -252,37 +346,37 @@ const saveNews = async () => {
   formData.append("slug", currentNews.value.slug);
   formData.append("title", currentNews.value.title);
   formData.append("content", currentNews.value.content);
+  formData.append("isPublished", currentNews.value.isPublished);
   if (currentNews.value.thumbnail) {
     formData.append("thumbnail", currentNews.value.thumbnail);
   }
 
-  if (isEditMode.value && currentNews.value.id) {
-    // Cập nhật tin tức nếu có id
+  if (showEditDialog.value && currentNews.value.id) {
+    // Update news
     const response = await NewsService.Update(
       currentNews.value.id,
       formData,
       token
     );
     if (response && response.success) {
-      push.success(t("newsManagement.updateSuccess"));
+      await fetchNews();
+      showEditDialog.value = false;
     } else {
-      push.error(t("newsManagement.updateFailed"));
+      console.error("Failed to update news");
     }
   } else {
-    // Thêm tin tức mới nếu không có id
+    // Add news
     const response = await NewsService.Add(formData, token);
     if (response && response.success) {
-      push.success(t("newsManagement.addSuccess"));
+      await fetchNews();
+      showAddDialog.value = false;
     } else {
-      push.error(t("newsManagement.addFailed"));
+      console.error("Failed to add news");
     }
   }
-
-  await fetchNews(); // Lấy lại danh sách tin tức sau khi thêm/cập nhật
-  closeDialog();
 };
 
-// Xóa tin tức
+// Delete news
 const deleteNews = async (id) => {
   if (confirm(t("newsManagement.confirmDelete"))) {
     const token = localStorage.getItem("token");
@@ -294,10 +388,9 @@ const deleteNews = async (id) => {
 
     const response = await NewsService.Delete(id, token);
     if (response && response.success) {
-      await fetchNews(); // Lấy lại danh sách tin tức sau khi xóa
-      push.success(t("newsManagement.deleteSuccess"));
+      await fetchNews();
     } else {
-      push.error(t("newsManagement.deleteFailed"));
+      console.error("Failed to delete news");
     }
   }
 };
@@ -327,8 +420,7 @@ const deleteNews = async (id) => {
   border-radius: 8px;
 }
 
-.custom-quill {
-  height: 300px;
-  margin-bottom: 1.5rem;
+.p-field {
+  margin-top: 10px;
 }
 </style>

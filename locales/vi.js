@@ -294,5 +294,6 @@ export default {
     save: "Lưu",
     newsImage: "Ảnh bìa",
     newsSlug: "Đường dẫn",
+    isPublished: "Có hiện hay không?",
   },
 };
