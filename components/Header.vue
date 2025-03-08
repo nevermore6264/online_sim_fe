@@ -214,7 +214,7 @@ const handleNews = () => {
 
 const handleAPI = () => {
   activeMenu.value = "api";
-  window.location.href = "https://japansim.net/";
+  window.open("https://japansim.net/", "_blank");
 };
 
 const handleCall = () => {
