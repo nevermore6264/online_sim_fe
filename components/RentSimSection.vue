@@ -451,7 +451,6 @@ li {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
-  margin-top: 1rem;
 }
 
 @media (max-width: 1366px) {

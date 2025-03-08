@@ -90,7 +90,7 @@
           </p>
           <p>
             <strong>{{ $t("order.column.otp") }}:</strong>
-            {{ smsList.find((e) => e.orderId == order.id)?.messageText }}
+            {{ getMessageText(order.id) }}
           </p>
         </div>
       </div>
@@ -126,6 +126,11 @@ const firstRowIndex = ref(0); // Chỉ mục của dòng đầu tiên trên tran
 // Hàm tính STT
 const calculateSTT = (index) => {
   return (currentPage.value - 1) * rowsPerPage.value + index + 1;
+};
+
+const getMessageText = (orderId) => {
+  const sms = smsList.value.find((e) => e.orderId == orderId);
+  return sms == undefined ? "-" : sms?.messageText;
 };
 
 const fetchSmsList = async () => {

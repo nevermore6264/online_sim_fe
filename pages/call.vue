@@ -629,7 +629,6 @@ watchEffect(() => {
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 14px;
-  margin-top: 20px;
 }
 
 .phone-input {

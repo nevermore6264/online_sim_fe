@@ -21,9 +21,6 @@
         <div v-if="activeTab === 3">
           <API />
         </div>
-        <div v-if="activeTab === 4">
-          <Help />
-        </div>
       </div>
     </div>
   </div>
@@ -32,7 +29,6 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import Help from "@/components/RentSim/Help.vue";
 
 const { t } = useI18n();
 
@@ -44,7 +40,6 @@ const computedTabs = computed(() => [
   { label: t("tabs.my_number"), icon: "pi pi-phone" },
   { label: t("tabs.faq"), icon: "pi pi-info-circle" },
   { label: t("tabs.api"), icon: "pi pi-code" },
-  { label: t("tabs.help"), icon: "pi pi-info-circle" },
 ]);
 </script>
 
