@@ -202,11 +202,15 @@
           </span>
         </template>
       </Column>
-      <Column :header="$t('newsManagement.newsImage')" style="width: 25%">
+      <Column :header="$t('newsManagement.newsImage')" style="width: 15%">
         <template #body="slotProps">
-          <span :title="slotProps.data.content">
-            {{ truncateText(slotProps.data?.thumbnail, 100) }}
-          </span>
+          <img
+            v-if="slotProps.data?.thumbnail"
+            :src="'https://verifysms.org' + slotProps.data.thumbnail"
+            alt="News Thumbnail"
+            style="max-width: 100px; height: auto; border-radius: 8px"
+          />
+          <span v-else>No Image</span>
         </template>
       </Column>
       <Column :header="$t('newsManagement.createdAt')">
