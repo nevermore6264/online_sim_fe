@@ -1,5 +1,5 @@
 <template>
-  <FraudWarning />
+  <!-- <FraudWarning /> -->
   <LanguageSwitcher />
   <Header />
   <div class="main">
