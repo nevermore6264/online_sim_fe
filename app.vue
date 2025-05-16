@@ -64,12 +64,37 @@ input {
   border: 1px solid #ccc;
   border-radius: 4px;
   transition: all 0.3s ease;
+  background-color: #fff;
+  transform-origin: center;
 }
 
 input:focus {
   border-color: #2aabee;
   box-shadow: 0 0 0 2px rgba(42, 171, 238, 0.2);
   outline: none;
+  transform: scale(1.02);
+}
+
+input:hover {
+  border-color: #2aabee;
+  transform: translateY(-1px);
+}
+
+input::placeholder {
+  transition: all 0.3s ease;
+  color: #999;
+}
+
+input:focus::placeholder {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
 }
 
 button {

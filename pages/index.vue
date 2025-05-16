@@ -261,23 +261,33 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; /* Tạo khoảng cách giữa tên và giá */
+  justify-content: space-between;
   cursor: pointer;
   padding: 8px;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
   width: 100%;
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
 }
 
 .country-item:hover {
+  transform: translateY(-2px);
   background-color: rgb(201, 200, 200);
 }
 
-.flag-image {
+.country-item:active {
+  transform: translateY(0);
+}
+
+.country-item .flag-image {
   width: 32px;
   height: auto;
   margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+.country-item:hover .flag-image {
+  transform: scale(1.1);
 }
 
 .country-name {
@@ -295,42 +305,55 @@ onMounted(() => {
   grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
 }
 
-.service-row {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr); /* Chia mỗi row thành 2 cột */
-  gap: 10px;
-  grid-auto-flow: dense; /* Lấp đầy khoảng trống nếu có */
-}
-
 .service-item {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; /* Tạo khoảng cách giữa tên và giá */
+  justify-content: space-between;
   cursor: pointer;
   padding: 8px;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
   width: 100%;
   background-color: rgb(245, 245, 245);
   border-radius: 5px;
 }
 
 .service-item:hover {
+  transform: translateY(-2px);
   background-color: rgb(201, 200, 200);
+}
+
+.service-item:active {
+  transform: translateY(0);
+}
+
+.service-item .flag-image {
+  width: 32px;
+  height: auto;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+.service-item:hover .flag-image {
+  transform: scale(1.1);
 }
 
 .service-name {
   font-size: 14px;
   font-weight: bold;
-  flex: 1; /* Chiếm tối đa không gian còn lại */
-  text-align: left; /* Đảm bảo căn trái */
+  flex: 1;
+  text-align: left;
 }
 
 .service-price {
   font-size: 12px;
   color: gray;
-  text-align: right; /* Căn phải */
-  white-space: nowrap; /* Tránh xuống dòng */
+  text-align: right;
+  white-space: nowrap;
+}
+
+.service-row {
+  animation: fadeIn 0.5s ease forwards;
 }
 
 @media (max-width: 599px) {
