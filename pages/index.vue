@@ -7,6 +7,7 @@
           v-model="searchCountry"
           :placeholder="$t('landing.search_country')"
           class="search-input"
+          style="margin-top: 20px"
         />
         <DataTable
           :value="filteredCountries"
