@@ -374,11 +374,6 @@ onUnmounted(() => {
   margin-top: 1rem;
 }
 
-.forgot-password {
-  text-align: center;
-  margin-top: 1rem;
-}
-
 .forgot-password a {
   color: #007bff;
   text-decoration: none;
@@ -435,6 +430,7 @@ onUnmounted(() => {
   border-radius: 4px;
   cursor: pointer;
   margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .auth-submit:hover {
@@ -442,9 +438,6 @@ onUnmounted(() => {
 }
 
 .forgot-password {
-  display: block;
-  text-align: right;
-  margin-top: 1rem;
   color: #56ccf2;
   text-decoration: none;
 }

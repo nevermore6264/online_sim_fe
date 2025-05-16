@@ -63,19 +63,29 @@ input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  border-color: #2aabee;
+  box-shadow: 0 0 0 2px rgba(42, 171, 238, 0.2);
+  outline: none;
 }
 
 button {
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* Smooth zoom and shadow transition */
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 button:hover {
-  transform: scale(1.05);
-  /* Slight zoom in */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  /* Add a subtle shadow for emphasis */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 table {
@@ -119,6 +129,28 @@ table {
 
 a:link {
   color: #2aabee;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #1a8bcc;
+}
+
+a:link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #2aabee;
+  transition: width 0.3s ease;
+}
+
+a:hover::after {
+  width: 100%;
 }
 
 .p-dataview .p-dataview-content {
@@ -161,6 +193,31 @@ a:link {
 
 .p-dropdown.small-dropdown .p-dropdown-trigger {
   width: 1.5rem;
+}
+
+.p-dropdown {
+  transition: all 0.3s ease;
+}
+
+.p-dropdown:hover {
+  border-color: #2aabee;
+}
+
+.p-dropdown:focus {
+  box-shadow: 0 0 0 2px rgba(42, 171, 238, 0.2);
+}
+
+.p-button {
+  transition: all 0.3s ease;
+}
+
+.p-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.p-button:active {
+  transform: translateY(0);
 }
 
 @media (max-width: 1366px) {
