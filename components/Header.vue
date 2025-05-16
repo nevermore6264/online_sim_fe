@@ -541,9 +541,19 @@ onUnmounted(() => {
   border-bottom: 2px solid #007bff; /* Gạch chân */
 }
 
+.layout-topbar-logo {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
 .layout-topbar-logo img {
-  width: 50px !important;
-  height: 50px !important;
+  width: 48px !important;
+  height: 48px !important;
+  object-fit: cover;
+  display: block;
 }
 
 /* Nếu bạn muốn thay đổi màu nền */
@@ -554,72 +564,37 @@ onUnmounted(() => {
 /* Responsive Layout for Mobile and Tablet */
 @media (max-width: 768px) {
   .layout-topbar {
-    align-items: flex-start;
-    justify-content: center;
-    padding: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 10px;
+    min-height: 48px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    background: rgba(255, 255, 255, 0.98);
   }
-
-  .layout-topbar .p-menubar-start,
+  .layout-topbar-logo {
+    height: 40px;
+    padding: 0 4px;
+  }
+  .layout-topbar-logo img {
+    width: 36px !important;
+    height: 36px !important;
+  }
   .p-menubar-end {
-    justify-content: center;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
   }
-
-  .layout-topbar .p-menubar-end {
-    margin-top: 5px;
-    justify-content: center;
-  }
-
-  .footer-content {
-    display: block !important;
-  }
-
-  .footer-icons-box {
-    justify-content: center !important;
-    margin-top: 20px !important;
-  }
-
-  .auth-dialog {
-    width: 90% !important;
-  }
-
-  .auth-left,
-  .auth-right {
-    width: 100%;
-    float: none;
-    padding: 1rem;
-    text-align: center;
-  }
-
-  .auth-right {
-    margin-top: 20px;
-    display: none;
-  }
-
-  .auth-input {
-    width: 100%;
-    font-size: 14px;
-  }
-
-  .auth-submit,
-  .auth-signup {
-    width: 100%;
-    font-size: 16px;
-  }
-
-  .forgot-password {
-    text-align: center;
-  }
-
-  .layout-topbar .p-button-icon {
+  .user-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2196f3;
     margin-right: 4px;
   }
-
-  .auth-right h2 {
-    font-size: 1.5rem;
-  }
-
-  .auth-right p {
-    font-size: 1rem;
+  .balance {
+    font-size: 13px;
+    color: #888;
+    margin-left: 2px;
   }
 }
 
