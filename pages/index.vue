@@ -52,6 +52,7 @@
           v-model="searchService"
           :placeholder="$t('landing.search_service')"
           class="search-input"
+          style="margin-top: 20px"
         />
         <DataTable
           :value="filteredServices"
