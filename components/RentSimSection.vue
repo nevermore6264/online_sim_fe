@@ -458,6 +458,10 @@ li {
     grid-template-columns: repeat(3, 1fr);
   }
 
+  .rent-section {
+    margin-top: 1rem;
+  }
+
   .top-section {
     flex-direction: column !important;
     width: 100% !important;
@@ -471,10 +475,6 @@ li {
 
   .rental-quantity-label {
     margin-top: 20px !important;
-  }
-
-  .rental-selection {
-    margin-bottom: 20px !important;
   }
 
   .service-info {
