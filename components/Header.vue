@@ -295,9 +295,12 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   background: ghostwhite;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
-    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
-    rgba(0, 0, 0, 0.2) -2px -3px 10px inset;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  position: relative;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(42, 171, 238, 0.1);
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .user-name {
