@@ -38,27 +38,45 @@
         </div>
         <div class="input-group">
           <label for="password">{{ $t("landing.password") }}</label>
-          <InputText
-            id="password"
-            v-model="signUpData.password"
-            type="password"
-            :placeholder="$t('landing.password')"
-            required
-            class="auth-input"
-          />
+          <div class="password-input-container">
+            <InputText
+              id="password"
+              v-model="signUpData.password"
+              :type="showPassword ? 'text' : 'password'"
+              :placeholder="$t('landing.password')"
+              required
+              class="auth-input"
+            />
+            <i
+              :class="[
+                'password-toggle',
+                showPassword ? 'pi pi-eye-slash' : 'pi pi-eye',
+              ]"
+              @click="showPassword = !showPassword"
+            ></i>
+          </div>
         </div>
         <div class="input-group">
           <label for="confirmPassword">{{
             $t("landing.confirmPassword")
           }}</label>
-          <InputText
-            id="confirmPassword"
-            v-model="signUpData.confirmPassword"
-            type="password"
-            :placeholder="$t('landing.confirmPassword')"
-            required
-            class="auth-input"
-          />
+          <div class="password-input-container">
+            <InputText
+              id="confirmPassword"
+              v-model="signUpData.confirmPassword"
+              :type="showConfirmPassword ? 'text' : 'password'"
+              :placeholder="$t('landing.confirmPassword')"
+              required
+              class="auth-input"
+            />
+            <i
+              :class="[
+                'password-toggle',
+                showConfirmPassword ? 'pi pi-eye-slash' : 'pi pi-eye',
+              ]"
+              @click="showConfirmPassword = !showConfirmPassword"
+            ></i>
+          </div>
         </div>
         <Button
           :label="$t('landing.signup')"
@@ -88,6 +106,8 @@ const signUpData = ref({
   confirmPassword: "",
 });
 const loading = ref(false);
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
 const handleSignUp = async () => {
   const { firstName, lastName, username, password, confirmPassword } =
@@ -152,5 +172,29 @@ const handleSignUp = async () => {
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
+}
+
+.password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-container .auth-input {
+  padding-right: 2.5rem; /* Chừa chỗ cho icon */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 35%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.password-toggle:hover {
+  color: #333;
 }
 </style>

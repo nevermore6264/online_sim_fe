@@ -18,14 +18,23 @@
         </div>
         <div class="input-group">
           <label for="password">{{ $t("landing.password") }}</label>
-          <InputText
-            id="password"
-            v-model="loginData.password"
-            type="password"
-            placeholder="Password"
-            required
-            class="auth-input"
-          />
+          <div class="password-input-container">
+            <InputText
+              id="password"
+              v-model="loginData.password"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="Password"
+              required
+              class="auth-input"
+            />
+            <i
+              :class="[
+                'password-toggle',
+                showPassword ? 'pi pi-eye-slash' : 'pi pi-eye',
+              ]"
+              @click="showPassword = !showPassword"
+            ></i>
+          </div>
         </div>
         <Button
           :label="$t('landing.login')"
@@ -60,6 +69,7 @@ import { jwtDecode } from "jwt-decode";
 
 const loginData = ref({ username: "", password: "" });
 const loading = ref(false);
+const showPassword = ref(false);
 
 const handleLogin = async () => {
   if (!loginData.value.username || !loginData.value.password) {
@@ -171,5 +181,29 @@ const handleLoginError = () => {
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
+}
+
+.password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-container .auth-input {
+  padding-right: 2.5rem; /* Chừa chỗ cho icon */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 35%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 1.2rem;
+  z-index: 2;
+}
+
+.password-toggle:hover {
+  color: #333;
 }
 </style>
