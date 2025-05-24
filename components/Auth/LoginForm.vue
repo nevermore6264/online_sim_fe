@@ -27,7 +27,7 @@
         }}</a>
         <div class="social-login">
           <p>{{ $t("landing.or_login") }}</p>
-          <button class="google-signin-btn" @click="handleGoogleSignIn" :disabled="loading">
+          <button class="google-signin-btn" @click.prevent="handleGoogleSignIn" :disabled="loading" type="button">
             <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18px" height="18px">
               <path fill="#FFC107"
                 d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
@@ -102,34 +102,40 @@ const handleLogin = async () => {
 const handleGoogleSignIn = async () => {
   try {
     loading.value = true;
-    const response = await fetch('https://verifysms.org/api/auth/google');
-    const data = await response.json();
+    // Open Google auth in a popup window
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
 
-    if (data.url) {
-      // Open Google sign-in in a new window
-      const width = 500;
-      const height = 600;
-      const left = window.screenX + (window.outerWidth - width) / 2;
-      const top = window.screenY + (window.outerHeight - height) / 2;
+    window.open(
+      'https://verifysms.org/api/auth/google',
+      'Google Sign In',
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
 
-      const authWindow = window.open(
-        data.url,
-        'Google Sign In',
-        `width=${width},height=${height},left=${left},top=${top}`
-      );
+    // Check if popup is closed and handle the callback URL
+    const checkPopup = setInterval(() => {
+      clearInterval(checkPopup);
+      loading.value = false;
 
-      // Listen for the callback
-      window.addEventListener('message', async (event) => {
-        if (event.origin === 'https://verifysms.org') {
-          const { accessToken } = event.data;
-          if (accessToken) {
-            localStorage.setItem('token', accessToken);
-            push.success('Login successful!');
-            window.location.reload();
-          }
+      // Check if we have a callback URL in localStorage
+      const callbackUrl = localStorage.getItem('googleCallbackUrl');
+      if (callbackUrl) {
+        console.log('Found callback URL:', callbackUrl);
+        const url = new URL(callbackUrl);
+        const accessToken = url.searchParams.get('accessToken');
+
+        if (accessToken) {
+          console.log('Extracted access token:', accessToken);
+          localStorage.setItem('token', accessToken);
+          localStorage.removeItem('googleCallbackUrl'); // Clean up
+          push.success('Login successful!');
+          window.location.reload();
         }
-      });
-    }
+      }
+    }, 1000);
+
   } catch (error) {
     console.error('Error during Google sign in:', error);
     push.error('An error occurred during Google sign in.');
