@@ -8,27 +8,24 @@
           <i class="pi pi-facebook"></i>
           <h3>{{ t('social.facebook_page') }}</h3>
           <p>{{ t('social.facebook_page_desc') }}</p>
-          <a href="https://www.facebook.com/profile.php?id=61576830833933" target="_blank" class="social-button">
-            {{ t('social.visit_now') }}
-          </a>
+          <Button :label="t('social.visit_now')" class="social-button"
+            @click="openLink('https://www.facebook.com/profile.php?id=61576830833933')" outlined />
         </div>
 
         <div class="social-card facebook-group">
           <i class="pi pi-facebook"></i>
           <h3>{{ t('social.facebook_group') }}</h3>
           <p>{{ t('social.facebook_group_desc') }}</p>
-          <a href="https://www.facebook.com/groups/1097334865571536" target="_blank" class="social-button">
-            {{ t('social.join_now') }}
-          </a>
+          <Button :label="t('social.join_now')" class="social-button"
+            @click="openLink('https://www.facebook.com/groups/1097334865571536')" outlined />
         </div>
 
         <div class="social-card telegram">
           <i class="pi pi-telegram"></i>
           <h3>{{ t('social.telegram_channel') }}</h3>
           <p>{{ t('social.telegram_channel_desc') }}</p>
-          <a href="https://t.me/JPtelecom1" target="_blank" class="social-button">
-            {{ t('social.join_channel') }}
-          </a>
+          <Button :label="t('social.join_channel')" class="social-button" @click="openLink('https://t.me/JPtelecom1')"
+            outlined />
         </div>
       </div>
     </div>
@@ -38,6 +35,9 @@
 <script setup>
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
+const openLink = (url) => {
+  window.open(url, '_blank');
+};
 </script>
 
 <style scoped>
@@ -48,7 +48,6 @@ const { t } = useI18n();
 }
 
 .social-section {
-  margin-top: 50px;
   padding: 20px;
 }
 
@@ -114,37 +113,33 @@ const { t } = useI18n();
   font-size: 1.08rem;
 }
 
+.social-button,
+.social-button:hover,
+.social-button:focus {
+  text-decoration: none !important;
+}
+
 .social-button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 14px 28px;
   background: linear-gradient(90deg, #00aeff 0%, #1877f2 100%);
   color: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.12rem;
   box-shadow: 0 2px 8px rgba(0, 174, 255, 0.10);
   border: none;
   transition: background 0.25s, box-shadow 0.25s, transform 0.18s;
-  max-width: 150px;
-  min-width: 90px;
+  max-width: 220px;
+  min-width: 120px;
   justify-content: center;
 }
 
-.social-button:hover {
-  background: linear-gradient(90deg, #1877f2 0%, #00aeff 100%);
-  box-shadow: 0 4px 16px rgba(0, 174, 255, 0.18);
-  transform: scale(1.04);
-}
-
-.social-button i {
-  font-size: 1.05rem;
-}
-
 h2 {
-  padding: 70px 0px 50px;
+  padding: 0px 50px 70px 50px;
   text-align: center;
   font-weight: 700;
   font-size: 44px;
