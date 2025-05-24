@@ -38,13 +38,19 @@
       <!-- Right Column - Payment QR Code -->
       <div class="payment-section">
         <h3>Payment QR Code</h3>
+        <div class="form-group">
+          <label for="amount">Amount (VND)</label>
+          <input type="number" id="amount" class="form-control" v-model="amount" min="1000"
+            placeholder="Nhập số tiền muốn nạp (VND)" :disabled="isLoading" />
+        </div>
+        <div v-if="amountError" class="amount-error">{{ amountError }}</div>
         <div class="qr-container">
           <div v-if="qrCodeUrl" class="qr-code">
             <img :src="qrCodeUrl" alt="Payment QR Code" />
           </div>
           <div v-else class="qr-placeholder">
             <i class="fas fa-qrcode"></i>
-            <p>Click the button below to generate QR code</p>
+            <p>Nhập số tiền và nhấn nút để tạo mã QR</p>
           </div>
         </div>
         <button class="generate-qr-btn" @click="generateQRCode" :disabled="isLoading">
@@ -61,6 +67,8 @@ import { ref, onMounted } from "vue";
 const userInfo = ref(null);
 const qrCodeUrl = ref(null);
 const isLoading = ref(false);
+const amount = ref("");
+const amountError = ref("");
 
 // Fetch user information from localStorage
 const fetchUserInfoFromLocalStorage = () => {
@@ -82,26 +90,33 @@ const fetchUserInfoFromLocalStorage = () => {
 };
 
 const generateQRCode = async () => {
+  amountError.value = "";
+  const value = parseInt(amount.value, 10);
+  if (isNaN(value) || value < 1000) {
+    amountError.value = "Vui lòng nhập số tiền hợp lệ (tối thiểu 1.000 VND)";
+    return;
+  }
   try {
     isLoading.value = true;
+    qrCodeUrl.value = null;
     const response = await fetch('{{japansim-sandbox}}/api/web/payment/qrcode', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: userInfo.value?.id
+        amount: value
       })
     });
-
     const data = await response.json();
-    if (data.success) {
-      qrCodeUrl.value = data.data.qrCodeUrl;
+    if (data.success && data.data.qrCode) {
+      // Tạo ảnh QR từ chuỗi qrCode (dùng Google Chart API)
+      qrCodeUrl.value = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=${encodeURIComponent(data.data.qrCode)}`;
     } else {
-      console.error('Failed to generate QR code:', data.message);
+      amountError.value = 'Không tạo được mã QR. Vui lòng thử lại.';
     }
   } catch (error) {
-    console.error('Error generating QR code:', error);
+    amountError.value = 'Có lỗi xảy ra khi tạo mã QR.';
   } finally {
     isLoading.value = false;
   }
@@ -225,6 +240,13 @@ input:disabled {
 .generate-qr-btn:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.amount-error {
+  color: #e74c3c;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {
