@@ -5,8 +5,9 @@
       <label for="status-filter">{{ $t("order.filter_status") }}</label>
       <select id="status-filter" v-model="selectedStatus" @change="filterOrderList">
         <option value="all">{{ $t("order.all") }}</option>
-        <option value="active">{{ $t("order.active") }}</option>
-        <option value="expired">{{ $t("order.expired") }}</option>
+        <option value="success">{{ $t("order.success") }}</option>
+        <option value="pending">{{ $t("order.pending") }}</option>
+        <option value="refunded">{{ $t("order.refunded") }}</option>
       </select>
     </div>
 
@@ -176,12 +177,9 @@ const filterOrderList = () => {
     return;
   }
 
-  const isExpired = (date) => new Date(date) <= new Date();
-  filteredOrderList.value = orderList.value.filter((item) =>
-    selectedStatus.value === "expired"
-      ? isExpired(item.stock.expiredAt)
-      : !isExpired(item.stock.expiredAt)
-  );
+  filteredOrderList.value = orderList.value.filter((item) => {
+    return item.statusCode.toLowerCase() === selectedStatus.value.toLowerCase();
+  });
 };
 
 // Hàm xử lý khi chuyển trang
