@@ -1,60 +1,60 @@
 <template>
   <div class="profile-page">
     <div class="profile-header">
-      <h2>User Profile</h2>
+      <h2>{{ t('profile.title') }}</h2>
     </div>
 
     <div class="profile-content">
       <!-- Left Column - User Info -->
       <div class="profile-info">
         <div class="form-group">
-          <label for="firstName">First Name</label>
+          <label for="firstName">{{ t('profile.firstName') }}</label>
           <input type="text" id="firstName" class="form-control" :value="userInfo?.firstName" disabled />
         </div>
 
         <div class="form-group">
-          <label for="lastName">Last Name</label>
+          <label for="lastName">{{ t('profile.lastName') }}</label>
           <input type="text" id="lastName" class="form-control" :value="userInfo?.lastName" disabled />
         </div>
 
         <div class="form-group">
-          <label for="id">User ID</label>
+          <label for="id">{{ t('profile.userId') }}</label>
           <input type="text" id="id" class="form-control" :value="userInfo?.id" disabled />
         </div>
 
         <div class="form-group">
-          <label for="balanceAmount">Balance</label>
+          <label for="balanceAmount">{{ t('profile.balance') }}</label>
           <input type="text" id="balanceAmount" class="form-control" :value="`${userInfo?.balanceAmount} USD`"
             disabled />
         </div>
 
         <div class="form-group">
-          <label for="depositAddress">Deposit Address</label>
+          <label for="depositAddress">{{ t('profile.depositAddress') }}</label>
           <input type="text" id="depositAddress" class="form-control"
-            :value="userInfo?.depositAddress || 'Not provided.'" disabled />
+            :value="userInfo?.depositAddress || t('profile.notProvided')" disabled />
         </div>
       </div>
 
       <!-- Right Column - Payment QR Code -->
       <div class="payment-section">
-        <h3>Payment QR Code</h3>
+        <h3>{{ t('profile.paymentTitle') }}</h3>
         <div class="form-group">
-          <label for="amount">Amount (VND)</label>
+          <label for="amount">{{ t('profile.amountLabel') }}</label>
           <input type="number" id="amount" class="form-control" v-model="amount" min="1000"
-            placeholder="Nhập số tiền muốn nạp (VND)" :disabled="isLoading" />
+            :placeholder="t('profile.amountPlaceholder')" :disabled="isLoading" />
         </div>
         <div v-if="amountError" class="amount-error">{{ amountError }}</div>
         <div class="qr-container">
           <div v-if="qrCodeUrl" class="qr-code">
-            <img :src="qrCodeUrl" alt="Payment QR Code" />
+            <img :src="qrCodeUrl" :alt="t('profile.paymentTitle')" />
           </div>
           <div v-else class="qr-placeholder">
             <i class="fas fa-qrcode"></i>
-            <p>Nhập số tiền và nhấn nút để tạo mã QR</p>
+            <p>{{ t('profile.qrPlaceholder') }}</p>
           </div>
         </div>
         <button class="generate-qr-btn" @click="generateQRCode" :disabled="isLoading">
-          {{ isLoading ? 'Generating...' : 'Generate QR Code' }}
+          {{ isLoading ? t('profile.generatingBtn') : t('profile.generateBtn') }}
         </button>
       </div>
     </div>
@@ -63,7 +63,10 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useI18n } from 'vue-i18n';
+import paymentService from "../services/payment";
 
+const { t } = useI18n();
 const userInfo = ref(null);
 const qrCodeUrl = ref(null);
 const isLoading = ref(false);
@@ -92,31 +95,17 @@ const fetchUserInfoFromLocalStorage = () => {
 const generateQRCode = async () => {
   amountError.value = "";
   const value = parseInt(amount.value, 10);
-  if (isNaN(value) || value < 1000) {
-    amountError.value = "Vui lòng nhập số tiền hợp lệ (tối thiểu 1.000 VND)";
-    return;
-  }
   try {
     isLoading.value = true;
     qrCodeUrl.value = null;
-    const response = await fetch('{{japansim-sandbox}}/api/web/payment/qrcode', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        amount: value
-      })
-    });
-    const data = await response.json();
+    const data = await paymentService.createPaymentQRCode(value);
     if (data.success && data.data.qrCode) {
-      // Tạo ảnh QR từ chuỗi qrCode (dùng Google Chart API)
       qrCodeUrl.value = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=${encodeURIComponent(data.data.qrCode)}`;
     } else {
-      amountError.value = 'Không tạo được mã QR. Vui lòng thử lại.';
+      amountError.value = t('profile.qrError');
     }
   } catch (error) {
-    amountError.value = 'Có lỗi xảy ra khi tạo mã QR.';
+    amountError.value = t('profile.qrApiError');
   } finally {
     isLoading.value = false;
   }
@@ -224,7 +213,7 @@ input:disabled {
   display: block;
   width: 100%;
   padding: 12px;
-  background-color: #4CAF50;
+  background-color: #2aabee;
   color: white;
   border: none;
   border-radius: 4px;
@@ -234,7 +223,7 @@ input:disabled {
 }
 
 .generate-qr-btn:hover {
-  background-color: #45a049;
+  background-color: #2196f3;
 }
 
 .generate-qr-btn:disabled {
