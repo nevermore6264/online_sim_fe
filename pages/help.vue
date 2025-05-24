@@ -1,123 +1,121 @@
 <template>
-  <div class="card">
-    <h2>{{ $t("landing.headerNews") }}</h2>
-
-    <!-- Sử dụng Carousel thay cho DataView -->
-    <Carousel
-      :value="products"
-      :numVisible="1"
-      :numScroll="1"
-      :responsiveOptions="responsiveOptions"
-    >
-      <template #item="slotProps">
-        <div class="shortNews">
-          <div class="flex flex-col md:items-end gap-2 mt-2">
-            <span class="text-sm p-1 font-medium mb-2"> 30/01/25 | 10:12 </span>
-          </div>
-          <div class="flex sm:items-start p-1 gap-4">
-            <div class="flex justify-between md:items-center flex-1 gap-6">
-              <div class="flex flex-row justify-between items-start gap-2">
-                <div>
-                  <p class="text-lg font-medium mt-2">
-                    {{ slotProps.data.text }}
-                  </p>
-                  <div
-                    class="font-medium text-surface-500 dark:text-surface-400 text-sm"
-                  >
-                    {{ slotProps.data.text }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="md:w-40 relative img-news">
-              <img
-                class="block xl:block mx-auto rounded w-full"
-                :src="slotProps.data.image"
-                :alt="slotProps.data.text"
-              />
-            </div>
-          </div>
-          <div class="flex flex-col md:items-end gap-2 mt-2">
-            <Button
-              icon="pi pi-arrow-right"
-              :label="$t('landing.read_more')"
-              iconPos="right"
-              class="flex-auto md:flex-initial whitespace-nowrap button-next-p"
-            ></Button>
-          </div>
+  <div class="help-container">
+    <!-- Social Media Section -->
+    <div class="social-section">
+      <h2>Kết nối với chúng tôi</h2>
+      <div class="social-cards">
+        <div class="social-card facebook-page">
+          <i class="pi pi-facebook"></i>
+          <h3>Facebook Page</h3>
+          <p>Theo dõi chúng tôi trên Facebook</p>
+          <a href="https://www.facebook.com/profile.php?id=61576830833933" target="_blank" class="social-button">
+            <i class="pi pi-external-link"></i>
+            Truy cập ngay
+          </a>
         </div>
-      </template>
-    </Carousel>
+
+        <div class="social-card facebook-group">
+          <i class="pi pi-facebook"></i>
+          <h3>Facebook Group</h3>
+          <p>Tham gia cộng đồng của chúng tôi</p>
+          <a href="https://www.facebook.com/groups/1097334865571536" target="_blank" class="social-button">
+            <i class="pi pi-external-link"></i>
+            Tham gia ngay
+          </a>
+        </div>
+
+        <div class="social-card telegram">
+          <i class="pi pi-telegram"></i>
+          <h3>Telegram Channel</h3>
+          <p>Kết nối qua Telegram</p>
+          <a href="https://t.me/JPtelecom1" target="_blank" class="social-button">
+            <i class="pi pi-external-link"></i>
+            Tham gia kênh
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue"; // Sử dụng Composition API
-import NewsService from "@/services/new"; // Import service
-
-// Khai báo biến reactive
-const products = ref([]);
-
-// Cấu hình responsive cho Carousel
-const responsiveOptions = ref([
-  {
-    breakpoint: "1400px",
-    numVisible: 1,
-    numScroll: 1,
-  },
-  {
-    breakpoint: "1199px",
-    numVisible: 1,
-    numScroll: 1,
-  },
-  {
-    breakpoint: "767px",
-    numVisible: 1,
-    numScroll: 1,
-  },
-  {
-    breakpoint: "575px",
-    numVisible: 1,
-    numScroll: 1,
-  },
-]);
-
-// Hàm fetch dữ liệu
-const fetchNews = async () => {
-  try {
-    const data = await NewsService.News();
-    products.value = data?.data.slice(0, 5).map((item) => ({
-      title: item.title,
-      description: item.description,
-      image: `https://picsum.photos/200/300?random=${Math.random()}`, // Hình ảnh ngẫu nhiên
-    }));
-  } catch (error) {
-    console.error("Error fetching news:", error);
-  }
-};
-
-// Gọi hàm fetch dữ liệu khi component được mounted
-onMounted(() => {
-  fetchNews();
-});
+// No setup needed for social media section
 </script>
 
 <style scoped>
-.shortNews {
-  width: 100%;
-  max-width: 700px;
-  border: 0px;
-  background-color: rgb(245, 245, 245);
-  border-radius: 10px;
-  box-shadow: 0px 0px 0px 0px rgb(255, 255, 255);
-  padding: 10px;
-  margin: 0 auto 20px;
+.help-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.button-next-p {
-  background-color: rgb(0, 174, 255);
-  border-radius: 10px;
-  border: 1px solid rgb(0, 174, 255);
+.social-section {
+  margin-top: 50px;
+  padding: 20px;
+}
+
+.social-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.social-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.social-card:hover {
+  transform: translateY(-5px);
+}
+
+.social-card i {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.social-card.facebook-page i {
+  color: #1877f2;
+}
+
+.social-card.facebook-group i {
+  color: #1877f2;
+}
+
+.social-card.telegram i {
+  color: #0088cc;
+}
+
+.social-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.social-card p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.social-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #00aeff;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.social-button:hover {
+  background-color: #0099e6;
 }
 
 h2 {
