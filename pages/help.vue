@@ -9,7 +9,6 @@
           <h3>Facebook Page</h3>
           <p>Theo dõi chúng tôi trên Facebook</p>
           <a href="https://www.facebook.com/profile.php?id=61576830833933" target="_blank" class="social-button">
-            <i class="pi pi-external-link"></i>
             Truy cập ngay
           </a>
         </div>
@@ -19,7 +18,6 @@
           <h3>Facebook Group</h3>
           <p>Tham gia cộng đồng của chúng tôi</p>
           <a href="https://www.facebook.com/groups/1097334865571536" target="_blank" class="social-button">
-            <i class="pi pi-external-link"></i>
             Tham gia ngay
           </a>
         </div>
@@ -29,7 +27,6 @@
           <h3>Telegram Channel</h3>
           <p>Kết nối qua Telegram</p>
           <a href="https://t.me/JPtelecom1" target="_blank" class="social-button">
-            <i class="pi pi-external-link"></i>
             Tham gia kênh
           </a>
         </div>
@@ -56,66 +53,93 @@
 
 .social-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
   margin-top: 30px;
 }
 
 .social-card {
-  background: white;
-  border-radius: 15px;
-  padding: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 36px 28px 32px 28px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 80, 180, 0.10), 0 1.5px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s cubic-bezier(.4, 2, .6, 1), box-shadow 0.25s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .social-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 16px 40px rgba(0, 80, 180, 0.13), 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .social-card i {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.7rem;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 22px auto;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e3f0ff 0%, #f0f7ff 100%);
+  box-shadow: 0 2px 8px rgba(0, 80, 180, 0.08);
 }
 
-.social-card.facebook-page i {
-  color: #1877f2;
-}
-
+.social-card.facebook-page i,
 .social-card.facebook-group i {
   color: #1877f2;
+  background: linear-gradient(135deg, #e3f0ff 0%, #dbeafe 100%);
 }
 
 .social-card.telegram i {
   color: #0088cc;
+  background: linear-gradient(135deg, #e0f7fa 0%, #e3f0ff 100%);
 }
 
 .social-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  color: #333;
+  font-size: 1.45rem;
+  margin-bottom: 13px;
+  color: #222;
+  font-weight: 700;
 }
 
 .social-card p {
-  color: #666;
-  margin-bottom: 20px;
+  color: #5a6a85;
+  margin-bottom: 22px;
+  font-size: 1.08rem;
 }
 
 .social-button {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background-color: #00aeff;
-  color: white;
+  gap: 6px;
+  padding: 6px 14px;
+  background: linear-gradient(90deg, #00aeff 0%, #1877f2 100%);
+  color: #fff;
   border-radius: 8px;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0, 174, 255, 0.10);
+  border: none;
+  transition: background 0.25s, box-shadow 0.25s, transform 0.18s;
+  max-width: 150px;
+  min-width: 90px;
+  justify-content: center;
 }
 
 .social-button:hover {
-  background-color: #0099e6;
+  background: linear-gradient(90deg, #1877f2 0%, #00aeff 100%);
+  box-shadow: 0 4px 16px rgba(0, 174, 255, 0.18);
+  transform: scale(1.04);
+}
+
+.social-button i {
+  font-size: 1.05rem;
 }
 
 h2 {
@@ -124,5 +148,25 @@ h2 {
   font-weight: 700;
   font-size: 44px;
   line-height: 53px;
+}
+
+@media (max-width: 700px) {
+  .social-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .help-container {
+    padding: 8px;
+  }
+
+  h2 {
+    font-size: 2rem;
+    padding: 40px 0 30px;
+  }
+
+  .social-card {
+    padding: 22px 10px 20px 10px;
+  }
 }
 </style>
