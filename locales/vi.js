@@ -301,4 +301,16 @@ export default {
     updateSuccess: "Cập nhật thành công",
     updateFailed: "Cập nhật thất bại",
   },
+  social: {
+    visit_now: "Truy cập ngay",
+    join_now: "Tham gia ngay",
+    join_channel: "Tham gia kênh",
+    connect_title: "Kết nối với chúng tôi",
+    facebook_page: "Facebook Page",
+    facebook_page_desc: "Theo dõi chúng tôi trên Facebook",
+    facebook_group: "Facebook Group",
+    facebook_group_desc: "Tham gia cộng đồng của chúng tôi",
+    telegram_channel: "Telegram Channel",
+    telegram_channel_desc: "Kết nối qua Telegram",
+  },
 };

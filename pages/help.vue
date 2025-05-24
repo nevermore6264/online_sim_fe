@@ -2,32 +2,32 @@
   <div class="help-container">
     <!-- Social Media Section -->
     <div class="social-section">
-      <h2>Kết nối với chúng tôi</h2>
+      <h2>{{ t('social.connect_title') }}</h2>
       <div class="social-cards">
         <div class="social-card facebook-page">
           <i class="pi pi-facebook"></i>
-          <h3>Facebook Page</h3>
-          <p>Theo dõi chúng tôi trên Facebook</p>
+          <h3>{{ t('social.facebook_page') }}</h3>
+          <p>{{ t('social.facebook_page_desc') }}</p>
           <a href="https://www.facebook.com/profile.php?id=61576830833933" target="_blank" class="social-button">
-            Truy cập ngay
+            {{ t('social.visit_now') }}
           </a>
         </div>
 
         <div class="social-card facebook-group">
           <i class="pi pi-facebook"></i>
-          <h3>Facebook Group</h3>
-          <p>Tham gia cộng đồng của chúng tôi</p>
+          <h3>{{ t('social.facebook_group') }}</h3>
+          <p>{{ t('social.facebook_group_desc') }}</p>
           <a href="https://www.facebook.com/groups/1097334865571536" target="_blank" class="social-button">
-            Tham gia ngay
+            {{ t('social.join_now') }}
           </a>
         </div>
 
         <div class="social-card telegram">
           <i class="pi pi-telegram"></i>
-          <h3>Telegram Channel</h3>
-          <p>Kết nối qua Telegram</p>
+          <h3>{{ t('social.telegram_channel') }}</h3>
+          <p>{{ t('social.telegram_channel_desc') }}</p>
           <a href="https://t.me/JPtelecom1" target="_blank" class="social-button">
-            Tham gia kênh
+            {{ t('social.join_channel') }}
           </a>
         </div>
       </div>
@@ -36,7 +36,8 @@
 </template>
 
 <script setup>
-// No setup needed for social media section
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 </script>
 
 <style scoped>

@@ -302,6 +302,18 @@ export default {
     updatedAt: "Updated At",
     createdAt: "Created At",
     updateSuccess: "Update successfully",
-    updateFailed: "Update Failed"
+    updateFailed: "Update Failed",
+  },
+  social: {
+    visit_now: "Visit now",
+    join_now: "Join now",
+    join_channel: "Join channel",
+    connect_title: "Connect with us",
+    facebook_page: "Facebook Page",
+    facebook_page_desc: "Follow us on Facebook",
+    facebook_group: "Facebook Group",
+    facebook_group_desc: "Join our community",
+    telegram_channel: "Telegram Channel",
+    telegram_channel_desc: "Connect via Telegram",
   },
 };
