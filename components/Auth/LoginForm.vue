@@ -108,31 +108,33 @@ const handleGoogleSignIn = async () => {
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
 
-    window.open(
+    const authWindow = window.open(
       'https://verifysms.org/api/auth/google',
       'Google Sign In',
       `width=${width},height=${height},left=${left},top=${top}`
     );
 
-    // Check if popup is closed and handle the callback URL
-    const checkPopup = setInterval(() => {
-      clearInterval(checkPopup);
-      loading.value = false;
+    // Check for callback URL
+    const checkCallback = setInterval(() => {
+      try {
+        const callbackUrl = authWindow.location.href;
+        console.log('Current URL:', callbackUrl);
 
-      // Check if we have a callback URL in localStorage
-      const callbackUrl = localStorage.getItem('googleCallbackUrl');
-      if (callbackUrl) {
-        console.log('Found callback URL:', callbackUrl);
-        const url = new URL(callbackUrl);
-        const accessToken = url.searchParams.get('accessToken');
+        if (callbackUrl.includes('accessToken=')) {
+          clearInterval(checkCallback);
+          const url = new URL(callbackUrl);
+          const accessToken = url.searchParams.get('accessToken');
+          console.log('Access Token:', accessToken);
 
-        if (accessToken) {
-          console.log('Extracted access token:', accessToken);
-          localStorage.setItem('token', accessToken);
-          localStorage.removeItem('googleCallbackUrl'); // Clean up
-          push.success('Login successful!');
-          window.location.reload();
+          if (accessToken) {
+            localStorage.setItem('token', accessToken);
+            push.success('Login successful!');
+            window.location.reload();
+          }
         }
+      } catch (error) {
+        // Ignore CORS errors
+        console.log('Waiting for callback...');
       }
     }, 1000);
 

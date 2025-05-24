@@ -6,14 +6,21 @@
 import { onMounted } from 'vue';
 
 onMounted(() => {
-    // Get the current URL
-    const currentUrl = window.location.href;
-    console.log('Callback URL:', currentUrl);
+    try {
+        // Get accessToken from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const accessToken = urlParams.get('accessToken');
 
-    // Store the URL in localStorage for the main window to process
-    localStorage.setItem('googleCallbackUrl', currentUrl);
+        console.log('Access Token from URL:', accessToken);
 
-    // Close this window
-    window.close();
+        if (accessToken && window.opener) {
+            // Send message to main window
+            window.opener.postMessage({ accessToken }, '*');
+            window.close();
+        }
+    } catch (error) {
+        console.error('Error processing login:', error);
+        window.close();
+    }
 });
 </script>
