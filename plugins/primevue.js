@@ -21,6 +21,7 @@ import Slider from "primevue/slider";
 import Paginator from "primevue/paginator";
 import Carousel from "primevue/carousel";
 import InputSwitch from "primevue/inputswitch";
+import Tooltip from "primevue/tooltip";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -45,4 +46,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("Paginator", Paginator);
   nuxtApp.vueApp.component("Carousel", Carousel);
   nuxtApp.vueApp.component("InputSwitch", InputSwitch);
+  nuxtApp.vueApp.component("Tooltip", Tooltip);
 });

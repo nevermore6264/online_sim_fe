@@ -3,11 +3,7 @@
     <!-- Dropdown filter -->
     <div class="filter-container">
       <label for="status-filter">{{ $t("order.filter_status") }}</label>
-      <select
-        id="status-filter"
-        v-model="selectedStatus"
-        @change="filterOrderList"
-      >
+      <select id="status-filter" v-model="selectedStatus" @change="filterOrderList">
         <option value="all">{{ $t("order.all") }}</option>
         <option value="active">{{ $t("order.active") }}</option>
         <option value="expired">{{ $t("order.expired") }}</option>
@@ -16,12 +12,7 @@
 
     <!-- 🖥 Hiển thị dạng bảng trên màn hình lớn -->
     <div class="purchased-sim-container desktop-view">
-      <DataTable
-        :value="filteredOrderList"
-        scrollable
-        dataKey="id"
-        :loading="loading"
-      >
+      <DataTable :value="filteredOrderList" scrollable dataKey="id" :loading="loading">
         <template #empty>{{ $t("order.empty") }}</template>
         <template #loading>{{ $t("order.loading") }}</template>
 
@@ -31,21 +22,15 @@
             <span>{{ calculateSTT(index) }}</span>
           </template>
         </Column>
-        <Column
-          :header="$t('order.column.phone')"
-          field="stock.phone"
-          style="min-width: 8rem"
-        />
-        <Column
-          :header="$t('order.column.service')"
-          field="stock.serviceCode"
-          style="min-width: 8rem"
-        />
-        <Column
-          :header="$t('order.column.status')"
-          field="statusCode"
-          style="min-width: 4rem"
-        />
+        <Column :header="$t('order.column.phone')" field="stock.phone" style="min-width: 8rem" />
+        <Column :header="$t('order.column.service')" field="stock.serviceCode" style="min-width: 8rem" />
+        <Column :header="$t('order.column.status')" field="statusCode" style="min-width: 4rem">
+          <template #body="{ data }">
+            <span class="status-tag" :class="data.statusCode.toLowerCase()">
+              {{ data.statusCode }}
+            </span>
+          </template>
+        </Column>
         <Column :header="$t('order.column.price')" style="min-width: 1rem">
           <template #body="{ data }">
             <span>{{ data.cost }} USD</span>
@@ -53,7 +38,9 @@
         </Column>
         <Column :header="$t('order.column.otp')" style="min-width: 14rem">
           <template #body="{ data }">
-            {{ smsList.find((e) => e.orderId == data.id)?.messageText }}
+            <div class="truncate-text" :title="smsList.find((e) => e.orderId == data.id)?.messageText">
+              {{smsList.find((e) => e.orderId == data.id)?.messageText}}
+            </div>
           </template>
         </Column>
       </DataTable>
@@ -61,11 +48,7 @@
 
     <!-- 📱 Hiển thị dạng card trên mobile -->
     <div class="mobile-view">
-      <div
-        v-for="(order, index) in filteredOrderList"
-        :key="order.id"
-        class="order-card"
-      >
+      <div v-for="(order, index) in filteredOrderList" :key="order.id" class="order-card">
         <div class="order-header">
           <span class="order-id">#{{ calculateSTT(index) }}</span>
           <span class="order-status" :class="order.statusCode">
@@ -97,12 +80,7 @@
     </div>
 
     <!-- 🛠 Paginator -->
-    <Paginator
-      :rows="rowsPerPage"
-      :totalRecords="totalDocs"
-      v-model:first="firstRowIndex"
-      @page="onPageChange"
-    />
+    <Paginator :rows="rowsPerPage" :totalRecords="totalDocs" v-model:first="firstRowIndex" @page="onPageChange" />
   </div>
 </template>
 
@@ -177,7 +155,7 @@ const fetchOrderList = async (page = 1) => {
 
     if (response?.success) {
       orderList.value = response.data.docs;
-      totalDocs.value = response.data.totalDocs;
+      totalDocs.value = response.data.docs.length * response.data.totalPages; // Calculate total docs
       totalPages.value = response.data.totalPages;
       currentPage.value = response.data.page;
       filterOrderList();
@@ -229,6 +207,14 @@ onMounted(() => {
   gap: 10px;
 }
 
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 14rem;
+  cursor: help;
+}
+
 #status-filter {
   padding: 0.5rem;
   border: 1px solid #ccc;
@@ -238,32 +224,39 @@ onMounted(() => {
 /* Xử lý layout trên mobile */
 @media (max-width: 768px) {
   .filter-container {
-    flex-direction: column; /* Chuyển filter thành cột */
+    flex-direction: column;
+    /* Chuyển filter thành cột */
     align-items: flex-start;
     gap: 5px;
   }
 
   #status-filter {
-    width: 100%; /* Để dropdown full width */
+    width: 100%;
+    /* Để dropdown full width */
   }
 
   .purchased-sim-container {
-    overflow-x: auto; /* Cho phép cuộn ngang nếu bảng quá lớn */
+    overflow-x: auto;
+    /* Cho phép cuộn ngang nếu bảng quá lớn */
   }
 
   table {
-    font-size: 14px; /* Giảm kích thước chữ */
+    font-size: 14px;
+    /* Giảm kích thước chữ */
   }
 
   th,
   td {
-    padding: 8px; /* Giảm padding để bảng nhỏ gọn hơn */
-    white-space: nowrap; /* Tránh bị xuống dòng */
+    padding: 8px;
+    /* Giảm padding để bảng nhỏ gọn hơn */
+    white-space: nowrap;
+    /* Tránh bị xuống dòng */
   }
 
   .desktop-view {
     display: none;
   }
+
   .mobile-view {
     display: block;
   }
@@ -274,6 +267,7 @@ onMounted(() => {
   .desktop-view {
     display: block;
   }
+
   .mobile-view {
     display: none;
   }
@@ -298,21 +292,57 @@ onMounted(() => {
 }
 
 .order-status {
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
   text-transform: capitalize;
 }
 
-.order-status.active {
-  color: #2ecc71;
+.order-status.refunded {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
 }
 
-.order-status.expired {
-  color: #e74c3c;
+.order-status.success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.order-status.pending {
+  background-color: #fefce8;
+  color: #ca8a04;
+  border: 1px solid #fef08a;
 }
 
 .order-body p {
   margin: 0.3rem 0;
+}
+
+.status-tag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-tag.refunded {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.status-tag.success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.status-tag.pending {
+  background-color: #fefce8;
+  color: #ca8a04;
+  border: 1px solid #fef08a;
 }
 </style>
