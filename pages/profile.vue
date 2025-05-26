@@ -95,12 +95,6 @@
               level="H"
               render-as="svg"
             />
-            <img
-              v-if="qrData"
-              src="https://finance.vietstock.vn/image/BID"
-              class="qr-center-logo"
-              alt="BIDV logo"
-            />
             <div v-else class="qr-placeholder">
               <i class="fas fa-qrcode"></i>
               <p>{{ t("profile.qrPlaceholder") }}</p>
