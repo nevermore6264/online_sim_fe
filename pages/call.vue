@@ -92,14 +92,16 @@
           </div>
           <!-- Các gói dịch vụ -->
           <div class="package-buttons">
-            <Button
-              v-for="(pkg, index) in packages"
-              :key="index"
-              :label="pkg.label"
-              :class="{ selected: selectedPackage === pkg.value }"
-              @click="selectPackage(pkg.value)"
-              class="package-button"
-            />
+            <div class="package-row">
+              <Button
+                v-for="(pkg, index) in packages"
+                :key="index"
+                :label="pkg.label"
+                :class="{ selected: selectedPackage === pkg.value }"
+                @click="selectPackage(pkg.value)"
+                class="package-button"
+              />
+            </div>
           </div>
           <!-- Tổng tiền -->
           <div class="total-price">
@@ -576,21 +578,36 @@ watchEffect(() => {
 }
 
 .package-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   margin-bottom: 20px;
 }
 
+.package-row {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
 .package-button {
-  width: 100%;
-  text-align: left;
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  background-color: #007bff;
+  border: 1px solid #0056b3;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.package-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 .package-button.selected {
-  background-color: #ffc107;
+  background-color: #28a745;
   color: white;
-  border: 1px solid #ffc107;
+  border-color: #1e7e34;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .total-price {
