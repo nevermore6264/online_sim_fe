@@ -1,60 +1,101 @@
 <template>
   <div class="profile-page">
     <div class="profile-header">
-      <h2>{{ t('profile.title') }}</h2>
+      <h2>{{ t("profile.title") }}</h2>
     </div>
 
     <div class="profile-content">
       <!-- Left Column - User Info -->
       <div class="profile-info">
         <div class="form-group">
-          <label for="firstName">{{ t('profile.firstName') }}</label>
-          <input type="text" id="firstName" class="form-control" :value="userInfo?.firstName" disabled />
+          <label for="firstName">{{ t("profile.firstName") }}</label>
+          <input
+            type="text"
+            id="firstName"
+            class="form-control"
+            :value="userInfo?.firstName"
+            disabled
+          />
         </div>
 
         <div class="form-group">
-          <label for="lastName">{{ t('profile.lastName') }}</label>
-          <input type="text" id="lastName" class="form-control" :value="userInfo?.lastName" disabled />
+          <label for="lastName">{{ t("profile.lastName") }}</label>
+          <input
+            type="text"
+            id="lastName"
+            class="form-control"
+            :value="userInfo?.lastName"
+            disabled
+          />
         </div>
 
         <div class="form-group">
-          <label for="id">{{ t('profile.userId') }}</label>
-          <input type="text" id="id" class="form-control" :value="userInfo?.id" disabled />
+          <label for="id">{{ t("profile.userId") }}</label>
+          <input
+            type="text"
+            id="id"
+            class="form-control"
+            :value="userInfo?.id"
+            disabled
+          />
         </div>
 
         <div class="form-group">
-          <label for="balanceAmount">{{ t('profile.balance') }}</label>
-          <input type="text" id="balanceAmount" class="form-control" :value="`${userInfo?.balanceAmount} USD`"
-            disabled />
+          <label for="balanceAmount">{{ t("profile.balance") }}</label>
+          <input
+            type="text"
+            id="balanceAmount"
+            class="form-control"
+            :value="`${userInfo?.balanceAmount} USD`"
+            disabled
+          />
         </div>
 
         <div class="form-group">
-          <label for="depositAddress">{{ t('profile.depositAddress') }}</label>
-          <input type="text" id="depositAddress" class="form-control"
-            :value="userInfo?.depositAddress || t('profile.notProvided')" disabled />
+          <label for="depositAddress">{{ t("profile.depositAddress") }}</label>
+          <input
+            type="text"
+            id="depositAddress"
+            class="form-control"
+            :value="userInfo?.depositAddress || t('profile.notProvided')"
+            disabled
+          />
         </div>
       </div>
 
       <!-- Right Column - Payment QR Code -->
       <div class="payment-section">
-        <h3>{{ t('profile.paymentTitle') }}</h3>
+        <h3>{{ t("profile.paymentTitle") }}</h3>
         <div class="form-group">
-          <label for="amount">{{ t('profile.amountLabel') }}</label>
-          <input type="number" id="amount" class="form-control" v-model="amount" min="1000"
-            :placeholder="t('profile.amountPlaceholder')" :disabled="isLoading" />
+          <label for="amount">{{ t("profile.amountLabel") }}</label>
+          <input
+            type="number"
+            id="amount"
+            class="form-control"
+            v-model="amount"
+            min="1000"
+            :placeholder="t('profile.amountPlaceholder')"
+            :disabled="isLoading"
+          />
         </div>
         <div v-if="amountError" class="amount-error">{{ amountError }}</div>
         <div class="qr-container">
-          <div v-if="qrCodeUrl" class="qr-code">
-            <img :src="qrCodeUrl" :alt="t('profile.paymentTitle')" />
+          <div v-if="qrData" class="qr-code">
+            <qrcode-vue :value="qrData" :size="250" level="H" />
           </div>
           <div v-else class="qr-placeholder">
             <i class="fas fa-qrcode"></i>
-            <p>{{ t('profile.qrPlaceholder') }}</p>
+            <p>{{ t("profile.qrPlaceholder") }}</p>
           </div>
         </div>
-        <button class="generate-qr-btn" @click="generateQRCode" :disabled="isLoading">
-          {{ isLoading ? t('profile.generatingBtn') : t('profile.generateBtn') }}
+        <button
+          class="generate-qr-btn"
+          @click="generateQRCode"
+          :disabled="isLoading"
+        >
+          {{
+            isLoading ? t("profile.generatingBtn") : t("profile.generateBtn")
+          }}
         </button>
       </div>
     </div>
@@ -63,12 +104,13 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useI18n } from 'vue-i18n';
+import { useI18n } from "vue-i18n";
+import QrcodeVue from "qrcode.vue";
 import paymentService from "../services/payment";
 
 const { t } = useI18n();
 const userInfo = ref(null);
-const qrCodeUrl = ref(null);
+const qrData = ref(null);
 const isLoading = ref(false);
 const amount = ref("");
 const amountError = ref("");
@@ -97,15 +139,15 @@ const generateQRCode = async () => {
   const value = parseInt(amount.value, 10);
   try {
     isLoading.value = true;
-    qrCodeUrl.value = null;
+    qrData.value = null;
     const data = await paymentService.createPaymentQRCode(value);
-    if (data.success && data.data.qrCode) {
-      qrCodeUrl.value = `https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=${encodeURIComponent(data.data.qrCode)}`;
+    if (data.success && data.data) {
+      qrData.value = data.data;
     } else {
-      amountError.value = t('profile.qrError');
+      amountError.value = t("profile.qrError");
     }
   } catch (error) {
-    amountError.value = t('profile.qrApiError');
+    amountError.value = t("profile.qrApiError");
   } finally {
     isLoading.value = false;
   }
@@ -167,9 +209,13 @@ onMounted(fetchUserInfoFromLocalStorage);
   margin-bottom: 20px;
 }
 
-.qr-code img {
-  max-width: 250px;
-  height: auto;
+.qr-code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
 }
 
 .qr-placeholder {
