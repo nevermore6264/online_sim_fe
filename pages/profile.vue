@@ -79,13 +79,42 @@
           />
         </div>
         <div v-if="amountError" class="amount-error">{{ amountError }}</div>
-        <div class="qr-container">
-          <div v-if="qrData" class="qr-code">
-            <qrcode-vue :value="qrData" :size="250" level="H" />
+        <div class="vietqr-container">
+          <div class="vietqr-header">
+            <img
+              src="https://i.gyazo.com/566d62fd25cf0867e0033fb1b9b47927.png"
+              alt="VietQR PRO"
+              class="vietqr-pro-logo"
+            />
           </div>
-          <div v-else class="qr-placeholder">
-            <i class="fas fa-qrcode"></i>
-            <p>{{ t("profile.qrPlaceholder") }}</p>
+          <div class="qr-wrapper">
+            <qrcode-vue
+              v-if="qrData"
+              :value="qrData"
+              :size="250"
+              level="H"
+              render-as="svg"
+            />
+            <img
+              v-if="qrData"
+              src="https://finance.vietstock.vn/image/BID"
+              class="qr-center-logo"
+              alt="BIDV logo"
+            />
+            <div v-else class="qr-placeholder">
+              <i class="fas fa-qrcode"></i>
+              <p>{{ t("profile.qrPlaceholder") }}</p>
+            </div>
+          </div>
+          <div class="vietqr-footer">
+            <img
+              src="https://napas.qltns.mediacdn.vn/479491956813160448/2023/7/21/logo-napas-16899065047812042806293.png"
+              class="footer-logo"
+            />
+            <img
+              src="https://finance.vietstock.vn/image/BID"
+              class="footer-logo"
+            />
           </div>
         </div>
         <button
@@ -198,35 +227,37 @@ onMounted(fetchUserInfoFromLocalStorage);
   text-align: center;
 }
 
-.qr-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.qr-code {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  background: white;
-  border-radius: 8px;
-}
-
-.qr-placeholder {
+.vietqr-container {
   text-align: center;
-  color: #666;
 }
-
-.qr-placeholder i {
-  font-size: 64px;
-  margin-bottom: 15px;
-  color: #ccc;
+.vietqr-header {
+  margin-bottom: 8px;
+}
+.vietqr-pro-logo {
+  height: 40px;
+}
+.qr-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.qr-center-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.vietqr-footer {
+  margin-top: 8px;
+}
+.footer-logo {
+  height: 24px;
+  margin: 0 8px;
 }
 
 .form-group {
