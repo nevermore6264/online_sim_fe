@@ -36,7 +36,7 @@ export default defineNuxtConfig({
   plugins: ["~/plugins/primevue.js", "~/plugins/vue3-toastify.ts"],
   app: {
     head: {
-      title: "VerifySMS - service for private registration at online resources",
+      title: "Verify SMS - service for private registration at online resources",
       htmlAttrs: {
         lang: "en",
       },
