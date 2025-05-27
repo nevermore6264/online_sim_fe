@@ -209,12 +209,13 @@ definePageMeta({
   layout: "landing",
 });
 
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, toRaw } from "vue";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 import orderService from "../services/order";
 import { useI18n } from "vue-i18n";
 import { push } from "notivue";
+import UserService from "../services/user";
 
 const { t } = useI18n();
 const customers = ref([]);
@@ -398,7 +399,25 @@ const buySelectedServices = async () => {
 
     if (successCount > 0) {
       push.success(`Successfully bought ${successCount} OTP(s)!`);
-      window.location.reload();
+      // Clear selected services
+      selectedServices.value = [];
+      // Update user balance
+      const userResponse = await UserService.GetCurrentAccount(token);
+      if (userResponse.success) {
+        localStorage.setItem("userInfo", JSON.stringify(userResponse));
+        // Dispatch event to notify about user info update
+        window.dispatchEvent(
+          new CustomEvent("userInfoUpdated", { detail: userResponse })
+        );
+      }
+      // Click the MyOTP tab
+      const tabMenu = document.querySelector(".p-tabmenu");
+      if (tabMenu) {
+        const tabButtons = tabMenu.querySelectorAll(".p-tabmenuitem");
+        if (tabButtons && tabButtons[1]) {
+          tabButtons[1].click();
+        }
+      }
     }
     if (failedServices.length > 0) {
       push.warning(`Failed to activations for: ${failedServices.join(", ")}`);

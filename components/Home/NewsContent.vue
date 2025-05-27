@@ -85,7 +85,7 @@ const responsiveOptions = ref([
 // Hàm fetch dữ liệu
 const fetchNews = async () => {
   try {
-    const data = await NewsService.News();
+    const data = await NewsService.NewsForUser();
     products.value = data?.data.slice(0, 5).map((item) => ({
       title: item.title,
       description: item.description,

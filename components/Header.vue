@@ -266,6 +266,11 @@ onMounted(async () => {
   }
   window.addEventListener("resize", updateScreenSize);
 
+  // Add event listener for user info updates
+  window.addEventListener("userInfoUpdated", (event) => {
+    Object.assign(userInfo, event.detail);
+  });
+
   switch (route.path) {
     case "/rent-sim":
       activeMenu.value = "rent-sim";
@@ -286,6 +291,10 @@ onMounted(async () => {
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateScreenSize);
+  // Remove event listener for user info updates
+  window.removeEventListener("userInfoUpdated", (event) => {
+    Object.assign(userInfo, event.detail);
+  });
 });
 </script>
 

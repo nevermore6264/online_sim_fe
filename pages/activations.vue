@@ -12,10 +12,10 @@
 
       <div class="tab-content">
         <div v-if="activeTab === 0">
-          <BuyOTPSectionNew />
+          <BuyOTPSectionNew @purchase-success="handlePurchaseSuccess" />
         </div>
         <div v-if="activeTab === 1">
-          <MyOTPSection />
+          <MyOTPSection ref="myOTPSection" />
         </div>
       </div>
     </div>
@@ -24,6 +24,7 @@
 
 <script setup>
 import { ref } from "vue";
+import UserService from "@/services/user";
 
 const tabs = [
   { labelKey: "buy_otp.order", icon: "pi pi-shopping-cart" },
@@ -31,6 +32,34 @@ const tabs = [
 ];
 
 const activeTab = ref(0);
+const myOTPSection = ref(null);
+
+const handlePurchaseSuccess = async () => {
+  // Update user balance first
+  const token = localStorage.getItem("token");
+  if (token) {
+    try {
+      const response = await UserService.GetCurrentAccount(token);
+      if (response.success) {
+        localStorage.setItem("userInfo", JSON.stringify(response));
+        // Dispatch event to notify about user info update
+        window.dispatchEvent(
+          new CustomEvent("userInfoUpdated", { detail: response })
+        );
+      }
+    } catch (error) {
+      console.error("Error updating user info:", error);
+    }
+  }
+
+  // Switch to MyOTP tab
+  activeTab.value = 1;
+
+  // Refresh MyOTP data
+  if (myOTPSection.value?.refreshData) {
+    await myOTPSection.value.refreshData();
+  }
+};
 </script>
 
 <style scoped>

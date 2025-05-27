@@ -3,7 +3,11 @@
     <!-- Dropdown filter -->
     <div class="filter-container">
       <label for="status-filter">{{ $t("order.filter_status") }}</label>
-      <select id="status-filter" v-model="selectedStatus" @change="filterOrderList">
+      <select
+        id="status-filter"
+        v-model="selectedStatus"
+        @change="filterOrderList"
+      >
         <option value="all">{{ $t("order.all") }}</option>
         <option value="success">{{ $t("order.success") }}</option>
         <option value="pending">{{ $t("order.pending") }}</option>
@@ -13,7 +17,12 @@
 
     <!-- 🖥 Hiển thị dạng bảng trên màn hình lớn -->
     <div class="purchased-sim-container desktop-view">
-      <DataTable :value="filteredOrderList" scrollable dataKey="id" :loading="loading">
+      <DataTable
+        :value="filteredOrderList"
+        scrollable
+        dataKey="id"
+        :loading="loading"
+      >
         <template #empty>{{ $t("order.empty") }}</template>
         <template #loading>{{ $t("order.loading") }}</template>
 
@@ -23,9 +32,21 @@
             <span>{{ calculateSTT(index) }}</span>
           </template>
         </Column>
-        <Column :header="$t('order.column.phone')" field="stock.phone" style="min-width: 8rem" />
-        <Column :header="$t('order.column.service')" field="stock.serviceCode" style="min-width: 8rem" />
-        <Column :header="$t('order.column.status')" field="statusCode" style="min-width: 4rem">
+        <Column
+          :header="$t('order.column.phone')"
+          field="stock.phone"
+          style="min-width: 8rem"
+        />
+        <Column
+          :header="$t('order.column.service')"
+          field="stock.serviceCode"
+          style="min-width: 8rem"
+        />
+        <Column
+          :header="$t('order.column.status')"
+          field="statusCode"
+          style="min-width: 4rem"
+        >
           <template #body="{ data }">
             <span class="status-tag" :class="data.statusCode.toLowerCase()">
               {{ data.statusCode }}
@@ -39,8 +60,11 @@
         </Column>
         <Column :header="$t('order.column.otp')" style="min-width: 14rem">
           <template #body="{ data }">
-            <div class="truncate-text" :title="smsList.find((e) => e.orderId == data.id)?.messageText">
-              {{smsList.find((e) => e.orderId == data.id)?.messageText}}
+            <div
+              class="truncate-text"
+              :title="smsList.find((e) => e.orderId == data.id)?.messageText"
+            >
+              {{ smsList.find((e) => e.orderId == data.id)?.messageText }}
             </div>
           </template>
         </Column>
@@ -49,7 +73,11 @@
 
     <!-- 📱 Hiển thị dạng card trên mobile -->
     <div class="mobile-view">
-      <div v-for="(order, index) in filteredOrderList" :key="order.id" class="order-card">
+      <div
+        v-for="(order, index) in filteredOrderList"
+        :key="order.id"
+        class="order-card"
+      >
         <div class="order-header">
           <span class="order-id">#{{ calculateSTT(index) }}</span>
           <span class="order-status" :class="order.statusCode">
@@ -81,7 +109,12 @@
     </div>
 
     <!-- 🛠 Paginator -->
-    <Paginator :rows="rowsPerPage" :totalRecords="totalDocs" v-model:first="firstRowIndex" @page="onPageChange" />
+    <Paginator
+      :rows="rowsPerPage"
+      :totalRecords="totalDocs"
+      v-model:first="firstRowIndex"
+      @page="onPageChange"
+    />
   </div>
 </template>
 
@@ -110,6 +143,12 @@ const calculateSTT = (index) => {
 const getMessageText = (orderId) => {
   const sms = smsList.value.find((e) => e.orderId == orderId);
   return sms == undefined ? "-" : sms?.messageText;
+};
+
+// Add refreshData method
+const refreshData = async () => {
+  await fetchOrderList(currentPage.value);
+  await fetchSmsList();
 };
 
 const fetchSmsList = async () => {
