@@ -58,6 +58,13 @@
             <span>{{ data.cost }} USD</span>
           </template>
         </Column>
+        <Column :header="$t('order.column.countdown')" style="min-width: 8rem">
+          <template #body="{ data }">
+            <span class="countdown">{{
+              formatCountdown(data.stock.expiredAt)
+            }}</span>
+          </template>
+        </Column>
         <Column :header="$t('order.column.otp')" style="min-width: 14rem">
           <template #body="{ data }">
             <div
@@ -101,6 +108,12 @@
             <strong>{{ $t("order.column.price") }}:</strong> {{ order.cost }}
           </p>
           <p>
+            <strong>{{ $t("order.column.countdown") }}:</strong>
+            <span class="countdown">{{
+              formatCountdown(order.stock.expiredAt)
+            }}</span>
+          </p>
+          <p>
             <strong>{{ $t("order.column.otp") }}:</strong>
             {{ getMessageText(order.id) }}
           </p>
@@ -119,7 +132,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import UserService from "@/services/user";
 import SmsService from "@/services/sms";
 
@@ -134,6 +147,9 @@ const currentPage = ref(1); // Trang hiện tại
 const totalDocs = ref(0); // Tổng số đơn hàng từ API
 const totalPages = ref(1); // Tổng số trang
 const firstRowIndex = ref(0); // Chỉ mục của dòng đầu tiên trên trang hiện tại
+
+const countdownInterval = ref(null);
+const currentTime = ref(new Date());
 
 // Hàm tính STT
 const calculateSTT = (index) => {
@@ -229,9 +245,38 @@ const onPageChange = (event) => {
   fetchOrderList(newPage);
 };
 
+// Format countdown time
+const formatCountdown = (expiredAt) => {
+  const now = currentTime.value;
+  const expired = new Date(expiredAt);
+  const diff = expired - now;
+
+  if (diff <= 0) {
+    return "Expired";
+  }
+
+  const minutes = Math.floor(diff / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+};
+
+// Update countdown every second
+const startCountdown = () => {
+  countdownInterval.value = setInterval(() => {
+    currentTime.value = new Date();
+  }, 1000);
+};
+
 onMounted(() => {
   fetchOrderList();
   fetchSmsList();
+  startCountdown();
+});
+
+onUnmounted(() => {
+  if (countdownInterval.value) {
+    clearInterval(countdownInterval.value);
+  }
 });
 </script>
 
@@ -381,5 +426,11 @@ onMounted(() => {
   background-color: #fefce8;
   color: #ca8a04;
   border: 1px solid #fef08a;
+}
+
+.countdown {
+  font-family: monospace;
+  font-weight: bold;
+  color: #dc2626;
 }
 </style>

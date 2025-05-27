@@ -272,6 +272,7 @@ export default {
       price: "Giá",
       otp: "OTP",
       country: "Quốc gia",
+      countdown: "Còn lại",
     },
   },
   support: {

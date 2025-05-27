@@ -275,6 +275,7 @@ export default {
       price: "Price",
       otp: "OTP",
       country: "Country",
+      countdown: "Time Left"
     },
   },
   support: {
