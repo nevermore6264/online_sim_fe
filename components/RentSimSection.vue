@@ -173,6 +173,7 @@ import orderService from "../services/order";
 import serviceService from "@/services/service";
 import { GetAllCountries } from "@/services/country.js";
 import { push } from "notivue";
+import UserService from "../services/user";
 
 const selectedCustomer = ref(null);
 const selectedServices = ref([]);
@@ -258,7 +259,25 @@ const rentSelectedServices = async () => {
     }
     if (successCount > 0) {
       push.success(`Successfully rented ${successCount} service(s)!`);
-      window.location.reload();
+      // Clear selected services
+      selectedServices.value = [];
+      // Update user balance
+      const userResponse = await UserService.GetCurrentAccount(token);
+      if (userResponse.success) {
+        localStorage.setItem("userInfo", JSON.stringify(userResponse));
+        // Dispatch event to notify about user info update
+        window.dispatchEvent(
+          new CustomEvent("userInfoUpdated", { detail: userResponse })
+        );
+      }
+      // Click the My Numbers tab
+      const tabMenu = document.querySelector(".p-tabmenu");
+      if (tabMenu) {
+        const tabButtons = tabMenu.querySelectorAll(".p-tabmenuitem");
+        if (tabButtons && tabButtons[1]) {
+          tabButtons[1].click();
+        }
+      }
     }
     if (failedServices.length > 0) {
       push.warning(`Failed to rent service for: ${failedServices.join(", ")}`);
