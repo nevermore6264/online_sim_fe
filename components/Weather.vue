@@ -13,6 +13,12 @@
       <div class="sun"></div>
       <div v-for="n in 8" :key="n" class="sun-ray"></div>
     </div>
+    <!-- Cloud effect container -->
+    <div v-if="isCloudy" class="cloud-container">
+      <div class="cloud cloud1"></div>
+      <div class="cloud cloud2"></div>
+      <div class="cloud cloud3"></div>
+    </div>
   </div>
 </template>
 
@@ -35,6 +41,14 @@ const isSunny = computed(() => {
   if (!weather.value) return false;
   const sunKeywords = ["clear", "sunny", "sun"];
   return sunKeywords.some((keyword) =>
+    weather.value.description.toLowerCase().includes(keyword)
+  );
+});
+
+const isCloudy = computed(() => {
+  if (!weather.value) return false;
+  const cloudKeywords = ["cloud", "overcast", "partly cloudy"];
+  return cloudKeywords.some((keyword) =>
     weather.value.description.toLowerCase().includes(keyword)
   );
 });
@@ -219,5 +233,105 @@ onMounted(() => {
 }
 .sun-ray:nth-child(8) {
   transform: rotate(315deg);
+}
+
+/* Cloud effect styles */
+.cloud-container {
+  position: fixed;
+  bottom: 50px;
+  left: 50px;
+  width: 200px;
+  height: 100px;
+}
+
+.cloud {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: float 8s infinite ease-in-out;
+}
+
+.cloud:before,
+.cloud:after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+}
+
+.cloud1 {
+  width: 60px;
+  height: 20px;
+  left: 0;
+  bottom: 0;
+  animation-delay: 0s;
+}
+
+.cloud1:before {
+  width: 30px;
+  height: 30px;
+  top: -15px;
+  left: 10px;
+}
+
+.cloud1:after {
+  width: 20px;
+  height: 20px;
+  top: -10px;
+  left: 30px;
+}
+
+.cloud2 {
+  width: 80px;
+  height: 25px;
+  left: 40px;
+  bottom: 20px;
+  animation-delay: 2s;
+}
+
+.cloud2:before {
+  width: 35px;
+  height: 35px;
+  top: -17px;
+  left: 15px;
+}
+
+.cloud2:after {
+  width: 25px;
+  height: 25px;
+  top: -12px;
+  left: 40px;
+}
+
+.cloud3 {
+  width: 70px;
+  height: 22px;
+  left: 100px;
+  bottom: 10px;
+  animation-delay: 4s;
+}
+
+.cloud3:before {
+  width: 32px;
+  height: 32px;
+  top: -16px;
+  left: 12px;
+}
+
+.cloud3:after {
+  width: 22px;
+  height: 22px;
+  top: -11px;
+  left: 35px;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 </style>
