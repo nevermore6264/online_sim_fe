@@ -1,5 +1,6 @@
 <template>
   <!-- <FraudWarning /> -->
+  <Weather />
   <LanguageSwitcher />
   <Header />
   <div class="main">
@@ -15,7 +16,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-
+import Weather from "@/components/Weather.vue";
 const isLoggedIn = ref(false);
 
 const checkLoginStatus = () => {
