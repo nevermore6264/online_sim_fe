@@ -38,14 +38,12 @@ export default {
         const data = event.data;
         if (data && data.token) {
           window.removeEventListener("message", handleMessage);
-          authWindow.close();
+          if (authWindow && !authWindow.closed) {
+            authWindow.close();
+          }
           resolve(data.token);
         }
       }
-
-      window.addEventListener("message", function (event) {
-        console.log("RECEIVED MESSAGE", event.origin, event.data);
-      });
 
       window.addEventListener("message", handleMessage);
 

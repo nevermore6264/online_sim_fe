@@ -85,8 +85,8 @@ const responsiveOptions = ref([
 // Hàm fetch dữ liệu
 const fetchNews = async () => {
   try {
-    const data = await NewsService.NewsForUser();
-    products.value = data?.data.slice(0, 5).map((item) => ({
+    const res = await NewsService.NewsForUser();
+    products.value = res?.data?.docs.slice(0, 5).map((item) => ({
       title: item.title,
       description: item.description,
       image: `https://picsum.photos/200/300?random=${Math.random()}`, // Hình ảnh ngẫu nhiên

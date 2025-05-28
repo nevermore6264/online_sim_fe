@@ -141,8 +141,7 @@ const handleLogin = async () => {
 const handleGoogleSignIn = async () => {
   try {
     loading.value = true;
-    const response = await UserService.LoginGoogle();
-    const { token } = response.data;
+    const token = await UserService.LoginGoogle();
 
     if (token) {
       localStorage.setItem("token", token);
