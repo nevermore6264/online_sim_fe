@@ -55,6 +55,12 @@
           :class="{ 'active-menu': activeMenu === 'help' }"
           @click="handleHelp"
         />
+        <Button
+          :label="$t('landing.headerDeposit')"
+          class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'deposit' }"
+          @click="handleDeposit"
+        />
       </div>
     </template>
 
@@ -129,6 +135,12 @@
                 :class="{ 'active-menu': activeMenu === 'help' }"
               >
                 {{ $t("landing.headerHelp") }}
+              </li>
+              <li
+                @click="handleDeposit"
+                :class="{ 'active-menu': activeMenu === 'deposit' }"
+              >
+                {{ $t("landing.headerDeposit") }}
               </li>
               <li @click="handleLogout">{{ $t("landing.logout") }}</li>
             </ul>
@@ -225,6 +237,11 @@ const handleCall = () => {
 const handleHelp = () => {
   activeMenu.value = "help";
   router.push("/help");
+};
+
+const handleDeposit = () => {
+  activeMenu.value = "deposit";
+  router.push("/deposit");
 };
 
 const fetchUserInfo = async (token) => {

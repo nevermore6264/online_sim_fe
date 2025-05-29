@@ -17,6 +17,7 @@ export default {
     headerAPI: "API",
     headerCall: "Calling",
     headerHelp: "Help",
+    headerDeposit: "Deposit",
     login: "Login",
     signup: "Sign Up",
     logout: "Logout",
@@ -275,7 +276,7 @@ export default {
       price: "Price",
       otp: "OTP",
       country: "Country",
-      countdown: "Time Left"
+      countdown: "Time Left",
     },
   },
   support: {
@@ -334,5 +335,21 @@ export default {
     amountError: "Please enter a valid amount (minimum 1,000 VND)",
     qrError: "Failed to generate QR code. Please try again.",
     qrApiError: "An error occurred while generating QR code.",
+  },
+  deposit: {
+    title: "Deposit",
+    vietqrTitle: "VietQR Payment",
+    amountLabel: "Amount (VND)",
+    amountPlaceholder: "Enter amount (min 1,000 VND)",
+    qrPlaceholder: "Enter amount to generate QR code",
+    generatingBtn: "Generating...",
+    generateBtn: "Generate QR Code",
+    qrError: "Failed to generate QR code",
+    qrApiError: "Error connecting to payment service",
+    otherMethodsTitle: "Other Payment Methods",
+    creditCard: "Credit Card",
+    eWallet: "E-Wallet",
+    cashPayment: "Cash Payment",
+    comingSoon: "Coming Soon",
   },
 };
