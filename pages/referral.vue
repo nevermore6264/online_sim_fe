@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto px-4 py-12">
-    <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
       {{ $t("referral.title") }}
     </h1>
 
