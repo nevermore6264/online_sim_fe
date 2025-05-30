@@ -81,7 +81,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { useReferralStore } from "~/stores/referral";
 import UserService from "@/services/user";
 import { push } from "notivue";
 
