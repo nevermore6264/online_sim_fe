@@ -18,6 +18,7 @@ export default {
     headerCall: "Gọi điện",
     headerHelp: "Trợ giúp",
     headerDeposit: "Nạp tiền",
+    headerReferral: "Giới thiệu",
     login: "Đăng nhập",
     signup: "Đăng ký",
     logout: "Đăng xuất",
@@ -29,6 +30,7 @@ export default {
     firstName: "Tên",
     lastName: "Họ",
     confirmPassword: "Xác nhận mật khẩu",
+    referralCode: "Mã giới thiệu (không bắt buộc)",
     alreadyAccount: "Đã có tài khoản?",
     signUpHere: "Đăng ký tại đây",
     signup_info_heading:
@@ -350,5 +352,16 @@ export default {
     comingSoon: "Sắp ra mắt",
     usdtAddress: "Địa chỉ USDT",
     minAmountError: "Số tiền tối thiểu là 10 USDT",
+  },
+  referral: {
+    title: "Chương Trình Giới Thiệu",
+    yourCode: "Mã Giới Thiệu Của Bạn",
+    shareLink: "Chia Sẻ Link Giới Thiệu",
+    copy: "Sao Chép Mã",
+    copyLink: "Sao Chép Link",
+    loginRequired: "Vui lòng đăng nhập để xem mã giới thiệu của bạn",
+    welcome: "Chào Mừng Đến Với VerifySMS!",
+    inviteMessage:
+      "Bạn đã được mời tham gia VerifySMS. Đăng ký ngay để bắt đầu!",
   },
 };

@@ -357,12 +357,12 @@ export default {
   referral: {
     title: "Referral Program",
     yourCode: "Your Referral Code",
-    copy: "Copy",
-    shareLink: "Share your referral link",
+    shareLink: "Share Your Referral Link",
+    copy: "Copy Code",
     copyLink: "Copy Link",
-    stats: "Your Statistics",
-    totalReferrals: "Total Referrals",
-    earnings: "Total Earnings",
-    loginRequired: "Please log in to view your referral code and statistics",
+    loginRequired: "PlreferralCodeease log in to view your referral code",
+    welcome: "Welcome to VerifySMS!",
+    inviteMessage:
+      "You've been invited to join VerifySMS. Sign up now to get started!",
   },
 };
