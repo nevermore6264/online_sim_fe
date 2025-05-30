@@ -1,44 +1,57 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-6">{{ $t("referral.title") }}</h1>
+  <div class="container mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">
+      {{ $t("referral.title") }}
+    </h1>
 
-    <div v-if="isLoggedIn" class="bg-white rounded-lg shadow p-6 mb-6">
-      <div v-if="loading" class="text-center py-4">
-        <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
-        <p class="mt-2">Loading...</p>
+    <div
+      v-if="isLoggedIn"
+      class="bg-white rounded-xl shadow-lg p-8 mb-8 transform transition-all duration-300 hover:shadow-xl"
+    >
+      <div v-if="loading" class="text-center py-8">
+        <i
+          class="pi pi-spin pi-spinner text-primary"
+          style="font-size: 2.5rem"
+        ></i>
+        <p class="mt-4 text-gray-600 text-lg">Loading...</p>
       </div>
 
       <template v-else>
-        <h2 class="text-xl font-semibold mb-4">
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800">
           {{ $t("referral.yourCode") }}
         </h2>
-        <div class="flex items-center gap-4">
-          <code class="bg-gray-100 px-4 py-2 rounded">{{
-            userReferralCode
-          }}</code>
+        <div class="flex items-center gap-4 mb-8">
+          <code
+            class="bg-gray-50 px-6 py-3 rounded-lg text-lg font-mono border border-gray-200 shadow-sm"
+            >{{ userReferralCode }}</code
+          >
           <button
             @click="copyToClipboard"
             class="custom-button"
             :disabled="!userReferralCode"
           >
+            <i class="pi pi-copy mr-2"></i>
             {{ $t("referral.copy") }}
           </button>
         </div>
 
-        <div class="mt-4">
-          <h3 class="font-medium mb-2">{{ $t("referral.shareLink") }}</h3>
+        <div class="mt-8">
+          <h3 class="font-medium mb-4 text-lg text-gray-700">
+            {{ $t("referral.shareLink") }}
+          </h3>
           <div class="flex items-center gap-4">
             <input
               type="text"
               :value="referralLink"
               readonly
-              class="flex-1 bg-gray-100 px-4 py-2 rounded"
+              class="flex-1 bg-gray-50 px-6 py-3 rounded-lg border border-gray-200 shadow-sm text-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
             />
             <button
               @click="copyLinkToClipboard"
               class="custom-button"
               :disabled="!userReferralCode"
             >
+              <i class="pi pi-link mr-2"></i>
               {{ $t("referral.copyLink") }}
             </button>
           </div>
@@ -46,17 +59,20 @@
       </template>
     </div>
 
-    <div v-else class="bg-white rounded-lg shadow p-6">
-      <p class="text-gray-600">{{ $t("referral.loginRequired") }}</p>
-      <div class="mt-4">
+    <div v-else class="bg-white rounded-xl shadow-lg p-8 text-center">
+      <p class="text-gray-600 text-lg mb-6">
+        {{ $t("referral.loginRequired") }}
+      </p>
+      <div class="flex justify-center gap-4">
         <Button
           :label="$t('landing.login')"
           @click="() => $router.push('/login')"
-          class="mr-2"
+          class="custom-button"
         />
         <Button
           :label="$t('landing.signup')"
           @click="() => $router.push('/signup')"
+          class="custom-button"
         />
       </div>
     </div>
@@ -132,36 +148,46 @@ onMounted(async () => {
 .container {
   max-width: 1200px;
   margin: 0 auto;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 code {
-  font-family: monospace;
+  font-family: "Fira Code", monospace;
   font-size: 1.1em;
   vertical-align: middle;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(to right, #f3f4f6, #e5e7eb);
 }
 
 .custom-button {
-  background-color: #ffc107;
+  background: linear-gradient(135deg, #ffc107, #ff9800);
   color: white;
   border: none;
-  border-radius: 5px;
-  padding: 15px 30px;
+  border-radius: 8px;
+  padding: 12px 24px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 600;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .custom-button:hover:not(:disabled) {
-  background-color: #e0a800;
+  background: linear-gradient(135deg, #ff9800, #ffc107);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .custom-button:disabled {
-  background-color: #ccc;
+  background: #e5e7eb;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -169,10 +195,27 @@ code {
 
 input {
   border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
 }
 
 input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: #ffc107;
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container > * {
+  animation: fadeIn 0.5s ease-out;
 }
 </style>
