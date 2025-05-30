@@ -137,6 +137,10 @@ onMounted(async () => {
 code {
   font-family: monospace;
   font-size: 1.1em;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .custom-button {
