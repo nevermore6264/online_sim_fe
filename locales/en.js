@@ -18,6 +18,7 @@ export default {
     headerCall: "Calling",
     headerHelp: "Help",
     headerDeposit: "Deposit",
+    headerReferral: "Referral",
     login: "Login",
     signup: "Sign Up",
     logout: "Logout",
@@ -29,6 +30,7 @@ export default {
     firstName: "First Name",
     lastName: "Last Name",
     confirmPassword: "Confirm Password",
+    referralCode: "Referral Code (Optional)",
     alreadyAccount: "Already have an account?",
     signUpHere: "Sign up here",
     signup_info_heading:
@@ -351,5 +353,16 @@ export default {
     erc20: "ERC20 Network",
     bep20: "BEP20 Network",
     comingSoon: "Coming Soon",
+  },
+  referral: {
+    title: "Referral Program",
+    yourCode: "Your Referral Code",
+    copy: "Copy",
+    shareLink: "Share your referral link",
+    copyLink: "Copy Link",
+    stats: "Your Statistics",
+    totalReferrals: "Total Referrals",
+    earnings: "Total Earnings",
+    loginRequired: "Please log in to view your referral code and statistics",
   },
 };

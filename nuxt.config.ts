@@ -19,6 +19,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       port: 3001,
+      appDomain: process.env.NUXT_PUBLIC_APP_DOMAIN || 'https://verifysms.org'
     },
   },
   css: [

@@ -78,6 +78,15 @@
             ></i>
           </div>
         </div>
+        <div class="input-group">
+          <label for="referralCode">{{ $t("landing.referralCode") }}</label>
+          <InputText
+            id="referralCode"
+            v-model="signUpData.referralCode"
+            :placeholder="$t('landing.referralCode')"
+            class="auth-input"
+          />
+        </div>
         <Button
           :label="$t('landing.signup')"
           type="submit"
@@ -104,6 +113,7 @@ const signUpData = ref({
   username: "",
   password: "",
   confirmPassword: "",
+  referralCode: "",
 });
 const loading = ref(false);
 const showPassword = ref(false);
@@ -123,10 +133,18 @@ const handleSignUp = async () => {
     return;
   }
 
+  // Get referral code from localStorage if exists
+  const storedReferralCode = localStorage.getItem("referralCode");
+  if (storedReferralCode) {
+    signUpData.value.referralCode = storedReferralCode;
+  }
+
   loading.value = true;
   try {
     const response = await UserService.CreateUser(signUpData.value);
     if (response.success) {
+      // Clear referral code from localStorage after successful registration
+      localStorage.removeItem("referralCode");
       push.success("Registration successful! Please log in.");
       setTimeout(() => {
         window.location.href = "/";

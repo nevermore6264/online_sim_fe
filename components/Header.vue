@@ -37,12 +37,12 @@
           <b style="color: red; font-size: 15px">HQ</b>
           <span>{{ $t("landing.headerProxy") }}</span>
         </Button>
-        <Button
+        <!-- <Button
           :label="$t('landing.headerNews')"
           class="p-button-text"
           :class="{ 'active-menu': activeMenu === 'news' }"
           @click="handleNews"
-        />
+        /> -->
         <Button
           :label="$t('landing.headerAPI')"
           class="p-button-text"
@@ -60,6 +60,12 @@
           class="p-button-text"
           :class="{ 'active-menu': activeMenu === 'deposit' }"
           @click="handleDeposit"
+        />
+        <Button
+          :label="$t('landing.headerReferral')"
+          class="p-button-text"
+          :class="{ 'active-menu': activeMenu === 'referral' }"
+          @click="handleReferral"
         />
       </div>
     </template>
@@ -118,12 +124,12 @@
                 <b style="color: red; font-size: 15px">HQ</b>
                 <span>{{ $t("landing.headerProxy") }}</span>
               </li>
-              <li
+              <!-- <li
                 @click="handleNews"
                 :class="{ 'active-menu': activeMenu === 'news' }"
               >
                 {{ $t("landing.headerNews") }}
-              </li>
+              </li> -->
               <li
                 @click="handleAPI"
                 :class="{ 'active-menu': activeMenu === 'api' }"
@@ -141,6 +147,12 @@
                 :class="{ 'active-menu': activeMenu === 'deposit' }"
               >
                 {{ $t("landing.headerDeposit") }}
+              </li>
+              <li
+                @click="handleReferral"
+                :class="{ 'active-menu': activeMenu === 'referral' }"
+              >
+                {{ $t("landing.headerReferral") }}
               </li>
               <li @click="handleLogout">{{ $t("landing.logout") }}</li>
             </ul>
@@ -242,6 +254,11 @@ const handleHelp = () => {
 const handleDeposit = () => {
   activeMenu.value = "deposit";
   router.push("/deposit");
+};
+
+const handleReferral = () => {
+  activeMenu.value = "referral";
+  router.push("/referral");
 };
 
 const fetchUserInfo = async (token) => {

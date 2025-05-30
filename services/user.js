@@ -67,4 +67,9 @@ export default {
     });
     return response.data;
   },
+
+  async GetReferralCode() {
+    const response = await api.get("/api/web/refferal-code");
+    return response.data;
+  },
 };
