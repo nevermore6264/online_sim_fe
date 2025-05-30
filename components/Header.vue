@@ -337,37 +337,149 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: ghostwhite;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-  position: relative;
-  border-bottom: 1px solid rgba(42, 171, 238, 0.1);
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(90deg, #e0f7fa 0%, #ffffff 100%);
+  box-shadow: 0 4px 24px rgba(42, 171, 238, 0.1);
+  border-radius: 0 0 18px 18px;
+  padding: 0 28px;
+  min-height: 64px;
+  border-bottom: 1px solid #e3f2fd;
+}
+
+.layout-topbar-logo {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.layout-topbar-logo img {
+  width: 48px !important;
+  height: 48px !important;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(42, 171, 238, 0.12);
+  transition: transform 0.2s;
+}
+.layout-topbar-logo img:hover {
+  transform: scale(1.08) rotate(-2deg);
+}
+
+.additional-functions {
+  display: flex;
+  gap: 1.2rem;
+  margin-left: 20px;
+}
+
+.additional-functions .p-button-text {
+  color: #2196f3;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  padding: 7px 18px;
+}
+.additional-functions .p-button-text:hover,
+.additional-functions .active-menu {
+  background: #e3f2fd !important;
+  color: #1565c0 !important;
+  box-shadow: 0 2px 8px rgba(42, 171, 238, 0.13);
 }
 
 .user-name {
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: #1976d2;
   cursor: pointer;
-  transition: color 0.3s ease, text-decoration 0.3s ease;
+  border-radius: 8px;
+  padding: 4px 12px;
+  background: #f5fbff;
+  margin-right: 6px;
+  transition: background 0.2s, color 0.2s;
 }
-
 .user-name.clickable:hover {
-  color: #0056b3;
+  background: #e3f2fd;
+  color: #0d47a1;
   text-decoration: underline;
 }
 
 .balance {
-  font-size: 14px; /* Kích thước nhỏ hơn */
-  font-weight: normal; /* Không in đậm */
-  color: #666; /* Màu khác, ví dụ: màu xám nhạt */
-  margin-left: 5px; /* Khoảng cách bên trái */
+  font-size: 14px;
+  color: #388e3c;
+  background: #e8f5e9;
+  border-radius: 8px;
+  padding: 3px 10px;
+  margin-left: 4px;
+  font-weight: 600;
 }
 
-.user-name.clickable {
+.p-menubar-end .p-button.p-button-text {
+  color: #2196f3;
+  background: #f5fbff;
+  border-radius: 10px;
+  font-weight: 500;
+  margin-left: 8px;
+  box-shadow: 0 1px 4px rgba(42, 171, 238, 0.06);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  padding: 7px 18px;
+}
+.p-menubar-end .p-button.p-button-text:hover {
+  background: #e3f2fd;
+  color: #1565c0;
+  box-shadow: 0 2px 8px rgba(42, 171, 238, 0.13);
+}
+
+.p-menubar-end .p-button.p-button-text .p-button-icon {
+  margin-right: 6px;
+}
+
+.mobile-menu li {
+  padding: 10px;
+  font-size: 15px;
   cursor: pointer;
-  color: #007bff;
+  border-bottom: 1px solid #e3f2fd;
+  border-radius: 8px;
+  margin: 2px 0;
+  transition: background 0.18s, color 0.18s;
+}
+.mobile-menu li:hover,
+.mobile-menu li.active-menu {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+@media (max-width: 900px) {
+  .layout-topbar {
+    padding: 0 8px;
+    min-height: 54px;
+  }
+  .layout-topbar-logo img {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .additional-functions {
+    gap: 0.5rem;
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-topbar {
+    padding: 0 4px;
+    min-height: 44px;
+    border-radius: 0 0 10px 10px;
+  }
+  .layout-topbar-logo img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .user-name {
+    font-size: 14px;
+    padding: 2px 8px;
+  }
+  .balance {
+    font-size: 12px;
+    padding: 2px 6px;
+  }
 }
 
 .layout-topbar .p-menubar-start {
@@ -548,22 +660,6 @@ onUnmounted(() => {
   width: 100%;
   display: block;
   text-align: center;
-}
-
-.additional-functions {
-  display: flex;
-  gap: 1rem;
-  /* Khoảng cách giữa các nút */
-  margin-left: 20px;
-  /* Khoảng cách giữa logo và các nút */
-}
-
-.additional-functions .p-button-text {
-  color: #2aabee;
-}
-
-.additional-functions .p-button-text:hover {
-  color: #3b82f6;
 }
 
 .social-login {
