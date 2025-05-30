@@ -32,6 +32,7 @@ export default {
     confirmPassword: "Confirm Password",
     referralCode: "Referral Code (Optional)",
     alreadyAccount: "Already have an account?",
+    haveAccount: "Already have an account?",
     signUpHere: "Sign up here",
     signup_info_heading:
       "Complete a simple registration and receive a phone number for SMS",

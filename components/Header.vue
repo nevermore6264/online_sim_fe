@@ -406,7 +406,6 @@ onUnmounted(() => {
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
 .input-field {

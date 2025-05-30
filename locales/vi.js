@@ -32,6 +32,7 @@ export default {
     confirmPassword: "Xác nhận mật khẩu",
     referralCode: "Mã giới thiệu (không bắt buộc)",
     alreadyAccount: "Đã có tài khoản?",
+    haveAccount: "Đã có tài khoản?",
     signUpHere: "Đăng ký tại đây",
     signup_info_heading:
       "Hoàn tất đăng ký đơn giản và nhận số điện thoại để gửi tin nhắn SMS",
