@@ -275,7 +275,7 @@ onMounted(() => {
 
   // Thêm xử lý socket event
   socket.on("NewSMSReceived", (newSms) => {
-    // Thêm tin nhắn mới vào danh sách
+    console.log("[MyOTPSection] NewSMSReceived:", newSms);
     smsList.value = [newSms, ...smsList.value];
   });
 });
