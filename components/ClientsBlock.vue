@@ -36,25 +36,31 @@
 
 <style scoped>
 .footerDesc {
-  color: rgb(56, 56, 56);
+  color: #374151;
   margin-left: 2px;
   margin-top: 5px;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
-  line-height: 22px;
+  line-height: 1.5;
 }
 
 .clients_block {
   display: flex;
-  flex-direction: column; /* Sắp xếp theo cột */
+  flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 2rem;
   box-sizing: border-box;
-  border-radius: 15px;
+  border-radius: 20px;
   margin-bottom: 10px;
-  background: rgb(255, 255, 255);
-  box-shadow: 0 0 8px rgb(227, 227, 227);
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clients_block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
 }
 
 .without-login {
@@ -64,56 +70,61 @@
 
 .stars {
   text-align: center;
-  margin-bottom: 10px; /* Khoảng cách giữa ngôi sao và dòng "550,000+ users" */
-  color: #2aabee; /* Đổi màu ngôi sao thành xanh */
+  margin-bottom: 12px;
+  color: #3b82f6;
 }
 
 .stars i {
-  font-size: 18px;
+  font-size: 20px;
+  margin: 0 2px;
 }
 
 .users_count {
   font-size: 16px;
-  font-weight: 500;
-  color: rgb(56, 56, 56); /* Màu chữ tối */
+  font-weight: 600;
+  color: #1f2937;
 }
 
 .clients_text {
-  text-align: left;
+  text-align: center;
   margin-top: 15px;
   width: 100%;
 }
 
 .clients_text h3 {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
 }
 
 .clients_text span {
   display: block;
-  margin-top: 5px;
-  font-size: 14px;
-  line-height: 24px;
-  color: rgb(110, 120, 130);
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #4b5563;
 }
 
 .try_it_out {
   vertical-align: middle;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 18px;
   line-height: 22px;
-  padding: 14px 15px 15px 15px;
-  padding-inline: 25px;
-  border-radius: 15px;
-  margin-top: 10px;
-  background-color: #2aabee;
+  padding: 16px 32px;
+  border-radius: 12px;
   margin: 2rem auto;
+  background-color: #3b82f6;
   border: none;
+  color: white;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
 
 .try_it_out:hover {
-  background-color: #3b82f6; /* Darker on hover */
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
 }
 </style>
