@@ -135,6 +135,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import UserService from "@/services/user";
 import SmsService from "@/services/sms";
+import { socket } from "@/utils/socket";
 
 const orderList = ref([]); // Danh sách từ API
 const filteredOrderList = ref([]); // Danh sách sau khi lọc
@@ -271,12 +272,20 @@ onMounted(() => {
   fetchOrderList();
   fetchSmsList();
   startCountdown();
+
+  // Thêm xử lý socket event
+  socket.on("NewSMSReceived", (newSms) => {
+    // Thêm tin nhắn mới vào danh sách
+    smsList.value = [newSms, ...smsList.value];
+  });
 });
 
+// Cleanup socket listener khi component unmount
 onUnmounted(() => {
   if (countdownInterval.value) {
     clearInterval(countdownInterval.value);
   }
+  socket.off("NewSMSReceived");
 });
 </script>
 

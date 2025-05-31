@@ -107,9 +107,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import UserService from "@/services/user";
 import SmsService from "@/services/sms";
+import { socket } from "@/utils/socket";
 
 const orderList = ref([]); // Danh sách từ API
 const filteredOrderList = ref([]); // Danh sách sau khi lọc
@@ -217,6 +218,17 @@ const onPageChange = (event) => {
 onMounted(() => {
   fetchOrderList();
   fetchSmsList();
+
+  // Thêm xử lý socket event
+  socket.on("NewSMSReceived", (newSms) => {
+    // Thêm tin nhắn mới vào danh sách
+    smsList.value = [newSms, ...smsList.value];
+  });
+});
+
+// Cleanup socket listener khi component unmount
+onUnmounted(() => {
+  socket.off("NewSMSReceived");
 });
 </script>
 
