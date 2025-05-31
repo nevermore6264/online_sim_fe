@@ -268,7 +268,13 @@ onMounted(() => {
 
   // Thêm xử lý socket event
   socket.on("NewSMSReceived", (newSms) => {
-    console.log("[NewSMSReceived] NewSMSReceived:", newSms);
+    // Chuyển đổi dữ liệu về đúng định dạng smsList đang dùng
+    const smsItem = {
+      orderId: newSms.order.id,
+      messageText: newSms.data.message,
+      // Thêm các trường khác nếu cần
+    };
+    console.log("[MyNumbersSection] NewSMSReceived:", smsItem);
     smsList.value = [newSms, ...smsList.value];
   });
 });
