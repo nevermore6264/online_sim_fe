@@ -5,7 +5,7 @@ export default {
     selected: "Đã chọn",
     and: "và",
     berrors_top_yellow:
-      "Có những trang web gian lận sao chép thiết kế của chúng tôi. Hãy kiểm tra tên miền của trang web khi bạn truy cập trang web. Tên miền của chúng tôi là Verifysms.com. Hãy cẩn thận và không tin tưởng các trang web gian lận. Chúng tôi không chịu trách nhiệm cho các hành động của các trang web gian lận này.",
+      "Có những trang web gian lận sao chép thiết kế của chúng tôi. Hãy kiểm tra tên miền của trang web khi bạn truy cập trang web. Tên miền của chúng tôi là VerifySMS.org. Hãy cẩn thận và không tin tưởng các trang web gian lận. Chúng tôi không chịu trách nhiệm cho các hành động của các trang web gian lận này.",
     hello: "Chào",
     footerDesc:
       "Nhận tin nhắn SMS trực tuyến đến các số tạm thời từ khắp nơi trên thế giới",
@@ -38,7 +38,7 @@ export default {
       "Hoàn tất đăng ký đơn giản và nhận số điện thoại để gửi tin nhắn SMS",
     signup_info_paragraph:
       "Có cơ hội sử dụng số điện thoại của chúng tôi để đăng ký!",
-    tips_heading: "Mẹo VerifySMS.com",
+    tips_heading: "Mẹo VerifySMS.org",
     tips_paragraph:
       "Chúng tôi viết về việc đăng ký tài khoản, sự phức tạp khi làm việc với proxy và các chủ đề quan trọng khác.",
     blog_button: "Blog",

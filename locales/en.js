@@ -5,7 +5,7 @@ export default {
     selected: "Selected",
     and: "and the",
     berrors_top_yellow:
-      "There are fraudulent sites that copy our design. Check the site domain when you visit the site. Our domain is Verifysms.com. Be careful and do not trust fraudulent sites. We are not responsible for the actions of these fraudulent sites.",
+      "There are fraudulent sites that copy our design. Check the site domain when you visit the site. Our domain is VerifySMS.org. Be careful and do not trust fraudulent sites. We are not responsible for the actions of these fraudulent sites.",
     hello: "Hello",
     footerDesc:
       "Receive SMS online to temporary numbers from all over the world",
@@ -38,7 +38,7 @@ export default {
       "Complete a simple registration and receive a phone number for SMS",
     signup_info_paragraph:
       "Get the opportunity to use our numbers for registration!",
-    tips_heading: "Tips VerifySMS.com",
+    tips_heading: "Tips VerifySMS.org",
     tips_paragraph:
       "We write about account registration, the intricacies of working with proxies, and other important topics.",
     blog_button: "Blog",
