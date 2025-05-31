@@ -587,7 +587,57 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  grid-auto-flow: dense;
+}
+
+.b-service-row .service-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1.5px solid #e3e8ee;
+  padding: 7px 12px;
+  font-size: 13px;
+  min-width: 0;
+  gap: 10px;
+  width: 100%;
+}
+
+.b-service-row .service-item .flag-image {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 6px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.b-service-row .service-item .service-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.b-service-row .service-item .service-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 2px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
+}
+
+.b-service-row .service-item b {
+  font-size: 12px;
+  color: #2196f3;
+  font-weight: 500;
+  margin-top: 0;
+  text-align: left;
 }
 
 .service-price {
