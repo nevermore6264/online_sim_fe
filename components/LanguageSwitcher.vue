@@ -19,15 +19,17 @@
 
 <script setup>
 import { useI18n } from "vue-i18n";
+import { useLanguage } from "~/composables/useLanguage";
 
 // Lấy đối tượng i18n
-const { locale, availableLocales } = useI18n();
+const { availableLocales } = useI18n();
+const { locale, setLocale } = useLanguage();
 const locales = availableLocales; // Danh sách ngôn ngữ có sẵn
 const currentLocale = locale; // Ngôn ngữ hiện tại
 
 // Chuyển đổi ngôn ngữ
-const switchLocale = (newLocale) => {
-  locale.value = newLocale;
+const switchLocale = async (newLocale) => {
+  await setLocale(newLocale);
 };
 
 // Hàm để lấy URL của biểu tượng lá cờ
@@ -38,6 +40,14 @@ const getFlagUrl = (locale) => {
   };
   return flagMap[locale] || "";
 };
+
+// Khi component được mount, kiểm tra và lấy ngôn ngữ từ localStorage
+onMounted(() => {
+  const savedLocale = localStorage.getItem("user-locale");
+  if (savedLocale && locales.includes(savedLocale)) {
+    locale.value = savedLocale;
+  }
+});
 </script>
 
 <style scoped>

@@ -8,7 +8,14 @@ export default defineNuxtConfig({
       { code: "vi", name: "Tiếng Việt" },
     ],
     defaultLocale: "en",
-    vueI18n: "./i18n.config.ts", // Chỉ định đường dẫn tới file cấu hình i18n
+    strategy: "no_prefix",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      alwaysRedirect: false,
+      fallbackLocale: 'en'
+    },
+    vueI18n: "./i18n.config.ts",
   },
   googleSignIn: {
     clientId: "quethumatuy-1733488899792.apps.googleusercontent.com",
@@ -34,7 +41,10 @@ export default defineNuxtConfig({
   build: {
     transpile: ["primevue"], // Đảm bảo các thành phần PrimeVue được biên dịch đúng cách
   },
-  plugins: ["~/plugins/primevue.js", "~/plugins/vue3-toastify.ts"],
+  plugins: [
+    "~/plugins/primevue.js",
+    "~/plugins/vue3-toastify.ts",
+  ],
   app: {
     head: {
       title: "Verify SMS - service for private registration at online resources",
