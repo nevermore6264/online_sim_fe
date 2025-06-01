@@ -1,6 +1,6 @@
 <template>
   <div class="tips_block ml-40-d">
-    <nuxt-link to="/referral-program">
+    <nuxt-link to="/referral">
       <img
         src="/layout/images/Referal_program.jpg"
         alt="Referral program"
