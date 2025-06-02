@@ -197,9 +197,9 @@ const showTrc20Address = async () => {
 const copyTrc20Address = async () => {
   try {
     await navigator.clipboard.writeText(trc20Info.value.address);
-    alert(t("deposit.copied"));
+    push.success(t("deposit.copied"));
   } catch {
-    alert("Copy failed!");
+    push.success("Copy failed!");
   }
 };
 
