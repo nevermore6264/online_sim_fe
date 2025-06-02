@@ -68,7 +68,11 @@
       <div class="other-payment-section">
         <h3>{{ t("deposit.otherMethodsTitle") }}</h3>
         <div class="payment-methods">
-          <div class="payment-method-card">
+          <div
+            class="payment-method-card payment-method-card--trc20"
+            @click="openErc20Modal"
+            style="cursor: pointer"
+          >
             <div class="network-icon">
               <img
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBsWaz0K2kxYpSFMhQ2pPdBcnOwpQHWYEyzw&s"
@@ -77,8 +81,15 @@
               />
             </div>
             <h4>{{ t("deposit.trc20") }}</h4>
-            <p>{{ t("deposit.comingSoon") }}</p>
+            <p style="color: #2aabee; font-weight: bold">
+              {{ t("deposit.clickToGetAddress") }}
+            </p>
           </div>
+        </div>
+      </div>
+      <!-- ERC20 & BEP20 Coming Soon Section -->
+      <div class="other-networks-section">
+        <div class="payment-methods">
           <div class="payment-method-card">
             <div class="network-icon">
               <img
@@ -104,6 +115,46 @@
         </div>
       </div>
     </div>
+    <!-- ERC20 Modal -->
+    <div v-if="showErc20Modal" class="erc20-modal-overlay">
+      <div class="erc20-modal">
+        <button class="erc20-modal-close" @click="closeErc20Modal">
+          &times;
+        </button>
+        <div v-if="isErc20Loading" class="erc20-modal-loading">
+          {{ t("deposit.loading") }}
+        </div>
+        <div v-else-if="erc20Error" class="erc20-modal-error">
+          {{ erc20Error }}
+        </div>
+        <div v-else>
+          <div class="erc20-modal-title">
+            <span style="font-size: 1.2em; font-weight: bold; color: #2aabee"
+              >{{ t("deposit.erc20") }} USDT</span
+            >
+          </div>
+          <div class="erc20-modal-address-box">
+            <span class="erc20-modal-address">{{ erc20Info.address }}</span>
+            <button class="erc20-modal-copy" @click="copyErc20Address">
+              {{ t("deposit.copy") }}
+            </button>
+          </div>
+          <div class="erc20-modal-info">
+            <div>
+              <b>{{ t("deposit.minAmount") }}:</b> {{ erc20Info.min }} USDT
+            </div>
+            <div>
+              <b>{{ t("deposit.validFor") }}:</b> 1 {{ t("deposit.hour") }}
+            </div>
+            <div>
+              <b>{{ t("deposit.rate") }}:</b> 1 USDT = ₹1
+              {{ t("deposit.inYourWallet") }}
+            </div>
+          </div>
+          <div class="erc20-modal-note">{{ t("deposit.erc20Note") }}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -118,6 +169,49 @@ const qrData = ref(null);
 const isLoading = ref(false);
 const amount = ref("");
 const amountError = ref("");
+
+// ERC20 Modal State
+const showErc20Modal = ref(false);
+const erc20Info = ref({ address: "", type: "", min: 10, valid: 60, rate: 1 });
+const isErc20Loading = ref(false);
+const erc20Error = ref("");
+
+const openErc20Modal = async () => {
+  erc20Error.value = "";
+  isErc20Loading.value = true;
+  showErc20Modal.value = true;
+  try {
+    const res = await fetch("https://verifysms.org/api/web/payment/crypto", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
+    });
+    const data = await res.json();
+    if (data.success && data.data) {
+      erc20Info.value.address = data.data.address;
+      erc20Info.value.type = data.data.type;
+    } else {
+      erc20Error.value = t("deposit.qrError");
+    }
+  } catch (e) {
+    erc20Error.value = t("deposit.qrApiError");
+  } finally {
+    isErc20Loading.value = false;
+  }
+};
+
+const closeErc20Modal = () => {
+  showErc20Modal.value = false;
+};
+
+const copyErc20Address = async () => {
+  try {
+    await navigator.clipboard.writeText(erc20Info.value.address);
+    alert(t("deposit.copied"));
+  } catch {
+    alert("Copy failed!");
+  }
+};
 
 const generateQRCode = async () => {
   amountError.value = "";
@@ -315,6 +409,110 @@ input:disabled {
 @media (max-width: 768px) {
   .deposit-content {
     grid-template-columns: 1fr;
+  }
+}
+
+.erc20-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.erc20-modal {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  padding: 32px 28px 24px 28px;
+  min-width: 340px;
+  max-width: 95vw;
+  position: relative;
+  text-align: center;
+  animation: fadeIn 0.2s;
+}
+.erc20-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: #888;
+  cursor: pointer;
+}
+.erc20-modal-title {
+  margin-bottom: 18px;
+}
+.erc20-modal-address-box {
+  background: #f4f8fb;
+  border-radius: 6px;
+  padding: 12px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 1.1em;
+  word-break: break-all;
+}
+.erc20-modal-address {
+  color: #2aabee;
+  font-family: monospace;
+  font-size: 1em;
+  flex: 1;
+  text-align: left;
+}
+.erc20-modal-copy {
+  margin-left: 10px;
+  background: #2aabee;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background 0.2s;
+}
+.erc20-modal-copy:hover {
+  background: #2196f3;
+}
+.erc20-modal-info {
+  margin: 10px 0 12px 0;
+  color: #333;
+  font-size: 1em;
+  text-align: left;
+}
+.erc20-modal-info > div {
+  margin-bottom: 4px;
+}
+.erc20-modal-note {
+  color: #888;
+  font-size: 0.95em;
+  margin-top: 10px;
+  text-align: left;
+}
+.erc20-modal-loading {
+  color: #2aabee;
+  font-size: 1.1em;
+  margin: 30px 0;
+}
+.erc20-modal-error {
+  color: #e74c3c;
+  font-size: 1.1em;
+  margin: 30px 0;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 </style>
