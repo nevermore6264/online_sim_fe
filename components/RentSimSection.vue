@@ -1,9 +1,18 @@
 <template>
-  <ul>
-    <li>{{ $t("rent_number.always_active") }}</li>
-    <li>{{ $t("rent_number.activation_by_order") }}</li>
-    <li>{{ $t("rent_number.priority_numbers") }}</li>
-  </ul>
+  <div class="features-list">
+    <div class="feature-item">
+      <i class="pi pi-check-circle"></i>
+      <span>{{ $t("rent_number.always_active") }}</span>
+    </div>
+    <div class="feature-item">
+      <i class="pi pi-check-circle"></i>
+      <span>{{ $t("rent_number.activation_by_order") }}</span>
+    </div>
+    <div class="feature-item">
+      <i class="pi pi-check-circle"></i>
+      <span>{{ $t("rent_number.priority_numbers") }}</span>
+    </div>
+  </div>
   <div class="main-container">
     <!-- Country Selection & Selected Services -->
     <div class="top-section">
@@ -613,6 +622,103 @@ onMounted(async () => {
 @media (max-width: 480px) {
   .services-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #edf2f7;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #2196f3;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  border-color: #2196f3;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+  transform: translateY(-2px);
+}
+
+.feature-item:hover::before {
+  width: 6px;
+  background: #1976d2;
+}
+
+.feature-item i {
+  color: #2196f3;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover i {
+  transform: scale(1.1);
+}
+
+.feature-item span {
+  font-size: 14px;
+  color: #2d3748;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover span {
+  color: #1a365d;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feature-item {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@media (max-width: 768px) {
+  .features-list {
+    gap: 8px;
+  }
+
+  .feature-item {
+    padding: 8px 12px;
+  }
+
+  .feature-item span {
+    font-size: 13px;
+  }
+
+  .feature-item i {
+    font-size: 1rem;
   }
 }
 </style>
