@@ -785,20 +785,18 @@ onMounted(async () => {
 .selected-item {
   border-radius: 8px;
   background: #ffffff;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid #edf2f7;
   margin-bottom: 12px;
   position: relative;
   overflow: hidden;
-}
-
-.selected-item:last-child {
-  margin-bottom: 0;
+  transform: translateY(0);
 }
 
 .selected-item:hover {
   border-color: #2196f3;
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+  transform: translateY(-2px);
 }
 
 .selected-item .service-info {
@@ -808,6 +806,7 @@ onMounted(async () => {
   flex-wrap: wrap;
   padding: 2px 16px;
   position: relative;
+  transition: all 0.3s ease;
 }
 
 .selected-item .service-info::before {
@@ -819,6 +818,12 @@ onMounted(async () => {
   width: 4px;
   background: #2196f3;
   border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.selected-item:hover .service-info::before {
+  width: 6px;
+  background: #1976d2;
 }
 
 .selected-item .service-info img {
@@ -828,12 +833,24 @@ onMounted(async () => {
   object-fit: cover;
   padding: 4px;
   background: white;
+  transition: all 0.3s ease;
+  transform: scale(1);
+}
+
+.selected-item:hover .service-info img {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .selected-item .service-name {
   font-size: 14px;
   color: #2d3748;
   font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.selected-item:hover .service-name {
+  color: #1a365d;
 }
 
 .selected-item .service-price {
@@ -844,39 +861,41 @@ onMounted(async () => {
   padding: 4px 12px;
   background: rgba(33, 150, 243, 0.1);
   border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.selected-item:hover .service-price {
+  background: rgba(33, 150, 243, 0.15);
+  transform: translateX(-2px);
 }
 
 .selected-item .remove-icon {
   color: #e53e3e;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 8px;
   border-radius: 6px;
+  opacity: 0.8;
 }
 
 .selected-item .remove-icon:hover {
   background: rgba(229, 62, 62, 0.1);
-  transform: scale(1.05);
+  transform: scale(1.1);
+  opacity: 1;
 }
 
-@media (max-width: 768px) {
-  .selected-services {
-    padding: 12px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  .selected-item .service-info {
-    padding: 8px 12px;
-    gap: 8px;
-  }
-
-  .selected-item .service-info img {
-    width: 28px;
-    height: 28px;
-  }
-
-  .selected-item .service-name,
-  .selected-item .service-price {
-    font-size: 13px;
-  }
+.selected-item {
+  animation: fadeIn 0.3s ease-out;
 }
 
 /* Rent button */
