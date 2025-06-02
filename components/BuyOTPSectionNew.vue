@@ -769,24 +769,114 @@ onMounted(async () => {
 
 .selected-services {
   flex: 7;
-  /* Chiếm 70% */
-  border: 1px solid rgb(0, 174, 255);
-  border-radius: 8px;
-  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: #ffffff;
   min-width: 70%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+}
+
+.selected-services-list {
+  display: flex;
+  flex-direction: column;
 }
 
 .selected-item {
-  padding: 5px;
-  border-bottom: 1px solid #ddd;
+  border-radius: 8px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  border: 1px solid #edf2f7;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
 }
 
 .selected-item:last-child {
-  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .selected-item:hover {
-  background-color: #e0e0e0;
+  border-color: #2196f3;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.1);
+}
+
+.selected-item .service-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 2px 16px;
+  position: relative;
+}
+
+.selected-item .service-info::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #2196f3;
+  border-radius: 2px;
+}
+
+.selected-item .service-info img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+  padding: 4px;
+  background: white;
+}
+
+.selected-item .service-name {
+  font-size: 14px;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.selected-item .service-price {
+  font-size: 15px;
+  color: #2196f3;
+  font-weight: 600;
+  margin-left: auto;
+  padding: 4px 12px;
+  background: rgba(33, 150, 243, 0.1);
+  border-radius: 6px;
+}
+
+.selected-item .remove-icon {
+  color: #e53e3e;
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.selected-item .remove-icon:hover {
+  background: rgba(229, 62, 62, 0.1);
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .selected-services {
+    padding: 12px;
+  }
+
+  .selected-item .service-info {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .selected-item .service-info img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .selected-item .service-name,
+  .selected-item .service-price {
+    font-size: 13px;
+  }
 }
 
 /* Rent button */
