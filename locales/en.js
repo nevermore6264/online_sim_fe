@@ -354,6 +354,17 @@ export default {
     erc20: "ERC20 Network",
     bep20: "BEP20 Network",
     comingSoon: "Coming Soon",
+    copy: "Copy",
+    copied: "Copied!",
+    loading: "Loading...",
+    minAmount: "The minimum amount is",
+    validFor: "Your deposit will be valid for",
+    hour: "hour",
+    rate: "Rate",
+    inYourWallet: "in your bot wallet",
+    erc20Note:
+      "After this period, it will not automatically add to your balance. Please use the /deposit command again to check the transaction.",
+    clickToGetAddress: "Click to get address",
   },
   referral: {
     title: "Referral Program",

@@ -353,6 +353,17 @@ export default {
     comingSoon: "Sắp ra mắt",
     usdtAddress: "Địa chỉ USDT",
     minAmountError: "Số tiền tối thiểu là 10 USDT",
+    copy: "Sao chép",
+    copied: "Đã sao chép!",
+    loading: "Đang tải...",
+    minAmount: "Số tiền nạp tối thiểu là",
+    validFor: "Giao dịch có hiệu lực trong",
+    hour: "giờ",
+    rate: "Tỉ giá",
+    inYourWallet: "trong ví bot của bạn",
+    erc20Note:
+      "Sau thời gian này, số dư sẽ không được cộng tự động. Vui lòng dùng lệnh /deposit để kiểm tra giao dịch.",
+    clickToGetAddress: "Nhấn để lấy địa chỉ",
   },
   referral: {
     title: "Chương Trình Giới Thiệu",

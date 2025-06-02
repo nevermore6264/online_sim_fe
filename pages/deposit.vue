@@ -69,21 +69,30 @@
         <h3>TRC20 Network</h3>
         <div class="payment-methods">
           <div
-            class="payment-method-card payment-method-card--trc20"
-            @click="showTrc20Address"
-            style="cursor: pointer"
+            style="
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              width: 100%;
+            "
           >
-            <div class="network-icon">
+            <div class="network-icon trc20-network-icon-outside">
               <img
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBsWaz0K2kxYpSFMhQ2pPdBcnOwpQHWYEyzw&s"
                 alt="TRC20"
                 class="network-logo"
               />
             </div>
-            <h4>{{ t("deposit.trc20") }}</h4>
-            <p style="color: #2aabee; font-weight: bold">
-              {{ t("deposit.clickToGetAddress") }}
-            </p>
+            <div
+              class="payment-method-card payment-method-card--trc20"
+              @click="showTrc20Address"
+              style="cursor: pointer"
+            >
+              <h4>{{ t("deposit.trc20") }}</h4>
+              <p style="color: #2aabee; font-weight: bold">
+                {{ t("deposit.clickToGetAddress") }}
+              </p>
+            </div>
           </div>
         </div>
         <div
@@ -101,8 +110,8 @@
                 :value="trc20Info.address"
                 readonly
               />
-              <button class="trc20-copy" @click="copyTrc20Address">
-                {{ t("deposit.copy") }}
+              <button class="trc20-copy-btn" @click="copyTrc20Address">
+                <span class="copy-icon">📋</span> {{ t("deposit.copy") }}
               </button>
             </div>
             <div class="trc20-info">
@@ -402,8 +411,8 @@ input:disabled {
   margin: 18px 0 0 0;
   padding: 18px 18px 12px 18px;
   box-shadow: 0 2px 8px rgba(42, 171, 238, 0.08);
-  max-width: 480px;
   color: #fff;
+  width: 100%;
 }
 .trc20-address-row {
   display: flex;
@@ -425,19 +434,29 @@ input:disabled {
 .trc20-address-input:read-only {
   background: #f9f9f9;
 }
-.trc20-copy {
-  margin-left: 0;
-  background: #2aabee;
+.trc20-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(90deg, #2aabee 0%, #2196f3 100%);
   color: #fff;
   border: none;
-  border-radius: 4px;
-  padding: 6px 14px;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 1em;
+  font-weight: 500;
   cursor: pointer;
-  font-size: 0.95em;
-  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(42, 171, 238, 0.1);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
 }
-.trc20-copy:hover {
-  background: #2196f3;
+.trc20-copy-btn:hover {
+  background: linear-gradient(90deg, #2196f3 0%, #2aabee 100%);
+  box-shadow: 0 4px 16px rgba(42, 171, 238, 0.18);
+  transform: translateY(-2px) scale(1.04);
+}
+.copy-icon {
+  font-size: 1.15em;
+  margin-right: 2px;
 }
 .trc20-info {
   color: #fff;
@@ -463,5 +482,54 @@ input:disabled {
   color: #e74c3c;
   font-size: 1.1em;
   margin: 10px 0;
+}
+
+.payment-method-card--trc20 {
+  background: #23272e;
+  border: 1.5px solid #2aabee;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(42, 171, 238, 0.08);
+  padding: 18px 14px 14px 14px;
+  transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+  cursor: pointer;
+  color: #fff;
+  min-width: 220px;
+  max-width: 320px;
+  margin: 0 auto;
+  text-align: center;
+}
+.payment-method-card--trc20:hover {
+  background: #273043;
+  border-color: #2196f3;
+  box-shadow: 0 4px 16px rgba(42, 171, 238, 0.18);
+}
+.payment-method-card--trc20 .network-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 10px;
+}
+.payment-method-card--trc20 h4 {
+  font-size: 1.08em;
+  margin: 8px 0 4px 0;
+  color: #2aabee;
+  font-weight: 600;
+}
+.payment-method-card--trc20 p {
+  font-size: 0.98em;
+  color: #b0b0b0;
+  margin: 0;
+  font-weight: 400;
+}
+
+.trc20-network-icon-outside {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(42, 171, 238, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
