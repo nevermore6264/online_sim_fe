@@ -452,6 +452,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  overflow-x: scroll;
 }
 
 .selected-item {
@@ -460,7 +461,6 @@ onMounted(async () => {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid #edf2f7;
   position: relative;
-  overflow: hidden;
 }
 
 .selected-item:hover {
@@ -470,10 +470,11 @@ onMounted(async () => {
 }
 
 .selected-item .service-info {
-  display: flex;
+  display: grid;
+  grid-template-columns: 150px 150px minmax(100px, 1fr) 250px 250px 50px;
   align-items: center;
-  gap: 12px;
-  padding: 2px 16px;
+  gap: 8px;
+  padding: 12px 16px;
   position: relative;
 }
 
