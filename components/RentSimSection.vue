@@ -765,7 +765,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 2px 16px;
   background: #ffffff;
   border-radius: 8px;
   border: 1px solid #edf2f7;
