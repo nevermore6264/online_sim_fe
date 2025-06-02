@@ -403,13 +403,34 @@ input:disabled {
 }
 
 .trc20-address-box {
-  background: #23272e;
-  border-radius: 8px;
-  margin: 18px 0 0 0;
-  padding: 18px 18px 12px 18px;
-  box-shadow: 0 2px 8px rgba(42, 171, 238, 0.08);
+  background: linear-gradient(135deg, #23272e 60%, #2aabee 100%);
+  border-radius: 18px;
+  border: 1.5px solid #2aabee33;
+  box-shadow: 0 4px 24px rgba(42, 171, 238, 0.1);
   color: #fff;
+  padding: 28px 24px 18px 24px;
+  margin: 24px auto 0 auto;
+  max-width: 480px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.08em;
+  position: relative;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+.trc20-address-box::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #2aabee 0%, #2196f3 100%);
+  opacity: 0.7;
 }
 .trc20-address-row {
   display: flex;
