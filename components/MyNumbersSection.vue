@@ -69,9 +69,9 @@
           <template #body="{ data }">
             <div
               class="truncate-text"
-              :title="smsList.find((e) => e.orderId == data.id)?.messageText"
+              :title="formatMessages(data.stock?.messages)"
             >
-              {{ smsList.find((e) => e.orderId == data.id)?.messageText }}
+              {{ formatMessages(data.stock?.messages) || "-" }}
             </div>
           </template>
         </Column>
@@ -115,7 +115,7 @@
           </p>
           <p>
             <strong>{{ $t("order.column.otp") }}:</strong>
-            {{ getMessageText(order.id) }}
+            {{ formatMessages(order.stock?.messages) || "-" }}
           </p>
         </div>
       </div>
@@ -134,14 +134,12 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import UserService from "@/services/user";
-import SmsService from "@/services/sms";
 import { socket } from "@/utils/socket";
 
 const orderList = ref([]); // Danh sách từ API
 const filteredOrderList = ref([]); // Danh sách sau khi lọc
 const selectedStatus = ref("all"); // Trạng thái lọc
 const loading = ref(false);
-const smsList = ref([]); // Danh sách sau khi lọc
 
 const rowsPerPage = ref(10); // Số dòng trên mỗi trang
 const currentPage = ref(1); // Trang hiện tại
@@ -155,36 +153,6 @@ const currentTime = ref(new Date());
 // Hàm tính STT
 const calculateSTT = (index) => {
   return (currentPage.value - 1) * rowsPerPage.value + index + 1;
-};
-
-const getMessageText = (orderId) => {
-  const sms = smsList.value.find((e) => e.orderId == orderId);
-  return sms == undefined ? "-" : sms?.messageText;
-};
-
-const fetchSmsList = async () => {
-  loading.value = true;
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    console.error("Token is not found in localStorage");
-    loading.value = false;
-    return;
-  }
-
-  try {
-    const response = await SmsService.GetAllSmsList(token);
-
-    if (response?.success) {
-      smsList.value = response.data.docs;
-    } else {
-      console.error("No data received from API");
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  } finally {
-    loading.value = false;
-  }
 };
 
 // Hàm lấy danh sách từ API
@@ -255,6 +223,12 @@ const formatCountdown = (expiredAt) => {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };
 
+// Format messages with sender and content
+const formatMessages = (messages) => {
+  if (!messages || messages.length === 0) return null;
+  return messages.map((msg) => `${msg.sender}: ${msg.content}`).join("\n");
+};
+
 // Update countdown every second
 const startCountdown = () => {
   countdownInterval.value = setInterval(() => {
@@ -264,18 +238,18 @@ const startCountdown = () => {
 
 onMounted(() => {
   fetchOrderList();
-  fetchSmsList();
+  startCountdown();
 
   // Thêm xử lý socket event
   socket.on("NewSMSReceived", (newSms) => {
-    // Chuyển đổi dữ liệu về đúng định dạng smsList đang dùng
     const smsItem = {
       orderId: newSms.order.id,
       messageText: newSms.data.message,
       // Thêm các trường khác nếu cần
     };
-    console.log("[MyNumbersSection] NewSMSReceived:", smsItem);
-    smsList.value = [newSms, ...smsList.value];
+    console.log("[MyOTPSection] NewSMSReceived:", smsItem);
+
+    filterOrderList.value = [smsItem, ...filterOrderList.value];
   });
 });
 

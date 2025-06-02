@@ -9,8 +9,9 @@
         @change="filterOrderList"
       >
         <option value="all">{{ $t("order.all") }}</option>
-        <option value="active">{{ $t("order.active") }}</option>
-        <option value="expired">{{ $t("order.expired") }}</option>
+        <option value="success">{{ $t("order.success") }}</option>
+        <option value="pending">{{ $t("order.pending") }}</option>
+        <option value="refunded">{{ $t("order.refunded") }}</option>
       </select>
     </div>
 
@@ -45,15 +46,33 @@
           :header="$t('order.column.status')"
           field="statusCode"
           style="min-width: 4rem"
-        />
+        >
+          <template #body="{ data }">
+            <span class="status-tag" :class="data.statusCode.toLowerCase()">
+              {{ data.statusCode }}
+            </span>
+          </template>
+        </Column>
         <Column :header="$t('order.column.price')" style="min-width: 1rem">
           <template #body="{ data }">
             <span>{{ data.cost }} USD</span>
           </template>
         </Column>
+        <Column :header="$t('order.column.countdown')" style="min-width: 8rem">
+          <template #body="{ data }">
+            <span class="countdown">{{
+              formatCountdown(data.stock.expiredAt)
+            }}</span>
+          </template>
+        </Column>
         <Column :header="$t('order.column.otp')" style="min-width: 14rem">
           <template #body="{ data }">
-            {{ smsList.find((e) => e.orderId == data.id)?.messageText }}
+            <div
+              class="truncate-text"
+              :title="formatMessages(data.stock?.messages)"
+            >
+              {{ formatMessages(data.stock?.messages) || "-" }}
+            </div>
           </template>
         </Column>
       </DataTable>
@@ -89,8 +108,14 @@
             <strong>{{ $t("order.column.price") }}:</strong> {{ order.cost }}
           </p>
           <p>
+            <strong>{{ $t("order.column.countdown") }}:</strong>
+            <span class="countdown">{{
+              formatCountdown(order.stock.expiredAt)
+            }}</span>
+          </p>
+          <p>
             <strong>{{ $t("order.column.otp") }}:</strong>
-            {{ getMessageText(order.id) }}
+            {{ formatMessages(order.stock?.messages) || "-" }}
           </p>
         </div>
       </div>
@@ -109,14 +134,12 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import UserService from "@/services/user";
-import SmsService from "@/services/sms";
 import { socket } from "@/utils/socket";
 
 const orderList = ref([]); // Danh sách từ API
 const filteredOrderList = ref([]); // Danh sách sau khi lọc
 const selectedStatus = ref("all"); // Trạng thái lọc
 const loading = ref(false);
-const smsList = ref([]); // Danh sách sau khi lọc
 
 const rowsPerPage = ref(10); // Số dòng trên mỗi trang
 const currentPage = ref(1); // Trang hiện tại
@@ -124,39 +147,12 @@ const totalDocs = ref(0); // Tổng số đơn hàng từ API
 const totalPages = ref(1); // Tổng số trang
 const firstRowIndex = ref(0); // Chỉ mục của dòng đầu tiên trên trang hiện tại
 
+const countdownInterval = ref(null);
+const currentTime = ref(new Date());
+
 // Hàm tính STT
 const calculateSTT = (index) => {
   return (currentPage.value - 1) * rowsPerPage.value + index + 1;
-};
-
-const getMessageText = (orderId) => {
-  const sms = smsList.value.find((e) => e.orderId == orderId);
-  return sms == undefined ? "-" : sms?.messageText;
-};
-
-const fetchSmsList = async () => {
-  loading.value = true;
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    console.error("Token is not found in localStorage");
-    loading.value = false;
-    return;
-  }
-
-  try {
-    const response = await SmsService.GetAllSmsList(token);
-
-    if (response?.success) {
-      smsList.value = response.data.docs;
-    } else {
-      console.error("No data received from API");
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  } finally {
-    loading.value = false;
-  }
 };
 
 // Hàm lấy danh sách từ API
@@ -178,7 +174,7 @@ const fetchOrderList = async (page = 1) => {
 
     if (response?.success) {
       orderList.value = response.data.docs;
-      totalDocs.value = response.data.totalDocs;
+      totalDocs.value = response.data.docs.length * response.data.totalPages; // Calculate total docs
       totalPages.value = response.data.totalPages;
       currentPage.value = response.data.page;
       filterOrderList();
@@ -199,12 +195,9 @@ const filterOrderList = () => {
     return;
   }
 
-  const isExpired = (date) => new Date(date) <= new Date();
-  filteredOrderList.value = orderList.value.filter((item) =>
-    selectedStatus.value === "expired"
-      ? isExpired(item.stock.expiredAt)
-      : !isExpired(item.stock.expiredAt)
-  );
+  filteredOrderList.value = orderList.value.filter((item) => {
+    return item.statusCode.toLowerCase() === selectedStatus.value.toLowerCase();
+  });
 };
 
 // Hàm xử lý khi chuyển trang
@@ -215,25 +208,56 @@ const onPageChange = (event) => {
   fetchOrderList(newPage);
 };
 
+// Format countdown time
+const formatCountdown = (expiredAt) => {
+  const now = currentTime.value;
+  const expired = new Date(expiredAt);
+  const diff = expired - now;
+
+  if (diff <= 0) {
+    return "Expired";
+  }
+
+  const minutes = Math.floor(diff / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+};
+
+// Format messages with sender and content
+const formatMessages = (messages) => {
+  if (!messages || messages.length === 0) return null;
+  return messages.map((msg) => `${msg.sender}: ${msg.content}`).join("\n");
+};
+
+// Update countdown every second
+const startCountdown = () => {
+  countdownInterval.value = setInterval(() => {
+    currentTime.value = new Date();
+  }, 1000);
+};
+
 onMounted(() => {
   fetchOrderList();
-  fetchSmsList();
+  startCountdown();
 
   // Thêm xử lý socket event
   socket.on("NewSMSReceived", (newSms) => {
-    // Chuyển đổi dữ liệu về đúng định dạng smsList đang dùng
     const smsItem = {
       orderId: newSms.order.id,
       messageText: newSms.data.message,
       // Thêm các trường khác nếu cần
     };
-    console.log("[MyProxySection] NewSMSReceived:", smsItem);
-    smsList.value = [newSms, ...smsList.value];
+    console.log("[MyOTPSection] NewSMSReceived:", smsItem);
+
+    filterOrderList.value = [smsItem, ...filterOrderList.value];
   });
 });
 
 // Cleanup socket listener khi component unmount
 onUnmounted(() => {
+  if (countdownInterval.value) {
+    clearInterval(countdownInterval.value);
+  }
   socket.off("NewSMSReceived");
 });
 </script>
@@ -247,6 +271,14 @@ onUnmounted(() => {
   gap: 10px;
 }
 
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 14rem;
+  cursor: help;
+}
+
 #status-filter {
   padding: 0.5rem;
   border: 1px solid #ccc;
@@ -256,32 +288,39 @@ onUnmounted(() => {
 /* Xử lý layout trên mobile */
 @media (max-width: 768px) {
   .filter-container {
-    flex-direction: column; /* Chuyển filter thành cột */
+    flex-direction: column;
+    /* Chuyển filter thành cột */
     align-items: flex-start;
     gap: 5px;
   }
 
   #status-filter {
-    width: 100%; /* Để dropdown full width */
+    width: 100%;
+    /* Để dropdown full width */
   }
 
   .purchased-sim-container {
-    overflow-x: auto; /* Cho phép cuộn ngang nếu bảng quá lớn */
+    overflow-x: auto;
+    /* Cho phép cuộn ngang nếu bảng quá lớn */
   }
 
   table {
-    font-size: 14px; /* Giảm kích thước chữ */
+    font-size: 14px;
+    /* Giảm kích thước chữ */
   }
 
   th,
   td {
-    padding: 8px; /* Giảm padding để bảng nhỏ gọn hơn */
-    white-space: nowrap; /* Tránh bị xuống dòng */
+    padding: 8px;
+    /* Giảm padding để bảng nhỏ gọn hơn */
+    white-space: nowrap;
+    /* Tránh bị xuống dòng */
   }
 
   .desktop-view {
     display: none;
   }
+
   .mobile-view {
     display: block;
   }
@@ -292,6 +331,7 @@ onUnmounted(() => {
   .desktop-view {
     display: block;
   }
+
   .mobile-view {
     display: none;
   }
@@ -316,21 +356,63 @@ onUnmounted(() => {
 }
 
 .order-status {
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
   text-transform: capitalize;
 }
 
-.order-status.active {
-  color: #2ecc71;
+.order-status.refunded {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
 }
 
-.order-status.expired {
-  color: #e74c3c;
+.order-status.success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.order-status.pending {
+  background-color: #fefce8;
+  color: #ca8a04;
+  border: 1px solid #fef08a;
 }
 
 .order-body p {
   margin: 0.3rem 0;
+}
+
+.status-tag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 5px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-tag.refunded {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.status-tag.success {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.status-tag.pending {
+  background-color: #fefce8;
+  color: #ca8a04;
+  border: 1px solid #fef08a;
+}
+
+.countdown {
+  font-family: monospace;
+  font-weight: bold;
+  color: #dc2626;
 }
 </style>
