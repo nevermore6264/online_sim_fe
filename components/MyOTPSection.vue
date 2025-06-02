@@ -69,9 +69,9 @@
           <template #body="{ data }">
             <div
               class="truncate-text"
-              :title="order.stock?.messages?.map((e) => e?.content)"
+              :title="formatMessages(data.stock?.messages)"
             >
-              {{ order.stock?.messages?.map((e) => e?.content) }}
+              {{ formatMessages(data.stock?.messages) || "-" }}
             </div>
           </template>
         </Column>
@@ -115,7 +115,7 @@
           </p>
           <p>
             <strong>{{ $t("order.column.otp") }}:</strong>
-            {{ order.stock?.messages?.map((e) => e?.content) }}
+            {{ formatMessages(order.stock?.messages) || "-" }}
           </p>
         </div>
       </div>
@@ -221,6 +221,12 @@ const formatCountdown = (expiredAt) => {
   const minutes = Math.floor(diff / 60000);
   const seconds = Math.floor((diff % 60000) / 1000);
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+};
+
+// Format messages with sender and content
+const formatMessages = (messages) => {
+  if (!messages || messages.length === 0) return null;
+  return messages.map((msg) => `${msg.sender}: ${msg.content}`).join("\n");
 };
 
 // Update countdown every second
