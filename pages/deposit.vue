@@ -88,10 +88,7 @@
               @click="showTrc20Address"
               style="cursor: pointer"
             >
-              <h4>{{ t("deposit.trc20") }}</h4>
-              <p style="color: #2aabee; font-weight: bold">
-                {{ t("deposit.clickToGetAddress") }}
-              </p>
+              <p>{{ t("deposit.clickToGetAddress") }}</p>
             </div>
           </div>
         </div>
@@ -485,38 +482,39 @@ input:disabled {
 }
 
 .payment-method-card--trc20 {
-  background: #23272e;
-  border: 1.5px solid #2aabee;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(42, 171, 238, 0.08);
-  padding: 18px 14px 14px 14px;
-  transition: box-shadow 0.2s, border 0.2s, background 0.2s;
-  cursor: pointer;
+  background: linear-gradient(90deg, #2aabee 0%, #2196f3 100%);
   color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 18px 0;
+  font-size: 1.1em;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(42, 171, 238, 0.1);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
   min-width: 220px;
   max-width: 320px;
   margin: 0 auto;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .payment-method-card--trc20:hover {
-  background: #273043;
-  border-color: #2196f3;
+  background: linear-gradient(90deg, #2196f3 0%, #2aabee 100%);
   box-shadow: 0 4px 16px rgba(42, 171, 238, 0.18);
-}
-.payment-method-card--trc20 .network-icon {
-  width: 44px;
-  height: 44px;
-  margin: 0 auto 10px;
-}
-.payment-method-card--trc20 h4 {
-  font-size: 1.08em;
-  margin: 8px 0 4px 0;
-  color: #2aabee;
-  font-weight: 600;
+  transform: translateY(-2px) scale(1.03);
 }
 .payment-method-card--trc20 p {
-  font-size: 0.98em;
-  color: #b0b0b0;
+  color: #fff;
+  margin: 0;
+  font-size: 1.15em;
+  font-weight: 700;
+}
+.payment-method-card--trc20 p {
+  color: #e0f2ff;
+  font-size: 1em;
   margin: 0;
   font-weight: 400;
 }
