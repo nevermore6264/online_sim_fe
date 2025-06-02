@@ -96,7 +96,11 @@
           <div v-else-if="trc20Error" class="trc20-error">{{ trc20Error }}</div>
           <div v-else>
             <div class="trc20-address-row">
-              <span class="trc20-address">{{ trc20Info.address }}</span>
+              <input
+                class="trc20-address-input"
+                :value="trc20Info.address"
+                readonly
+              />
               <button class="trc20-copy" @click="copyTrc20Address">
                 {{ t("deposit.copy") }}
               </button>
@@ -169,12 +173,8 @@ const showTrc20Address = async () => {
   trc20Error.value = "";
   trc20Loading.value = true;
   try {
-    const res = await fetch("https://verifysms.org/api/web/payment/crypto", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
-    });
-    const data = await res.json();
+    const token = localStorage.getItem("token");
+    const data = await paymentService.createTrc20Address(token);
     if (data.success && data.data) {
       trc20Info.value.address = data.data.address;
       trc20Info.value.type = data.data.type;
@@ -397,27 +397,36 @@ input:disabled {
 }
 
 .trc20-address-box {
-  background: #f4f8fb;
+  background: #23272e;
   border-radius: 8px;
   margin: 18px 0 0 0;
   padding: 18px 18px 12px 18px;
   box-shadow: 0 2px 8px rgba(42, 171, 238, 0.08);
   max-width: 480px;
+  color: #fff;
 }
 .trc20-address-row {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
-.trc20-address {
+.trc20-address-input {
   color: #2aabee;
   font-family: monospace;
   font-size: 1.1em;
   flex: 1;
   word-break: break-all;
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin-right: 10px;
+}
+.trc20-address-input:read-only {
+  background: #f9f9f9;
 }
 .trc20-copy {
-  margin-left: 10px;
+  margin-left: 0;
   background: #2aabee;
   color: #fff;
   border: none;
@@ -431,15 +440,16 @@ input:disabled {
   background: #2196f3;
 }
 .trc20-info {
-  color: #333;
+  color: #fff;
   font-size: 1em;
   text-align: left;
+  margin-top: 8px;
 }
 .trc20-info > div {
   margin-bottom: 4px;
 }
 .trc20-note {
-  color: #888;
+  color: #b0b0b0;
   font-size: 0.95em;
   margin-top: 10px;
   text-align: left;
