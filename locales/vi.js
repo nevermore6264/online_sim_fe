@@ -352,7 +352,7 @@ export default {
     bep20: "Mạng BEP20",
     comingSoon: "Sắp ra mắt",
     usdtAddress: "Địa chỉ USDT",
-    minAmountError: "Số tiền tối thiểu là 10 USDT",
+    minAmountError: "Số tiền nạp tối thiểu là 10,000 VND",
     copy: "Sao chép",
     copied: "Đã sao chép!",
     loading: "Đang tải...",
@@ -364,6 +364,7 @@ export default {
     erc20Note:
       "Sau thời gian này, số dư sẽ không được cộng tự động. Vui lòng dùng lệnh /deposit để kiểm tra giao dịch.",
     clickToGetAddress: "Nhấn để lấy địa chỉ",
+    qrExpiresIn: "QR hết hạn sau",
   },
   referral: {
     title: "Chương Trình Giới Thiệu",

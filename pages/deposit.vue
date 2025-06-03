@@ -15,7 +15,7 @@
             id="amount"
             class="form-control"
             v-model="amount"
-            min="1000"
+            min="10000"
             :placeholder="t('deposit.amountPlaceholder')"
             :disabled="isLoading"
           />
@@ -40,6 +40,9 @@
             <div v-else class="qr-placeholder">
               <i class="fas fa-qrcode"></i>
               <p>{{ t("deposit.qrPlaceholder") }}</p>
+            </div>
+            <div v-if="qrData && countdown" class="countdown-timer">
+              {{ t("deposit.qrExpiresIn") }}: {{ formatTime(countdown) }}
             </div>
           </div>
           <div class="vietqr-footer">
@@ -159,7 +162,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onUnmounted } from "vue";
 import { useI18n } from "vue-i18n";
 import QrcodeVue from "qrcode.vue";
 import paymentService from "../services/payment";
@@ -169,6 +172,8 @@ const qrData = ref(null);
 const isLoading = ref(false);
 const amount = ref("");
 const amountError = ref("");
+const countdown = ref(null);
+const countdownInterval = ref(null);
 
 // TRC20 Address State
 const trc20Info = ref({ address: "", type: "", min: 10, valid: 60, rate: 1 });
@@ -203,15 +208,53 @@ const copyTrc20Address = async () => {
   }
 };
 
+const startCountdown = () => {
+  // Set initial countdown to 30 minutes (1800 seconds)
+  countdown.value = 1800;
+
+  // Clear any existing interval
+  if (countdownInterval.value) {
+    clearInterval(countdownInterval.value);
+  }
+
+  // Start new countdown interval
+  countdownInterval.value = setInterval(() => {
+    if (countdown.value > 0) {
+      countdown.value--;
+    } else {
+      // Clear QR code and interval when time expires
+      qrData.value = null;
+      clearInterval(countdownInterval.value);
+      countdownInterval.value = null;
+    }
+  }, 1000);
+};
+
+const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+    .toString()
+    .padStart(2, "0")}`;
+};
+
 const generateQRCode = async () => {
   amountError.value = "";
   const value = parseInt(amount.value, 10);
+
+  // Add validation for minimum amount
+  if (value < 10000) {
+    amountError.value = t("deposit.minAmountError");
+    return;
+  }
+
   try {
     isLoading.value = true;
     qrData.value = null;
     const data = await paymentService.createPaymentQRCode(value);
     if (data.success && data.data) {
       qrData.value = data.data;
+      startCountdown(); // Start countdown when QR is generated
     } else {
       amountError.value = t("deposit.qrError");
     }
@@ -221,6 +264,13 @@ const generateQRCode = async () => {
     isLoading.value = false;
   }
 };
+
+// Clean up interval when component is unmounted
+onUnmounted(() => {
+  if (countdownInterval.value) {
+    clearInterval(countdownInterval.value);
+  }
+});
 </script>
 
 <style scoped>
@@ -550,5 +600,12 @@ input:disabled {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.countdown-timer {
+  margin-top: 10px;
+  color: #e74c3c;
+  font-size: 14px;
+  font-weight: 500;
 }
 </style>

@@ -365,6 +365,8 @@ export default {
     erc20Note:
       "After this period, it will not automatically add to your balance. Please use the /deposit command again to check the transaction.",
     clickToGetAddress: "Click to get address",
+    qrExpiresIn: "QR expires in",
+    minAmountError: "Minimum deposit amount is 10,000 VND",
   },
   referral: {
     title: "Referral Program",
