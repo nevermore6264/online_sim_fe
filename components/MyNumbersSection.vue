@@ -67,11 +67,20 @@
         </Column>
         <Column :header="$t('order.column.otp')" style="min-width: 14rem">
           <template #body="{ data }">
-            <div
-              class="truncate-text"
-              :title="formatMessages(data.stock?.messages)"
-            >
-              {{ formatMessages(data.stock?.messages) || "-" }}
+            <div class="message-container">
+              <div
+                class="message-content"
+                :class="{ expanded: isExpanded[data.id] }"
+              >
+                {{ formatMessages(data.stock?.messages) || "-" }}
+              </div>
+              <button
+                v-if="hasLongMessage(data.stock?.messages)"
+                class="show-more-btn"
+                @click="toggleExpand(data.id)"
+              >
+                {{ isExpanded[data.id] ? "Show less" : "Show more" }}
+              </button>
             </div>
           </template>
         </Column>
@@ -149,6 +158,7 @@ const firstRowIndex = ref(0); // Chỉ mục của dòng đầu tiên trên tran
 
 const countdownInterval = ref(null);
 const currentTime = ref(new Date());
+const isExpanded = ref({});
 
 // Hàm tính STT
 const calculateSTT = (index) => {
@@ -236,6 +246,16 @@ const startCountdown = () => {
   }, 1000);
 };
 
+const toggleExpand = (id) => {
+  isExpanded.value[id] = !isExpanded.value[id];
+};
+
+const hasLongMessage = (messages) => {
+  if (!messages || messages.length === 0) return false;
+  const formattedMessage = formatMessages(messages);
+  return formattedMessage && formattedMessage.length > 200;
+};
+
 onMounted(() => {
   fetchOrderList();
   startCountdown();
@@ -290,6 +310,8 @@ onUnmounted(() => {
   text-overflow: ellipsis;
   max-width: 14rem;
   cursor: help;
+  display: block;
+  padding: 4px 0;
 }
 
 #status-filter {
@@ -427,5 +449,37 @@ onUnmounted(() => {
   font-family: monospace;
   font-weight: bold;
   color: #dc2626;
+}
+
+.message-container {
+  position: relative;
+}
+
+.message-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 3em;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-bottom: 4px;
+}
+
+.message-content.expanded {
+  max-height: none;
+}
+
+.show-more-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  padding: 2px 8px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: underline;
+}
+
+.show-more-btn:hover {
+  color: #1d4ed8;
 }
 </style>
