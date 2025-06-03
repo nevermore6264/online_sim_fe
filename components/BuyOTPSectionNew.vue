@@ -371,6 +371,8 @@ const totalAmount = computed(() => {
   );
 });
 
+const emit = defineEmits(["purchase-success"]);
+
 const buySelectedServices = async () => {
   const token = localStorage.getItem("token");
   if (selectedServices.value.length === 0) return;
@@ -410,6 +412,7 @@ const buySelectedServices = async () => {
       );
     }
     // Chuyển tab MyOTP bằng emit
+    console.log("Emit purchase-success");
     emit("purchase-success");
   }
   if (failedServices.length > 0) {
