@@ -184,6 +184,8 @@ import { GetAllCountries } from "@/services/country.js";
 import { push } from "notivue";
 import UserService from "../services/user";
 
+const emit = defineEmits(["rent-success"]);
+
 const selectedCustomer = ref(null);
 const selectedServices = ref([]);
 const servicesAvaiable = ref([]);
@@ -278,7 +280,6 @@ const rentSelectedServices = async () => {
         new CustomEvent("userInfoUpdated", { detail: userResponse })
       );
     }
-    // Emit success event to parent
     emit("rent-success");
   }
   if (failedServices.length > 0) {
