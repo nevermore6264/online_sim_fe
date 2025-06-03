@@ -280,7 +280,10 @@ onMounted(() => {
       // 4. Thêm message vào đầu mảng (hoặc cuối tuỳ bạn)
       orderList.value[orderIndex].stock.messages.unshift(newMessage);
 
-      // 5. Gọi lại filterOrderList để cập nhật filteredOrderList
+      // 5. Cập nhật status thành success
+      orderList.value[orderIndex].statusCode = "SUCCESS";
+
+      // 6. Gọi lại filterOrderList để cập nhật filteredOrderList
       filterOrderList();
     }
   });
