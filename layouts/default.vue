@@ -1,6 +1,6 @@
 <template>
   <!-- <FraudWarning /> -->
-  <Weather />
+  <!-- <Weather /> -->
   <LanguageSwitcher />
   <Header />
   <div class="main">

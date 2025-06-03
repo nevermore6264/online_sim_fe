@@ -280,13 +280,13 @@ const rentSelectedServices = async () => {
         );
       }
       // Click the My Numbers tab
-      const tabMenu = document.querySelector(".p-tabmenu");
-      if (tabMenu) {
-        const tabButtons = tabMenu.querySelectorAll(".p-tabmenuitem");
-        if (tabButtons && tabButtons[1]) {
-          tabButtons[1].click();
-        }
-      }
+      // const tabMenu = document.querySelector(".p-tabmenu");
+      // if (tabMenu) {
+      //   const tabButtons = tabMenu.querySelectorAll(".p-tabmenuitem");
+      //   if (tabButtons && tabButtons[1]) {
+      //     tabButtons[1].click();
+      //   }
+      // }
     }
     if (failedServices.length > 0) {
       push.warning(`Failed to rent service for: ${failedServices.join(", ")}`);

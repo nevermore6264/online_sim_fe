@@ -410,14 +410,14 @@ const buySelectedServices = async () => {
           new CustomEvent("userInfoUpdated", { detail: userResponse })
         );
       }
-      // Click the MyOTP tab
-      const tabMenu = document.querySelector(".p-tabmenu");
-      if (tabMenu) {
-        const tabButtons = tabMenu.querySelectorAll(".p-tabmenuitem");
-        if (tabButtons && tabButtons[1]) {
-          tabButtons[1].click();
-        }
-      }
+      // // Click the MyOTP tab
+      // const tabMenu = document.querySelector(".p-tabmenu");
+      // if (tabMenu) {
+      //   const tabButtons = tabMenu.querySelectorAll(".p-tabmenuitem");
+      //   if (tabButtons && tabButtons[1]) {
+      //     tabButtons[1].click();
+      //   }
+      // }
     }
     if (failedServices.length > 0) {
       push.warning(`Failed to activations for: ${failedServices.join(", ")}`);
