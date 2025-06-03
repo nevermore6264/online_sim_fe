@@ -67,11 +67,25 @@
         </Column>
         <Column :header="$t('order.column.otp')" style="min-width: 14rem">
           <template #body="{ data }">
-            <div
-              class="truncate-text"
-              :title="formatMessages(data.stock?.messages)"
-            >
-              {{ formatMessages(data.stock?.messages) || "-" }}
+            <div class="message-container">
+              <div
+                class="message-content"
+                :class="{ expanded: isExpanded[data.id] }"
+              >
+                {{ formatMessages(data.stock?.messages) || "-" }}
+              </div>
+              <button
+                v-if="hasLongMessage(data.stock?.messages)"
+                class="show-more-btn"
+                @click="toggleExpand(data.id)"
+              >
+                <span class="btn-text">{{
+                  isExpanded[data.id] ? "Show less" : "Show more"
+                }}</span>
+                <span class="btn-icon">{{
+                  isExpanded[data.id] ? "▲" : "▼"
+                }}</span>
+              </button>
             </div>
           </template>
         </Column>
@@ -149,6 +163,7 @@ const firstRowIndex = ref(0); // Chỉ mục của dòng đầu tiên trên tran
 
 const countdownInterval = ref(null);
 const currentTime = ref(new Date());
+const isExpanded = ref({});
 
 // Hàm tính STT
 const calculateSTT = (index) => {
@@ -236,6 +251,16 @@ const startCountdown = () => {
   }, 1000);
 };
 
+const toggleExpand = (id) => {
+  isExpanded.value[id] = !isExpanded.value[id];
+};
+
+const hasLongMessage = (messages) => {
+  if (!messages || messages.length === 0) return false;
+  const formattedMessage = formatMessages(messages);
+  return formattedMessage && formattedMessage.length > 5;
+};
+
 onMounted(() => {
   fetchOrderList();
   startCountdown();
@@ -285,11 +310,7 @@ onUnmounted(() => {
 }
 
 .truncate-text {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 14rem;
-  cursor: help;
+  display: none;
 }
 
 #status-filter {
@@ -427,5 +448,59 @@ onUnmounted(() => {
   font-family: monospace;
   font-weight: bold;
   color: #dc2626;
+}
+
+.message-container {
+  position: relative;
+}
+
+.message-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 3em;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-bottom: 4px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.message-content.expanded {
+  max-height: none;
+}
+
+.show-more-btn {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
+  padding: 4px 12px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.show-more-btn:hover {
+  background: #e5e7eb;
+  color: #1f2937;
+  border-color: #d1d5db;
+}
+
+.show-more-btn .btn-icon {
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.show-more-btn:hover .btn-icon {
+  transform: translateY(1px);
+}
+
+/* Remove the old expand-indicator styles since we're not using it anymore */
+.expand-indicator {
+  display: none;
 }
 </style>
