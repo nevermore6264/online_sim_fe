@@ -17,6 +17,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import Weather from "@/components/Weather.vue";
+import { socket } from "@/utils/socket";
+import { push } from "notivue";
 const isLoggedIn = ref(false);
 
 const checkLoginStatus = () => {
@@ -26,12 +28,21 @@ const checkLoginStatus = () => {
 
 onMounted(() => {
   checkLoginStatus();
-
   window.addEventListener("storage", checkLoginStatus);
+
+  // Lắng nghe sự kiện nạp tiền thành công
+  socket.on("NewDeposit", (data) => {
+    push.success(
+      `Nạp tiền thành công!\nSố tiền: ${data.amount} ${data.currency}\n${
+        data.description || ""
+      }`
+    );
+  });
 });
 
 onUnmounted(() => {
   window.removeEventListener("storage", checkLoginStatus);
+  socket.off("NewDeposit");
 });
 </script>
 
