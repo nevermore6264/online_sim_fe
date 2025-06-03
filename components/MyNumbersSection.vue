@@ -242,14 +242,27 @@ onMounted(() => {
 
   // Thêm xử lý socket event
   socket.on("NewSMSReceived", (newSms) => {
-    const smsItem = {
-      orderId: newSms.order.id,
-      messageText: newSms.data.message,
-      // Thêm các trường khác nếu cần
-    };
-    console.log("[MyOTPSection] NewSMSReceived:", smsItem);
+    // 1. Tìm order theo id
+    const orderIndex = orderList.value.findIndex(
+      (order) => order.id === newSms.order.id
+    );
+    if (orderIndex !== -1) {
+      // 2. Tạo message mới
+      const newMessage = {
+        sender: newSms.data.sender,
+        content: newSms.data.message,
+        receivedAt: new Date().toISOString(), // hoặc lấy từ newSms nếu có
+      };
+      // 3. Nếu chưa có messages thì tạo mảng mới
+      if (!orderList.value[orderIndex].stock.messages) {
+        orderList.value[orderIndex].stock.messages = [];
+      }
+      // 4. Thêm message vào đầu mảng (hoặc cuối tuỳ bạn)
+      orderList.value[orderIndex].stock.messages.unshift(newMessage);
 
-    filterOrderList.value = [smsItem, ...filterOrderList.value];
+      // 5. Gọi lại filterOrderList để cập nhật filteredOrderList
+      filterOrderList();
+    }
   });
 });
 
