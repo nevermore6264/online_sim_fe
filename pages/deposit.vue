@@ -350,7 +350,7 @@ onUnmounted(() => {
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 label {
