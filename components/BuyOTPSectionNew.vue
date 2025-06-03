@@ -387,43 +387,33 @@ const buySelectedServices = async () => {
   let successCount = 0;
   let failedServices = [];
 
-  try {
-    for (const data of servicesData) {
-      const response = await orderService.BuyOTP(token, data);
-      if (response.success) {
-        successCount++;
-      } else {
-        failedServices.push(data.serviceCode);
-      }
+  for (const data of servicesData) {
+    const response = await orderService.BuyOTP(token, data);
+    if (response.success) {
+      successCount++;
+    } else {
+      failedServices.push(data.serviceCode);
     }
+  }
 
-    if (successCount > 0) {
-      push.success(`Successfully bought ${successCount} OTP(s)!`);
-      // Clear selected services
-      selectedServices.value = [];
-      // Update user balance
-      const userResponse = await UserService.GetCurrentAccount(token);
-      if (userResponse.success) {
-        localStorage.setItem("userInfo", JSON.stringify(userResponse));
-        // Dispatch event to notify about user info update
-        window.dispatchEvent(
-          new CustomEvent("userInfoUpdated", { detail: userResponse })
-        );
-      }
-      // // Click the MyOTP tab
-      // const tabMenu = document.querySelector(".p-tabmenu");
-      // if (tabMenu) {
-      //   const tabButtons = tabMenu.querySelectorAll(".p-tabmenuitem");
-      //   if (tabButtons && tabButtons[1]) {
-      //     tabButtons[1].click();
-      //   }
-      // }
+  if (successCount > 0) {
+    push.success(`Successfully bought ${successCount} OTP(s)!`);
+    // Clear selected services
+    selectedServices.value = [];
+    // Update user balance
+    const userResponse = await UserService.GetCurrentAccount(token);
+    if (userResponse.success) {
+      localStorage.setItem("userInfo", JSON.stringify(userResponse));
+      // Dispatch event to notify about user info update
+      window.dispatchEvent(
+        new CustomEvent("userInfoUpdated", { detail: userResponse })
+      );
     }
-    if (failedServices.length > 0) {
-      push.warning(`Failed to activations for: ${failedServices.join(", ")}`);
-    }
-  } catch (err) {
-    push.error("Error during service purchase!");
+    // Chuyển tab MyOTP bằng emit
+    emit("purchase-success");
+  }
+  if (failedServices.length > 0) {
+    push.warning(`Failed to activations for: ${failedServices.join(", ")}`);
   }
 };
 

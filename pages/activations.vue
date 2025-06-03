@@ -53,6 +53,8 @@ watch(activeTab, (newValue) => {
 });
 
 const handlePurchaseSuccess = async () => {
+  // Switch to MyOTP tab
+  activeTab.value = 1;
   // Update user balance first
   const token = localStorage.getItem("token");
   if (token) {
@@ -69,9 +71,6 @@ const handlePurchaseSuccess = async () => {
       console.error("Error updating user info:", error);
     }
   }
-
-  // Switch to MyOTP tab
-  activeTab.value = 1;
 
   // Refresh MyOTP data
   if (myOTPSection.value?.refreshData) {
