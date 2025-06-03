@@ -249,50 +249,40 @@ const rentSelectedServices = async () => {
   let successCount = 0;
   let failedServices = [];
 
-  try {
-    for (const service of selectedServices.value) {
-      const rentDays = calculateRentDays(
-        service.rentalQuantity,
-        service.rentalUnit
+  for (const service of selectedServices.value) {
+    const rentDays = calculateRentDays(
+      service.rentalQuantity,
+      service.rentalUnit
+    );
+    const data = {
+      serviceCode: service.code.toUpperCase(),
+      rentDays: rentDays,
+    };
+    const response = await orderService.RentOTP(token, data);
+    if (response.success) {
+      successCount++;
+    } else {
+      failedServices.push(data.serviceCode);
+    }
+  }
+  if (successCount > 0) {
+    push.success(`Successfully rented ${successCount} service(s)!`);
+    // Clear selected services
+    selectedServices.value = [];
+    // Update user balance
+    const userResponse = await UserService.GetCurrentAccount(token);
+    if (userResponse.success) {
+      localStorage.setItem("userInfo", JSON.stringify(userResponse));
+      // Dispatch event to notify about user info update
+      window.dispatchEvent(
+        new CustomEvent("userInfoUpdated", { detail: userResponse })
       );
-      const data = {
-        serviceCode: service.code.toUpperCase(),
-        rentDays: rentDays,
-      };
-      const response = await orderService.RentOTP(token, data);
-      if (response.success) {
-        successCount++;
-      } else {
-        failedServices.push(data.serviceCode);
-      }
     }
-    if (successCount > 0) {
-      push.success(`Successfully rented ${successCount} service(s)!`);
-      // Clear selected services
-      selectedServices.value = [];
-      // Update user balance
-      const userResponse = await UserService.GetCurrentAccount(token);
-      if (userResponse.success) {
-        localStorage.setItem("userInfo", JSON.stringify(userResponse));
-        // Dispatch event to notify about user info update
-        window.dispatchEvent(
-          new CustomEvent("userInfoUpdated", { detail: userResponse })
-        );
-      }
-      // Click the My Numbers tab
-      // const tabMenu = document.querySelector(".p-tabmenu");
-      // if (tabMenu) {
-      //   const tabButtons = tabMenu.querySelectorAll(".p-tabmenuitem");
-      //   if (tabButtons && tabButtons[1]) {
-      //     tabButtons[1].click();
-      //   }
-      // }
-    }
-    if (failedServices.length > 0) {
-      push.warning(`Failed to rent service for: ${failedServices.join(", ")}`);
-    }
-  } catch (err) {
-    push.error("Error during service rental!");
+    // Emit success event to parent
+    emit("rent-success");
+  }
+  if (failedServices.length > 0) {
+    push.warning(`Failed to rent service for: ${failedServices.join(", ")}`);
   }
 };
 
