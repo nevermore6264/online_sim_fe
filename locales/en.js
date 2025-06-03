@@ -367,6 +367,7 @@ export default {
     clickToGetAddress: "Click to get address",
     qrExpiresIn: "QR expires in",
     minAmountError: "Minimum deposit amount is 10,000 VND",
+    amountRequired: "Please enter the amount you want to deposit",
   },
   referral: {
     title: "Referral Program",

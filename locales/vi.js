@@ -365,6 +365,7 @@ export default {
       "Sau thời gian này, số dư sẽ không được cộng tự động. Vui lòng dùng lệnh /deposit để kiểm tra giao dịch.",
     clickToGetAddress: "Nhấn để lấy địa chỉ",
     qrExpiresIn: "QR hết hạn sau",
+    amountRequired: "Vui lòng nhập số tiền muốn nạp",
   },
   referral: {
     title: "Chương Trình Giới Thiệu",

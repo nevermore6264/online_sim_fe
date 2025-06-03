@@ -240,6 +240,13 @@ const formatTime = (seconds) => {
 
 const generateQRCode = async () => {
   amountError.value = "";
+
+  // Add validation for empty amount
+  if (!amount.value) {
+    amountError.value = t("deposit.amountRequired");
+    return;
+  }
+
   const value = parseInt(amount.value, 10);
 
   // Add validation for minimum amount
