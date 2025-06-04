@@ -104,14 +104,22 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { push } from "notivue";
-import UserService from "@/services/user"; // Import service
+import UserService from "@/services/user";
 import { jwtDecode } from "jwt-decode";
 
 const loginData = ref({ username: "", password: "" });
 const loading = ref(false);
 const showPassword = ref(false);
+
+onMounted(() => {
+  // Load Telegram Widget script
+  const script = document.createElement("script");
+  script.src = "https://telegram.org/js/telegram-widget.js?22";
+  script.async = true;
+  document.head.appendChild(script);
+});
 
 const handleLogin = async () => {
   if (!loginData.value.username || !loginData.value.password) {
@@ -175,19 +183,57 @@ const handleGoogleSignIn = async () => {
 const handleTelegramSignIn = async () => {
   try {
     loading.value = true;
-    const token = await UserService.LoginTelegram();
+    if (
+      window.Telegram &&
+      window.Telegram.Login &&
+      window.Telegram.Login.auth
+    ) {
+      window.Telegram.Login.auth(
+        {
+          bot_id: "7937448347", // Replace with your bot's ID
+          request_access: "write",
+          lang: "en",
+          embed: false,
+        },
+        async (data) => {
+          if (data) {
+            try {
+              const response = await fetch(
+                "https://verifysms.org/api/auth/telegram",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(data),
+                }
+              );
 
-    if (token) {
-      localStorage.setItem("token", token);
-      push.success("Login successful!");
-      window.location.href = "/";
+              const result = await response.json();
+              if (result.data && result.data.token) {
+                localStorage.setItem("token", result.data.token);
+                push.success("Login successful!");
+                window.location.href = "/";
+              } else {
+                push.error("Failed to get token from server.");
+              }
+            } catch (error) {
+              console.error("Error during login:", error);
+              push.error("Login failed. Please try again.");
+            }
+          } else {
+            push.error("Login cancelled or failed.");
+          }
+          loading.value = false;
+        }
+      );
     } else {
-      push.error("Failed to sign in with Telegram.");
+      push.error("Telegram Login script not loaded yet. Please try again.");
+      loading.value = false;
     }
   } catch (error) {
     console.error("Error during Telegram sign in:", error);
     push.error("An error occurred during Telegram sign in.");
-  } finally {
     loading.value = false;
   }
 };
