@@ -149,7 +149,13 @@ const handleLogin = async () => {
     if (token) {
       localStorage.setItem("token", token);
       push.success("Login successful!");
-      window.location.href = "/";
+
+      // Get next parameter from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const nextUrl = urlParams.get("next");
+
+      // Redirect to next URL if exists, otherwise go to home page
+      window.location.href = nextUrl || "/";
     } else {
       push.error("Invalid login credentials.");
     }
@@ -168,7 +174,13 @@ const handleGoogleSignIn = async () => {
     if (token) {
       localStorage.setItem("token", token);
       push.success("Login successful!");
-      window.location.href = "/";
+
+      // Get next parameter from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const nextUrl = urlParams.get("next");
+
+      // Redirect to next URL if exists, otherwise go to home page
+      window.location.href = nextUrl || "/";
     } else {
       push.error("Failed to sign in with Google.");
     }
@@ -202,7 +214,13 @@ const handleTelegramSignIn = async () => {
               if (result && result.data && result.data.token) {
                 localStorage.setItem("token", result.data.token);
                 push.success("Login successful!");
-                window.location.href = "/";
+
+                // Get next parameter from URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const nextUrl = urlParams.get("next");
+
+                // Redirect to next URL if exists, otherwise go to home page
+                window.location.href = nextUrl || "/";
               } else {
                 push.error("Login failed. Please try again.");
               }
