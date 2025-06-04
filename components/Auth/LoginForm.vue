@@ -39,39 +39,61 @@
           class="auth-submit"
           :disabled="loading"
         />
-        <div class="or-divider">or</div>
-        <button
-          class="google-signin-btn"
-          @click.prevent="handleGoogleSignIn"
-          :disabled="loading"
-          type="button"
-        >
-          <svg
-            class="google-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 48 48"
-            width="18px"
-            height="18px"
+        <div class="or-divider">hoặc đăng nhập/đăng ký với</div>
+        <div class="social-buttons">
+          <button
+            class="google-signin-btn"
+            @click.prevent="handleGoogleSignIn"
+            :disabled="loading"
+            type="button"
           >
-            <path
-              fill="#FFC107"
-              d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
-            />
-            <path
-              fill="#FF3D00"
-              d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
-            />
-            <path
-              fill="#4CAF50"
-              d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
-            />
-            <path
-              fill="#1976D2"
-              d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
-            />
-          </svg>
-          Sign in with Google
-        </button>
+            <svg
+              class="google-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 48 48"
+              width="18px"
+              height="18px"
+            >
+              <path
+                fill="#FFC107"
+                d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+              />
+              <path
+                fill="#FF3D00"
+                d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+              />
+              <path
+                fill="#4CAF50"
+                d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+              />
+              <path
+                fill="#1976D2"
+                d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+              />
+            </svg>
+            Google
+          </button>
+          <button
+            class="telegram-signin-btn"
+            @click.prevent="handleTelegramSignIn"
+            :disabled="loading"
+            type="button"
+          >
+            <svg
+              class="telegram-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="18px"
+              height="18px"
+            >
+              <path
+                fill="#ffffff"
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.29-.49.8-.75 3.12-1.36 5.2-2.26 6.24-2.7 2.98-1.24 3.6-1.45 4.01-1.45.09 0 .29.02.42.12.11.08.14.19.16.27.02.07.02.15.01.2z"
+              />
+            </svg>
+            Telegram
+          </button>
+        </div>
       </form>
       <p class="switch-link">
         {{ $t("landing.noAccount") }}
@@ -147,6 +169,26 @@ const handleGoogleSignIn = async () => {
   } catch (error) {
     console.error("Error during Google sign in:", error);
     push.error("An error occurred during Google sign in.");
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleTelegramSignIn = async () => {
+  try {
+    loading.value = true;
+    const token = await UserService.LoginTelegram();
+
+    if (token) {
+      localStorage.setItem("token", token);
+      push.success("Login successful!");
+      window.location.href = "/";
+    } else {
+      push.error("Failed to sign in with Telegram.");
+    }
+  } catch (error) {
+    console.error("Error during Telegram sign in:", error);
+    push.error("An error occurred during Telegram sign in.");
   } finally {
     loading.value = false;
   }
@@ -268,12 +310,18 @@ const handleGoogleSignIn = async () => {
   text-decoration: underline;
 }
 
+.social-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 0.75rem;
+}
+
 .google-signin-btn {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  width: 100%;
   padding: 0.75rem;
   background-color: white;
   border: 1px solid #e2e8f0;
@@ -282,7 +330,22 @@ const handleGoogleSignIn = async () => {
   color: #4a5568;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 0.75rem;
+}
+
+.telegram-signin-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0.75rem;
+  background-color: #0088cc;
+  border: 1px solid #0088cc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .google-signin-btn:hover {
@@ -291,12 +354,21 @@ const handleGoogleSignIn = async () => {
   transform: translateY(-1px);
 }
 
-.google-signin-btn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.telegram-signin-btn:hover {
+  background-color: #0077b3;
+  border-color: #0077b3;
+  transform: translateY(-1px);
 }
 
-.google-icon {
+.google-signin-btn:disabled,
+.telegram-signin-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.google-icon,
+.telegram-icon {
   width: 18px;
   height: 18px;
 }
@@ -334,7 +406,7 @@ const handleGoogleSignIn = async () => {
   content: "";
   position: absolute;
   top: 50%;
-  width: 45%;
+  width: 15%;
   height: 1px;
   background-color: #e2e8f0;
 }
