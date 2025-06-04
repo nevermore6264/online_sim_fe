@@ -33,12 +33,10 @@
             ></i>
           </div>
         </div>
-        <Button
-          :label="$t('landing.login')"
-          type="submit"
-          class="auth-submit"
-          :disabled="loading"
-        />
+        <button type="submit" class="auth-submit" :disabled="loading">
+          <i class="pi pi-sign-in"></i>
+          <span>{{ $t("landing.login") }}</span>
+        </button>
         <div class="or-divider">{{ $t("landing.orLoginWith") }}</div>
         <div class="social-buttons">
           <button
@@ -285,6 +283,10 @@ const handleTelegramSignIn = async () => {
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(66, 153, 225, 0.2);
   margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .auth-submit:hover {
@@ -303,6 +305,29 @@ const handleTelegramSignIn = async () => {
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+.auth-submit i {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.auth-submit:hover i {
+  transform: translateX(2px);
+}
+
+/* Add icon animation when loading */
+.auth-submit:disabled i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Add shine effect */
