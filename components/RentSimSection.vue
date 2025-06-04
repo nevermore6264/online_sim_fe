@@ -424,8 +424,8 @@ onMounted(async () => {
 }
 
 .dropdown-item {
-  flex: 0 0 250px;
-  width: 250px;
+  flex: 0 0 150px;
+  width: 150px;
 }
 
 .selected-services {
@@ -465,7 +465,7 @@ onMounted(async () => {
   grid-template-columns: 150px 150px minmax(100px, 1fr) 250px 250px 50px;
   align-items: center;
   gap: 8px;
-  padding: 12px 16px;
+  padding: 2px 16px;
   position: relative;
 }
 
@@ -701,8 +701,8 @@ onMounted(async () => {
 }
 
 .rent-section {
-  flex: 0 0 200px;
-  width: 200px;
+  flex: 0 0 150px;
+  width: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;

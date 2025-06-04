@@ -194,7 +194,7 @@ export default {
     service: "Dịch vụ",
     for: "Cho",
     total_amount: "Tổng số tiền",
-    rent_service: "Dịch vụ thuê",
+    rent_service: "Thuê dịch vụ",
     search_services: "Tìm kiếm dịch vụ...",
     service_image: "Hình ảnh dịch vụ",
   },
