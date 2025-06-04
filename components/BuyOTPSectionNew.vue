@@ -896,8 +896,6 @@ onMounted(async () => {
 .buy-button {
   flex: 3;
   /* Chiếm 30% */
-  background-color: #007bff;
-  color: #fff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -905,6 +903,15 @@ onMounted(async () => {
   display: block;
   width: 100%;
   min-width: 200px;
+  background: linear-gradient(135deg, #2f80ed, #56ccf2);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(47, 128, 237, 0.1);
 }
 
 .buy-button:disabled {
