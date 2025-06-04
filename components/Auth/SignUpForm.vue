@@ -86,11 +86,20 @@
             class="auth-input"
           />
         </div>
+        <div class="recaptcha-container">
+          <vue-recaptcha
+            ref="recaptcha"
+            :sitekey="recaptchaSiteKey"
+            @verify="onVerify"
+            @expire="onExpire"
+            @fail="onFail"
+          />
+        </div>
         <Button
           :label="$t('landing.signup')"
           type="submit"
           class="auth-submit"
-          :disabled="loading"
+          :disabled="loading || !recaptchaVerified"
         />
       </form>
       <p class="switch-link">
@@ -120,6 +129,33 @@ const loading = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
+const recaptchaSiteKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+const recaptchaVerified = ref(false);
+const recaptchaToken = ref("");
+const recaptcha = ref(null);
+
+const onVerify = (token) => {
+  recaptchaVerified.value = true;
+  recaptchaToken.value = token;
+};
+
+const onExpire = () => {
+  recaptchaVerified.value = false;
+  recaptchaToken.value = "";
+};
+
+const onFail = () => {
+  recaptchaVerified.value = false;
+  recaptchaToken.value = "";
+  push.error("reCAPTCHA verification failed. Please try again.");
+};
+
+const resetRecaptcha = () => {
+  recaptcha.value?.reset();
+  recaptchaVerified.value = false;
+  recaptchaToken.value = "";
+};
+
 const handleSignUp = async () => {
   const { firstName, lastName, username, password, confirmPassword } =
     signupData.value;
@@ -134,6 +170,11 @@ const handleSignUp = async () => {
     return;
   }
 
+  if (!recaptchaVerified.value) {
+    push.warning("Please complete the reCAPTCHA verification.");
+    return;
+  }
+
   // Get referral code from localStorage if exists
   const storedReferralCode = localStorage.getItem("referralCode");
   if (storedReferralCode) {
@@ -142,7 +183,10 @@ const handleSignUp = async () => {
 
   loading.value = true;
   try {
-    const response = await UserService.CreateUser(signupData.value);
+    const response = await UserService.CreateUser({
+      ...signupData.value,
+      recaptchaToken: recaptchaToken.value,
+    });
     if (response.success) {
       // Clear referral code from localStorage after successful registration
       localStorage.removeItem("referralCode");
@@ -152,9 +196,11 @@ const handleSignUp = async () => {
       }, 1000);
     } else {
       push.error("Registration failed.");
+      resetRecaptcha();
     }
   } catch (error) {
     push.error("An error occurred during registration.");
+    resetRecaptcha();
   } finally {
     loading.value = false;
   }
@@ -297,5 +343,11 @@ const handleSignUp = async () => {
     grid-template-columns: 1fr;
     gap: 0;
   }
+}
+
+.recaptcha-container {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
 }
 </style>
