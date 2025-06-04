@@ -272,27 +272,120 @@ const handleTelegramSignIn = async () => {
 
 .auth-submit {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem;
   background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(66, 153, 225, 0.2);
+  margin-top: 1.5rem;
 }
 
 .auth-submit:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+  background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+}
+
+.auth-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(66, 153, 225, 0.2);
 }
 
 .auth-submit:disabled {
   background: #a0aec0;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
+}
+
+/* Add shine effect */
+.auth-submit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.auth-submit:hover::before {
+  left: 100%;
+}
+
+/* Add ripple effect */
+.auth-submit::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.auth-submit:active::after {
+  animation: ripple 0.6s ease-out;
+}
+
+/* Add loading animation */
+.auth-submit:disabled::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Add pulse animation when enabled */
+.auth-submit:not(:disabled) {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 2px 8px rgba(66, 153, 225, 0.2);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(66, 153, 225, 0.4);
+  }
+  100% {
+    box-shadow: 0 2px 8px rgba(66, 153, 225, 0.2);
+  }
 }
 
 .forgot-password {
@@ -312,52 +405,57 @@ const handleTelegramSignIn = async () => {
 
 .social-buttons {
   display: flex;
-  gap: 10px;
-  margin-top: 0.75rem;
+  gap: 15px;
+  margin-top: 1rem;
 }
 
-.google-signin-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 0.75rem;
-  background-color: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  color: #4a5568;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
+.google-signin-btn,
 .telegram-signin-btn {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 0.75rem;
-  background-color: #0088cc;
-  border: 1px solid #0088cc;
-  border-radius: 8px;
+  gap: 12px;
+  padding: 0.85rem;
+  border-radius: 12px;
   font-size: 0.95rem;
-  color: white;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.google-signin-btn {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  color: #4a5568;
+}
+
+.telegram-signin-btn {
+  background: linear-gradient(135deg, #0088cc 0%, #00a2ff 100%);
+  border: none;
+  color: white;
 }
 
 .google-signin-btn:hover {
-  background-color: #f7fafc;
+  background-color: #f8fafc;
   border-color: #cbd5e0;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .telegram-signin-btn:hover {
-  background-color: #0077b3;
-  border-color: #0077b3;
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #0077b3 0%, #0099ff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2);
+}
+
+.google-signin-btn:active,
+.telegram-signin-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .google-signin-btn:disabled,
@@ -365,12 +463,64 @@ const handleTelegramSignIn = async () => {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 .google-icon,
 .telegram-icon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.google-signin-btn:hover .google-icon,
+.telegram-signin-btn:hover .telegram-icon {
+  transform: scale(1.1);
+}
+
+/* Add ripple effect */
+.google-signin-btn::after,
+.telegram-signin-btn::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.google-signin-btn:active::after,
+.telegram-signin-btn:active::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+/* Add subtle hover animation for the text */
+.google-signin-btn span,
+.telegram-signin-btn span {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.google-signin-btn:hover span,
+.telegram-signin-btn:hover span {
+  transform: translateX(2px);
 }
 
 .switch-link {
