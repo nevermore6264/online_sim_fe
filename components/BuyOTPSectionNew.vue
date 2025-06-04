@@ -750,7 +750,7 @@ onMounted(async () => {
   justify-content: space-between;
   gap: 20px;
   margin-bottom: 20px;
-  width: 100%;
+  width: fit-content;
 }
 
 .service-info img {

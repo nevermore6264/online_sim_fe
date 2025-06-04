@@ -420,7 +420,7 @@ onMounted(async () => {
   background: #f8fafc;
   border-radius: 8px;
   padding: 16px;
-  width: 100%;
+  width: fit-content;
 }
 
 .dropdown-item {
