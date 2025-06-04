@@ -198,25 +198,10 @@ const handleTelegramSignIn = async () => {
         async (data) => {
           if (data) {
             try {
-              const response = await fetch(
-                "https://verifysms.org/api/auth/telegram",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(data),
-                }
-              );
-
-              const result = await response.json();
-              if (result.data && result.data.token) {
-                localStorage.setItem("token", result.data.token);
-                push.success("Login successful!");
-                window.location.href = "/";
-              } else {
-                push.error("Failed to get token from server.");
-              }
+              const token = await UserService.LoginTelegram(data);
+              localStorage.setItem("token", token);
+              push.success("Login successful!");
+              window.location.href = "/";
             } catch (error) {
               console.error("Error during login:", error);
               push.error("Login failed. Please try again.");

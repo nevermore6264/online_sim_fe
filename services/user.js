@@ -72,4 +72,9 @@ export default {
     const response = await api.get("/api/web/refferal-code");
     return response.data;
   },
+
+  async LoginTelegram(telegramData) {
+    const response = await api.post("/api/auth/telegram", telegramData);
+    return response.data;
+  },
 };
