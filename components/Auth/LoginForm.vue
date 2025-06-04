@@ -198,10 +198,14 @@ const handleTelegramSignIn = async () => {
         async (data) => {
           if (data) {
             try {
-              const token = await UserService.LoginTelegram(data);
-              localStorage.setItem("token", token);
-              push.success("Login successful!");
-              window.location.href = "/";
+              const result = await UserService.LoginTelegram(data);
+              if (result && result.data && result.data.token) {
+                localStorage.setItem("token", result.data.token);
+                push.success("Login successful!");
+                window.location.href = "/";
+              } else {
+                push.error("Login failed. Please try again.");
+              }
             } catch (error) {
               console.error("Error during login:", error);
               push.error("Login failed. Please try again.");
