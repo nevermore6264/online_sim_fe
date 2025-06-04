@@ -462,7 +462,7 @@ onMounted(async () => {
 
 .selected-item .service-info {
   display: grid;
-  grid-template-columns: 150px 150px minmax(100px, 1fr) 250px 250px 50px;
+  grid-template-columns: 100px 100px 200px 200px 200px 25px;
   align-items: center;
   gap: 8px;
   padding: 2px 16px;

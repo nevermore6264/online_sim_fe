@@ -747,10 +747,11 @@ onMounted(async () => {
 
 .top-section {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* Đảm bảo nằm bên trái */
   gap: 20px;
   margin-bottom: 20px;
-  width: fit-content;
+  width: 70%;
+  align-self: flex-start;
 }
 
 .service-info img {
