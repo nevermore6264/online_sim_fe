@@ -1,6 +1,11 @@
 export default {
   welcome: "Welcome",
   landing: {
+    usernamePlaceholder: "Tên đăng nhập",
+    passwordPlaceholder: "Mật khẩu",
+    orLoginWith: "hoặc đăng nhập/đăng ký với",
+    google: "Google",
+    telegram: "Telegram",
     select: "Select",
     selected: "Selected",
     and: "and the",

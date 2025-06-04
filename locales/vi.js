@@ -1,6 +1,11 @@
 export default {
   welcome: "Chào mừng",
   landing: {
+    usernamePlaceholder: "Username",
+    passwordPlaceholder: "Password",
+    orLoginWith: "or login/signup with",
+    google: "Google",
+    telegram: "Telegram",
     select: "Chọn",
     selected: "Đã chọn",
     and: "và",

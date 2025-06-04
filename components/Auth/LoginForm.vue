@@ -8,7 +8,7 @@
           <InputText
             id="username"
             v-model="loginData.username"
-            placeholder="Username"
+            :placeholder="$t('landing.usernamePlaceholder')"
             required
             class="auth-input"
           />
@@ -20,7 +20,7 @@
               id="password"
               v-model="loginData.password"
               :type="showPassword ? 'text' : 'password'"
-              placeholder="Password"
+              :placeholder="$t('landing.passwordPlaceholder')"
               required
               class="auth-input"
             />
@@ -39,7 +39,7 @@
           class="auth-submit"
           :disabled="loading"
         />
-        <div class="or-divider">hoặc đăng nhập/đăng ký với</div>
+        <div class="or-divider">{{ $t("landing.orLoginWith") }}</div>
         <div class="social-buttons">
           <button
             class="google-signin-btn"
@@ -71,7 +71,7 @@
                 d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
               />
             </svg>
-            Google
+            {{ $t("landing.google") }}
           </button>
           <button
             class="telegram-signin-btn"
@@ -91,7 +91,7 @@
                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.29-.49.8-.75 3.12-1.36 5.2-2.26 6.24-2.7 2.98-1.24 3.6-1.45 4.01-1.45.09 0 .29.02.42.12.11.08.14.19.16.27.02.07.02.15.01.2z"
               />
             </svg>
-            Telegram
+            {{ $t("landing.telegram") }}
           </button>
         </div>
       </form>
