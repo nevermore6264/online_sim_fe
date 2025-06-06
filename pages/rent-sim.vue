@@ -24,9 +24,9 @@
         <div v-if="activeTab === 2">
           <FAQRentNumber />
         </div>
-        <div v-if="activeTab === 3">
+        <!-- <div v-if="activeTab === 3">
           <API />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -40,7 +40,7 @@ const tabs = [
   { labelKey: "tabs.rent_number", icon: "pi pi-shopping-cart" },
   { labelKey: "tabs.my_number", icon: "pi pi-phone" },
   { labelKey: "tabs.faq", icon: "pi pi-info-circle" },
-  { labelKey: "tabs.api", icon: "pi pi-code" },
+  // { labelKey: "tabs.api", icon: "pi pi-code" },
 ];
 
 const activeTab = ref(0);
