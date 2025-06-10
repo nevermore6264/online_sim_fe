@@ -268,7 +268,6 @@ const fetchUserInfo = async (token) => {
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
   } catch (error) {
     console.error("Error fetching user info:", error);
-    push.error("An error occurred during fetchUserInfo.");
   }
 };
 

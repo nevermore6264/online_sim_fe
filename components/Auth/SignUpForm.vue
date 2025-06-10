@@ -86,21 +86,35 @@
             class="auth-input"
           />
         </div>
-        <div class="recaptcha-container">
-          <vue-recaptcha
-            ref="recaptcha"
-            :sitekey="recaptchaSiteKey"
-            @verify="onVerify"
-            @expire="onExpire"
-            @fail="onFail"
-          />
+        <div class="input-group">
+          <label for="captcha">{{ $t("landing.security.captcha") }}</label>
+          <div class="captcha-container">
+            <div class="captcha-code">{{ captchaCode }}</div>
+            <InputText
+              id="captcha"
+              v-model="signupData.captcha"
+              :placeholder="$t('landing.security.enterCaptcha')"
+              class="auth-input"
+              required
+            />
+            <button
+              type="button"
+              class="refresh-captcha"
+              @click="generateCaptcha"
+            >
+              <i class="pi pi-refresh"></i>
+            </button>
+          </div>
         </div>
         <Button
           :label="$t('landing.signup')"
           type="submit"
           class="auth-submit"
-          :disabled="loading || !recaptchaVerified"
+          :disabled="loading || !isCaptchaValid || isRateLimited"
         />
+        <div v-if="isRateLimited" class="rate-limit-message">
+          {{ $t("landing.security.waitTime", { time: remainingTime }) }}
+        </div>
       </form>
       <p class="switch-link">
         {{ $t("landing.haveAccount") }}
@@ -113,7 +127,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { push } from "notivue";
 import UserService from "@/services/user";
 
@@ -124,37 +138,55 @@ const signupData = ref({
   password: "",
   confirmPassword: "",
   referralCode: "",
+  captcha: "",
 });
+
 const loading = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
+const captchaCode = ref("");
+const lastAttemptTime = ref(0);
+const attemptCount = ref(0);
+const RATE_LIMIT_WINDOW = 300000; // 5 minutes in milliseconds
+const MAX_ATTEMPTS = 5;
+const COOLDOWN_TIME = 60; // 60 seconds cooldown
 
-const recaptchaSiteKey = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
-const recaptchaVerified = ref(false);
-const recaptchaToken = ref("");
-const recaptcha = ref(null);
-
-const onVerify = (token) => {
-  recaptchaVerified.value = true;
-  recaptchaToken.value = token;
+const generateCaptcha = () => {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  captchaCode.value = code;
 };
 
-const onExpire = () => {
-  recaptchaVerified.value = false;
-  recaptchaToken.value = "";
-};
+// Generate initial captcha
+generateCaptcha();
 
-const onFail = () => {
-  recaptchaVerified.value = false;
-  recaptchaToken.value = "";
-  push.error("reCAPTCHA verification failed. Please try again.");
-};
+const isCaptchaValid = computed(() => {
+  return signupData.value.captcha.toUpperCase() === captchaCode.value;
+});
 
-const resetRecaptcha = () => {
-  recaptcha.value?.reset();
-  recaptchaVerified.value = false;
-  recaptchaToken.value = "";
-};
+const isRateLimited = computed(() => {
+  const now = Date.now();
+  const timeSinceLastAttempt = now - lastAttemptTime.value;
+
+  if (timeSinceLastAttempt > RATE_LIMIT_WINDOW) {
+    attemptCount.value = 0;
+    return false;
+  }
+
+  return attemptCount.value >= MAX_ATTEMPTS;
+});
+
+const remainingTime = computed(() => {
+  const now = Date.now();
+  const timeSinceLastAttempt = now - lastAttemptTime.value;
+  const remaining = Math.ceil(
+    (RATE_LIMIT_WINDOW - timeSinceLastAttempt) / 1000
+  );
+  return remaining > 0 ? remaining : 0;
+});
 
 const handleSignUp = async () => {
   const { firstName, lastName, username, password, confirmPassword } =
@@ -170,10 +202,26 @@ const handleSignUp = async () => {
     return;
   }
 
-  if (!recaptchaVerified.value) {
-    push.warning("Please complete the reCAPTCHA verification.");
+  if (!isCaptchaValid.value) {
+    push.warning($t("landing.security.invalidCaptcha"));
+    generateCaptcha();
     return;
   }
+
+  if (isRateLimited.value) {
+    push.warning(
+      $t("landing.security.rateLimit", { time: remainingTime.value })
+    );
+    return;
+  }
+
+  // Update rate limiting
+  const now = Date.now();
+  if (now - lastAttemptTime.value > RATE_LIMIT_WINDOW) {
+    attemptCount.value = 0;
+  }
+  attemptCount.value++;
+  lastAttemptTime.value = now;
 
   // Get referral code from localStorage if exists
   const storedReferralCode = localStorage.getItem("referralCode");
@@ -183,9 +231,11 @@ const handleSignUp = async () => {
 
   loading.value = true;
   try {
+    // Add artificial delay to prevent rapid requests
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const response = await UserService.CreateUser({
       ...signupData.value,
-      recaptchaToken: recaptchaToken.value,
     });
     if (response.success) {
       // Clear referral code from localStorage after successful registration
@@ -196,13 +246,13 @@ const handleSignUp = async () => {
       }, 1000);
     } else {
       push.error("Registration failed.");
-      resetRecaptcha();
     }
   } catch (error) {
     push.error("An error occurred during registration.");
-    resetRecaptcha();
   } finally {
     loading.value = false;
+    generateCaptcha();
+    signupData.value.captcha = "";
   }
 };
 </script>
@@ -349,5 +399,44 @@ const handleSignUp = async () => {
   margin: 1rem 0;
   display: flex;
   justify-content: center;
+}
+
+.captcha-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.captcha-code {
+  background: #f0f0f0;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  user-select: none;
+  min-width: 100px;
+  text-align: center;
+}
+
+.refresh-captcha {
+  background: none;
+  border: none;
+  color: #4299e1;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.refresh-captcha:hover {
+  color: #3182ce;
+}
+
+.rate-limit-message {
+  color: #e53e3e;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  text-align: center;
 }
 </style>

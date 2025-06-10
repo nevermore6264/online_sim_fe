@@ -174,6 +174,13 @@ export default {
     network_docomo: "Docomo",
     network_any: "Any",
     availability: "Có sẵn {count} cái.",
+    security: {
+      captcha: "Kiểm tra bảo mật",
+      enterCaptcha: "Nhập mã ở trên",
+      invalidCaptcha: "Mã bảo mật không hợp lệ. Vui lòng thử lại.",
+      rateLimit: "Quá nhiều lần thử. Vui lòng đợi {time} giây.",
+      waitTime: "Vui lòng đợi {time} giây trước khi thử lại",
+    },
   },
   notify: {
     no_rights: "Bạn không có quyền!",

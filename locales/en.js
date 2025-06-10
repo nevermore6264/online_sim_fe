@@ -99,7 +99,13 @@ export default {
     purchase_success_multiple:
       "Successfully purchased {quantity} packages of {package} for {seconds} seconds each for number {phoneNumber}.",
     enter_phone_number: "Enter Phone Number",
-
+    security: {
+      captcha: "Security Check",
+      enterCaptcha: "Enter the code above",
+      invalidCaptcha: "Invalid security code. Please try again.",
+      rateLimit: "Too many attempts. Please wait {time} seconds.",
+      waitTime: "Please wait {time} seconds before trying again",
+    },
     steps: [
       {
         title: "Get the temp number",
