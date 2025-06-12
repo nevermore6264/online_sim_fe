@@ -71,9 +71,8 @@
               <div
                 class="message-content"
                 :class="{ expanded: isExpanded[data.id] }"
-              >
-                {{ formatMessages(data.stock?.messages) || "-" }}
-              </div>
+                v-html="formatMessages(data.stock?.messages) || '-'"
+              ></div>
               <button
                 v-if="hasLongMessage(data.stock?.messages)"
                 class="show-more-btn"
@@ -236,7 +235,22 @@ const formatCountdown = (expiredAt) => {
 // Format messages with sender and content
 const formatMessages = (messages) => {
   if (!messages || messages.length === 0) return null;
-  return messages.map((msg) => `${msg.sender}: ${msg.content}`).join("\n");
+  return messages
+    .map((msg) => {
+      // Escape HTML in sender to prevent XSS
+      const safeSender = msg.sender.replace(/[&<>"']/g, (char) => {
+        const entities = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        };
+        return entities[char];
+      });
+      return `<div class="message-item"><span class="message-sender">${safeSender}:</span> <span class="message-text">${msg.content}</span></div>`;
+    })
+    .join("");
 };
 
 // Update countdown every second
@@ -469,6 +483,50 @@ onUnmounted(() => {
 
 .message-content.expanded {
   max-height: none;
+}
+
+.message-item {
+  margin-bottom: 4px;
+}
+
+.message-sender {
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.message-text {
+  color: #1f2937;
+}
+
+/* Add styles for common HTML elements that might be in messages */
+.message-content :deep(a) {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.message-content :deep(code) {
+  background-color: #f3f4f6;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.message-content :deep(pre) {
+  background-color: #f3f4f6;
+  padding: 8px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 4px 0;
+}
+
+.message-content :deep(ul),
+.message-content :deep(ol) {
+  padding-left: 20px;
+  margin: 4px 0;
+}
+
+.message-content :deep(li) {
+  margin: 2px 0;
 }
 
 .show-more-btn {
