@@ -290,6 +290,7 @@ export default {
       country: "Quốc gia",
       countdown: "Còn lại",
     },
+    start_call: "Bắt đầu gọi",
   },
   support: {
     title: "Gửi Email Hỗ Trợ",

@@ -80,6 +80,17 @@
               >
                 {{ isExpanded[data.id] ? "Show less" : "Show more" }}
               </button>
+              <button
+                v-if="
+                  data.stock?.serviceCode === 'POKEMON' &&
+                  (!data.stock?.messages || data.stock?.messages.length === 0)
+                "
+                class="start-call-btn"
+                @click="startCall(data.id)"
+                :disabled="loading"
+              >
+                {{ $t("order.start_call") }}
+              </button>
             </div>
           </template>
         </Column>
@@ -268,6 +279,26 @@ const hasLongMessage = (messages) => {
   if (!messages || messages.length === 0) return false;
   const formattedMessage = formatMessages(messages);
   return formattedMessage && formattedMessage.length > 200;
+};
+
+// Add startCall function
+const startCall = async (orderId) => {
+  loading.value = true;
+  try {
+    const response = await UserService.startCall(orderId);
+    if (response?.success) {
+      // Show success message
+      alert("Call started successfully");
+    } else {
+      // Show error message
+      alert("Failed to start call: " + (response?.message || "Unknown error"));
+    }
+  } catch (error) {
+    console.error("Error starting call:", error);
+    alert("Failed to start call: " + error.message);
+  } finally {
+    loading.value = false;
+  }
 };
 
 onMounted(() => {
@@ -541,5 +572,25 @@ onUnmounted(() => {
 /* Remove the old expand-indicator styles since we're not using it anymore */
 .expand-indicator {
   display: none;
+}
+
+.start-call-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-top: 8px;
+}
+
+.start-call-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.start-call-btn:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
 }
 </style>

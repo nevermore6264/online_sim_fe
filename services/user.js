@@ -77,4 +77,22 @@ export default {
     const response = await api.post("/api/auth/telegram", telegramData);
     return response.data;
   },
+
+  async startCall(orderId) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await api.post(
+      `/api/account/start-call/${orderId}`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  },
 };

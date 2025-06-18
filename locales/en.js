@@ -292,6 +292,7 @@ export default {
       country: "Country",
       countdown: "Time Left",
     },
+    start_call: "Start Call",
   },
   support: {
     title: "Support Email",
