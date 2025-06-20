@@ -575,22 +575,62 @@ onUnmounted(() => {
 }
 
 .start-call-btn {
-  background-color: #2563eb;
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
   color: white;
   border: none;
-  padding: 4px 12px;
-  border-radius: 4px;
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 0.875rem;
+  font-weight: 600;
   margin-top: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(96, 165, 250, 0.4);
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.start-call-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
 }
 
 .start-call-btn:hover {
-  background-color: #1d4ed8;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(96, 165, 250, 0.6);
+}
+
+.start-call-btn:hover::before {
+  left: 100%;
+}
+
+.start-call-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(96, 165, 250, 0.4);
 }
 
 .start-call-btn:disabled {
-  background-color: #93c5fd;
+  background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
   cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(203, 213, 224, 0.4);
+}
+
+.start-call-btn:disabled::before {
+  display: none;
 }
 </style>
