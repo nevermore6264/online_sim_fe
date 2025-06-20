@@ -287,35 +287,29 @@ const hasLongMessage = (messages) => {
 // Add startCall function
 const startCall = async (orderId) => {
   loading.value = true;
-  let successCount = 0;
-  let errorCount = 0;
 
   try {
     // Gọi API lần 1
     const response1 = await UserService.startCall(orderId);
     if (response1?.data?.status === "SUCCESS") {
-      successCount++;
-    } else {
-      errorCount++;
+      push.success(t("order.call_success"));
+      return; // Thoát sớm nếu thành công
     }
 
-    // Gọi API lần 2
+    // Gọi API lần 2 nếu lần 1 thất bại
     const response2 = await UserService.startCall(orderId);
     if (response2?.data?.status === "SUCCESS") {
-      successCount++;
-    } else {
-      errorCount++;
-    }
-
-    // Hiển thị thông báo dựa trên kết quả
-    if (successCount > 0) {
       push.success(t("order.call_success"));
     } else {
-      push.error(t("order.call_failed"));
+      // Hiển thị lỗi từ response cuối cùng
+      const errorMessage = response2?.data?.message || t("order.call_failed");
+      push.error(errorMessage);
     }
   } catch (error) {
-    console.error("Error starting call:", error);
-    push.error(error.response.data.message || error);
+    console.error(error.response);
+    push.error(
+      error.response?.data?.message || error.message || t("order.call_failed")
+    );
   } finally {
     loading.value = false;
   }
