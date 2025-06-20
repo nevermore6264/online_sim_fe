@@ -288,29 +288,48 @@ const hasLongMessage = (messages) => {
 // Add startCall function
 const startCall = async (orderId) => {
   loading.value = true;
+  let successCount = 0;
+  let lastError = null;
 
   try {
     // Gọi API lần 1
-    const response1 = await UserService.startCall(orderId);
-    if (response1?.data?.status === "SUCCESS") {
-      push.success(t("order.call_success"));
-      return; // Thoát sớm nếu thành công
+    try {
+      const response1 = await UserService.startCall(orderId);
+      if (response1?.data?.status === "SUCCESS") {
+        successCount++;
+      }
+    } catch (error) {
+      console.error("API call 1 failed:", error);
+      lastError = error; // Lưu lỗi cuối cùng
     }
 
-    // Gọi API lần 2 nếu lần 1 thất bại
-    const response2 = await UserService.startCall(orderId);
-    if (response2?.data?.status === "SUCCESS") {
+    // Gọi API lần 2 (luôn gọi, ngay cả khi lần 1 thất bại)
+    try {
+      const response2 = await UserService.startCall(orderId);
+      if (response2?.data?.status === "SUCCESS") {
+        successCount++;
+      }
+    } catch (error) {
+      console.error("API call 2 failed:", error);
+      lastError = error; // Lưu lỗi cuối cùng
+    }
+
+    // Hiển thị thông báo dựa trên kết quả
+    if (successCount > 0) {
       push.success(t("order.call_success"));
     } else {
-      // Hiển thị lỗi từ response cuối cùng
-      const errorMessage = response2?.data?.message || t("order.call_failed");
-      push.error(errorMessage);
+      // Nếu có lỗi, hiển thị thông báo lỗi
+      if (lastError) {
+        push.error(
+          lastError.response?.data?.message ||
+            lastError.message ||
+            t("order.call_failed")
+        );
+      } else {
+        // Fallback nếu không có lỗi nào được bắt
+        push.error(t("order.call_failed"));
+      }
     }
-  } catch (error) {
-    console.error(error.response);
-    push.error(
-      error.response?.data?.message || error.message || t("order.call_failed")
-    );
   } finally {
     loading.value = false;
   }
