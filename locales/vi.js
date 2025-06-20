@@ -291,6 +291,8 @@ export default {
       countdown: "Còn lại",
     },
     start_call: "Bắt đầu gọi",
+    call_success: "Gọi thành công!",
+    call_failed: "Không gọi được",
   },
   support: {
     title: "Gửi Email Hỗ Trợ",

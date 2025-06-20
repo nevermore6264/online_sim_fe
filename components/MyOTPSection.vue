@@ -154,6 +154,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import UserService from "@/services/user";
 import { socket } from "@/utils/socket";
+import { push } from "notivue";
 
 const orderList = ref([]); // Danh sách từ API
 const filteredOrderList = ref([]); // Danh sách sau khi lọc
@@ -169,6 +170,9 @@ const firstRowIndex = ref(0); // Chỉ mục của dòng đầu tiên trên tran
 const countdownInterval = ref(null);
 const currentTime = ref(new Date());
 const isExpanded = ref({});
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 // Hàm tính STT
 const calculateSTT = (index) => {
@@ -284,18 +288,35 @@ const hasLongMessage = (messages) => {
 // Add startCall function
 const startCall = async (orderId) => {
   loading.value = true;
+  let successCount = 0;
+  let errorCount = 0;
+
   try {
-    const response = await UserService.startCall(orderId);
-    if (response?.success) {
-      // Show success message
-      alert("Call started successfully");
+    // Gọi API lần 1
+    const response1 = await UserService.startCall(orderId);
+    if (response1?.data?.status === "SUCCESS") {
+      successCount++;
     } else {
-      // Show error message
-      alert("Failed to start call: " + (response?.message || "Unknown error"));
+      errorCount++;
+    }
+
+    // Gọi API lần 2
+    const response2 = await UserService.startCall(orderId);
+    if (response2?.data?.status === "SUCCESS") {
+      successCount++;
+    } else {
+      errorCount++;
+    }
+
+    // Hiển thị thông báo dựa trên kết quả
+    if (successCount > 0) {
+      push.success(t("order.call_success"));
+    } else {
+      push.error(t("order.call_failed"));
     }
   } catch (error) {
-    console.error("Error starting call:", error);
-    alert("Failed to start call: " + error.message);
+    console.error(error.response);
+    push.error(error.response.data.message || error);
   } finally {
     loading.value = false;
   }

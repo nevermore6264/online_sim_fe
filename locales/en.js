@@ -293,6 +293,8 @@ export default {
       countdown: "Time Left",
     },
     start_call: "Start Call",
+    call_success: "Call successful!",
+    call_failed: "Cannot make call",
   },
   support: {
     title: "Support Email",

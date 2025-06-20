@@ -85,7 +85,7 @@ export default {
     }
 
     const response = await api.post(
-      `/api/account/start-call/${orderId}`,
+      `/api/sim-service/create-pokemon-call/${orderId}`,
       null,
       {
         headers: {
