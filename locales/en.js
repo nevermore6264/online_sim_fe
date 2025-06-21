@@ -393,5 +393,6 @@ export default {
     welcome: "Welcome to VerifySMS!",
     inviteMessage:
       "You've been invited to join VerifySMS. Sign up now to get started!",
+    partnerDashboard: "Partner Dashboard",
   },
 };

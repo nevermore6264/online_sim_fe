@@ -392,5 +392,6 @@ export default {
     welcome: "Chào Mừng Đến Với VerifySMS!",
     inviteMessage:
       "Bạn đã được mời tham gia VerifySMS. Đăng ký ngay để bắt đầu!",
+    partnerDashboard: "Bảng Điều Khiển Đối Tác",
   },
 };

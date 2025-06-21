@@ -56,6 +56,18 @@
             </button>
           </div>
         </div>
+
+        <div class="mt-8 text-center">
+          <a
+            :href="partnerDashboardLink"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="partner-dashboard-button"
+          >
+            <i class="pi pi-briefcase mr-2"></i>
+            {{ $t("referral.partnerDashboard") }}
+          </a>
+        </div>
       </template>
     </div>
 
@@ -92,6 +104,11 @@ const referralLink = computed(() => {
   if (!userReferralCode.value) return "";
   const domain = useRuntimeConfig().public.appDomain;
   return `${domain}/invite/${userReferralCode.value}`;
+});
+
+const partnerDashboardLink = computed(() => {
+  const domain = useRuntimeConfig().public.appDomain;
+  return `${domain}/partner`;
 });
 
 // Function to copy code to clipboard
@@ -190,6 +207,29 @@ code {
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+.partner-dashboard-button {
+  background: linear-gradient(135deg, #42a5f5, #1e88e5);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+.partner-dashboard-button:hover {
+  background: linear-gradient(135deg, #1e88e5, #42a5f5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 input {
