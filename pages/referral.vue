@@ -68,6 +68,29 @@
             {{ $t("referral.partnerDashboard") }}
           </a>
         </div>
+
+        <!-- Become an Agent section -->
+        <div v-if="!isAgent" class="mt-8 text-center">
+          <div
+            class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 border border-purple-200"
+          >
+            <h3 class="text-lg font-semibold mb-4 text-gray-800">
+              Want to earn more?
+            </h3>
+            <p class="text-gray-600 mb-4">
+              Become an agent and unlock additional earning opportunities!
+            </p>
+            <button
+              @click="becomeAgent"
+              :disabled="becomingAgent"
+              class="become-agent-button"
+            >
+              <i v-if="becomingAgent" class="pi pi-spin pi-spinner mr-2"></i>
+              <i v-else class="pi pi-star mr-2"></i>
+              {{ becomingAgent ? "Processing..." : "Become an Agent" }}
+            </button>
+          </div>
+        </div>
       </template>
     </div>
 
@@ -99,6 +122,9 @@ import { push } from "notivue";
 const isLoggedIn = ref(false);
 const userReferralCode = ref("");
 const loading = ref(false);
+const userInfo = ref(null);
+const isAgent = ref(false);
+const becomingAgent = ref(false);
 
 const referralLink = computed(() => {
   if (!userReferralCode.value) return "";
@@ -150,12 +176,49 @@ const fetchReferralData = async () => {
   }
 };
 
+// Function to fetch user info
+const fetchUserInfo = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const response = await UserService.GetCurrentAccount(token);
+    if (response.success) {
+      userInfo.value = response.data;
+      isAgent.value = response.data.isAgent || false;
+    }
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+  }
+};
+
+// Function to become an agent
+const becomeAgent = async () => {
+  try {
+    becomingAgent.value = true;
+    const response = await UserService.BecomeAgent();
+
+    if (response.success) {
+      push.success("Successfully became an agent!");
+      // Refresh user info to update isAgent status
+      await fetchUserInfo();
+    } else {
+      push.error(response.message || "Failed to become an agent");
+    }
+  } catch (error) {
+    console.error("Error becoming agent:", error);
+    push.error("Failed to become an agent");
+  } finally {
+    becomingAgent.value = false;
+  }
+};
+
 // On component mount, check if user is logged in and get their referral code
 onMounted(async () => {
   const token = localStorage.getItem("token");
   if (token) {
     isLoggedIn.value = true;
-    await fetchReferralData();
+    await Promise.all([fetchReferralData(), fetchUserInfo()]);
   }
 });
 </script>
@@ -230,6 +293,35 @@ code {
   background: linear-gradient(135deg, #1e88e5, #42a5f5);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.become-agent-button {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.become-agent-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.become-agent-button:disabled {
+  background: #e5e7eb;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 input {

@@ -95,4 +95,18 @@ export default {
     );
     return response.data;
   },
+
+  async BecomeAgent() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await api.post("/api/account/become-agent", null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
 };
