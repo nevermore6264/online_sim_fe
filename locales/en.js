@@ -394,5 +394,14 @@ export default {
     inviteMessage:
       "You've been invited to join VerifySMS. Sign up now to get started!",
     partnerDashboard: "Partner Dashboard",
+    becomeAgent: {
+      title: "Want to earn more?",
+      description:
+        "Become an agent and unlock additional earning opportunities!",
+      button: "Become an Agent",
+      processing: "Processing...",
+      success: "Successfully became an agent!",
+      error: "Failed to become an agent",
+    },
   },
 };

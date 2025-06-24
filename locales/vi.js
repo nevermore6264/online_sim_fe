@@ -393,5 +393,13 @@ export default {
     inviteMessage:
       "Bạn đã được mời tham gia VerifySMS. Đăng ký ngay để bắt đầu!",
     partnerDashboard: "Bảng Điều Khiển Đối Tác",
+    becomeAgent: {
+      title: "Muốn kiếm thêm thu nhập?",
+      description: "Trở thành đại lý và mở khóa thêm cơ hội kiếm tiền!",
+      button: "Trở Thành Đại Lý",
+      processing: "Đang xử lý...",
+      success: "Đã trở thành đại lý thành công!",
+      error: "Không thể trở thành đại lý",
+    },
   },
 };

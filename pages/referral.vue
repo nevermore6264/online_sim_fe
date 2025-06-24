@@ -75,10 +75,10 @@
             class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 border border-purple-200"
           >
             <h3 class="text-lg font-semibold mb-4 text-gray-800">
-              Want to earn more?
+              {{ $t("referral.becomeAgent.title") }}
             </h3>
             <p class="text-gray-600 mb-4">
-              Become an agent and unlock additional earning opportunities!
+              {{ $t("referral.becomeAgent.description") }}
             </p>
             <button
               @click="becomeAgent"
@@ -87,7 +87,11 @@
             >
               <i v-if="becomingAgent" class="pi pi-spin pi-spinner mr-2"></i>
               <i v-else class="pi pi-star mr-2"></i>
-              {{ becomingAgent ? "Processing..." : "Become an Agent" }}
+              {{
+                becomingAgent
+                  ? $t("referral.becomeAgent.processing")
+                  : $t("referral.becomeAgent.button")
+              }}
             </button>
           </div>
         </div>
@@ -118,7 +122,9 @@
 import { ref, computed, onMounted } from "vue";
 import UserService from "@/services/user";
 import { push } from "notivue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
 const isLoggedIn = ref(false);
 const userReferralCode = ref("");
 const loading = ref(false);
@@ -199,15 +205,15 @@ const becomeAgent = async () => {
     const response = await UserService.BecomeAgent();
 
     if (response.success) {
-      push.success("Successfully became an agent!");
+      push.success(t("referral.becomeAgent.success"));
       // Refresh user info to update isAgent status
       await fetchUserInfo();
     } else {
-      push.error(response.message || "Failed to become an agent");
+      push.error(response.message || t("referral.becomeAgent.error"));
     }
   } catch (error) {
     console.error("Error becoming agent:", error);
-    push.error("Failed to become an agent");
+    push.error(t("referral.becomeAgent.error"));
   } finally {
     becomingAgent.value = false;
   }
