@@ -71,20 +71,25 @@
           </div>
         </div>
         <!-- Become an Agent section -->
-        <div v-if="!isAgent" class="text-center">
+        <div
+          v-if="!isAgent"
+          class="flex justify-center items-center min-h-[300px]"
+        >
           <div
-            class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 border border-purple-200"
+            class="bg-gradient-to-r from-purple-100 to-blue-100 rounded-2xl p-10 border border-purple-200 shadow-xl w-full max-w-xl mx-auto text-center"
           >
-            <h3 class="text-lg font-semibold mb-4 text-gray-800">
+            <h3
+              class="text-2xl font-bold mb-3 text-gray-800 items-center justify-center gap-2 text-center"
+            >
               {{ $t("referral.becomeAgent.title") }}
             </h3>
-            <p class="text-gray-600 mb-4">
+            <p class="text-gray-600 mb-6 text-lg text-center">
               {{ $t("referral.becomeAgent.description") }}
             </p>
             <button
               @click="becomeAgent"
               :disabled="becomingAgent"
-              class="become-agent-button"
+              class="become-agent-button transition-all duration-200 hover:scale-105"
             >
               <i v-if="becomingAgent" class="pi pi-spin pi-spinner mr-2"></i>
               <i v-else class="pi pi-star mr-2"></i>
