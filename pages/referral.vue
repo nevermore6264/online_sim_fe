@@ -17,60 +17,61 @@
       </div>
 
       <template v-else>
-        <h2 class="text-2xl font-semibold mb-6 text-gray-800">
-          {{ $t("referral.yourCode") }}
-        </h2>
-        <div class="flex items-center gap-4 mb-8">
-          <code
-            class="bg-gray-50 px-6 py-3 rounded-lg text-lg font-mono border border-gray-200 shadow-sm"
-            >{{ userReferralCode }}</code
-          >
-          <button
-            @click="copyToClipboard"
-            class="custom-button"
-            :disabled="!userReferralCode"
-          >
-            <i class="pi pi-copy mr-2"></i>
-            {{ $t("referral.copy") }}
-          </button>
-        </div>
-
-        <div class="mt-8">
-          <h3 class="font-medium mb-4 text-lg text-gray-700">
-            {{ $t("referral.shareLink") }}
-          </h3>
-          <div class="flex items-center gap-4">
-            <input
-              type="text"
-              :value="referralLink"
-              readonly
-              class="flex-1 bg-gray-50 px-6 py-3 rounded-lg border border-gray-200 shadow-sm text-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
-            />
+        <div v-if="isAgent">
+          <h2 class="text-2xl font-semibold mb-6 text-gray-800">
+            {{ $t("referral.yourCode") }}
+          </h2>
+          <div class="flex items-center gap-4 mb-8">
+            <code
+              class="bg-gray-50 px-6 py-3 rounded-lg text-lg font-mono border border-gray-200 shadow-sm"
+              >{{ userReferralCode }}</code
+            >
             <button
-              @click="copyLinkToClipboard"
+              @click="copyToClipboard"
               class="custom-button"
               :disabled="!userReferralCode"
             >
-              <i class="pi pi-link mr-2"></i>
-              {{ $t("referral.copyLink") }}
+              <i class="pi pi-copy mr-2"></i>
+              {{ $t("referral.copy") }}
             </button>
           </div>
-        </div>
 
-        <div class="mt-8 text-center">
-          <a
-            :href="partnerDashboardLink"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="partner-dashboard-button"
-          >
-            <i class="pi pi-briefcase mr-2"></i>
-            {{ $t("referral.partnerDashboard") }}
-          </a>
-        </div>
+          <div class="mt-8">
+            <h3 class="font-medium mb-4 text-lg text-gray-700">
+              {{ $t("referral.shareLink") }}
+            </h3>
+            <div class="flex items-center gap-4">
+              <input
+                type="text"
+                :value="referralLink"
+                readonly
+                class="flex-1 bg-gray-50 px-6 py-3 rounded-lg border border-gray-200 shadow-sm text-gray-700 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+              />
+              <button
+                @click="copyLinkToClipboard"
+                class="custom-button"
+                :disabled="!userReferralCode"
+              >
+                <i class="pi pi-link mr-2"></i>
+                {{ $t("referral.copyLink") }}
+              </button>
+            </div>
+          </div>
 
+          <div class="mt-8 text-center">
+            <a
+              :href="partnerDashboardLink"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="partner-dashboard-button"
+            >
+              <i class="pi pi-briefcase mr-2"></i>
+              {{ $t("referral.partnerDashboard") }}
+            </a>
+          </div>
+        </div>
         <!-- Become an Agent section -->
-        <div v-if="!isAgent" class="mt-8 text-center">
+        <div v-if="!isAgent" class="text-center">
           <div
             class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 border border-purple-200"
           >
