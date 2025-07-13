@@ -626,18 +626,27 @@ watchEffect(() => {
 }
 
 .buy-button {
-  background-color: #ffc107;
-  color: white;
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e42 100%);
+  color: #222;
   border: none;
-  border-radius: 5px;
-  padding: 15px 30px; /* Tăng kích thước padding */
+  border-radius: 8px;
+  padding: 13px 28px;
   cursor: pointer;
-  font-size: 18px; /* Tăng kích thước font */
-  margin-top: 20px; /* Thêm khoảng cách phía trên */
+  font-size: 17px;
+  font-weight: 700;
+  margin-top: 20px;
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.13);
+  letter-spacing: 0.5px;
+  transition: all 0.18s cubic-bezier(.4,0,.2,1);
+  position: relative;
+  overflow: hidden;
 }
 
 .buy-button:hover {
-  background-color: #eccd6e;
+  background: linear-gradient(90deg, #f59e42 0%, #fbbf24 100%);
+  color: #111;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.22);
 }
 
 .table-section {
@@ -771,14 +780,15 @@ watchEffect(() => {
   font-weight: bold;
 }
 
+
 .select-button {
-  padding: 10px 24px;
+  padding: 7px 16px;
   background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 60%, #2563eb 100%);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 7px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   margin-left: auto;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.13);
