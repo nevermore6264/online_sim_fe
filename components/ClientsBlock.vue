@@ -115,16 +115,18 @@
   padding: 16px 32px;
   border-radius: 12px;
   margin: 2rem auto;
-  background-color: #3b82f6;
+  background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
   border: none;
   color: white;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25);
+  position: relative;
+  overflow: hidden;
 }
 
 .try_it_out:hover {
-  background-color: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 60%, #60a5fa 100%);
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
 }
 </style>

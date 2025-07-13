@@ -589,25 +589,33 @@ watchEffect(() => {
 
 .package-button {
   flex: 1;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 6px;
-  background-color: #007bff;
-  border: 1px solid #0056b3;
-  color: white;
-  transition: all 0.3s ease;
+  padding: 12px 0;
+  font-size: 15px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 60%, #2563eb 100%);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.18);
+  transition: all 0.2s cubic-bezier(.4,0,.2,1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .package-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 60%, #60a5fa 100%);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.28);
 }
 
 .package-button.selected {
-  background-color: #28a745;
-  color: white;
-  border-color: #1e7e34;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.18);
+  transform: scale(1.06);
 }
 
 .total-price {
@@ -764,24 +772,34 @@ watchEffect(() => {
 }
 
 .select-button {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
+  padding: 10px 24px;
+  background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 60%, #2563eb 100%);
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
-  margin-left: auto; /* Đẩy nút về phía bên phải */
+  font-size: 15px;
+  font-weight: 600;
+  margin-left: auto;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.13);
+  letter-spacing: 0.5px;
+  transition: all 0.18s cubic-bezier(.4,0,.2,1);
+  position: relative;
+  overflow: hidden;
 }
 
 .select-button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 60%, #60a5fa 100%);
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.22);
 }
 
 .select-button.selected {
-  background-color: #ffc107; /* Màu vàng */
-  color: #000; /* Màu chữ đen để dễ đọc */
-  border: 1px solid #ffc107; /* Viền màu vàng */
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e42 100%);
+  color: #222;
+  border: none;
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.18);
+  transform: scale(1.06);
 }
 
 .network-selection {

@@ -28,18 +28,25 @@
 .try_it_out {
   vertical-align: middle;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 18px;
   line-height: 22px;
   padding: 14px 15px 15px 15px;
   padding-inline: 25px;
   border-radius: 15px;
   margin-top: 10px;
-  background-color: #2aabee;
+  background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
   border: none;
+  color: white;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.18);
+  position: relative;
+  overflow: hidden;
 }
 
 .try_it_out:hover {
-  background-color: #3b82f6;
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 60%, #60a5fa 100%);
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.28);
 }
 </style>

@@ -720,29 +720,36 @@ onMounted(async () => {
   font-weight: bold;
 }
 
+
 .select-button {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
+  padding: 7px 16px;
+  background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 60%, #2563eb 100%);
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 7px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 600;
   margin-left: auto;
-  /* Đẩy nút về phía bên phải */
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.13);
+  letter-spacing: 0.5px;
+  transition: all 0.18s cubic-bezier(.4,0,.2,1);
+  position: relative;
+  overflow: hidden;
 }
 
 .select-button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 60%, #60a5fa 100%);
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.22);
 }
 
 .select-button.selected {
-  background-color: #ffc107;
-  /* Màu vàng */
-  color: #000;
-  /* Màu chữ đen để dễ đọc */
-  border: 1px solid #ffc107;
-  /* Viền màu vàng */
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e42 100%);
+  color: #222;
+  border: none;
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.18);
+  transform: scale(1.06);
 }
 
 .top-section {
