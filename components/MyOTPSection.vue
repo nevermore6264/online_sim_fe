@@ -82,14 +82,14 @@
               </button>
               <button
                 v-if="
-                  data.stock?.serviceCode === 'POKEMON' &&
+                  callServiceSupportedCodes.includes(data.stock?.serviceCode) &&
                   (!data.stock?.messages || data.stock?.messages.length === 0)
                 "
                 class="start-call-btn"
                 @click="startCall(data.id)"
                 :disabled="loading"
               >
-                {{ $t("order.start_call") }}
+                {{ $t('order.start_call') }}
               </button>
             </div>
           </template>
@@ -155,6 +155,27 @@ import { ref, onMounted, onUnmounted } from "vue";
 import UserService from "@/services/user";
 import { socket } from "@/utils/socket";
 import { push } from "notivue";
+
+import Service from "@/services/service";
+const callServiceSupportedCodes = ref([]); // Danh sách serviceCode hỗ trợ CallService
+// Lấy danh sách service hỗ trợ CallService từ API, theo countryCode của order đầu tiên (nếu có)
+const fetchSupportedServices = async () => {
+  try {
+    // Lấy countryCode từ orderList nếu có, fallback JPN
+    let countryCode = "JPN";
+    if (orderList.value.length > 0 && orderList.value[0].countryCode) {
+      countryCode = orderList.value[0].countryCode;
+    }
+    const res = await Service.GetServicesByCountryCode(countryCode);
+    if (Array.isArray(res)) {
+      callServiceSupportedCodes.value = res
+        .filter(s => s.supportFeatures?.CallService)
+        .map(s => s.code);
+    }
+  } catch (e) {
+    console.error("Failed to fetch services", e);
+  }
+};
 
 const orderList = ref([]); // Danh sách từ API
 const filteredOrderList = ref([]); // Danh sách sau khi lọc
@@ -335,8 +356,9 @@ const startCall = async (orderId) => {
   }
 };
 
-onMounted(() => {
-  fetchOrderList();
+onMounted(async () => {
+  await fetchOrderList();
+  await fetchSupportedServices();
   startCountdown();
 
   // Thêm xử lý socket event
