@@ -143,14 +143,17 @@
             <Column header="Hành động">
               <template #body="{ data }">
                 <Button
-                  v-if="callStatus[data.id]?.isCalling"
+                  v-if="
+                    callStatus[data.id]?.isCalling &&
+                    data.statusCode !== 'REFUNDED'
+                  "
                   icon="pi pi-phone"
                   class="p-button-sm btn-call"
                   :label="`Calling... (${callStatus[data.id].remainingTime}s)`"
                   disabled
                 />
                 <Button
-                  v-else
+                  v-else-if="data.statusCode !== 'REFUNDED'"
                   icon="pi pi-phone"
                   class="p-button-sm btn-call"
                   :label="$t('landing.call')"
@@ -414,6 +417,7 @@ const fetchPurchasedNumbers = async (page = 1) => {
         id: order?.id,
         number: order?.stock?.phone,
         extendedData: order.extendedData,
+        statusCode: order.statusCode, // Lưu statusCode để kiểm tra trạng thái
       }));
     } else {
       purchasedNumbers.value = [
@@ -422,6 +426,7 @@ const fetchPurchasedNumbers = async (page = 1) => {
           id: order?.id,
           number: order?.stock?.phone,
           extendedData: order.extendedData,
+          statusCode: order.statusCode, // Lưu statusCode để kiểm tra trạng thái
         })),
       ];
     }
@@ -450,6 +455,7 @@ const fetchPurchasedNumbersSuccess = async (page = 1) => {
         id: order?.id,
         number: order?.stock?.phone,
         extendedData: order.extendedData,
+        statusCode: order.statusCode, // Lưu statusCode để kiểm tra trạng thái
       }));
     } else {
       purchasedNumbersSuccess.value = [
@@ -458,9 +464,11 @@ const fetchPurchasedNumbersSuccess = async (page = 1) => {
           id: order?.id,
           number: order?.stock?.phone,
           extendedData: order.extendedData,
+          statusCode: order.statusCode, // Lưu statusCode để kiểm tra trạng thái
         })),
       ];
     }
+    console.log("Fetched purchased numbers successfully:", purchasedNumbers);
     currentPageSuccess.value = response.data.page;
     totalPagesSuccess.value = response.data.totalPages;
     hasNextPageSuccess.value = response.data.hasNextPage;
@@ -598,7 +606,7 @@ watchEffect(() => {
   font-weight: 600;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 16px rgba(59, 130, 246, 0.18);
-  transition: all 0.2s cubic-bezier(.4,0,.2,1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -625,21 +633,68 @@ watchEffect(() => {
   text-align: left;
 }
 
+/* New .buy-button style: glassmorphism, vibrant, modern, with animated border */
 .buy-button {
-  background: linear-gradient(90deg, #fbbf24 0%, #f59e42 100%);
-  color: #222;
-  border: none;
-  border-radius: 8px;
-  padding: 13px 28px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #1a202c;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  padding: 15px 36px;
   cursor: pointer;
-  font-size: 17px;
-  font-weight: 700;
-  margin-top: 20px;
-  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.13);
-  letter-spacing: 0.5px;
-  transition: all 0.18s cubic-bezier(.4,0,.2,1);
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 24px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  letter-spacing: 0.7px;
+  backdrop-filter: blur(8px) saturate(1.2);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
   position: relative;
   overflow: hidden;
+  transition: background 0.22s, color 0.18s, box-shadow 0.18s, border 0.18s;
+  z-index: 1;
+}
+
+.buy-button::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  border-radius: 16px;
+  background: linear-gradient(120deg, #fbbf24, #f59e42, #fbbf24, #f59e42);
+  background-size: 200% 200%;
+  animation: buyButtonBorderMove 2.5s linear infinite;
+  opacity: 0.85;
+}
+
+@keyframes buyButtonBorderMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.buy-button:hover,
+.buy-button:focus {
+  background: rgba(255, 255, 255, 0.32);
+  color: #f59e42;
+  box-shadow: 0 12px 32px 0 rgba(251, 191, 36, 0.22);
+  border: 2px solid #fbbf24;
+  outline: none;
+}
+
+.buy-button:active {
+  background: rgba(255, 255, 255, 0.45);
+  color: #fbbf24;
+  box-shadow: 0 4px 12px 0 rgba(251, 191, 36, 0.18);
+  border: 2px solid #f59e42;
 }
 
 .buy-button:hover {
@@ -747,10 +802,37 @@ watchEffect(() => {
   background-color: rgb(201, 200, 200);
 }
 
+/* Simpler, clean style for btn-call: flat, clear, easy to read */
 .btn-call {
   display: block;
   margin-left: auto;
   margin-right: 0;
+  background: #fbbf24;
+  color: #222;
+  border: none;
+  border-radius: 7px;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 8px 20px;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.1);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.16s, color 0.16s, box-shadow 0.16s, transform 0.14s;
+}
+
+.btn-call:hover,
+.btn-call:focus {
+  background: #f59e42;
+  color: #111;
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 6px 18px rgba(251, 191, 36, 0.18);
+  outline: none;
+}
+
+.btn-call:active {
+  background: #fbbf24;
+  color: #222;
+  box-shadow: 0 1px 4px rgba(251, 191, 36, 0.12);
 }
 
 .flag-image {
@@ -780,7 +862,6 @@ watchEffect(() => {
   font-weight: bold;
 }
 
-
 .select-button {
   padding: 7px 16px;
   background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 60%, #2563eb 100%);
@@ -793,7 +874,7 @@ watchEffect(() => {
   margin-left: auto;
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.13);
   letter-spacing: 0.5px;
-  transition: all 0.18s cubic-bezier(.4,0,.2,1);
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
