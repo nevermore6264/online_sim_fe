@@ -368,6 +368,8 @@ const buyPackage = async () => {
       phoneNumber: phoneNumber,
     });
     push.success(msg);
+    // Reload lại danh sách số đã mua
+    await fetchPurchasedNumbers();
   }
 };
 
