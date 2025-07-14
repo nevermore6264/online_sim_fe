@@ -139,21 +139,39 @@
             ref="purchasedNumbersTable"
           >
             <Column field="number" header="Số điện thoại"></Column>
-            <!-- <Column field="extendedData" header="Thông tin mở rộng"></Column> -->
+            <!-- Thêm cột trạng thái -->
+            <Column field="statusCode" header="Trạng thái">
+              <template #body="{ data }">
+                <span
+                  :style="{
+                    color:
+                      data.statusCode === 'REFUNDED' ? '#f59e42' : '#22c55e',
+                    fontWeight:
+                      data.statusCode === 'REFUNDED' ? 'bold' : 'normal',
+                  }"
+                >
+                  {{ data.statusCode }}
+                </span>
+              </template>
+            </Column>
             <Column header="Hành động">
               <template #body="{ data }">
                 <Button
-                  v-if="
-                    callStatus[data.id]?.isCalling &&
-                    data.statusCode !== 'REFUNDED'
-                  "
+                  v-if="callStatus[data.id]?.isCalling"
                   icon="pi pi-phone"
                   class="p-button-sm btn-call"
                   :label="`Calling... (${callStatus[data.id].remainingTime}s)`"
                   disabled
                 />
                 <Button
-                  v-else-if="data.statusCode !== 'REFUNDED'"
+                  v-else-if="data.statusCode === 'REFUNDED'"
+                  icon="pi pi-phone"
+                  class="p-button-sm btn-call"
+                  :label="$t('landing.call')"
+                  disabled
+                />
+                <Button
+                  v-else
                   icon="pi pi-phone"
                   class="p-button-sm btn-call"
                   :label="$t('landing.call')"
