@@ -75,30 +75,17 @@
               <span class="service-name">{{ service.text }}</span>
               <div class="rental-selection">
                 <Dropdown
-                  :options="rentalQuantityOptions"
+                  :options="generateRentalOptions(service?.rentDurationPrices)"
                   optionLabel="label"
-                  optionValue="value"
-                  v-model="service.rentalQuantity"
-                  :placeholder="$t('rent_number.choose_number')"
-                  class="w-full small-dropdown"
-                />
-                <Dropdown
-                  :options="rentalUnitOptions"
-                  optionLabel="label"
-                  optionValue="value"
-                  v-model="service.rentalUnit"
+                  optionValue="price"
+                  v-model="service.selectedPrice"
                   :placeholder="$t('rent_number.choose_period')"
                   class="w-full small-dropdown"
                 />
               </div>
               <span class="service-price">
                 {{ $t("rent_number.total_amount") }}:
-                {{
-                  getPriceByLabel(
-                    service?.rentDurationPrices,
-                    service.rentalQuantity + " " + service.rentalUnit
-                  )
-                }}
+                {{ service.selectedPrice || "N/A" }}
                 USD
               </span>
               <Button
@@ -189,23 +176,42 @@ const emit = defineEmits(["rent-success"]);
 const selectedCustomer = ref(null);
 const selectedServices = ref([]);
 const servicesAvaiable = ref([]);
-const rentalQuantityOptions = ref([
-  { label: "1", value: 1 },
-  { label: "2", value: 2 },
-  { label: "3", value: 3 },
-]);
 
-const rentalUnitOptions = ref([
-  { label: "Days", value: "days" },
-  { label: "Weeks", value: "weeks" },
-  { label: "Months", value: "months" },
-]);
+// Remove hardcoded rental options
+// const rentalQuantityOptions = ref([
+//   { label: "1", value: 1 },
+//   { label: "2", value: 2 },
+//   { label: "3", value: 3 },
+// ]);
+
+// const rentalUnitOptions = ref([
+//   { label: "Days", value: "days" },
+//   { label: "Weeks", value: "weeks" },
+//   { label: "Months", value: "months" },
+// ]);
 
 const dropdownOptions = ref([]);
 
-const getPriceByLabel = (rentDurationPrices, label) => {
-  const found = rentDurationPrices.find((item) => item.label === label);
-  return found ? found.price : "N/A";
+// Function to generate rental options from rentDurationPrices
+const generateRentalOptions = (rentDurationPrices) => {
+  if (!rentDurationPrices || !Array.isArray(rentDurationPrices)) {
+    return [];
+  }
+
+  return rentDurationPrices.map((item) => ({
+    label: item.label,
+    price: item.price,
+    days: item.days,
+  }));
+};
+
+// Function to get days from selected price
+const getDaysFromPrice = (selectedPrice, rentDurationPrices) => {
+  if (!selectedPrice || !rentDurationPrices) {
+    return 0;
+  }
+  const found = rentDurationPrices.find((item) => item.price === selectedPrice);
+  return found ? found.days : 0;
 };
 
 const onCountrySelect = async () => {
@@ -230,11 +236,16 @@ const toggleServiceSelection = (service) => {
     (s) => s.code === service.code
   );
   if (index === -1) {
-    // Thêm dịch vụ với thời gian thuê mặc định
+    // Thêm dịch vụ với thời gian thuê mặc định từ rentDurationPrices
+    let defaultPrice = null;
+
+    if (service.rentDurationPrices && service.rentDurationPrices.length > 0) {
+      defaultPrice = service.rentDurationPrices[0].price;
+    }
+
     selectedServices.value.push({
       ...service,
-      rentalQuantity: 1,
-      rentalUnit: "days",
+      selectedPrice: defaultPrice,
     });
   } else {
     selectedServices.value.splice(index, 1);
@@ -252,9 +263,9 @@ const rentSelectedServices = async () => {
   let failedServices = [];
 
   for (const service of selectedServices.value) {
-    const rentDays = calculateRentDays(
-      service.rentalQuantity,
-      service.rentalUnit
+    const rentDays = getDaysFromPrice(
+      service.selectedPrice,
+      service.rentDurationPrices
     );
     const data = {
       serviceCode: service.code.toUpperCase(),
@@ -287,17 +298,6 @@ const rentSelectedServices = async () => {
   }
 };
 
-const calculateRentDays = (quantity, unit) => {
-  if (unit === "days") {
-    return quantity;
-  } else if (unit === "weeks") {
-    return quantity * 7;
-  } else if (unit === "months") {
-    return quantity * 30;
-  }
-  return 0;
-};
-
 const searchQuery = ref("");
 
 const filteredServices = computed(() => {
@@ -314,10 +314,7 @@ const filteredServices = computed(() => {
 
 const totalAmount = computed(() => {
   return selectedServices.value.reduce((sum, service) => {
-    const price = getPriceByLabel(
-      service?.rentDurationPrices,
-      service.rentalQuantity + " " + service.rentalUnit
-    );
+    const price = service.selectedPrice || "N/A";
     return sum + (price === "N/A" ? 0 : Number(price));
   }, 0);
 });
@@ -462,7 +459,7 @@ onMounted(async () => {
 
 .selected-item .service-info {
   display: grid;
-  grid-template-columns: 100px 100px 200px 200px 200px 25px;
+  grid-template-columns: 100px 100px 200px 300px 200px 25px;
   align-items: center;
   gap: 8px;
   padding: 2px 16px;
@@ -544,12 +541,11 @@ onMounted(async () => {
 
 .rental-selection {
   display: flex;
-  gap: 8px;
   align-items: center;
 }
 
 .rental-selection .p-dropdown {
-  min-width: 100px;
+  min-width: 150px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
@@ -737,6 +733,10 @@ onMounted(async () => {
   }
   .rental-selection {
     flex-direction: column;
+  }
+  .selected-item .service-info {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
